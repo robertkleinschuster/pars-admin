@@ -28,6 +28,7 @@ use Niceshops\Core\Option\OptionAwareTrait;
 use Pars\Mvc\Controller\AbstractController;
 use Pars\Mvc\Controller\ControllerResponse;
 use Pars\Helper\Parameter\NavParameter;
+use Pars\Mvc\View\ViewBeanConverter;
 
 /**
  * Class BaseController
@@ -83,7 +84,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function translate(string $code)
     {
-        return $this->getTranslator()->translate($code, 'backoffice');
+        return $this->getTranslator()->translate($code, 'admin');
     }
 
     /**
@@ -102,7 +103,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function getNavigationState(string $id): int
     {
-        return intval($this->getSession()->get($id)) ?? 0;
+        return (int) $this->getSession()->get($id) ?? 0;
     }
 
     /**
@@ -120,7 +121,11 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function handleSubmitSecurity(): bool
     {
-        return $this->validateToken('submit_token', $this->getControllerRequest()->getAttribute('token') ?? '');
+        if ($this->getControllerRequest()->hasAttribute('submit_token')) {
+            return $this->validateToken('submit_token', $this->getControllerRequest()->getAttribute('submit_token') ?? '');
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -191,7 +196,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
     /**
      * @return UserBean
      */
-    protected function getUser(): UserBean
+    protected function getUserBean(): UserBean
     {
         return $this->getControllerRequest()->getServerRequest()->getAttribute(UserInterface::class) ?? new UserBean();
     }
@@ -202,8 +207,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function checkPermission(string $permission): bool
     {
-        return true;
-        return in_array($permission, $this->getUser()->getPermission_List());
+        return $this->getUserBean()->hasPermission($permission);
     }
 
     /**
@@ -216,15 +220,8 @@ abstract class BaseController extends AbstractController implements AttributeAwa
     {
         $this->setView(new BaseView());
         $layout = new DashboardLayout();
+        $layout->setNavigation(new MainNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean()));
         $this->getView()->setLayout($layout);
-        $layout->getNavigation()->addItem('Cms', $this->getPathHelper()->setController('cmsmenu')->setAction('index'), 'cms');
-        $layout->getNavigation()->addItem('System', $this->getPathHelper()->setController('user')->setAction('index'), 'cms');
-        $layout->getNavigation()->addItem('Übsersetzung', $this->getPathHelper()->setController('translation')->setAction('index'), 'cms');
-        $logo = new Icon('pars-logo');
-        $logo->setWidth('100px');
-        $logo->addInlineStyle('fill', '#fff');
-        $logo->addInlineStyle('margin-top', '-7px');
-        $layout->getNavigation()->setBrand('', $this->getPathHelper()->setController('index')->setAction('index'))->push($logo);
 
        /* $this->setView(new View('layout/dashboard'));
         $this->getView()->setTitle('Backoffice');
@@ -393,9 +390,9 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $this->getModel()->setDbAdapter(
             $this->getControllerRequest()->getServerRequest()->getAttribute(DatabaseMiddleware::ADAPTER_ATTRIBUTE)
         );
-        $this->getModel()->setUser($this->getUser());
+        $this->getModel()->setUser($this->getUserBean());
         $this->getModel()->setTranslator($this->getTranslator());
-        $this->getModel()->setBeanConverter(new BackofficeBeanConverter());
+        $this->getModel()->setBeanConverter(new ViewBeanConverter());
         $this->getModel()->initialize();
         if ($this->getModel()->hasBeanProcessor()) {
             $processor = $this->getModel()->getBeanProcessor();

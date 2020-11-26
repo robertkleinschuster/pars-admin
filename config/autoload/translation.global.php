@@ -1,6 +1,5 @@
 <?php
 return [
-
     'translator' => [
         'locale' => ['de_AT'],
         'translation_file_patterns' => [
@@ -13,9 +12,9 @@ return [
             ],
             [
                 'type' => Laminas\I18n\Translator\Loader\PhpArray::class,
-                'base_dir' => implode(DIRECTORY_SEPARATOR, [__DIR__, '..', '..', 'translation', 'backoffice']),
+                'base_dir' => implode(DIRECTORY_SEPARATOR, [__DIR__, '..', '..', 'translation', 'admin']),
                 'pattern' => '%s.php',
-                'text_domain' => 'backoffice'
+                'text_domain' => 'admin'
 
             ],
             [
@@ -30,18 +29,19 @@ return [
         ],
         'remote_translation' => [
             [
-                'type' => Pars\Model\Translation\TranslationLoader\TranslationBeanFinder::class,
+                'type' => \Laminas\I18n\Translator\Loader\RemoteLoaderInterface::class,
                 'text_domain' => 'default'
             ],
             [
-                'type' => Pars\Model\Translation\TranslationLoader\TranslationBeanFinder::class,
-                'text_domain' => 'backoffice'
+                'type' => \Laminas\I18n\Translator\Loader\RemoteLoaderInterface::class,
+                'text_domain' => 'admin'
             ],
             [
-                'type' => Pars\Model\Translation\TranslationLoader\TranslationBeanFinder::class,
+                'type' => \Laminas\I18n\Translator\Loader\RemoteLoaderInterface::class,
                 'text_domain' => 'frontend'
             ]
         ],
+
         'cache' => [
             'adapter' => [
                 'name' => Laminas\Cache\Storage\Adapter\Filesystem::class,

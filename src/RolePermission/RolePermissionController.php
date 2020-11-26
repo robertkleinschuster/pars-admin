@@ -33,7 +33,7 @@ class RolePermissionController extends CrudController
         $edit->addSelect('UserPermission_Code', $this->translate('userpermission.code'))
             ->setSelectOptions(
                 $this->getModel()->getPermissionList(
-                    $this->getUser()->getPermission_List(),
+                    $this->getUserBean()->getPermission_List(),
                     $this->getControllerRequest()->getId()
                 )
             );

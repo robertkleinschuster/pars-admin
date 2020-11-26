@@ -24,7 +24,7 @@ class UserRoleController extends RoleController
     protected function addEditFields(Edit $edit): void
     {
         $edit->addSelect('UserRole_ID', 'Rolle')
-            ->setSelectOptions($this->getModel()->getRoleList($this->getUser()->getPermission_List(), $this->getControllerRequest()->getId()));
+            ->setSelectOptions($this->getModel()->getRoleList($this->getUserBean()->getPermission_List(), $this->getControllerRequest()->getId()));
     }
 
     protected function getCreatePath(): PathHelper

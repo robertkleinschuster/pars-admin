@@ -33,7 +33,7 @@ class UserModel extends CrudModel
         $finder = new UserStateBeanFinder($this->getDbAdpater());
 
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->getData('UserState_Code')] = $bean->getData('UserState_Code');
+            $options[$bean->get('UserState_Code')] = $bean->get('UserState_Code');
         }
         return $options;
     }
@@ -48,7 +48,7 @@ class UserModel extends CrudModel
         $finder->setLocale_Active(true);
 
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->getData('Locale_Code')] = $bean->getData('Locale_Name');
+            $options[$bean->get('Locale_Code')] = $bean->get('Locale_Name');
         }
         return $options;
     }

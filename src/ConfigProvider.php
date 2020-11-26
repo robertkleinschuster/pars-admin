@@ -33,7 +33,7 @@ class ConfigProvider
         return [
             'factories' => [
                 \Pars\Admin\Application::class => \Pars\Admin\ApplicationFactory::class,
-                \Pars\Admin\ApplicationContainer::class => \Pars\Admin\ApplicationContainerFactory::class
+                \Pars\Admin\ApplicationContainer::class => \Pars\Admin\ApplicationContainerFactory::class,
             ],
         ];
     }

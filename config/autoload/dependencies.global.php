@@ -24,7 +24,7 @@ return [
         'factories'  => [
             // Fully\Qualified\ClassName::class => Fully\Qualified\FactoryName::class,
             Pars\Admin\Application::class => Pars\Admin\ApplicationFactory::class,
-            Pars\Admin\ApplicationContainer::class => Pars\Admin\ApplicationContainerFactory::class
+            Pars\Admin\ApplicationContainer::class => Pars\Admin\ApplicationContainerFactory::class,
         ],
     ],
 ];

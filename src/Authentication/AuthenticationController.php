@@ -3,8 +3,6 @@
 namespace Pars\Admin\Authentication;
 
 use Pars\Component\Base\Alert\Alert;
-use Pars\Component\Signin\SigninForm;
-use Pars\Component\Signin\SigninLayout;
 use Pars\Model\Authentication\User\UserBeanFinder;
 use Pars\Admin\Base\BaseController;
 use Mezzio\Authentication\UserInterface;
@@ -38,15 +36,18 @@ class AuthenticationController extends BaseController
             $this->getControllerResponse()->setRedirect($this->getPathHelper()->setController('index')->setAction('index')->getPath());
             return;
         }
-        $login_error = $this->getFlashMessanger()->getFlash('login_error');
-        if ($login_error) {
-            $alert = new Alert();
-            $alert->setHeading($this->translate('login.error'));
-            $alert->addParagraph($login_error);
-            $this->getView()->append($alert);
-        }
+
         $signin = new SigninForm();
+        $signin->setToken($this->generateToken('login_token'));
+        $signin->setTranslator($this->getTranslator());
         $this->getView()->append($signin);
+        $login_error = $this->getFlashMessanger()->getFlash('login_error');
+        if ($login_error == 'credentials') {
+            $signin->setError($this->translate('login.error.credentials'));
+        }
+        if ($login_error == 'token') {
+            $signin->setError($this->translate('login.error.token'));
+        }
     }
 
     public function logoutAction()
