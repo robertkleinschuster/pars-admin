@@ -4,12 +4,13 @@ namespace Pars\Admin\Translation;
 
 
 
+use Pars\Admin\Base\BaseDelete;
+use Pars\Admin\Base\BaseDetail;
+use Pars\Admin\Base\BaseEdit;
+use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\CrudController;
-use Pars\Mvc\Helper\PathHelper;
-use Pars\Helper\Parameter\IdParameter;
-use Pars\Mvc\View\Components\Detail\Detail;
-use Pars\Mvc\View\Components\Edit\Edit;
-use Pars\Mvc\View\Components\Overview\Overview;
+use Pars\Admin\Base\SystemNavigation;
+
 
 /**
  * Class TranslationController
@@ -30,40 +31,36 @@ class TranslationController extends CrudController
         return $this->checkPermission('translation');
     }
 
-    protected function getDetailPath(): PathHelper
+    protected function initView()
     {
-        return $this->getPathHelper()->setId((new IdParameter())->addId('Translation_ID'));
+        parent::initView();
+        $this->getView()->getLayout()->getNavigation()->setActive('system');
+        $subNavigation = new SystemNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation->setActive('translation');
+        $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
 
-    protected function addOverviewFields(Overview $overview): void
+    protected function createOverview(): BaseOverview
     {
-        $overview->addText('Locale_Code', $this->translate('translation.locale'));
-        $overview->addText('Translation_Code', $this->translate('translation.code'));
-        $overview->addText('Translation_Text', $this->translate('translation.text'));
-        $overview->addText('Translation_Namespace', $this->translate('translation.namespace'));
+        return new TranslationOverview($this->getPathHelper(),$this->getTranslator(), $this->getUserBean());
     }
 
-    protected function addDetailFields(Detail $detail): void
+    protected function createDetail(): BaseDetail
     {
-        $detail->addText('Locale_Code', $this->translate('translation.locale'));
-        $detail->addText('Translation_Code', $this->translate('translation.code'));
-        $detail->addText('Translation_Text', $this->translate('translation.text'));
-        $detail->addText('Translation_Namespace', $this->translate('translation.namespace'));
+        return new TranslationDetail($this->getPathHelper(),$this->getTranslator(), $this->getUserBean());
     }
 
-    protected function addEditFields(Edit $edit): void
+    protected function createEdit(): BaseEdit
     {
-        $edit->addSelect('Locale_Code', $this->translate('translation.locale'))
-        ->setSelectOptions($this->getModel()->getLocale_Options())
-        ->setValue($this->getTranslator()->getLocale());
-        $edit->addText('Translation_Code', $this->translate('translation.code'));
-        $edit->addSelect('Translation_Namespace', $this->translate('translation.namespace'))
-        ->setSelectOptions([
-            'frontend' => 'frontend',
-            'backoffice' => 'backoffice',
-            'default' => 'default',
-        ]);
-        $edit->addTextarea('Translation_Text', $this->translate('translation.text'))
-        ->setRows(5);
+        $edit = new TranslationEdit($this->getPathHelper(),$this->getTranslator(), $this->getUserBean());
+        $edit->setLocaleOptions($this->getModel()->getLocale_Options());
+        return $edit;
     }
+
+    protected function createDelete(): BaseDelete
+    {
+        return new TranslationDelete($this->getPathHelper(),$this->getTranslator(), $this->getUserBean());
+    }
+
+
 }

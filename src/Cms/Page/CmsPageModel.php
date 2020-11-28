@@ -33,7 +33,7 @@ class CmsPageModel extends ArticleModel
         $finder = new CmsPageTypeBeanFinder($this->getDbAdpater());
         $finder->setCmsPageType_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->getData('CmsPageType_Code')] = $this->translate("CmsPagetype.code." . $bean->getData('CmsPageType_Code'));
+            $options[$bean->get('CmsPageType_Code')] = $this->translate("cmspagetype.code." . $bean->get('CmsPageType_Code'));
         }
         return $options;
     }
@@ -44,15 +44,8 @@ class CmsPageModel extends ArticleModel
         $finder = new CmsPageStateBeanFinder($this->getDbAdpater());
         $finder->setCmsPageState_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->getData('CmsPageState_Code')] = $this->translate("CmsPagestate.code." . $bean->getData('CmsPageState_Code'));
+            $options[$bean->get('CmsPageState_Code')] = $this->translate("cmspagestate.code." . $bean->get('CmsPageState_Code'));
         }
         return $options;
-    }
-
-    public function getParagraph_List(array $viewIdMap)
-    {
-        $finder = new CmsPageParagraphBeanFinder($this->getDbAdpater());
-        $finder->getBeanLoader()->initByIdMap($viewIdMap);
-        return $finder->getBeanListDecorator();
     }
 }

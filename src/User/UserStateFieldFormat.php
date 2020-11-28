@@ -7,6 +7,7 @@ namespace Pars\Admin\User;
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
 use Niceshops\Bean\Type\Base\BeanInterface;
+use Niceshops\Core\Option\OptionAwareInterface;
 use Pars\Component\Base\StyleAwareInterface;
 use Pars\Mvc\View\FieldFormatInterface;
 use Pars\Mvc\View\FieldInterface;
@@ -27,7 +28,7 @@ class UserStateFieldFormat implements FieldFormatInterface
     public function __invoke(FieldInterface $field, string $value, ?BeanInterface $bean = null): string
     {
         if (null !== $bean) {
-            switch ($bean->UserState_Code) {
+            switch ($bean->get('UserState_Code')) {
                 case 'active':
                     if ($field instanceof StyleAwareInterface) {
                         $field->setStyle(StyleAwareInterface::STYLE_SUCCESS);

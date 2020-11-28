@@ -3,10 +3,13 @@
 namespace Pars\Admin\Cms\Page;
 
 use Pars\Admin\Article\ArticleController;
-use Pars\Mvc\Helper\PathHelper;
+use Pars\Admin\Base\BaseDelete;
+use Pars\Admin\Base\BaseDetail;
+use Pars\Admin\Base\BaseEdit;
+use Pars\Admin\Base\BaseOverview;
+use Pars\Admin\Base\ContentNavigation;
 use Pars\Helper\Parameter\IdParameter;
-use Pars\Mvc\View\Components\Detail\Detail;
-use Pars\Mvc\View\Components\Edit\Edit;
+
 
 
 /**
@@ -27,32 +30,38 @@ class CmsPageController extends ArticleController
         return $this->checkPermission('cmspage');
     }
 
-    protected function getDetailPath(): PathHelper
+    protected function initView()
     {
-        return $this->getPathHelper()->setId((new IdParameter())->addId('CmsPage_ID'));
+        parent::initView();
+        $this->getView()->getLayout()->getNavigation()->setActive('content');
+        $subNavigation = new ContentNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation->setActive('cmspage');
+        $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
 
-    protected function addDetailFields(Detail $detail): void
+    protected function createOverview(): BaseOverview
     {
-        parent::addDetailFields($detail);
-        $detail->addText('CmsPageType_Code', $this->translate('CmsPagetype.code'))
-            ->setChapter($this->translate('article.detail.general'))
-            ->setAppendToColumnPrevious(true);
-        $detail->addText('CmsPageState_Code', $this->translate('CmsPagestate.code'))
-            ->setChapter($this->translate('article.detail.general'))
-            ->setAppendToColumnPrevious(true);
+        return new CmsPageOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
-    protected function addEditFields(Edit $edit): void
+    protected function createDetail(): BaseDetail
     {
-        parent::addEditFields($edit);
-        $edit->addSelect('CmsPageType_Code', $this->translate('CmsPagetype.code'))
-            ->setChapter($this->translate('article.edit.general'))
-            ->setSelectOptions($this->getModel()->getCmsPageType_Options())
-            ->setAppendToColumnPrevious(true);
-        $edit->addSelect('CmsPageState_Code', $this->translate('CmsPagestate.code'))
-            ->setChapter($this->translate('article.edit.general'))
-            ->setSelectOptions($this->getModel()->getCmsPageState_Options())
-            ->setAppendToColumnPrevious(true);
+        $this->getView()->set('CmsPage_ID', (int) $this->getControllerRequest()->getId()->getAttribute('CmsPage_ID'));
+        $this->addSubController('cmspageparagraph', 'index');
+        return new CmsPageDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+    }
+
+    protected function createEdit(): BaseEdit
+    {
+        $edit =  new CmsPageEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit->setTypeOptions($this->getModel()->getCmsPageType_Options());
+        $edit->setStateOptions($this->getModel()->getCmsPageState_Options());
+        $edit->setFileOptions($this->getModel()->getFileOptions());
+        return $edit;
+    }
+
+    protected function createDelete(): BaseDelete
+    {
+        return new CmsPageDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 }

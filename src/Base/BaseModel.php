@@ -2,6 +2,9 @@
 
 namespace Pars\Admin\Base;
 
+use Pars\Helper\Parameter\IdParameter;
+use Pars\Helper\Parameter\MoveParameter;
+use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Model\Authentication\User\UserBean;
 use Laminas\Db\Adapter\Adapter;
 use Laminas\Db\Adapter\AdapterAwareInterface;
@@ -58,11 +61,38 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
 
     protected function handlePermissionDenied()
     {
+        $this->getValidationHelper()->addError('PermissionDenied', $this->translate('unauthorized.heading'));
         $this->getValidationHelper()->addError('Permission', $this->translate('permission.edit.denied'));
     }
 
+    public function handleSubmit(SubmitParameter $submitParameter, IdParameter $idParameter, array $attribute_List)
+    {
+        switch ($submitParameter->getMode()) {
+            case SubmitParameter::MODE_SAVE:
+                $bean = $this->getBean();
+                if ($bean->exists('Person_ID_Create')) {
+                    if ($bean->get('Person_ID_Create') == $this->getUser()->get('Person_ID')) {
+                        $this->addOption(self::OPTION_EDIT_ALLOWED);
+                    }
+                }
+                break;
+            case SubmitParameter::MODE_CREATE:
+                break;
+            case SubmitParameter::MODE_DELETE:
+                $bean = $this->getBean();
+                if ($bean->exists('Person_ID_Create')) {
+                    if ($bean->get('Person_ID_Create') == $this->getUser()->get('Person_ID')) {
+                        $this->addOption(self::OPTION_DELETE_ALLOWED);
+                    }
+                }
+                break;
+        }
+        parent::handleSubmit($submitParameter, $idParameter, $attribute_List);
+    }
+
+
     public function translate(string $code)
     {
-        return $this->getTranslator()->translate($code, 'backoffice');
+        return $this->getTranslator()->translate($code, 'admin');
     }
 }

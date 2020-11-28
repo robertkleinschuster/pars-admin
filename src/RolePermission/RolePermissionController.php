@@ -2,12 +2,13 @@
 
 namespace Pars\Admin\RolePermission;
 
+use Pars\Admin\Base\BaseDelete;
+use Pars\Admin\Base\BaseDetail;
+use Pars\Admin\Base\BaseEdit;
+use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\CrudController;
-use Pars\Mvc\Helper\PathHelper;
-use Pars\Helper\Parameter\IdParameter;
-use Pars\Mvc\View\Components\Detail\Detail;
-use Pars\Mvc\View\Components\Edit\Edit;
-use Pars\Mvc\View\Components\Overview\Overview;
+use Pars\Admin\Base\SystemNavigation;
+
 
 /**
  * Class RolePermissionController
@@ -28,44 +29,41 @@ class RolePermissionController extends CrudController
         return $this->checkPermission('rolepermission');
     }
 
-    protected function addEditFields(Edit $edit): void
+    protected function initView()
     {
-        $edit->addSelect('UserPermission_Code', $this->translate('userpermission.code'))
-            ->setSelectOptions(
-                $this->getModel()->getPermissionList(
-                    $this->getUserBean()->getPermission_List(),
-                    $this->getControllerRequest()->getId()
-                )
-            );
+        parent::initView();
+        $this->getView()->getLayout()->getNavigation()->setActive('system');
+        $subNavigation = new SystemNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation->setActive('user');
+        $this->getView()->getLayout()->setSubNavigation($subNavigation);
+        $this->getView()->set('UserRole_ID', (int) $this->getControllerRequest()->getId()->getAttribute('UserRole_ID'));
     }
 
-    protected function addOverviewFields(Overview $overview): void
+    protected function createOverview(): BaseOverview
     {
-        $overview->addText('UserPermission_Code', $this->translate('userpermission.code'));
+        $overview = new RolePermissionOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $overview->setShowEdit(false);
+        return $overview;
     }
 
-    protected function addDetailFields(Detail $detail): void
+    protected function createDetail(): BaseDetail
     {
-        $detail->addText('UserPermission_Code', $this->translate('userpermission.code'));
+        $detail = new RolePermissionDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        return $detail;
     }
 
-    protected function getDetailPath(): PathHelper
+
+    protected function createEdit(): BaseEdit
     {
-        return parent::getDetailPath()->setController('rolepermission')->setId($this->getControllerRequest()->getId()->addId('UserPermission_Code')->addId('UserRole_ID'));
+        $edit = new RolePermissionEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit->setPermissionBeanList($this->getModel()->getPermissionBeanList($this->getUserBean()->getPermissions(), $this->getControllerRequest()->getId()));
+        return $edit;
     }
 
-    protected function getCreatePath(): PathHelper
+    protected function createDelete(): BaseDelete
     {
-        return parent::getCreatePath()->setController('rolepermission')->setId($this->getControllerRequest()->getId());
-    }
-
-    protected function getIndexPath(): PathHelper
-    {
-        if ($this->getControllerRequest()->getId()->hasAttribute('Person_ID')) {
-            return parent::getIndexPath()->setController('userrole')->setAction('detail')->setId($this->getControllerRequest()->getId()->unsetAttribute('UserPermission_Code'));
-        } else {
-            return parent::getIndexPath()->setController('role')->setAction('detail')->setId($this->getControllerRequest()->getId()->unsetAttribute('UserPermission_Code'));
-        }
+        $delete = new RolePermissionDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        return $delete;
     }
 
 

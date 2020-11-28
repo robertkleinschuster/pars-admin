@@ -2,13 +2,13 @@
 
 namespace Pars\Admin\Cms\Paragraph;
 
-use Pars\Admin\Base\CrudModel;
+use Pars\Admin\Article\ArticleModel;
 use Pars\Model\Cms\Paragraph\State\CmsParagraphStateBeanFinder;
 use Pars\Model\Cms\Paragraph\Type\CmsParagraphTypeBeanFinder;
 use Pars\Model\Cms\Paragraph\CmsParagraphBeanFinder;
 use Pars\Model\Cms\Paragraph\CmsParagraphBeanProcessor;
 
-class CmsParagraphModel extends CrudModel
+class CmsParagraphModel extends ArticleModel
 {
     public function initialize()
     {
@@ -24,7 +24,7 @@ class CmsParagraphModel extends CrudModel
         $finder = new CmsParagraphTypeBeanFinder($this->getDbAdpater());
         $finder->setCmsParagraphType_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->getData('CmsParagraphType_Code')] = $this->translate('cmsparagraphtype.code.' . $bean->getData('CmsParagraphType_Code'));
+            $options[$bean->get('CmsParagraphType_Code')] = $this->translate('cmsparagraphtype.code.' . $bean->get('CmsParagraphType_Code'));
         }
         return $options;
     }
@@ -35,7 +35,7 @@ class CmsParagraphModel extends CrudModel
         $finder = new CmsParagraphStateBeanFinder($this->getDbAdpater());
         $finder->setCmsParagraphState_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->getData('CmsParagraphState_Code')] = $this->translate('cmsparagraphstate.code.' . $bean->getData('CmsParagraphState_Code'));
+            $options[$bean->get('CmsParagraphState_Code')] = $this->translate('cmsparagraphstate.code.' . $bean->get('CmsParagraphState_Code'));
         }
         return $options;
     }

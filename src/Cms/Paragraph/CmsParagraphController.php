@@ -3,10 +3,14 @@
 namespace Pars\Admin\Cms\Paragraph;
 
 use Pars\Admin\Article\ArticleController;
-use Pars\Mvc\Helper\PathHelper;
+use Pars\Admin\Base\BaseDelete;
+use Pars\Admin\Base\BaseDetail;
+use Pars\Admin\Base\BaseEdit;
+use Pars\Admin\Base\BaseOverview;
+use Pars\Admin\Base\ContentNavigation;
+use Pars\Admin\File\FileDetail;
+use Pars\Admin\File\FileOverview;
 use Pars\Helper\Parameter\IdParameter;
-use Pars\Mvc\View\Components\Detail\Detail;
-use Pars\Mvc\View\Components\Edit\Edit;
 
 /**
  * Class CmsParagraphController
@@ -26,32 +30,41 @@ class CmsParagraphController extends ArticleController
         return $this->checkPermission('cmsparagraph');
     }
 
-    protected function getDetailPath(): PathHelper
+    protected function initView()
     {
-        return $this->getPathHelper()->setId((new IdParameter())->addId('CmsParagraph_ID'));
+        parent::initView();
+        $this->getView()->getLayout()->getNavigation()->setActive('content');
+        $subNavigation = new ContentNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation->setActive('cmsparagraph');
+        $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
 
-    protected function addDetailFields(Detail $detail): void
+    protected function createOverview(): BaseOverview
     {
-        parent::addDetailFields($detail);
-        $detail->addText('CmsParagraphType_Code', $this->translate('cmsparagraphtype.code'))
-            ->setChapter($this->translate('article.detail.general'))
-            ->setAppendToColumnPrevious(true);
-        $detail->addText('CmsParagraphState_Code', $this->translate('cmsparagraphstate.code'))
-            ->setChapter($this->translate('article.detail.general'))
-            ->setAppendToColumnPrevious(true);
+        return new CmsParagraphOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
-    protected function addEditFields(Edit $edit): void
+    protected function createDetail(): BaseDetail
     {
-        parent::addEditFields($edit);
-        $edit->addSelect('CmsParagraphType_Code', $this->translate('cmsparagraphtype.code'))
-            ->setChapter($this->translate('article.edit.general'))
-            ->setSelectOptions($this->getModel()->getCmsParagraphType_Options())
-            ->setAppendToColumnPrevious(true);
-        $edit->addSelect('CmsParagraphState_Code', $this->translate('cmsparagraphstate.code'))
-            ->setChapter($this->translate('article.edit.general'))
-            ->setSelectOptions($this->getModel()->getCmsParagraphState_Options())
-            ->setAppendToColumnPrevious(true);
+        return new CmsParagraphDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
+
+
+
+
+    protected function createEdit(): BaseEdit
+    {
+        $edit = new CmsParagraphEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit->setStateOptions($this->getModel()->getCmsParagraphState_Options());
+        $edit->setTypeOptions($this->getModel()->getCmsParagraphType_Options());
+        $edit->setFileOptions($this->getModel()->getFileOptions());
+        return $edit;
+    }
+
+    protected function createDelete(): BaseDelete
+    {
+        return new CmsParagraphDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+    }
+
+
 }

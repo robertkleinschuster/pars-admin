@@ -3,7 +3,13 @@
 namespace Pars\Admin\Cms\Menu;
 
 use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Admin\Base\BaseDelete;
+use Pars\Admin\Base\BaseDetail;
+use Pars\Admin\Base\BaseEdit;
+use Pars\Admin\Base\BaseOverview;
+use Pars\Admin\Base\ContentNavigation;
 use Pars\Admin\Base\CrudController;
+use Pars\Admin\Base\SystemNavigation;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\MoveParameter;
 use Pars\Helper\Parameter\RedirectParameter;
@@ -27,45 +33,40 @@ class CmsMenuController extends CrudController
     {
         return $this->checkPermission('cmsmenu');
     }
-
-    protected function getDetailPath(): PathHelper
+    protected function initView()
     {
-        return $this->getPathHelper()->setId((new IdParameter())->addId('CmsMenu_ID'));
+        parent::initView();
+        $this->getView()->getLayout()->getNavigation()->setActive('content');
+        $subNavigation = new ContentNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation->setActive('cmsmenu');
+        $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
 
-    protected function addOverviewFields(Overview $overview): void
+    protected function createOverview(): BaseOverview
     {
-        $redirect = $this->getPathHelper()->getPath();
-        $overview->addMoveDownIcon($this->getDetailPath()->addParameter((new MoveParameter())->setDown('CmsMenu_Order'))->addParameter((new RedirectParameter())->setLink($redirect))->getPath())
-            ->setWidth(85)
-            ->setShow(function (BeanInterface $bean) {
-                return $bean->hasData('CmsMenu_Order')
-                    && $bean->getData('CmsMenu_Order') < $this->getModel()->getBeanFinder()->count();
-            });
-        $overview->addMoveUpIcon($this->getDetailPath()->addParameter((new MoveParameter())->setUp('CmsMenu_Order'))->addParameter((new RedirectParameter())->setLink($redirect))->getPath())
-            ->setShow(function (BeanInterface $bean) {
-                return $bean->hasData('CmsMenu_Order') && $bean->getData('CmsMenu_Order') > 1;
-            });
-
-
-        $overview->addText('Article_Code', $this->translate('article.code'))->setWidth(150);
-        $overview->addText('ArticleTranslation_Name', $this->translate('articletranslation.name'));
-        $overview->addText('ArticleTranslation_Code', $this->translate('articletranslation.code'));
+        $overview = new CmsMenuOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        if (count($this->getModel()->getCmsPage_Options()) == 0) {
+            $overview->setShowCreate(false);
+        }
+        return $overview;
     }
 
-    protected function addDetailFields(Detail $detail): void
+    protected function createDetail(): BaseDetail
     {
-        $detail->addText('Article_Code', $this->translate('article.code'));
-        $detail->addText('ArticleTranslation_Name', $this->translate('articletranslation.name'));
-        $detail->addText('ArticleTranslation_Code', $this->translate('articletranslation.code'));
+        return new CmsMenuDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
-    protected function addEditFields(Edit $edit): void
+    protected function createEdit(): BaseEdit
     {
-        $edit->addSelect('CmsPage_ID', $this->translate('articletranslation.name'))
-            ->setSelectOptions($this->getModel()->getCmsPage_Options());
-        $edit->addSelect('CmsMenuState_Code', $this->translate('articlestate.code'))
-            ->setSelectOptions($this->getModel()->getCmsMenuState_Options());
-        $edit->addSubmitAttribute('CmsMenuType_Code', 'header');
+        $edit = new CmsMenuEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit->setStateOptions($this->getModel()->getCmsMenuState_Options());
+        $edit->setTypeOptions($this->getModel()->getCmsMenuType_Options());
+        $edit->setPageOptions($this->getModel()->getCmsPage_Options());
+        return $edit;
+    }
+
+    protected function createDelete(): BaseDelete
+    {
+        return new CmsMenuDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 }

@@ -3,13 +3,19 @@
 namespace Pars\Admin\File\Directory;
 
 
+use Pars\Admin\Base\BaseDelete;
+use Pars\Admin\Base\BaseDetail;
+use Pars\Admin\Base\BaseEdit;
+use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\CrudController;
-use Pars\Mvc\Helper\PathHelper;
+use Pars\Admin\Base\MediaNavigation;
 use Pars\Helper\Parameter\IdParameter;
-use Pars\Mvc\View\Components\Detail\Detail;
-use Pars\Mvc\View\Components\Edit\Edit;
-use Pars\Mvc\View\Components\Overview\Overview;
 
+/**
+ * Class FileDirectoryController
+ * @package Pars\Admin\File\Directory
+ * @method FileDirectoryModel getModel()
+ */
 class FileDirectoryController extends CrudController
 {
     protected function initModel()
@@ -24,39 +30,34 @@ class FileDirectoryController extends CrudController
         return $this->checkPermission('filedirectory');
     }
 
-
-    protected function getDetailPath(): PathHelper
+    protected function initView()
     {
-        return parent::getDetailPath()->setId((new IdParameter())->addId('FileDirectory_ID'));
+        parent::initView();
+        $this->getView()->getLayout()->getNavigation()->setActive('media');
+        $subNavigation = new MediaNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation->setActive('filedirectory');
+        $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
 
-    protected function addOverviewFields(Overview $overview): void
+    protected function createOverview(): BaseOverview
     {
-        $overview->addBadgeBoolean(
-            'FileDirectory_Active',
-            $this->translate('filedirectory.active'),
-            $this->translate('filedirectory.active.true'),
-            $this->translate('filedirectory.active.false')
-        );
-        $overview->addText('FileDirectory_Name', $this->translate('filedirectory.name'));
+        return new FileDirectoryOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
-    protected function addDetailFields(Detail $detail): void
+    protected function createDetail(): BaseDetail
     {
-        $detail->addBadgeBoolean(
-            'FileDirectory_Active',
-            $this->translate('filedirectory.active'),
-            $this->translate('filedirectory.active.true'),
-            $this->translate('filedirectory.active.false')
-        );
-        $detail->addText('FileDirectory_Name', $this->translate('filedirectory.name'));
-
-        $this->addSubController('file', 'index');
+        return new FileDirectoryDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
-    protected function addEditFields(Edit $edit): void
+    protected function createEdit(): BaseEdit
     {
-        $edit->addText('FileDirectory_Name', $this->translate('filedirectory.name'));
-        $edit->addCheckbox('FileDirectory_Active', $this->translate('filedirectory.active'));
+        return new FileDirectoryEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
+
+    protected function createDelete(): BaseDelete
+    {
+        return new FileDirectoryDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+    }
+
+
 }

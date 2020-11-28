@@ -2,14 +2,20 @@
 
 namespace Pars\Admin\Setup;
 
-use Pars\Admin\Base\BackofficeBeanConverter;
+use Laminas\I18n\Translator\TranslatorAwareInterface;
+use Niceshops\Bean\Saver\BeanSaverAwareInterface;
+use Pars\Admin\Authentication\AuthenticationController;
+use Pars\Admin\Authentication\SigninLayout;
 use Pars\Admin\Base\BaseController;
+use Pars\Admin\Base\MainNavigation;
+use Pars\Component\Base\Layout\DashboardLayout;
+use Pars\Component\Base\View\BaseView;
+use Pars\Core\Database\DatabaseBeanSaver;
+use Pars\Core\Database\DatabaseMiddleware;
+use Pars\Helper\Path\PathHelper;
 use Pars\Model\Authentication\User\UserBean;
-use Pars\Model\Database\DatabaseMiddleware;
-use Pars\Mvc\Helper\PathHelper;
-use Pars\Helper\Parameter\RedirectParameter;
-use Pars\Mvc\View\Components\Edit\Edit;
-use Pars\Mvc\View\Components\Edit\Fields\Text;
+use Pars\Mvc\View\ViewBeanConverter;
+
 
 /**
  * Class SetupController
@@ -19,8 +25,9 @@ class SetupController extends BaseController
 {
     protected function initView()
     {
-        parent::initView();
-        $this->getView()->setLayout('layout/default');
+        $this->setView(new BaseView());
+        $layout = new SigninLayout();
+        $this->getView()->setLayout($layout);
     }
 
     public function init()
@@ -32,11 +39,11 @@ class SetupController extends BaseController
 
     protected function initModel()
     {
-        $this->getModel()->setBeanConverter(new BackofficeBeanConverter());
-
+        $this->getModel()->setBeanConverter(new ViewBeanConverter());
         $this->getModel()
             ->setDbAdapter($this->getControllerRequest()->getServerRequest()->getAttribute(DatabaseMiddleware::ADAPTER_ATTRIBUTE));
         $this->getModel()->initialize();
+        $this->getModel()->setTranslator($this->getTranslator());
         $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->getModel()->getDbAdpater());
         $tableNames = $metadata->getTableNames($this->getModel()->getDbAdpater()->getCurrentSchema());
         if (in_array('Person', $tableNames) && in_array('User', $tableNames)) {
@@ -48,6 +55,12 @@ class SetupController extends BaseController
             $this->getControllerResponse()->setRedirect($this->getRedirectPath()->getPath());
         } else {
             $this->getModel()->addOption(SetupModel::OPTION_CREATE_ALLOWED);
+        }
+        if ($this->getModel()->hasBeanProcessor()) {
+            $processor = $this->getModel()->getBeanProcessor();
+            if ($processor instanceof TranslatorAwareInterface) {
+                $processor->setTranslator($this->getTranslator());
+            }
         }
     }
 
@@ -61,49 +74,16 @@ class SetupController extends BaseController
 
     public function indexAction()
     {
-        $this->getView()->setHeading($this->translate('setup.title'));
-        $this->getView()->setHeading($this->translate('create.title'));
-        $edit = new Edit();
-        $this->addEditFields($edit);
-        $edit->addSubmitCreate(
-            $this->translate('create.submit'),
-            (new RedirectParameter())->setLink($this->getRedirectPath()->getPath())
-        );
-        $edit->addCancel($this->getRedirectPath()->getPath(), $this->translate('create.cancel'), true);
-        $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
-        $this->getView()->append($edit);
-        $bean = $this->getModel()->getEmptyBean();
-        $edit->setBean($bean);
-        $bean->setData('User_Password', '');
-        foreach ($edit->getFieldList() as $item) {
-            $bean->setData($item->getKey(), $this->getControllerRequest()->getAttribute($item->getKey(), true));
-        }
+        $setup = new Setup($this->getPathHelper(), $this->getTranslator(), new UserBean());
+        $setup->setCreate(true);
+        $this->getView()->append($setup);
+        $setup->setBean($this->getModel()->getEmptyBean());
+        $setup->getBean()->set('Locale_Code', 'de_AT');
+        $setup->getBean()->set('UserState_Code', 'active');
+        $setup->setToken($this->generateToken('submit_token'));
+        $this->getModel()->getBeanConverter()
+            ->convert($setup->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
+        $setup->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
     }
 
-    protected function addEditFields(Edit $edit): void
-    {
-        $edit->setCols(2);
-        $edit->addText('Person_Firstname', $this->translate('person.firstname'))
-            ->setChapter($this->translate('user.edit.personaldata'))
-            ->setAutocomplete(Text::AUTOCOMPLETE_GIVEN_NAME)
-            ->setAppendToColumnPrevious(true);
-        $edit->addText('Person_Lastname', $this->translate('person.lastname'))
-            ->setChapter($this->translate('user.edit.personaldata'))
-            ->setAutocomplete(Text::AUTOCOMPLETE_FAMILY_NAME)
-            ->setAppendToColumnPrevious(true);
-        $edit->addText('User_Displayname', $this->translate('user.displayname'))
-            ->setChapter($this->translate('user.edit.personaldata'))
-            ->setAutocomplete(Text::AUTOCOMPLETE_NICKNAME)
-            ->setAppendToColumnPrevious(true);
-        $edit->addText('User_Username', $this->translate('user.username'))
-            ->setChapter($this->translate('user.edit.signindata'))
-            ->setAutocomplete(Text::AUTOCOMPLETE_USERNAME);
-        $edit->addText('User_Password', $this->translate('user.password'))
-            ->setType(Text::TYPE_PASSWORD)
-            ->setChapter($this->translate('user.edit.signindata'))
-            ->setAutocomplete(Text::AUTOCOMPLETE_NEW_PASSWORD)
-            ->setAppendToColumnPrevious(true);
-        $edit->addSubmitAttribute('UserState_Code', UserBean::STATE_ACTIVE)
-            ->setAppendToColumnPrevious(true);
-    }
 }

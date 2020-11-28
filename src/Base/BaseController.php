@@ -3,10 +3,12 @@
 namespace Pars\Admin\Base;
 
 use Laminas\I18n\Translator\TranslatorAwareInterface;
+use Niceshops\Bean\Saver\BeanSaverAwareInterface;
 use Pars\Component\Base\Alert\Alert;
 use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Layout\DashboardLayout;
 use Pars\Component\Base\View\BaseView;
+use Pars\Core\Database\DatabaseBeanSaver;
 use Pars\Core\Database\DatabaseMiddleware;
 use Pars\Core\Logging\LoggingMiddleware;
 use Pars\Core\Translation\TranslatorMiddleware;
@@ -67,6 +69,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             $this->getModel()->addOption(BaseModel::OPTION_DELETE_ALLOWED);
         }
     }
+
 
     /**
      * @return TranslatorInterface
@@ -222,164 +225,11 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $layout = new DashboardLayout();
         $layout->setNavigation(new MainNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean()));
         $this->getView()->setLayout($layout);
-
-       /* $this->setView(new View('layout/dashboard'));
-        $this->getView()->setTitle('Backoffice');
-        $this->getView()->setData('favicon', '/backoffice.ico');
-        $this->getView()->setBeanConverter(new BackofficeBeanConverter());
-        $this->getView()->setPermissionList($this->getUser()->getPermission_List());
-
-        $navigation = new Navigation($this->translate('navigation.content'));
-        $navigation->setId('main');
-        $navigation->setPermissionList($this->getUser()->getPermission_List());
-        $i = 0;
-        $element = new Element(
-            $this->translate('navigation.content.cmsmenu'),
-            $this->getPathHelper()
-                ->setController('cmsmenu')
-                ->setAction('index')
-                ->addParameter((new NavParameter())->setId($navigation->getId())->setIndex($i))
-                ->getPath()
-        );
-        $element->setIndex($i++);
-        $element->setPermission('cmsmenu');
-        $navigation->addElement($element);
-
-        $element = new Element(
-            $this->translate('navigation.content.cmspage'),
-            $this->getPathHelper()
-                ->setController('CmsPage')
-                ->setAction('index')
-                ->addParameter((new NavParameter())->setId($navigation->getId())->setIndex($i))
-                ->getPath()
-        );
-        $element->setIndex($i++);
-        $element->setPermission('cmspage');
-        $navigation->addElement($element);
-
-        $element = new Element(
-            $this->translate('navigation.content.cmsparagraph'),
-            $this->getPathHelper()
-                ->setController('cmsparagraph')
-                ->setAction('index')
-                ->addParameter((new NavParameter())->setId($navigation->getId())->setIndex($i))
-                ->getPath()
-        );
-        $element->setIndex($i++);
-        $element->setPermission('cmsparagraph');
-        $navigation->addElement($element);
-
-
-        $this->getView()->addNavigation($navigation);
-
-        $navigation = new Navigation($this->translate('navigation.media'));
-        $navigation->setId('main');
-        $navigation->setPermissionList($this->getUser()->getPermission_List());
-
-        $element = new Element(
-            $this->translate('navigation.file.file'),
-            $this->getPathHelper()
-                ->setController('file')
-                ->setAction('index')
-                ->addParameter((new NavParameter())->setId($navigation->getId())->setIndex($i))
-                ->getPath()
-        );
-        $element->setIndex($i++);
-        $element->setPermission('file');
-        $navigation->addElement($element);
-
-        $element = new Element(
-            $this->translate('navigation.file.directory'),
-            $this->getPathHelper()
-                ->setController('filedirectory')
-                ->setAction('index')
-                ->addParameter((new NavParameter())->setId($navigation->getId())->setIndex($i))
-                ->getPath()
-        );
-        $element->setIndex($i++);
-        $element->setPermission('filedirectory');
-        $navigation->addElement($element);
-
-        $this->getView()->addNavigation($navigation);
-
-        $navigation = new Navigation($this->translate('navigation.system'));
-        $navigation->setId('main');
-        $navigation->setPermissionList($this->getUser()->getPermission_List());
-
-        $element = new Element(
-            $this->translate('navigation.system.translation'),
-            $this->getPathHelper()
-                ->setController('translation')
-                ->setAction('index')
-                ->addParameter((new NavParameter())->setId($navigation->getId())->setIndex($i))
-                ->getPath()
-        );
-        $element->setIndex($i++);
-        $element->setPermission('translation');
-        $navigation->addElement($element);
-
-
-        $element = new Element(
-            $this->translate('navigation.system.locale'),
-            $this->getPathHelper()
-                ->setController('locale')
-                ->setAction('index')
-                ->addParameter((new NavParameter())->setId($navigation->getId())->setIndex($i))
-                ->getPath()
-        );
-        $element->setIndex($i++);
-        $element->setPermission('locale');
-        $navigation->addElement($element);
-
-        $element = new Element(
-            $this->translate('navigation.system.user'),
-            $this->getPathHelper()
-                ->setController('user')
-                ->setAction('index')
-                ->addParameter((new NavParameter())->setId($navigation->getId())->setIndex($i))
-                ->getPath()
-        );
-        $element->setPermission('user');
-        $navigation->addElement($element);
-        $element = new Element(
-            $this->translate('navigation.system.role'),
-            $this->getPathHelper()
-                ->setController('role')
-                ->setAction('index')
-                ->addParameter((new NavParameter())->setId($navigation->getId())->setIndex($i))
-                ->getPath()
-        );
-        $element->setIndex($i++);
-        $element->setPermission('role');
-        $navigation->addElement($element);
-
-
-        $element = new Element(
-            $this->translate('navigation.system.update'),
-            $this->getPathHelper()
-                ->setController('update')
-                ->setAction('index')
-                ->getPath()
-        );
-        $element->setPermission('update');
-        #   $navigation->addElement($element);
-
-        $this->getView()->addNavigation($navigation);
-
-        $navigation = new Navigation($this->translate('navigation.account'), Navigation::POSITION_HEADER);
-        $navigation->setId('account');
-        $navigation->setPermissionList($this->getUser()->getPermission_List());
-        $element = new Element(
-            $this->translate('navigation.account.logout'),
-            $this->getPathHelper()
-                ->setController('auth')
-                ->setAction('logout')
-                ->getPath()
-        );
-        $navigation->addElement($element);
-        $this->getView()->addNavigation($navigation);
-
-        $this->getView()->setToolbar(new Toolbar());*/
+        $this->getView()->set('Current_Person_ID', $this->getUserBean()->Person_ID);
+        $this->getView()->set('Current_User_Username', $this->getUserBean()->User_Username);
+        $this->getView()->set('Current_User_Displayname', $this->getUserBean()->User_Displayname);
+        $this->getView()->set('Current_Person_Firstname', $this->getUserBean()->Person_Firstname);
+        $this->getView()->set('Current_Person_Lastname', $this->getUserBean()->Person_Lastname);
     }
 
     /**
@@ -399,6 +249,12 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             if ($processor instanceof TranslatorAwareInterface) {
                 $processor->setTranslator($this->getTranslator());
             }
+            if ($processor instanceof BeanSaverAwareInterface) {
+                $saver = $processor->getBeanSaver();
+                if ($saver instanceof DatabaseBeanSaver) {
+                    $saver->setPersonId($this->getUserBean()->Person_ID);
+                }
+            }
         }
     }
 
@@ -414,10 +270,12 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $validationHelper->addErrorFieldMap($this->getValidationErrorMap());
         if (count($validationHelper->getErrorList('Permission'))) {
             $alert = new Alert();
+            $alert->setHeading($validationHelper->getSummary('PermissionDenied'));
             foreach ($validationHelper->getErrorList('Permission') as $item) {
                 $alert->addParagraph($item);
             }
             $this->getView()->prepend($alert);
+            $this->getControllerResponse()->setStatusCode(ControllerResponse::STATUS_PERMISSION_DENIED);
         }
 
         $profiler = $this->getModel()->getDbAdpater()->getProfiler();
@@ -475,7 +333,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
 
     public function unauthorized()
     {
-        $this->setTemplate('error/404');
+        $this->getView()->append(new Alert($this->translate('unauthorized.heading'), $this->translate('unauthorized.text')));
     }
 
     public function clearcacheAction()

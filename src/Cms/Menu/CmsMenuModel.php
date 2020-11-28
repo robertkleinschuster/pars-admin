@@ -30,7 +30,7 @@ class CmsMenuModel extends CrudModel
         $finder = new CmsPageBeanFinder($this->getDbAdpater());
         $finder->setLocale_Code($this->getTranslator()->getLocale());
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->getData('CmsPage_ID')] = $bean->getData('ArticleTranslation_Name');
+            $options[$bean->get('CmsPage_ID')] = $bean->get('ArticleTranslation_Name');
         }
         return $options;
     }
@@ -40,7 +40,7 @@ class CmsMenuModel extends CrudModel
         $options = [];
         $finder = new CmsMenuStateBeanFinder($this->getDbAdpater());
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->getData('CmsMenuState_Code')] = $bean->getData('CmsMenuState_Code');
+            $options[$bean->get('CmsMenuState_Code')] = $this->translate('cmsmenustate.code.' . $bean->get('CmsMenuState_Code'));
         }
         return $options;
     }
@@ -50,7 +50,7 @@ class CmsMenuModel extends CrudModel
         $options = [];
         $finder = new CmsMenuTypeBeanFinder($this->getDbAdpater());
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->getData('CmsMenuType_Code')] = $bean->getData('CmsMenuType_Code');
+            $options[$bean->get('CmsMenuType_Code')] = $this->translate('cmsmenutype.code.'.$bean->get('CmsMenuType_Code'));
         }
         return $options;
     }

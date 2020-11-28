@@ -4,13 +4,20 @@ namespace Pars\Admin\File;
 
 
 use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Admin\Base\BaseDelete;
+use Pars\Admin\Base\BaseDetail;
+use Pars\Admin\Base\BaseEdit;
+use Pars\Admin\Base\BaseOverview;
+use Pars\Admin\Base\ContentNavigation;
 use Pars\Admin\Base\CrudController;
-use Pars\Mvc\Helper\PathHelper;
+use Pars\Admin\Base\MediaNavigation;
 use Pars\Helper\Parameter\IdParameter;
-use Pars\Mvc\View\Components\Detail\Detail;
-use Pars\Mvc\View\Components\Edit\Edit;
-use Pars\Mvc\View\Components\Overview\Overview;
 
+/**
+ * Class FileController
+ * @package Pars\Admin\File
+ * @method FileModel getModel()
+ */
 class FileController extends CrudController
 {
     protected function initModel()
@@ -25,60 +32,38 @@ class FileController extends CrudController
         return $this->checkPermission('file');
     }
 
-
-    protected function getDetailPath(): PathHelper
+    protected function initView()
     {
-        if ($this->getControllerRequest()->getId()->hasAttribute('FileDirectory_ID')) {
-            return $this->getPathHelper()->setController('file')->setId($this->getControllerRequest()->getId()->addId('File_ID'));
-        }
-        return $this->getPathHelper()->setController('file')->setId((new IdParameter())->addId('File_ID'));
-    }
-
-    protected function getCreatePath(): PathHelper
-    {
-        if ($this->getControllerRequest()->getId()->hasAttribute('FileDirectory_ID')) {
-            return parent::getCreatePath()->setController('file')->setId($this->getControllerRequest()->getId());
-        }
-        return parent::getCreatePath();
-    }
-
-    protected function getIndexPath(): PathHelper
-    {
-        if ($this->getControllerRequest()->getId()->hasAttribute('FileDirectory_ID')) {
-            return parent::getIndexPath()->setController('filedirectory')->setAction('detail')->setId($this->getControllerRequest()->getId()->unsetAttribute('File_ID'));
-        }
-        return parent::getIndexPath();
+        parent::initView();
+        $this->getView()->getLayout()->getNavigation()->setActive('media');
+        $subNavigation = new MediaNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation->setActive('file');
+        $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
 
 
-    protected function addOverviewFields(Overview $overview): void
+    protected function createOverview(): BaseOverview
     {
-        $overview->addText('File_Name', $this->translate('file.name'));
-        $overview->addText('FileType_Name', $this->translate('filetype.name'));
-        $overview->addText('FileDirectory_Name', $this->translate('filedirectory.name'));
+        return new FileOverview($this->getPathHelper(), $this->getTranslator(),$this->getUserBean());
     }
 
-    protected function addDetailFields(Detail $detail): void
+    protected function createDetail(): BaseDetail
     {
-        $detail->addText('File_Name', $this->translate('file.name'));
-        $detail->addText('FileType_Name', $this->translate('filetype.name'));
-        $detail->addText('FileDirectory_Name', $this->translate('filedirectory.name'));
+        return new FileDetail($this->getPathHelper(), $this->getTranslator(),$this->getUserBean());
     }
 
-    protected function addEditFields(Edit $edit): void
+    protected function createEdit(): BaseEdit
     {
-        if (!$this->getControllerRequest()->getId()->hasAttribute('File_ID')) {
-            $edit->addSelect('FileType_Code', $this->translate('filetype.name'))
-                ->setSelectOptions($this->getModel()->getFileType_Options());
-        }
-        if (!$this->getControllerRequest()->getId()->hasAttribute('FileDirectory_ID')
-            && !$this->getControllerRequest()->getId()->hasAttribute('File_ID')) {
-            $edit->addSelect('FileDirectory_ID', $this->translate('filedirectory.name'))
-                ->setSelectOptions($this->getModel()->getFileDirectory_Options());
-        }
-        $edit->addText('File_Name', $this->translate('file.name'));
-        $edit->addFile('Upload', $this->translate('file.upload'))->setShow(function (BeanInterface $bean) {
-            return !$bean->hasData('File_ID') || !$bean->hasData('File_Code');
-        });
+        $edit = new FileEdit($this->getPathHelper(), $this->getTranslator(),$this->getUserBean());
+        $edit->setTypeOptions($this->getModel()->getFileType_Options());
+        $edit->setDirectoryOptions($this->getModel()->getFileDirectory_Options());
+        return $edit;
     }
+
+    protected function createDelete(): BaseDelete
+    {
+        return new FileDelete($this->getPathHelper(), $this->getTranslator(),$this->getUserBean());
+    }
+
+
 }

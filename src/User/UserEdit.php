@@ -13,65 +13,42 @@ class UserEdit extends BaseEdit
 
     public ?array $stateOptions = null;
     public ?array $localeOptions = null;
-    public ?string $indexPath = null;
-    public bool $create = false;
+
 
     protected function initialize()
     {
         $this->getForm()->addText('Person_Firstname', '{Person_Firstname}', $this->translate('person.firstname'), 1, 1);
         $this->getForm()->addText('Person_Lastname', '{Person_Lastname}', $this->translate('person.lastname'), 1, 2);
         $this->getForm()->addText('User_Username', '{User_Username}', $this->translate('user.username'), 3, 1);
-        $this->getForm()->addPassword('User_Password', '{User_Password}', $this->translate('user.password'), 3, 2);
+        $this->getForm()->addPassword('User_Password', '', $this->translate('user.password'), 3, 2);
         $this->getForm()->addText('User_Displayname', '{User_Displayname}', $this->translate('user.displayname'), 2, 1);
         if ($this->hasStateOptions()) {
-            $this->getForm()->addSelect('UserState_Code', $this->getStateOptions(), '{UserState_Code}', $this->translate('userstate.code'),2,2);
+            $this->getForm()->addSelect('UserState_Code', $this->getStateOptions(), '{UserState_Code}', $this->translate('userstate.code'),4,2);
         } else {
             $this->getForm()->addHidden('UserState_Code', '{UserState_Code}');
         }
         if ($this->hasLocaleOptions()) {
-            $this->getForm()->addSelect('Locale_Code', $this->getLocaleOptions(), '{Locale_Code}', $this->translate('locale.code'), 2,3);
+            $this->getForm()->addSelect('Locale_Code', $this->getLocaleOptions(), '{Locale_Code}', $this->translate('user.locale'), 4,1);
         } else {
             $this->getForm()->addHidden('Locale_Code', '{Locale_Code}');
-        }
-        if ($this->isCreate()) {
-            $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('edit.submit'), (new SubmitParameter())->setCreate(), null, '', 4,1);
-        } else {
-            $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('edit.submit'), (new SubmitParameter())->setSave(), null, '', 4,1);
-        }
-        if ($this->hasIndexPath()) {
-            $this->getForm()->addCancel($this->translate('edit.cancel'), $this->getIndexPath(), 4, 2);
-            $this->getForm()->addHidden(RedirectParameter::name(), (new RedirectParameter())->setLink($this->getIndexPath()));
         }
         parent::initialize();
     }
 
-    /**
-    * @return string
-    */
-    public function getIndexPath(): string
+    protected function getRedirectController(): string
     {
-        return $this->indexPath;
+        return 'user';
     }
 
-    /**
-    * @param string $indexPath
-    *
-    * @return $this
-    */
-    public function setIndexPath(string $indexPath): self
+    protected function getRedirectAction(): string
     {
-        $this->indexPath = $indexPath;
-        return $this;
+        return 'detail';
     }
 
-    /**
-    * @return bool
-    */
-    public function hasIndexPath(): bool
+    protected function getRedirectIdFields(): array
     {
-        return isset($this->indexPath);
+        return ['Person_ID'];
     }
-
 
     /**
     * @return array
@@ -127,23 +104,7 @@ class UserEdit extends BaseEdit
         return isset($this->localeOptions);
     }
 
-    /**
-     * @return bool
-     */
-    public function isCreate(): bool
-    {
-        return $this->create;
-    }
 
-    /**
-     * @param bool $create
-     * @return UserEdit
-     */
-    public function setCreate(bool $create): UserEdit
-    {
-        $this->create = $create;
-        return $this;
-    }
 
 
 }

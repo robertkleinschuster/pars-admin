@@ -23,10 +23,15 @@ class SystemNavigation extends BaseNavigation
             'locale'
         )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'locale'));
         $this->addItem(
+            $this->translate('navigation.system.translation'),
+            $this->getPathHelper()->setController('translation')->setAction('index'),
+            'translation'
+        )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'translation'));
+        /*$this->addItem(
             $this->translate('navigation.system.update'),
             $this->getPathHelper()->setController('update')->setAction('index'),
             'update'
-        )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'update'));
+        )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'update'));*/
         $this->setBrand(
             $this->translate('navigation.system'),
             $this->getPathHelper()->setController('user')->setAction('index')

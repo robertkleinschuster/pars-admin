@@ -3,7 +3,12 @@
 namespace Pars\Admin\Locale;
 
 use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Admin\Base\BaseDelete;
+use Pars\Admin\Base\BaseDetail;
+use Pars\Admin\Base\BaseEdit;
+use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\CrudController;
+use Pars\Admin\Base\SystemNavigation;
 use Pars\Mvc\Helper\PathHelper;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\MoveParameter;
@@ -26,9 +31,38 @@ class LocaleController extends CrudController
         return $this->checkPermission('locale');
     }
 
-    protected function getDetailPath(): PathHelper
+    protected function initView()
     {
-        return $this->getPathHelper()->setId((new IdParameter())->addId('Locale_Code'));
+        parent::initView();
+        $this->getView()->getLayout()->getNavigation()->setActive('system');
+        $subNavigation = new SystemNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation->setActive('locale');
+        $this->getView()->getLayout()->setSubNavigation($subNavigation);
+    }
+
+
+    protected function createOverview(): BaseOverview
+    {
+        $overview = new LocaleOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        return $overview;
+    }
+
+    protected function createDetail(): BaseDetail
+    {
+        $detail = new LocaleDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        return $detail;
+    }
+
+    protected function createEdit(): BaseEdit
+    {
+        $edit = new LocaleEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        return $edit;
+    }
+
+    protected function createDelete(): BaseDelete
+    {
+        $delete = new LocaleDelete($this->getPathHelper(), $this->getTranslator(),$this->getUserBean());
+        return $delete;
     }
 
 
@@ -36,12 +70,12 @@ class LocaleController extends CrudController
     {
         $redirectPath = $this->getPathHelper()->getPath();
         $overview->addMoveUpIcon($this->getDetailPath()->addParameter((new MoveParameter())->setUp('Locale_Order')->setSteps(-1))
-            ->addParameter((new RedirectParameter())->setLink($redirectPath))->getPath())
+            ->addParameter((new RedirectParameter())->setPath($redirectPath))->getPath())
             ->setShow(function (BeanInterface $bean) {
                 return $bean->hasData('Locale_Order') && $bean->getData('Locale_Order') > 1;
             });
         $overview->addMoveDownIcon($this->getDetailPath()->addParameter((new MoveParameter())->setDown('Locale_Order')->setSteps(1))
-            ->addParameter((new RedirectParameter())->setLink($redirectPath))->getPath())
+            ->addParameter((new RedirectParameter())->setPath($redirectPath))->getPath())
             ->setShow(function (BeanInterface $bean) {
                 return $bean->hasData('Locale_Order') && $bean->getData('Locale_Order') < $this->getModel()->getBeanFinder()->count();
             });

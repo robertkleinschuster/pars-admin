@@ -2,7 +2,9 @@
 
 namespace Pars\Admin\Setup;
 
-use Pars\Admin\Base\BackofficeBeanConverter;
+use Pars\Core\Database\Updater\DataUpdater;
+use Pars\Core\Database\Updater\SchemaUpdater;
+use Pars\Model\Authentication\User\UserBeanList;
 use Pars\Model\Authorization\Permission\PermissionBeanFinder;
 use Pars\Model\Authorization\Role\RoleBeanFinder;
 use Pars\Model\Authorization\Role\RoleBeanProcessor;
@@ -26,66 +28,77 @@ class SetupModel extends \Pars\Admin\Base\BaseModel
 
     protected function create(IdParameter $idParameter, array $attributes): void
     {
-        $schemaUpdater = new \Pars\Model\Database\Updater\SchemaUpdater($this->getDbAdpater());
+
+        $schemaUpdater = new SchemaUpdater($this->getDbAdpater());
         $methods = [];
         foreach ($schemaUpdater->getUpdateMethodList() as $method) {
             $methods[$method] = true;
         }
         $result = $schemaUpdater->execute($methods);
 
-        $dataUpdater = new \Pars\Model\Database\Updater\DataUpdater($this->getDbAdpater());
+        $dataUpdater = new DataUpdater($this->getDbAdpater());
         $methods = [];
         foreach ($dataUpdater->getUpdateMethodList() as $method) {
             $methods[$method] = true;
         }
         $result = $dataUpdater->execute($methods);
 
-
+        $this->getDbAdpater()->getDriver()->getConnection()->beginTransaction();
         parent::create($idParameter, $attributes);
-
         if ($this->getBeanFinder()->count() == 1) {
-            $user = $this->getBeanFinder()->getBean();
+            try {
+                $user = $this->getBeanFinder()->getBean();
+                $roleFinder = new RoleBeanFinder($this->getDbAdpater());
+                $role = $roleFinder->getBeanFactory()->getEmptyBean([]);
+                $role->set('UserRole_Code', 'admin');
+                $role->set('UserRole_Name', 'Administrator');
+                $roleList = $roleFinder->getBeanFactory()->getEmptyBeanList();
+                $roleList->push($role);
 
-            $roleFinder = new RoleBeanFinder($this->getDbAdpater());
-            $role = $roleFinder->getBeanFactory()->getEmptyBean([]);
-            $role->setData('UserRole_Code', 'admin');
-            $roleList = $roleFinder->getBeanFactory()->getEmptyBeanList();
-            $roleList->addBean($role);
+                $roleProcessor = new RoleBeanProcessor($this->getDbAdpater());
+                $roleProcessor->setBeanList($roleList);
+                $roleProcessor->save();
 
-            $roleProcessor = new RoleBeanProcessor($this->getDbAdpater());
-            $roleProcessor->setBeanList($roleList);
-            $roleProcessor->save();
+                if ($roleFinder->count() == 1) {
+                    $role = $roleFinder->getBean();
+                    $permissionFinder = new PermissionBeanFinder($this->getDbAdpater());
+                    $permissionBeanList = $permissionFinder->getBeanList();
 
-            if ($roleFinder->count() == 1) {
-                $role = $roleFinder->getBean();
-                $permissionFinder = new PermissionBeanFinder($this->getDbAdpater());
-                $permissionBeanList = $permissionFinder->getBeanList();
+                    $rolePermissionFinder = new RolePermissionBeanFinder($this->getDbAdpater());
+                    $rolePermissionBeanList = $rolePermissionFinder->getBeanFactory()->getEmptyBeanList();
 
-                $rolePermissionFinder = new RolePermissionBeanFinder($this->getDbAdpater());
-                $rolePermissionBeanList = $rolePermissionFinder->getBeanFactory()->getEmptyBeanList();
+                    foreach ($permissionBeanList as $permission) {
+                        $rolePermission = $rolePermissionFinder->getBeanFactory()->getEmptyBean([]);
+                        $rolePermission->set('UserRole_ID', $role->get('UserRole_ID'));
+                        $rolePermission->set('UserPermission_Code', $permission->get('UserPermission_Code'));
+                        $rolePermissionBeanList->push($rolePermission);
+                    }
 
-                foreach ($permissionBeanList as $permission) {
-                    $rolePermission = $rolePermissionFinder->getBeanFactory()->getEmptyBean([]);
-                    $rolePermission->setData('UserRole_ID', $role->getData('UserRole_ID'));
-                    $rolePermission->setData('UserPermission_Code', $permission->getData('UserPermission_Code'));
-                    $rolePermissionBeanList->addBean($rolePermission);
+                    $rolePermissionProcessor = new RolePermissionBeanProcessor($this->getDbAdpater());
+                    $rolePermissionProcessor->setBeanList($rolePermissionBeanList);
+                    $rolePermissionProcessor->save();
+
+                    $userRoleFinder = new UserRoleBeanFinder($this->getDbAdpater());
+                    $userRole = $userRoleFinder->getBeanFactory()->getEmptyBean([]);
+                    $userRoleList = $userRoleFinder->getBeanFactory()->getEmptyBeanList();
+                    $userRole->set('Person_ID', $user->get('Person_ID'));
+                    $userRole->set('UserRole_ID', $role->get('UserRole_ID'));
+                    $userRoleList->push($userRole);
+
+                    $userRoleProcessor = new UserRoleBeanProcessor($this->getDbAdpater());
+                    $userRoleProcessor->setBeanList($userRoleList);
+                    $userRoleProcessor->save();
+                    $this->getDbAdpater()->getDriver()->getConnection()->commit();
+                } else {
+                    $this->getDbAdpater()->getDriver()->getConnection()->rollback();
                 }
-
-                $rolePermissionProcessor = new RolePermissionBeanProcessor($this->getDbAdpater());
-                $rolePermissionProcessor->setBeanList($rolePermissionBeanList);
-                $rolePermissionProcessor->save();
-
-                $userRoleFinder = new UserRoleBeanFinder($this->getDbAdpater());
-                $userRole = $userRoleFinder->getBeanFactory()->getEmptyBean([]);
-                $userRoleList = $userRoleFinder->getBeanFactory()->getEmptyBeanList();
-                $userRole->setData('Person_ID', $user->getData('Person_ID'));
-                $userRole->setData('UserRole_ID', $role->getData('UserRole_ID'));
-                $userRoleList->addBean($userRole);
-
-                $userRoleProcessor = new UserRoleBeanProcessor($this->getDbAdpater());
-                $userRoleProcessor->setBeanList($userRoleList);
-                $userRoleProcessor->save();
+            } catch (\Throwable $exception) {
+                $this->getDbAdpater()->getDriver()->getConnection()->rollback();
+                $this->getValidationHelper()->addError('error', $exception->getMessage());
+                $this->getValidationHelper()->addError('errorDetails', $exception->getTraceAsString());
             }
+        } else {
+            $this->getDbAdpater()->getDriver()->getConnection()->rollback();
         }
     }
 }

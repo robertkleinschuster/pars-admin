@@ -26,7 +26,7 @@ class TranslationModel extends CrudModel
         $finder = new LocaleBeanFinder($this->getDbAdpater());
         $finder->setLocale_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->getData('Locale_Code')] = $bean->getData('Locale_Name');
+            $options[$bean->get('Locale_Code')] = $bean->get('Locale_Name');
         }
         return $options;
     }
@@ -37,9 +37,9 @@ class TranslationModel extends CrudModel
      * @param array $attribute_List
      * @throws \Niceshops\Core\Exception\AttributeNotFoundException
      */
-    public function submit(SubmitParameter $submitParameter, IdParameter $idParameter, array $attribute_List)
+    public function handleSubmit(SubmitParameter $submitParameter, IdParameter $idParameter, array $attribute_List)
     {
-        parent::submit($submitParameter, $idParameter, $attribute_List);
+        parent::handleSubmit($submitParameter, $idParameter, $attribute_List);
         $this->getTranslator()->clearCache($attributes['Translation_Namespace'] ?? 'default', $attributes['Locale_Code'] ?? $this->getTranslator()->getLocale());
     }
 }

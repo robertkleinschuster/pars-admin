@@ -24,7 +24,7 @@ class FileModel extends CrudModel
 
         $beanList = $finder->getBeanList();
         foreach ($beanList as $bean) {
-            $options[$bean->getData('FileType_Code')] = $bean->getData('FileType_Name');
+            $options[$bean->get('FileType_Code')] = $bean->get('FileType_Name');
         }
         return $options;
     }
@@ -37,7 +37,7 @@ class FileModel extends CrudModel
 
         $beanList = $finder->getBeanList();
         foreach ($beanList as $bean) {
-            $options[$bean->getData('FileDirectory_ID')] = $bean->getData('FileDirectory_Name');
+            $options[$bean->get('FileDirectory_ID')] = $bean->get('FileDirectory_Name');
         }
         return $options;
     }

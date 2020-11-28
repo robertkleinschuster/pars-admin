@@ -72,9 +72,9 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // - route-based validation
     // - etc.
     $app->pipe(\Pars\Core\Database\DatabaseMiddleware::class);
+    $app->pipe(\Pars\Core\Authentication\AuthenticationMiddleware::class);
     $app->pipe(\Pars\Core\Localization\LocalizationMiddleware::class);
     $app->pipe(\Pars\Core\Translation\TranslatorMiddleware::class);
-    $app->pipe(\Pars\Core\Authentication\AuthenticationMiddleware::class);
 
     // Register the dispatch middleware in the middleware pipeline
     $app->pipe(DispatchMiddleware::class);

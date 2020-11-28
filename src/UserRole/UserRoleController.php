@@ -3,9 +3,12 @@
 namespace Pars\Admin\UserRole;
 
 
+use Pars\Admin\Base\BaseDelete;
+use Pars\Admin\Base\BaseDetail;
+use Pars\Admin\Base\BaseEdit;
+use Pars\Admin\Base\BaseOverview;
+use Pars\Admin\Base\SystemNavigation;
 use Pars\Admin\Role\RoleController;
-use Pars\Mvc\Helper\PathHelper;
-use Pars\Mvc\View\Components\Edit\Edit;
 
 class UserRoleController extends RoleController
 {
@@ -19,32 +22,46 @@ class UserRoleController extends RoleController
     {
         return $this->checkPermission('userrole');
     }
-
-
-    protected function addEditFields(Edit $edit): void
+    protected function initView()
     {
-        $edit->addSelect('UserRole_ID', 'Rolle')
-            ->setSelectOptions($this->getModel()->getRoleList($this->getUserBean()->getPermission_List(), $this->getControllerRequest()->getId()));
+        parent::initView();
+        $this->getView()->getLayout()->getNavigation()->setActive('system');
+        $subNavigation = new SystemNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation->setActive('user');
+        $this->getView()->getLayout()->setSubNavigation($subNavigation);
+        $this->getView()->set('Person_ID', (int) $this->getControllerRequest()->getId()->getAttribute('Person_ID'));
     }
 
-    protected function getCreatePath(): PathHelper
+    public function indexAction()
     {
-        return parent::getCreatePath()->setId($this->getControllerRequest()->getId());
+        parent::indexAction();
     }
 
 
-    protected function getDetailPath(): PathHelper
+    protected function createOverview(): BaseOverview
     {
-        return $this->getPathHelper()->setController('userrole')->setId($this->getControllerRequest()->getId()->addId('UserRole_ID'));
+        $overview = new UserRoleOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $overview->setShowEdit(false);
+        return $overview;
     }
 
-    protected function getIndexPath(): PathHelper
+    protected function createDetail(): BaseDetail
     {
-        return parent::getIndexPath()->setController('user')->setAction('detail')->setId($this->getControllerRequest()->getId()->unsetAttribute('UserRole_ID'));
+        $detail = new UserRoleDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        return $detail;
     }
 
-    protected function getRoleDetailRedirectPath(): PathHelper
+
+    protected function createEdit(): BaseEdit
     {
-        return $this->getPathHelper()->setController('user')->setAction('detail');
+        $edit = new UserRoleEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit->setRoleBeanList($this->getModel()->getRoleBeanList($this->getUserBean()->getPermissions(), $this->getControllerRequest()->getId()));
+        return $edit;
+    }
+
+    protected function createDelete(): BaseDelete
+    {
+        $delete = new UserRoleDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        return $delete;
     }
 }

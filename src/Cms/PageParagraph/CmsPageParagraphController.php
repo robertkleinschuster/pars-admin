@@ -2,44 +2,69 @@
 
 namespace Pars\Admin\Cms\PageParagraph;
 
+use Pars\Admin\Article\ArticleController;
+use Pars\Admin\Base\BaseDelete;
+use Pars\Admin\Base\BaseDetail;
+use Pars\Admin\Base\BaseEdit;
+use Pars\Admin\Base\BaseOverview;
+use Pars\Admin\Base\ContentNavigation;
 use Pars\Admin\Base\CrudController;
-use Pars\Mvc\View\Components\Detail\Detail;
-use Pars\Mvc\View\Components\Edit\Edit;
-use Pars\Mvc\View\Components\Overview\Overview;
+use Pars\Admin\Cms\Paragraph\CmsParagraphController;
 
-class CmsPageParagraphController extends CrudController
+/**
+ * Class CmsPageParagraphController
+ * @package Pars\Admin\Cms\PageParagraph
+ * @method CmsPageParagraphModel getModel()
+ */
+class CmsPageParagraphController extends CmsParagraphController
 {
     protected function initModel()
     {
         parent::initModel();
-        $this->setPermissions('CmsPageparagraph.create', 'CmsPageparagraph.edit', 'CmsPageparagraph.delete');
+        $this->setPermissions('cmspageparagraph.create', 'cmspageparagraph.edit', 'cmspageparagraph.delete');
     }
 
     public function isAuthorized(): bool
     {
-        return $this->checkPermission('CmsPageparagraph');
+        return $this->checkPermission('cmspageparagraph');
     }
 
-
-    protected function addEditFields(Edit $edit): void
+    protected function initView()
     {
-        $edit->addSelect('CmsParagraph_ID', $this->translate('cmsparagraph.name'))
-        ->setSelectOptions($this->getModel()->getParagraph_Options());
+        parent::initView();
+        $this->getView()->getLayout()->getNavigation()->setActive('content');
+        $subNavigation = new ContentNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation->setActive('cmspage');
+        $this->getView()->getLayout()->setSubNavigation($subNavigation);
+        if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute('CmsPage_ID')) {
+            $this->getView()->set('CmsPage_ID', (int) $this->getControllerRequest()->getId()->getAttribute('CmsPage_ID'));
+        }
     }
 
-    protected function addOverviewFields(Overview $overview): void
+    protected function createOverview(): BaseOverview
     {
-        // TODO: Implement addOverviewFields() method.
+        $overview = new CmsPageParagraphOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        return $overview;
     }
 
-    protected function addDetailFields(Detail $detail): void
+    protected function createDetail(): BaseDetail
     {
-        // TODO: Implement addDetailFields() method.
+        $detail = new CmsPageParagraphDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        return $detail;
     }
 
-
-    protected function getSiteRedirectPath()
+    protected function createEdit(): BaseEdit
     {
-        return $this->getPathHelper()->setController('CmsPage')->setAction('detail')->setViewIdMap($this->getControllerRequest()->getViewIdMap());
+        $edit = new CmsPageParagraphEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit->setParagraphOptions($this->getModel()->getParagraph_Options());
+        return $edit;
     }
+
+    protected function createDelete(): BaseDelete
+    {
+        $delete = new CmsPageParagraphDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        return $delete;
+    }
+
+
 }

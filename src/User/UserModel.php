@@ -33,7 +33,7 @@ class UserModel extends CrudModel
         $finder = new UserStateBeanFinder($this->getDbAdpater());
 
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->get('UserState_Code')] = $bean->get('UserState_Code');
+            $options[$bean->get('UserState_Code')] = $this->translate('userstate.code.' .  $bean->get('UserState_Code'));
         }
         return $options;
     }

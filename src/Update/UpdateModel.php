@@ -2,9 +2,10 @@
 
 namespace Pars\Admin\Update;
 
-use Pars\Model\Database\Updater\DataUpdater;
-use Pars\Model\Database\Updater\SchemaUpdater;
+
 use Pars\Admin\Base\BaseModel;
+use Pars\Core\Database\Updater\DataUpdater;
+use Pars\Core\Database\Updater\SchemaUpdater;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 
@@ -36,7 +37,6 @@ class UpdateModel extends BaseModel
         switch ($submitParameter->getMode()) {
             case 'schema':
                 if ($this->hasOption(self::OPTION_SCHEMA_ALLOWED)) {
-
                     $schemaUpdater = new SchemaUpdater($this->getDbAdpater());
                     $schemaUpdater->execute($attribute_List);
                     $this->getValidationHelper()->addErrorFieldMap($schemaUpdater->getValidationHelper()->getErrorFieldMap());

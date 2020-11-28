@@ -8,6 +8,7 @@ return [
     'user.password.empty' => 'Das Passwort darf nicht leer sein!',
     'user.password.min_length' => 'Das Passwort muss länger als 5 Zeichen sein!',
     'userstate.code.lock_self' => 'Aktuell angemeldeter Benutzer kann nicht gesperrt werden!',
+    'user.delete.self' => 'Aktuell angemeldeter Benutzer kann nicht gelöscht werden!',
     'person.firstname.empty' => 'Der Vorname darf nicht leer sein!',
     'person.lastname.empty' => 'Der Nachname darf nicht leer sein!',
     'article.code.empty' => 'Der Code darf nicht leer sein!',

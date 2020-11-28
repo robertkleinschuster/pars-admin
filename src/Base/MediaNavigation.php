@@ -15,13 +15,13 @@ class MediaNavigation extends BaseNavigation
         $this->addItem(
             $this->translate('navigation.media.file')
             , $this->getPathHelper()->setController('file')->setAction('index'),
-            'cmsmenu')
-            ->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'cmsmenu'));
+            'file')
+            ->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'file'));
         $this->addItem(
             $this->translate('navigation.media.directory')
-            , $this->getPathHelper()->setController('directory')->setAction('index'),
-            'cmspage')
-            ->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'cmspage'));
+            , $this->getPathHelper()->setController('filedirectory')->setAction('index'),
+            'filedirectory')
+            ->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'filedirectory'));
         $this->setBrand(
             $this->translate('navigation.media'),
             $this->getPathHelper()->setController('file')->setAction('index')

@@ -2,8 +2,13 @@
 
 namespace Pars\Admin\User;
 
+use Pars\Admin\Base\BaseDelete;
+use Pars\Admin\Base\BaseDetail;
+use Pars\Admin\Base\BaseEdit;
+use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\SystemNavigation;
+use Pars\Component\Base\Edit\Edit;
 
 
 /**
@@ -36,47 +41,48 @@ class UserController extends CrudController
         return $this->checkPermission('user');
     }
 
-    public function indexAction()
+    protected function createOverview(): BaseOverview
     {
-        $overview = new UserOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-
-        $overview->setBeanList($this->getModel()->getBeanList());
-        $this->getView()->append($overview);
+        $overview =  new UserOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $overview->setCreatePath($this->getPathHelper()->setController('user')->setAction('create'));
+        return $overview;
     }
 
     public function detailAction()
     {
-      $detail = new UserDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-      $detail->setBean($this->getModel()->getBean());
-      $this->getView()->append($detail);
+        parent::detailAction();
+        $this->getView()->set('Person_ID', (int) $this->getControllerRequest()->getId()->getAttribute('Person_ID'));
+        $this->addSubController('userrole', 'index');
     }
 
-    public function createAction()
+
+    protected function createDetail(): BaseDetail
     {
-        $edit = new UserEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $edit->setBean($this->getModel()->getEmptyBean($this->getPreviousAttributes()));
-        $edit->getBean()->fromArray($this->getPreviousAttributes());
-        $this->getView()->append($edit);
+        return new UserDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
-    public function editAction()
+
+    protected function createEdit(): BaseEdit
     {
         $edit = new UserEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $edit->setStateOptions($this->getModel()->getUserState_Options());
         $edit->setLocaleOptions($this->getModel()->getLocale_Options());
+        return $edit;
+    }
+
+    public function passwordAction()
+    {
+        $edit = new UserPasswordEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $edit->setBean($this->getModel()->getBean());
-        $edit->getBean()->fromArray($this->getPreviousAttributes());
+        $this->getModel()->getBeanConverter()
+            ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
         $edit->setToken($this->generateToken('submit_token'));
-        $edit->setIndexPath($this->getPathHelper()->setController('user')->setAction('index'));
         $this->getView()->append($edit);
     }
-
-    public function deleteAction()
+    protected function createDelete(): BaseDelete
     {
         $delete = new UserDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $this->getView()->append($delete);
+        return $delete;
     }
-
-
 }

@@ -19,13 +19,13 @@ class ContentNavigation extends BaseNavigation
             'cmspage')
             ->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'cmspage'));
         $this->addItem(
-            $this->translate('navigation.system.cmsparagraph')
+            $this->translate('navigation.content.cmsparagraph')
             , $this->getPathHelper()->setController('cmsparagraph')->setAction('index'),
             'cmsparagraph')
             ->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'cmsparagraph'));
         $this->setBrand(
-            $this->translate('navigation.system'),
-            $this->getPathHelper()->setController('user')->setAction('index')
+            $this->translate('navigation.content'),
+            $this->getPathHelper()->setController('cmsmenu')->setAction('index')
         );
         parent::initialize();
     }

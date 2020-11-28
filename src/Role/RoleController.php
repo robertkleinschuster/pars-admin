@@ -4,13 +4,13 @@ namespace Pars\Admin\Role;
 
 
 use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Admin\Base\BaseDelete;
+use Pars\Admin\Base\BaseDetail;
+use Pars\Admin\Base\BaseEdit;
+use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\CrudController;
-use Pars\Mvc\Helper\PathHelper;
-use Pars\Helper\Parameter\IdParameter;
-use Pars\Mvc\View\Components\Detail\Detail;
-use Pars\Mvc\View\Components\Edit\Edit;
-use Pars\Mvc\View\Components\Overview\Fields\Badge;
-use Pars\Mvc\View\Components\Overview\Overview;
+use Pars\Admin\Base\SystemNavigation;
+
 
 /**
  * Class UserRoleController
@@ -29,37 +29,44 @@ class RoleController extends CrudController
         return $this->checkPermission('role');
     }
 
-    protected function getDetailPath(): PathHelper
+    protected function initView()
     {
-        return $this->getPathHelper()->setId((new IdParameter())->addId('UserRole_ID'));
+        parent::initView();
+        $this->getView()->getLayout()->getNavigation()->setActive('system');
+        $subNavigation = new SystemNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation->setActive('role');
+        $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
 
-    protected function addOverviewFields(Overview $overview): void
+    protected function createOverview(): BaseOverview
     {
-        $overview->addBadge('UserRole_Active', $this->translate('userrole.active'))->setWidth(50)
-        ->setFormat(function (BeanInterface $bean, Badge $badge) {
-            if ($bean->getData('UserRole_Active')) {
-                $badge->setStyle(Badge::STYLE_SUCCESS);
-                return $this->translate('userrole.active.true');
-            } else {
-                $badge->setStyle(Badge::STYLE_DANGER);
-                return $this->translate('userrole.active.false');
-            }
-        });
-        $overview->addText('UserRole_Code', $this->translate('userrole.code'));
+        $overview = new RoleOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        return $overview;
     }
 
-
-    protected function addEditFields(Edit $edit): void
+    protected function createDetail(): BaseDetail
     {
-        $edit->addText('UserRole_Code', $this->translate('userrole.code'));
-        $edit->addCheckbox('UserRole_Active', $this->translate('userrole.active'));
+        $detail = new RoleDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        return $detail;
     }
 
-
-    protected function addDetailFields(Detail $detail): void
+    public function detailAction()
     {
-        $detail->addText('UserRole_Code', $this->translate('userrole.code'));
+        parent::detailAction();
+        $this->getView()->set('UserRole_ID', (int) $this->getControllerRequest()->getId()->getAttribute('UserRole_ID'));
         $this->addSubController('rolepermission', 'index');
     }
+
+    protected function createEdit(): BaseEdit
+    {
+        $edit = new RoleEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        return $edit;
+    }
+
+    protected function createDelete(): BaseDelete
+    {
+        $delete = new RoleDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        return $delete;
+    }
+
 }

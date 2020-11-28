@@ -3,11 +3,12 @@
 namespace Pars\Admin\Cms\PageParagraph;
 
 use Pars\Admin\Base\CrudModel;
+use Pars\Admin\Cms\Paragraph\CmsParagraphModel;
 use Pars\Model\Cms\Paragraph\CmsParagraphBeanFinder;
 use Pars\Model\Cms\PageParagraph\CmsPageParagraphBeanFinder;
 use Pars\Model\Cms\PageParagraph\CmsPageParagraphBeanProcessor;
 
-class CmsPageParagraphModel extends CrudModel
+class CmsPageParagraphModel extends CmsParagraphModel
 {
     public function initialize()
     {
@@ -25,7 +26,7 @@ class CmsPageParagraphModel extends CrudModel
         $finder = new CmsParagraphBeanFinder($this->getDbAdpater());
 
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->getData('CmsParagraph_ID')] = $bean->getData('ArticleTranslation_Name');
+            $options[$bean->get('CmsParagraph_ID')] = $bean->get('ArticleTranslation_Name');
         }
         return $options;
     }

@@ -2,13 +2,16 @@
 
 namespace Pars\Admin\UserRole;
 
-use Pars\Admin\Base\CrudModel;
+use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Admin\Role\RoleModel;
+use Pars\Helper\Parameter\IdParameter;
+use Pars\Model\Authorization\Role\RoleBean;
 use Pars\Model\Authorization\Role\RoleBeanFinder;
+use Pars\Model\Authorization\Role\RoleBeanList;
 use Pars\Model\Authorization\UserRole\UserRoleBeanFinder;
 use Pars\Model\Authorization\UserRole\UserRoleBeanProcessor;
-use Pars\Helper\Parameter\IdParameter;
 
-class UserRoleModel extends CrudModel
+class UserRoleModel extends RoleModel
 {
 
     public function initialize()
@@ -18,32 +21,21 @@ class UserRoleModel extends CrudModel
     }
 
 
-    public function getRoleList(array $userPermissions, IdParameter $idParameter): array
+    public function getRoleBeanList(array $userPermissions, IdParameter $idParameter): RoleBeanList
     {
         $finder = new UserRoleBeanFinder($this->getDbAdpater());
         $finder->getBeanLoader()->initByIdMap($idParameter->getAttribute_List());
-
         $beanList = $finder->getBeanList();
-        $existing = $beanList->getData('UserRole_Code');
+        $existing = $beanList->column('UserRole_Code');
         $finder = new RoleBeanFinder($this->getDbAdpater());
         $finder->setUserRole_Active(true);
-
-        $RoleList = [];
-        foreach ($finder->getBeanListDecorator() as $item) {
-            $id = $item->getData('UserRole_ID');
-            $code = $item->getData('UserRole_Code');
-            $permissions = $item->getData('UserPermission_BeanList')->getData('UserPermission_Code');
-            $allowed = true;
-            foreach ($permissions as $permission) {
-                if (!in_array($permission, $userPermissions)) {
-                    $allowed = false;
-                    break;
-                }
+        return $finder->getBeanListDecorator()->filter(
+            function (BeanInterface $bean) use ($userPermissions, $existing) {
+            if ($bean instanceof RoleBean) {
+                $permissions = $bean->UserPermission_BeanList->column('UserPermission_Code');
+                return empty(array_diff($permissions, $userPermissions))
+                    && !in_array($bean->UserRole_Code, $existing);
             }
-            if (!in_array($code, $existing) && $allowed) {
-                $RoleList[$id] = $code;
-            }
-        }
-        return $RoleList;
+        });
     }
 }
