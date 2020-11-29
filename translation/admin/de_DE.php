@@ -113,6 +113,7 @@ return [
     'articletranslation.title' => 'Titel',
     'articletranslation.heading' => 'Überschrift',
     'articletranslation.subheading' => 'Unterüberschrift',
+    'articletranslation.path' => 'Link',
     'articletranslation.teaser' => 'Vorschau-Text',
     'articletranslation.text' => 'Text',
     'articletranslation.footer' => 'Footer',

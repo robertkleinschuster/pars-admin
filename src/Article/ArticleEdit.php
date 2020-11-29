@@ -28,6 +28,7 @@ abstract class ArticleEdit extends BaseEdit
         $this->getForm()->addText('ArticleTranslation_Title', '{ArticleTranslation_Title}', $this->translate('articletranslation.title'), 4, 2);
         $this->getForm()->addText('ArticleTranslation_Heading', '{ArticleTranslation_Heading}', $this->translate('articletranslation.heading'), 5, 1);
         $this->getForm()->addText('ArticleTranslation_SubHeading', '{ArticleTranslation_SubHeading}', $this->translate('articletranslation.subheading'), 5, 2);
+        $this->getForm()->addUrl('ArticleTranslation_Path', '{ArticleTranslation_Path}', $this->translate('articletranslation.path'), 6, 1);
         $this->getForm()->addWysiwyg('ArticleTranslation_Teaser', '{ArticleTranslation_Teaser}', $this->translate('articletranslation.teaser'), 8, 1);
         $this->getForm()->addWysiwyg('ArticleTranslation_Text', '{ArticleTranslation_Text}', $this->translate('articletranslation.text'), 9, 1);
         $this->getForm()->addWysiwyg('ArticleTranslation_Footer', '{ArticleTranslation_Footer}', $this->translate('articletranslation.footer'), 8, 2);
