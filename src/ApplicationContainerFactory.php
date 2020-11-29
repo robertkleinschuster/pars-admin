@@ -3,11 +3,10 @@ declare(strict_types=1);
 
 namespace Pars\Admin;
 
-use Psr\Container\ContainerInterface;
 
 class ApplicationContainerFactory
 {
-    public function __invoke(ContainerInterface $container)
+    public function __invoke()
     {
         $config = $this->getApplicationConfig();
         $dependencies = $config['dependencies'];
