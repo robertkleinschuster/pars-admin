@@ -12,6 +12,8 @@ class CmsMenuDetail extends BaseDetail
 {
     protected function initialize()
     {
+        $this->setSection($this->translate('section.menu'));
+
         $span = new Badge('{CmsMenuState_Code}');
         $span->setLabel($this->translate('cmsmenustate.code'));
         $span->setFormat(new CmsMenuStateFieldFormat($this->getTranslator()));

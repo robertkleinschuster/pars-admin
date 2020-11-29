@@ -12,6 +12,8 @@ class CmsParagraphDetail extends ArticleDetail
 {
     protected function initialize()
     {
+        $this->setSection($this->translate('section.paragraph'));
+
         $span = new Badge('{CmsParagraphState_Code}');
         $span->setLabel($this->translate('cmsparagraphstate.code'));
         $span->setFormat(new CmsParagraphStateFieldFormat($this->getTranslator()));

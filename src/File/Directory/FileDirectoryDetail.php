@@ -10,6 +10,8 @@ class FileDirectoryDetail extends BaseDetail
 {
     protected function initialize()
     {
+        $this->setSection($this->translate('section.filedirectory'));
+
         $this->setHeadline('{FileDirectory_Name}');
         $this->addField('FileDirectory_Code', $this->translate('filedirectory.code'));
         $this->addField('FileDirectory_Active', $this->translate('filedirectory.active'));

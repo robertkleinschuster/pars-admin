@@ -24,6 +24,9 @@ class UpdateController extends BaseController
         if ($this->checkPermission('update.data')) {
             $this->getModel()->addOption(UpdateModel::OPTION_DATA_ALLOWED);
         }
+        if ($this->checkPermission('update.special')) {
+            $this->getModel()->addOption(UpdateModel::OPTION_DATA_ALLOWED);
+        }
     }
 
     public function isAuthorized(): bool
@@ -46,6 +49,7 @@ class UpdateController extends BaseController
         $this->updateNavigation->setRounded(Navigation::ROUNDED_NONE);
         $this->updateNavigation->addItem($this->translate('update.database.data'), $this->getPathHelper()->setController('update')->setAction('data'), 'data');
         $this->updateNavigation->addItem($this->translate('update.database.schema'), $this->getPathHelper()->setController('update')->setAction('schema'), 'schema');
+        $this->updateNavigation->addItem($this->translate('update.database.special'), $this->getPathHelper()->setController('update')->setAction('special'), 'special');
         $this->getView()->append($this->updateNavigation);
     }
 
@@ -84,20 +88,13 @@ class UpdateController extends BaseController
         $this->getView()->append($update);
     }
 
-    public function initUpdaterTemplate(AbstractUpdater $updater, string $title, string $submitAction)
+    public function specialAction()
     {
-        $previewList = $updater->getPreviewMap();
-        $edit = new Edit($title);
-        $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
-
-        $edit->setCols(1);
-        foreach ($previewList as $key => $item) {
-            $edit->addCheckbox($key, 'Update Methode: ' . $key)
-                ->setValue($key)
-                ->setChecked(true)
-                ->setHint('<pre>' . json_encode($item, JSON_PRETTY_PRINT) . '</pre>');
-        }
-        $edit->addSubmit((new SubmitParameter())->setMode($submitAction), $this->translate('update.submit'));
-        return $edit;
+        $this->updateNavigation->setActive('special');
+        $update = new Update($this->getPathHelper(), $this->getTranslator(), $this->getUserBean(), $this->getModel()->getSpecialUpdater());
+        $update->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
+        $update->setToken($this->generateToken('submit_token'));
+        $this->getView()->append($update);
     }
+
 }

@@ -12,6 +12,8 @@ class CmsPageOverview extends ArticleOverview
 {
     protected function initialize()
     {
+        $this->setSection($this->translate('section.page'));
+
         $span = new Badge('{CmsPageState_Code}');
         $span->setFormat(new CmsPageStateFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {

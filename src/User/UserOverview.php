@@ -17,6 +17,8 @@ class UserOverview extends BaseOverview
 
     protected function initialize()
     {
+        $this->setSection($this->translate('section.user'));
+
         $badge = new Badge('{UserState_Code}');
         $badge->setFormat(new UserStateFieldFormat($this->getTranslator()));
         $this->append($badge);

@@ -20,6 +20,8 @@ class UserDetail extends BaseDetail
 
     protected function initialize()
     {
+        $this->setSection($this->translate('section.user'));
+
 
         parent::initialize();
         $this->setHeadline('{Person_Firstname} {Person_Lastname}');

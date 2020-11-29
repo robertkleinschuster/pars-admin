@@ -14,6 +14,8 @@ class CmsMenuOverview extends BaseOverview
 
     protected function initialize()
     {
+        $this->setSection($this->translate('section.menu'));
+
         $span = new Badge('{CmsMenuState_Code}');
         $span->setFormat(new CmsMenuStateFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {

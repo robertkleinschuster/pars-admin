@@ -11,6 +11,8 @@ class RoleOverview extends BaseOverview
 {
     protected function initialize()
     {
+        $this->setSection($this->translate('section.role'));
+
         $this->addField('UserRole_Name', $this->translate('userrole.name'));
         $this->addField('UserRole_Code', $this->translate('userrole.code'));
         $active = new Badge('{UserRole_Active}');

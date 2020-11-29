@@ -10,6 +10,8 @@ class TranslationOverview extends BaseOverview
 {
     protected function initialize()
     {
+        $this->setSection($this->translate('section.translation'));
+
         $this->addField('Translation_Code', $this->translate('translation.code'));
         $this->addField('Translation_Text', $this->translate('translation.text'));
         $this->addField('Translation_Namespace', $this->translate('translation.namespace'));

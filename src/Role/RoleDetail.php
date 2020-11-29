@@ -11,6 +11,8 @@ class RoleDetail extends BaseDetail
 {
     protected function initialize()
     {
+        $this->setSection($this->translate('section.role'));
+
         $this->setHeadline('{UserRole_Name}');
         $this->addField('UserRole_Code', $this->translate('userrole.code'));
         $active = new Badge('{UserRole_Active}');

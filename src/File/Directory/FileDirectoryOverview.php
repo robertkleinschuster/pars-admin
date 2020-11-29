@@ -10,6 +10,8 @@ class FileDirectoryOverview extends BaseOverview
 {
     protected function initialize()
     {
+        $this->setSection($this->translate('section.filedirectory'));
+
         $this->addField('FileDirectory_Code', $this->translate('filedirectory.code'));
         $this->addField('FileDirectory_Name', $this->translate('filedirectory.name'));
         $this->addField('FileDirectory_Active', $this->translate('filedirectory.active'));
