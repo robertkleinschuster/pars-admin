@@ -14,13 +14,9 @@
     },
     "require": {
         "php": "^7.4",
-        "ext-intl": "*",
-        "ext-json": "*",
         "pars/pars-core": "dev-master",
         "pars/pars-mvc": "dev-master",
         "pars/pars-components": "dev-master",
-        "pars/pars-helpers": "dev-master",
-        "pars/pars-models": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.5 || ^8.1",
