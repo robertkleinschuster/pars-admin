@@ -82,6 +82,7 @@ return [
     'navigation.user' => '{Current_Person_Firstname} {Current_Person_Lastname}',
     'navigation.user.password' => 'Passwort ändern',
     'navigation.user.logout' => 'Abmelden',
+    'navigation.user.clearcache' => 'Cache leeren',
     'permission.detail.denied' => 'Sie verfügen nicht über die erforderliche Berechtigung um diesen Eintrag anzusehen.',
     'permission.edit.denied' => 'Sie verfügen nicht über die erforderliche Berechtigung um diesen Eintrag zu bearbeiten.',
     'permission.create.denied' => 'Sie verfügen nicht über die erforderliche Berechtigung um einen Eintrag zu erstellen.',
