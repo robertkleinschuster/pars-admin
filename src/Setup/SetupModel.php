@@ -42,7 +42,6 @@ class SetupModel extends \Pars\Admin\Base\BaseModel
             $methods[$method] = true;
         }
         $result = $dataUpdater->execute($methods);
-
         $this->getDbAdpater()->getDriver()->getConnection()->beginTransaction();
         parent::create($idParameter, $attributes);
         if ($this->getBeanFinder()->count() == 1) {
@@ -52,6 +51,7 @@ class SetupModel extends \Pars\Admin\Base\BaseModel
                 $role = $roleFinder->getBeanFactory()->getEmptyBean([]);
                 $role->set('UserRole_Code', 'admin');
                 $role->set('UserRole_Name', 'Administrator');
+                $role->set('UserRole_Active', true);
                 $roleList = $roleFinder->getBeanFactory()->getEmptyBeanList();
                 $roleList->push($role);
 
