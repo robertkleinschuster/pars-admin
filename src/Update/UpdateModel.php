@@ -62,13 +62,13 @@ class UpdateModel extends BaseModel
                 }
                 break;
             case 'special':
-          #      if ($this->hasOption(self::OPTION_SPECIAL_ALLOWED)) {
+                if ($this->hasOption(self::OPTION_SPECIAL_ALLOWED)) {
                     $schemaUpdater = new SpecialUpdater($this->getDbAdpater());
                     $schemaUpdater->execute($attribute_List);
                     $this->getValidationHelper()->addErrorFieldMap($schemaUpdater->getValidationHelper()->getErrorFieldMap());
-            #    } else {
-              #      $this->handlePermissionDenied();
-             #   }
+                } else {
+                    $this->handlePermissionDenied();
+                }
                 break;
         }
     }
