@@ -15,7 +15,7 @@ class LocaleOverview extends BaseOverview
     protected function initialize()
     {
         $this->setSection($this->translate('section.locale'));
-
+        $this->setShowDelete(false);
         $active = new Badge('{Locale_Active}');
         $active->setFormat(new LocaleActiveFieldFormat($this->getTranslator()));
         $this->append($active);

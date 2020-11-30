@@ -362,7 +362,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             . $this->getTranslator()->clearCache('admin', $this->getTranslator()->getLocale());
         $result .= "<br>Default {$this->getTranslator()->getLocale()} Translation: "
             . $this->getTranslator()->clearCache('default', $this->getTranslator()->getLocale());
-
+        $this->getTranslator()->clearCache('validation', $this->getTranslator()->getLocale());
         if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/../data/cache/admin-config-cache.php')) {
             unlink($_SERVER['DOCUMENT_ROOT'] . '/../data/cache/admin-config-cache.php');
         }

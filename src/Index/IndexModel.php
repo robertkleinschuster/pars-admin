@@ -11,22 +11,6 @@ use Pars\Model\Localization\Locale\LocaleBeanFinder;
 
 class IndexModel extends BaseModel
 {
-    public function hasAssetDomain()
-    {
-        $configFinder = new ConfigBeanFinder($this->getDbAdpater());
-        $configFinder->setConfig_Code('asset.domain');
-        if ($configFinder->count() == 1) {
-            $bean = $configFinder->getBean();
-            if (!$bean->empty('Config_Value')) {
-                $value = $bean->get('Config_Value');
-                if (strlen(trim($value))) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
 
     public function hasPage()
     {
