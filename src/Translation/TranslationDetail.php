@@ -4,6 +4,7 @@
 namespace Pars\Admin\Translation;
 
 
+use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\BaseDetail;
 
 class TranslationDetail extends BaseDetail
@@ -16,6 +17,18 @@ class TranslationDetail extends BaseDetail
         $this->addField('Translation_Text', $this->translate('translation.text'));
         $this->addField('Translation_Namespace', $this->translate('translation.namespace'));
         parent::initialize();
+    }
+
+
+    protected function beforeRender(BeanInterface $bean = null)
+    {
+        if (!$bean->empty('Translation_Text')) {
+            $text = $bean->get('Translation_Text');
+            $text = str_replace('{', '[', $text);
+            $text = str_replace('}', ']', $text);
+            $bean->set('Translation_Text', $text);
+        }
+        parent::beforeRender($bean);
     }
 
 

@@ -2,8 +2,8 @@
 
 namespace Pars\Admin\Base;
 
+use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Pars\Helper\Parameter\IdParameter;
-use Pars\Helper\Parameter\MoveParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Model\Authentication\User\UserBean;
 use Laminas\Db\Adapter\Adapter;
@@ -13,11 +13,14 @@ use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Pars\Model\Config\ConfigBeanFinder;
 use Pars\Mvc\Model\AbstractModel;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
 
-abstract class BaseModel extends AbstractModel implements AdapterAwareInterface, TranslatorAwareInterface
+abstract class BaseModel extends AbstractModel implements AdapterAwareInterface, TranslatorAwareInterface, LoggerAwareInterface
 {
     use AdapterAwareTrait;
     use TranslatorAwareTrait;
+    use LoggerAwareTrait;
 
     /**
      * @var UserBean
@@ -34,8 +37,12 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
      */
     public function initConfig()
     {
-        $finder = new ConfigBeanFinder($this->getDbAdpater());
-        $this->config = $finder->getBeanList()->column('Config_Value', 'Config_Code');
+        try {
+            $finder = new ConfigBeanFinder($this->getDbAdpater());
+            $this->config = $finder->getBeanList()->column('Config_Value', 'Config_Code');
+        } catch (InvalidQueryException $exception) {
+            $this->logger->error('DB Error initializing config.', ['exception' => $exception]);
+        }
     }
 
     /**
@@ -48,7 +55,13 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
         if ($this->config === null) {
             $this->initConfig();
         }
-        return $key == null ? $this->config : $this->config[$key];
+        if ($key == null) {
+            return $this->config;
+        }
+        if (isset($this->config[$key])) {
+            return $this->config[$key];
+        }
+        return null;
     }
 
     /**

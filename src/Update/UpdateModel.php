@@ -33,6 +33,11 @@ class UpdateModel extends BaseModel
         return new SpecialUpdater($this->getDbAdpater());
     }
 
+    public function getConfig(string $key = null)
+    {
+        return null;
+    }
+
 
     /**
      * @param SubmitParameter $submitParameter

@@ -10,6 +10,8 @@ use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\SystemNavigation;
+use Pars\Component\Base\Detail\Detail;
+use Pars\Component\Base\Field\Span;
 
 
 /**
@@ -49,6 +51,26 @@ class TranslationController extends CrudController
     {
         return new TranslationDetail($this->getPathHelper(),$this->getTranslator(), $this->getUserBean());
     }
+
+    public function editAction()
+    {
+        parent::editAction();
+        $this->clearcacheAction(false);
+        $source = $this->getModel()->getTranslationSource();
+        if ($source) {
+            $detail = $this->createDetail();
+            $detail->setBean($source);
+            $this->getView()->append($detail);
+            $detail = new Detail();
+            $detail->setHeadline($this->translate('translation.edit.placeholder'));
+            foreach ($this->getView() as $key => $value) {
+                $span = new Span($value, "[{$key}]");
+                $detail->append($span);
+            }
+            $this->getView()->append($detail);
+        }
+    }
+
 
     protected function createEdit(): BaseEdit
     {

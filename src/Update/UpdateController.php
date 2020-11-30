@@ -25,7 +25,7 @@ class UpdateController extends BaseController
             $this->getModel()->addOption(UpdateModel::OPTION_DATA_ALLOWED);
         }
         if ($this->checkPermission('update.special')) {
-            $this->getModel()->addOption(UpdateModel::OPTION_DATA_ALLOWED);
+            $this->getModel()->addOption(UpdateModel::OPTION_SPECIAL_ALLOWED);
         }
     }
 
@@ -57,17 +57,6 @@ class UpdateController extends BaseController
     public function indexAction()
     {
 
-        /*$this->getView()->setHeading('Updates');
-        $navigation = new Navigation($this->translate('update.database'));
-        $dataComponent = $this->initUpdaterTemplate($this->getModel()->getDataUpdater(), $this->translate('update.database.data'), 'data');
-        $dataComponent->setPermission('update.data');
-        $navigation->addComponent($dataComponent);
-        $schemaComponent = $this->initUpdaterTemplate($this->getModel()->getSchemaUpdater(), $this->translate('update.database.schema'), 'schema');
-        $schemaComponent->setPermission('update.schema');
-        $navigation->addComponent($schemaComponent);
-        $navigation->setPermission('update');
-        $navigation->setActive($this->getNavigationState($navigation->getId()));
-        $this->getView()->append($navigation);*/
     }
 
     public function schemaAction()

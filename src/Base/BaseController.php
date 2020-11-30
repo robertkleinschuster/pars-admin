@@ -35,6 +35,7 @@ use Pars\Mvc\Controller\AbstractController;
 use Pars\Mvc\Controller\ControllerResponse;
 use Pars\Helper\Parameter\NavParameter;
 use Pars\Mvc\View\ViewBeanConverter;
+use Psr\Log\LoggerInterface;
 
 /**
  * Class BaseController
@@ -248,6 +249,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         );
         $this->getModel()->setUserBean($this->getUserBean());
         $this->getModel()->setTranslator($this->getTranslator());
+        $this->getModel()->setLogger($this->getLogger());
         $view = $this->getView();
         if ($view instanceof BeanConverterAwareInterface && $view->hasBeanConverter()) {
             $converter = $view->getBeanConverter();
@@ -308,6 +310,13 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         }
     }
 
+    public function getLogger(): LoggerInterface
+    {
+        return $this->getControllerRequest()->
+        getServerRequest()
+            ->getAttribute(LoggingMiddleware::LOGGER_ATTRIBUTE);
+    }
+
     /**
      * @param \Throwable $exception
      * @return mixed|void
@@ -346,7 +355,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $this->getView()->append(new Alert($this->translate('unauthorized.heading'), $this->translate('unauthorized.text')));
     }
 
-    public function clearcacheAction()
+    public function clearcacheAction(bool $redirect = true)
     {
         $result = 'Clear Cache';
         $result .= "<br>Admin {$this->getTranslator()->getLocale()} Translation: "
@@ -360,6 +369,8 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/../data/cache/frontend-config-cache.php')) {
             unlink($_SERVER['DOCUMENT_ROOT'] . '/../data/cache/frontend-config-cache.php');
         }
-        $this->getControllerResponse()->setRedirect($this->getPathHelper()->setController('index')->setAction('index'));
+        if ($redirect) {
+            $this->getControllerResponse()->setRedirect($this->getPathHelper()->setController('index')->setAction('index'));
+        }
     }
 }

@@ -4,6 +4,7 @@
 namespace Pars\Admin\Translation;
 
 
+use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\BaseEdit;
 
 class TranslationEdit extends BaseEdit
@@ -24,6 +25,18 @@ class TranslationEdit extends BaseEdit
         }
         parent::initialize();
     }
+
+    protected function beforeRender(BeanInterface $bean = null)
+    {
+        if (!$bean->empty('Translation_Text')) {
+            $text = $bean->get('Translation_Text');
+            $text = str_replace('{', '[', $text);
+            $text = str_replace('}', ']', $text);
+            $bean->set('Translation_Text', $text);
+        }
+        parent::beforeRender($bean);
+    }
+
 
     /**
     * @return array

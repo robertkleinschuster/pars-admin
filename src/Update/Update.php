@@ -33,8 +33,8 @@ class Update extends BaseEdit
             $this->getPathHelper()->setController('update')->setAction($this->updater->getCode())
         ));
         foreach ($previewList as $key => $item) {
-            $this->getForm()->addCheckbox($key, $this->translate('update.method'))->setValue('true')
-            ->setLabel('<pre>' . json_encode($item, JSON_PRETTY_PRINT) . '</pre>');
+            $this->getForm()->addCheckbox($key, '')->setValue('true')
+            ->setLabel($key . ': <br><pre>' . json_encode($item, JSON_PRETTY_PRINT) . '</pre>');
         }
         parent::initialize();
     }
