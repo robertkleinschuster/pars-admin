@@ -64,48 +64,4 @@ class LocaleController extends CrudController
         $delete = new LocaleDelete($this->getPathHelper(), $this->getTranslator(),$this->getUserBean());
         return $delete;
     }
-
-
-    protected function addOverviewFields(Overview $overview): void
-    {
-        $redirectPath = $this->getPathHelper()->getPath();
-        $overview->addMoveUpIcon($this->getDetailPath()->addParameter((new MoveParameter())->setUp('Locale_Order')->setSteps(-1))
-            ->addParameter((new RedirectParameter())->setPath($redirectPath))->getPath())
-            ->setShow(function (BeanInterface $bean) {
-                return $bean->hasData('Locale_Order') && $bean->getData('Locale_Order') > 1;
-            });
-        $overview->addMoveDownIcon($this->getDetailPath()->addParameter((new MoveParameter())->setDown('Locale_Order')->setSteps(1))
-            ->addParameter((new RedirectParameter())->setPath($redirectPath))->getPath())
-            ->setShow(function (BeanInterface $bean) {
-                return $bean->hasData('Locale_Order') && $bean->getData('Locale_Order') < $this->getModel()->getBeanFinder()->count();
-            });
-
-        $overview->addBadgeBoolean(
-            'Locale_Active',
-            $this->translate('locale.active'),
-            $this->translate('locale.active.true'),
-            $this->translate('locale.active.false')
-        );
-        $overview->addText('Locale_Code', $this->translate('locale.code'));
-        $overview->addText('Locale_Name', $this->translate('locale.name'));
-    }
-
-    protected function addDetailFields(Detail $detail): void
-    {
-        $detail->addBadgeBoolean(
-            'Locale_Active',
-            $this->translate('locale.active'),
-            $this->translate('locale.active.true'),
-            $this->translate('locale.active.false')
-        );
-        $detail->addText('Locale_Code', $this->translate('locale.code'));
-        $detail->addText('Locale_Name', $this->translate('locale.name'));
-    }
-
-    protected function addEditFields(Edit $edit): void
-    {
-        $edit->addText('Locale_Code', $this->translate('locale.code'));
-        $edit->addText('Locale_Name', $this->translate('locale.name'));
-        $edit->addCheckbox('Locale_Active', $this->translate('locale.active'));
-    }
 }

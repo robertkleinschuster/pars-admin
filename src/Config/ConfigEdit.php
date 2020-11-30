@@ -5,12 +5,13 @@ namespace Pars\Admin\Config;
 
 
 use Pars\Admin\Base\BaseEdit;
+use Pars\Component\Base\Field\Headline;
 
 class ConfigEdit extends BaseEdit
 {
     protected function initialize()
     {
-        $this->getForm()->addText('Config_Code', '{Config_Code}', $this->translate('config.code'));
+        $this->push(new Headline('{Config_Code}'));
         $this->getForm()->addText('Config_Value', '{Config_Value}', $this->translate('config.value'));
         parent::initialize();
     }

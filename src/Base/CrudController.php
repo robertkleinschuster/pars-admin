@@ -43,16 +43,12 @@ abstract class CrudController extends BaseController
             }
         }
         if ($bean->exists('Timestamp_Create') && !$bean->empty('Timestamp_Create')) {
-            $date = $bean->get('Timestamp_Create');
-            if ($date instanceof \DateTime) {
-                $metaInfo->append(new Span($date->format('d. M Y H:i:s'), $this->translate('timestamp.create')));
-            }
+            $date = $this->getModel()->getBeanConverter()->convert($bean)->get('Timestamp_Create');
+            $metaInfo->append(new Span($date, $this->translate('timestamp.create')));
         }
         if ($bean->exists('Timestamp_Edit') && !$bean->empty('Timestamp_Edit')) {
-            $date = $bean->get('Timestamp_Edit');
-            if ($date instanceof \DateTime) {
-                $metaInfo->append(new Span($date->format('d. M Y H:i:s'), $this->translate('timestamp.edit')));
-            }
+            $date = $this->getModel()->getBeanConverter()->convert($bean)->get('Timestamp_Edit');
+            $metaInfo->append(new Span($date, $this->translate('timestamp.edit')));
         }
         $this->getView()->append($metaInfo);
     }

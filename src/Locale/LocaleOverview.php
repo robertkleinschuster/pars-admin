@@ -21,7 +21,7 @@ class LocaleOverview extends BaseOverview
         $this->append($active);
         $this->addField('Locale_Name', $this->translate('locale.name'));
         $this->addField('Locale_Code', $this->translate('locale.code'));
-        $this->setOrderField('Locale_Order');
+        $this->setShowMove(true);
         parent::initialize();
     }
 

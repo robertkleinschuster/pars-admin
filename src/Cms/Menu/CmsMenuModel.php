@@ -2,6 +2,7 @@
 
 namespace Pars\Admin\Cms\Menu;
 
+use Niceshops\Bean\Processor\BeanOrderProcessor;
 use Pars\Admin\Base\CrudModel;
 use Pars\Model\Cms\Menu\CmsMenuBeanFinder;
 use Pars\Model\Cms\Menu\CmsMenuBeanProcessor;
@@ -21,6 +22,11 @@ class CmsMenuModel extends CrudModel
         $this->setBeanFinder(new CmsMenuBeanFinder($this->getDbAdpater()));
         $this->setBeanProcessor(new CmsMenuBeanProcessor($this->getDbAdpater()));
         $this->getBeanFinder()->setLocale_Code($this->getTranslator()->getLocale());
+        $this->setBeanOrderProcessor(new BeanOrderProcessor(
+            new CmsMenuBeanProcessor($this->getDbAdpater()),
+            new CmsMenuBeanFinder($this->getDbAdpater()),
+            'CmsMenu_Order'
+        ));
     }
 
 
@@ -50,7 +56,7 @@ class CmsMenuModel extends CrudModel
         $options = [];
         $finder = new CmsMenuTypeBeanFinder($this->getDbAdpater());
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->get('CmsMenuType_Code')] = $this->translate('cmsmenutype.code.'.$bean->get('CmsMenuType_Code'));
+            $options[$bean->get('CmsMenuType_Code')] = $this->translate('cmsmenutype.code.' . $bean->get('CmsMenuType_Code'));
         }
         return $options;
     }

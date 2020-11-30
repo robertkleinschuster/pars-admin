@@ -11,6 +11,7 @@ use Laminas\Db\Adapter\AdapterAwareInterface;
 use Laminas\Db\Adapter\AdapterAwareTrait;
 use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Laminas\I18n\Translator\TranslatorAwareTrait;
+use Pars\Model\Config\ConfigBeanFinder;
 use Pars\Mvc\Model\AbstractModel;
 
 abstract class BaseModel extends AbstractModel implements AdapterAwareInterface, TranslatorAwareInterface
@@ -21,7 +22,34 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
     /**
      * @var UserBean
      */
-    private ?UserBean $user = null;
+    private ?UserBean $userBean = null;
+
+    /**
+     * @var array
+     */
+    private ?array $config = null;
+
+    /**
+     *
+     */
+    public function initConfig()
+    {
+        $finder = new ConfigBeanFinder($this->getDbAdpater());
+        $this->config = $finder->getBeanList()->column('Config_Value', 'Config_Code');
+    }
+
+    /**
+     * @param string $key
+     * @return mixed
+     */
+    public function getConfig(string $key = null)
+    {
+
+        if ($this->config === null) {
+            $this->initConfig();
+        }
+        return $key == null ? $this->config : $this->config[$key];
+    }
 
     /**
      * @return Adapter
@@ -34,9 +62,9 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
     /**
      * @return UserBean
      */
-    public function getUser(): UserBean
+    public function getUserBean(): UserBean
     {
-        return $this->user;
+        return $this->userBean;
     }
 
     /**
@@ -44,18 +72,18 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
      *
      * @return $this
      */
-    public function setUser(UserBean $user): self
+    public function setUserBean(UserBean $user): self
     {
-        $this->user = $user;
+        $this->userBean = $user;
         return $this;
     }
 
     /**
      * @return bool
      */
-    public function hasUser(): bool
+    public function hasUserBean(): bool
     {
-        return $this->user !== null;
+        return $this->userBean !== null;
     }
 
 
@@ -71,7 +99,7 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
             case SubmitParameter::MODE_SAVE:
                 $bean = $this->getBean();
                 if ($bean->exists('Person_ID_Create')) {
-                    if ($bean->get('Person_ID_Create') == $this->getUser()->get('Person_ID')) {
+                    if ($bean->get('Person_ID_Create') == $this->getUserBean()->get('Person_ID')) {
                         $this->addOption(self::OPTION_EDIT_ALLOWED);
                     }
                 }
@@ -81,7 +109,7 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
             case SubmitParameter::MODE_DELETE:
                 $bean = $this->getBean();
                 if ($bean->exists('Person_ID_Create')) {
-                    if ($bean->get('Person_ID_Create') == $this->getUser()->get('Person_ID')) {
+                    if ($bean->get('Person_ID_Create') == $this->getUserBean()->get('Person_ID')) {
                         $this->addOption(self::OPTION_DELETE_ALLOWED);
                     }
                 }

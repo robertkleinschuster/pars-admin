@@ -3,6 +3,9 @@
 namespace Pars\Admin\Base;
 
 use Laminas\I18n\Translator\TranslatorAwareInterface;
+use Niceshops\Bean\Converter\BeanConverterAwareInterface;
+use Niceshops\Bean\Processor\DefaultMetaFieldHandler;
+use Niceshops\Bean\Processor\TimestampMetaFieldHandler;
 use Niceshops\Bean\Saver\BeanSaverAwareInterface;
 use Pars\Component\Base\Alert\Alert;
 use Pars\Component\Base\Field\Icon;
@@ -27,6 +30,7 @@ use Niceshops\Core\Attribute\AttributeAwareInterface;
 use Niceshops\Core\Attribute\AttributeAwareTrait;
 use Niceshops\Core\Option\OptionAwareInterface;
 use Niceshops\Core\Option\OptionAwareTrait;
+use Pars\Model\Config\ConfigBeanFinder;
 use Pars\Mvc\Controller\AbstractController;
 use Pars\Mvc\Controller\ControllerResponse;
 use Pars\Helper\Parameter\NavParameter;
@@ -221,7 +225,9 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function initView()
     {
-        $this->setView(new BaseView());
+        $view = new BaseView();
+        $this->setView($view);
+        $view->setBeanConverter(new ViewBeanConverter());
         $layout = new DashboardLayout();
         $layout->setNavigation(new MainNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean()));
         $this->getView()->setLayout($layout);
@@ -240,20 +246,24 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $this->getModel()->setDbAdapter(
             $this->getControllerRequest()->getServerRequest()->getAttribute(DatabaseMiddleware::ADAPTER_ATTRIBUTE)
         );
-        $this->getModel()->setUser($this->getUserBean());
+        $this->getModel()->setUserBean($this->getUserBean());
         $this->getModel()->setTranslator($this->getTranslator());
-        $this->getModel()->setBeanConverter(new ViewBeanConverter());
+        $view = $this->getView();
+        if ($view instanceof BeanConverterAwareInterface && $view->hasBeanConverter()) {
+            $converter = $view->getBeanConverter();
+        } else {
+            $converter = new ViewBeanConverter();
+        }
+        $converter->setTimezone($this->getModel()->getConfig('timezone'));
+        $this->getModel()->setBeanConverter($converter);
         $this->getModel()->initialize();
         if ($this->getModel()->hasBeanProcessor()) {
             $processor = $this->getModel()->getBeanProcessor();
+            $processor->addMetaFieldHandler(new TimestampMetaFieldHandler('Timestamp_Edit', 'Timestamp_Create'));
+            $processor->addMetaFieldHandler(new DefaultMetaFieldHandler('Person_ID_Edit', $this->getUserBean()->Person_ID, true));
+            $processor->addMetaFieldHandler(new DefaultMetaFieldHandler('Person_ID_Create', $this->getUserBean()->Person_ID));
             if ($processor instanceof TranslatorAwareInterface) {
                 $processor->setTranslator($this->getTranslator());
-            }
-            if ($processor instanceof BeanSaverAwareInterface) {
-                $saver = $processor->getBeanSaver();
-                if ($saver instanceof DatabaseBeanSaver) {
-                    $saver->setPersonId($this->getUserBean()->Person_ID);
-                }
             }
         }
     }

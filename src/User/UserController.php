@@ -38,7 +38,8 @@ class UserController extends CrudController
      */
     public function isAuthorized(): bool
     {
-        return $this->checkPermission('user');
+        return $this->checkPermission('user')
+            || $this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->getAttribute('Person_ID') == $this->getUserBean()->Person_ID;
     }
 
     protected function createOverview(): BaseOverview

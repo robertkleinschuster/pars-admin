@@ -16,11 +16,11 @@ abstract class BaseOverview extends Overview
     use AdminComponentTrait;
 
     public ?string $createPath = null;
-    public ?string $orderField = null;
     public bool $showEdit = true;
     public bool $showDelete = true;
     public bool $showDetail = true;
     public bool $showCreate = true;
+    public bool $showMove = false;
     public ?string $section = null;
 
     protected function initialize()
@@ -48,7 +48,6 @@ abstract class BaseOverview extends Overview
             foreach ($this->getCreateIdFields() as $idField) {
                 $id->addId($idField);
             }
-
             $this->setCreatePath($this->getPathHelper()->setController($this->getController())->setAction('create')->setId($id));
         }
 
@@ -69,23 +68,26 @@ abstract class BaseOverview extends Overview
         $moveredirectPath->setId($moveRedirectIdParamter);
         $moveredirectParameter->setPath($moveredirectPath->getPath());
 
-
-        $id = new IdParameter();
-        foreach ($this->getDetailIdFields() as $idField) {
-            $id->addId($idField);
-        }
-        if ($this->hasOrderField()) {
+        if ($this->isShowMove()) {
+            $id = new IdParameter();
+            foreach ($this->getDetailIdFields() as $idField) {
+                $id->addId($idField);
+            }
+            $fragment = 'move-table-' . $this->getController();
+            $this->setId($fragment);
             $this->setMoveUpPath($this->getPathHelper()
                 ->setController($this->getController())
                 ->setAction('edit')
                 ->setId($id)
-                ->addParameter((new MoveParameter())->setUp($this->getOrderField()))
+                ->setFragment($fragment)
+                ->addParameter((new MoveParameter())->setUp())
                 ->addParameter($moveredirectParameter));
             $this->setMoveDownPath($this->getPathHelper()
                 ->setController($this->getController())
                 ->setAction('edit')
+                ->setFragment($fragment)
                 ->setId($id)
-                ->addParameter((new MoveParameter())->setDown($this->getOrderField()))
+                ->addParameter((new MoveParameter())->setDown())
                 ->addParameter($moveredirectParameter));
         }
         parent::initialize();
@@ -160,33 +162,22 @@ abstract class BaseOverview extends Overview
         return $this;
     }
 
-
     /**
-    * @return string
-    */
-    public function getOrderField(): string
+     * @return bool
+     */
+    public function isShowMove(): bool
     {
-        return $this->orderField;
+        return $this->showMove;
     }
 
     /**
-    * @param string $orderField
-    *
-    * @return $this
-    */
-    public function setOrderField(string $orderField): self
+     * @param bool $showMove
+     */
+    public function setShowMove(bool $showMove): void
     {
-        $this->orderField = $orderField;
-        return $this;
+        $this->showMove = $showMove;
     }
 
-    /**
-    * @return bool
-    */
-    public function hasOrderField(): bool
-    {
-        return isset($this->orderField);
-    }
 
 
     /**

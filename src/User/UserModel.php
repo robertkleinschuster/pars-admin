@@ -3,6 +3,8 @@
 namespace Pars\Admin\User;
 
 use Pars\Admin\Base\CrudModel;
+use Pars\Helper\Parameter\IdParameter;
+use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Model\Authentication\User\UserBeanFinder;
 use Pars\Model\Authentication\User\UserBeanProcessor;
 use Pars\Model\Authentication\UserState\UserStateBeanFinder;
@@ -21,6 +23,7 @@ class UserModel extends CrudModel
     {
         $this->setBeanFinder(new UserBeanFinder($this->getDbAdpater()));
         $this->setBeanProcessor(new UserBeanProcessor($this->getDbAdpater()));
+        $this->getBeanProcessor()->setCurrentUserBean($this->getUserBean());
     }
 
 
@@ -51,5 +54,20 @@ class UserModel extends CrudModel
             $options[$bean->get('Locale_Code')] = $bean->get('Locale_Name');
         }
         return $options;
+    }
+
+    public function handleSubmit(SubmitParameter $submitParameter, IdParameter $idParameter, array $attribute_List)
+    {
+        switch ($submitParameter->getMode()) {
+            case SubmitParameter::MODE_SAVE:
+                $bean = $this->getBean();
+                if ($bean->exists('Person_ID')) {
+                    if ($bean->get('Person_ID') == $this->getUserBean()->get('Person_ID')) {
+                        $this->addOption(self::OPTION_EDIT_ALLOWED);
+                    }
+                }
+                break;
+        }
+        parent::handleSubmit($submitParameter, $idParameter, $attribute_List);
     }
 }

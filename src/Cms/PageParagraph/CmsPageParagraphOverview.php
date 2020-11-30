@@ -11,7 +11,7 @@ class CmsPageParagraphOverview extends CmsParagraphOverview
     protected function initialize()
     {
         $this->setShowEdit(false);
-        $this->setOrderField('CmsPage_CmsParagraph_Order');
+        $this->setShowMove(true);
 
         parent::initialize();
     }

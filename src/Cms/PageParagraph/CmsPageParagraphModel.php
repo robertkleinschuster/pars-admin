@@ -2,11 +2,11 @@
 
 namespace Pars\Admin\Cms\PageParagraph;
 
-use Pars\Admin\Base\CrudModel;
+use Niceshops\Bean\Processor\BeanOrderProcessor;
 use Pars\Admin\Cms\Paragraph\CmsParagraphModel;
-use Pars\Model\Cms\Paragraph\CmsParagraphBeanFinder;
 use Pars\Model\Cms\PageParagraph\CmsPageParagraphBeanFinder;
 use Pars\Model\Cms\PageParagraph\CmsPageParagraphBeanProcessor;
+use Pars\Model\Cms\Paragraph\CmsParagraphBeanFinder;
 
 class CmsPageParagraphModel extends CmsParagraphModel
 {
@@ -15,6 +15,12 @@ class CmsPageParagraphModel extends CmsParagraphModel
         $this->setBeanFinder(new CmsPageParagraphBeanFinder($this->getDbAdpater()));
         $this->setBeanProcessor(new CmsPageParagraphBeanProcessor($this->getDbAdpater()));
         $this->getBeanFinder()->setLocale_Code($this->getTranslator()->getLocale());
+        $this->setBeanOrderProcessor(new BeanOrderProcessor(
+            new CmsPageParagraphBeanProcessor($this->getDbAdpater()),
+            new CmsPageParagraphBeanFinder($this->getDbAdpater()),
+            'CmsPage_CmsParagraph_Order',
+            'CmsPage_ID'
+        ));
     }
 
     /**
