@@ -69,17 +69,22 @@ abstract class BaseOverview extends Overview
         $moveredirectPath->setId($moveRedirectIdParamter);
         $moveredirectParameter->setPath($moveredirectPath->getPath());
 
+
+        $id = new IdParameter();
+        foreach ($this->getDetailIdFields() as $idField) {
+            $id->addId($idField);
+        }
         if ($this->hasOrderField()) {
             $this->setMoveUpPath($this->getPathHelper()
                 ->setController($this->getController())
                 ->setAction('edit')
-                ->setId((new IdParameter())->addId($this->getOrderField()))
+                ->setId($id)
                 ->addParameter((new MoveParameter())->setUp($this->getOrderField()))
                 ->addParameter($moveredirectParameter));
             $this->setMoveDownPath($this->getPathHelper()
                 ->setController($this->getController())
                 ->setAction('edit')
-                ->setId((new IdParameter())->addId($this->getOrderField()))
+                ->setId($id)
                 ->addParameter((new MoveParameter())->setDown($this->getOrderField()))
                 ->addParameter($moveredirectParameter));
         }
