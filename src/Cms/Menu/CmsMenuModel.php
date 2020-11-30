@@ -36,7 +36,7 @@ class CmsMenuModel extends CrudModel
         $finder = new CmsPageBeanFinder($this->getDbAdpater());
         $finder->setLocale_Code($this->getTranslator()->getLocale());
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->get('CmsPage_ID')] = $bean->get('ArticleTranslation_Name');
+            $options[$bean->get('CmsPage_ID')] = $bean->get('ArticleTranslation_Name') ?? '';
         }
         return $options;
     }
