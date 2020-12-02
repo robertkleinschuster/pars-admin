@@ -9,7 +9,9 @@ use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
+use Pars\Component\Base\Alert\Alert;
 use Pars\Model\Article\ArticleDataBean;
+use Pars\Model\Cms\Page\CmsPageBeanFinder;
 
 
 /**
@@ -56,6 +58,7 @@ class CmsPageController extends ArticleController
         $edit = new CmsPageEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $edit->setTypeOptions($this->getModel()->getCmsPageType_Options());
         $edit->setStateOptions($this->getModel()->getCmsPageState_Options());
+        $edit->setRedirectOptions($this->getModel()->getCmsPageRedirect_Options());
         $edit->setFileOptions($this->getModel()->getFileOptions());
         return $edit;
     }
@@ -81,7 +84,22 @@ class CmsPageController extends ArticleController
     {
         $detail = parent::detailAction();
         $this->handlePoll($detail->getBean());
+        $this->loadRedirectInfo($detail->getBean());
         return $detail;
+    }
+
+    protected function loadRedirectInfo(BeanInterface $bean)
+    {
+
+        if (!$bean->empty('CmsPage_ID_Redirect')) {
+            $cmsPageFinder = new CmsPageBeanFinder($this->getModel()->getDbAdpater());
+            $cmsPageFinder->setCmsPage_ID($bean->get('CmsPage_ID_Redirect'));
+            $alert = new Alert(
+                $this->translate('cmspage.redirect.alert.headline'),
+                $this->translate('cmspage.redirect.alert.text') .': ' . $cmsPageFinder->getBean()->get('ArticleTranslation_Name')
+            );
+            $this->getView()->prepend($alert);
+        }
     }
 
     protected function handlePoll(BeanInterface $bean)

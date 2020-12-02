@@ -51,6 +51,18 @@ class CmsPageModel extends ArticleModel
         return $options;
     }
 
+    public function getCmsPageRedirect_Options(): array
+    {
+        $options = [];
+        $finder = new CmsPageBeanFinder($this->getDbAdpater());
+        $finder->setCmsPageState_Code('active');
+        $options[null] = $this->translate('noselection');
+        foreach ($finder->getBeanListDecorator() as $bean) {
+            $options[$bean->get('CmsPage_ID')] = $bean->get('ArticleTranslation_Name');
+        }
+        return $options;
+    }
+
     public function handleSubmit(SubmitParameter $submitParameter, IdParameter $idParameter, array $attribute_List)
     {
         switch ($submitParameter->getMode()) {

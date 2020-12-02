@@ -10,6 +10,7 @@ class CmsPageEdit extends ArticleEdit
 {
     protected ?array $pageStateOptions = null;
     protected ?array $pageTypeOptions = null;
+    protected ?array $pageRedirectOptions = null;
 
     protected function initialize()
     {
@@ -20,7 +21,38 @@ class CmsPageEdit extends ArticleEdit
         if ($this->hasStateOptions()) {
             $this->getForm()->addSelect('CmsPageState_Code', $this->getStateOptions(),'{CmsPageState_Code}', $this->translate('cmspagestate.code'), 2,2);
         }
+        if ($this->hasRedirectOptions()) {
+            $this->getForm()->addSelect('CmsPage_ID_Redirect', $this->getRedirectOptions(),'{CmsPage_ID_Redirect}', $this->translate('cmspage.id.redirect'), 2,3);
+        }
     }
+
+    /**
+    * @return array
+    */
+    public function getRedirectOptions(): array
+    {
+        return $this->pageRedirectOptions;
+    }
+
+    /**
+    * @param array $pageRedirectOptions
+    *
+    * @return $this
+    */
+    public function setRedirectOptions(array $pageRedirectOptions): self
+    {
+        $this->pageRedirectOptions = $pageRedirectOptions;
+        return $this;
+    }
+
+    /**
+    * @return bool
+    */
+    public function hasRedirectOptions(): bool
+    {
+        return isset($this->pageRedirectOptions);
+    }
+
 
     /**
     * @return array
