@@ -9,6 +9,7 @@ use Niceshops\Bean\Processor\TimestampMetaFieldHandler;
 use Niceshops\Bean\Saver\BeanSaverAwareInterface;
 use Pars\Component\Base\Alert\Alert;
 use Pars\Component\Base\Field\Icon;
+use Pars\Component\Base\Grid\Container;
 use Pars\Component\Base\Layout\DashboardLayout;
 use Pars\Component\Base\View\BaseView;
 use Pars\Core\Database\DatabaseBeanSaver;

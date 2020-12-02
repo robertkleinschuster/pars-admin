@@ -18,6 +18,7 @@ abstract class CrudController extends BaseController
         $overview = $this->createOverview();
         $overview->setBeanList($this->getModel()->getBeanList());
         $this->getView()->append($overview);
+        return $overview;
     }
 
     abstract protected function createOverview(): BaseOverview;
@@ -29,7 +30,7 @@ abstract class CrudController extends BaseController
         $detail->setBean($bean);
         $this->getView()->append($detail);
         $metaInfo = new Detail();
-       # $metaInfo->setSection($this->translate('meta.info'));
+        $metaInfo->setSection($this->translate('meta.info'));
         if ($bean->exists('Person_ID_Create') && !$bean->empty('Person_ID_Create')) {
             if ($bean->get('Person_ID_Create') > 0) {
                 $user = $this->getModel()->getUserById($bean->get('Person_ID_Create'));
@@ -51,6 +52,7 @@ abstract class CrudController extends BaseController
             $metaInfo->append(new Span($date, $this->translate('timestamp.edit')));
         }
         $this->getView()->append($metaInfo);
+        return $detail;
     }
 
     abstract protected function createDetail(): BaseDetail;
@@ -77,6 +79,7 @@ abstract class CrudController extends BaseController
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
         $edit->setToken($this->generateToken('submit_token'));
         $this->getView()->append($edit);
+        return $edit;
     }
 
     abstract protected function createEdit(): BaseEdit;

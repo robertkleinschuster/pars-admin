@@ -2,16 +2,14 @@
 
 namespace Pars\Admin\Cms\Page;
 
-use Niceshops\Bean\Type\Base\BeanListInterface;
+use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Article\ArticleController;
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
-use Pars\Model\Article\ArticleBean;
-use Pars\Model\Cms\Paragraph\CmsParagraphBeanFinder;
-use Pars\Model\Cms\Paragraph\CmsParagraphBeanProcessor;
+use Pars\Model\Article\ArticleDataBean;
 
 
 /**
@@ -67,65 +65,32 @@ class CmsPageController extends ArticleController
         return new CmsPageDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
-    public function detailAction()
+    public function editAction()
     {
-        $this->handlePoll();
-        parent::detailAction();
+        $edit = parent::editAction();
+        if ($edit->getBean()->get('CmsPageType_Code') == 'poll') {
+            $edit->getForm()->addHidden('Article_Data[__class]', ArticleDataBean::class);
+            $edit->getForm()->addCheckbox('Article_Data[vote_once]', '{Article_Data[vote_once]}', $this->translate('article.data.vote.once')
+                , 3, 1);
+        }
+        return $edit;
     }
 
-    protected function handlePoll()
+
+    public function detailAction()
     {
-        $bean = $this->getModel()->getBean();
+        $detail = parent::detailAction();
+        $this->handlePoll($detail->getBean());
+        return $detail;
+    }
+
+    protected function handlePoll(BeanInterface $bean)
+    {
         if ($bean->get('CmsPageType_Code') == 'poll') {
-            $paragraphList = $bean->get('CmsParagraph_BeanList');
-            if ($paragraphList instanceof BeanListInterface) {
-                $detail = new CmsPagePollDetail();
-                $detail->setResetPath($this->getPathHelper(true) . '&reset_poll=1');
-                $detail->setShowPath($this->getPathHelper(true) . '&show_poll=1');
-                $detail->setBean($bean);
-                $this->getView()->append($detail);
-
-                if ($this->getControllerRequest()->hasAttribute('reset_poll')) {
-                    $paragraphFinder = new CmsParagraphBeanFinder($this->getModel()->getDbAdpater());
-                    $paragraphFinder->initByValueList('Article_Code', $paragraphList->column('Article_Code'));
-                    $beanList = $paragraphFinder->getBeanList(true);
-                    foreach ($beanList as $item) {
-                        $item->getArticle_Data()->set('poll', 0);
-                        $item->getArticle_Data()->set('poll_value', 0);
-                    }
-                    $paragraphProcessor = new CmsParagraphBeanProcessor($this->getModel()->getDbAdpater());
-                    $paragraphProcessor->setBeanList($beanList);
-                    $paragraphProcessor->save();
-                    $this->getControllerResponse()->setRedirect($this->getPathHelper(true)->getPath());
-                }
-                $resultMap = [];
-                foreach ($paragraphList as $paragraph) {
-                    if ($paragraph instanceof ArticleBean) {
-                        if ($paragraph->getArticle_Data()->exists('poll')) {
-                            $resultMap[$paragraph->ArticleTranslation_Title] = $paragraph->getArticle_Data()->get('poll');
-                        }
-                    }
-                }
-                if (count($resultMap)) {
-                    $max = max($resultMap);
-                    if ($this->getControllerRequest()->hasAttribute('show_poll')) {
-                        $paragraphFinder = new CmsParagraphBeanFinder($this->getModel()->getDbAdpater());
-                        $paragraphFinder->initByValueList('Article_Code', $paragraphList->column('Article_Code'));
-                        $beanList = $paragraphFinder->getBeanList(true);
-                        foreach ($beanList as $item) {
-                            $value = $item->getArticle_Data()->get('poll');
-                            if ($max > 0 && $value > 0) {
-                                $item->getArticle_Data()->set('poll_value', $value / $max * 100);
-                            }
-                        }
-                        $paragraphProcessor = new CmsParagraphBeanProcessor($this->getModel()->getDbAdpater());
-                        $paragraphProcessor->setBeanList($beanList);
-                        $paragraphProcessor->save();
-                        $this->getControllerResponse()->setRedirect($this->getPathHelper(true)->getPath());
-                    }
-                }
-
-            }
+            $detail = new CmsPagePollDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+            $detail->setToken($this->generateToken('submit_token'));
+            $detail->setBean($bean);
+            $this->getView()->prepend($detail);
         }
     }
 

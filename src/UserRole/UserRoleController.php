@@ -32,11 +32,6 @@ class UserRoleController extends RoleController
         $this->getView()->set('Person_ID', (int) $this->getControllerRequest()->getId()->getAttribute('Person_ID'));
     }
 
-    public function indexAction()
-    {
-        parent::indexAction();
-    }
-
 
     protected function createOverview(): BaseOverview
     {

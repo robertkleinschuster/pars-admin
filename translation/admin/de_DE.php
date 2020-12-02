@@ -121,6 +121,7 @@ return [
     'locale.active.true' => 'Aktiv',
     'locale.active.false' => 'Inaktiv',
     'article.code' => 'Code (Eindeutig)',
+    'article.data.vote.once' => 'Auf eine Stimme beschränken',
     'article.paragraph.hint' => 'Absätze können hinzugefügt werden wenn der Eintrag erstellt wurde.',
     'articletype.code' => 'Typ',
     'articlestate.code' => 'Status',
