@@ -87,20 +87,24 @@ class CmsPageModel extends ArticleModel
                     'Article_Code',
                     $this->getBean()->get('CmsParagraph_BeanList')->column('Article_Code')
                 );
-                $max = max(array_column(
-                        $this->getBean()->get('CmsParagraph_BeanList')->column('Article_Data'),
-                        'poll')
-                );
-                $beanList = $paragraphFinder->getBeanList(true);
-                foreach ($beanList as $item) {
-                    $value = $item->getArticle_Data()->get('poll');
-                    if ($max > 0 && $value > 0) {
-                        $item->getArticle_Data()->set('poll_value', $value / $max * 100);
+                try {
+                    $max = max(array_column(
+                            $this->getBean()->get('CmsParagraph_BeanList')->column('Article_Data'),
+                            'poll')
+                    );
+                    $beanList = $paragraphFinder->getBeanList(true);
+                    foreach ($beanList as $item) {
+                        $value = $item->getArticle_Data()->get('poll');
+                        if ($max > 0 && $value > 0) {
+                            $item->getArticle_Data()->set('poll_value', $value / $max * 100);
+                        }
                     }
+                    $paragraphProcessor = new CmsParagraphBeanProcessor($this->getDbAdpater());
+                    $paragraphProcessor->setBeanList($beanList);
+                    $paragraphProcessor->save();
+                } catch (\Exception $exception) {
+
                 }
-                $paragraphProcessor = new CmsParagraphBeanProcessor($this->getDbAdpater());
-                $paragraphProcessor->setBeanList($beanList);
-                $paragraphProcessor->save();
                 break;
         }
         parent::handleSubmit($submitParameter, $idParameter, $attribute_List);
