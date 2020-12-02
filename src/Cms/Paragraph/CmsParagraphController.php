@@ -2,6 +2,7 @@
 
 namespace Pars\Admin\Cms\Paragraph;
 
+use Niceshops\Bean\Type\Base\BeanListInterface;
 use Pars\Admin\Article\ArticleController;
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
@@ -10,7 +11,12 @@ use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
 use Pars\Admin\File\FileDetail;
 use Pars\Admin\File\FileOverview;
+use Pars\Component\Base\Detail\Detail;
+use Pars\Component\Base\Field\Headline;
+use Pars\Component\Base\Field\Progress;
+use Pars\Component\Base\Field\Span;
 use Pars\Helper\Parameter\IdParameter;
+use Pars\Model\Cms\Paragraph\CmsParagraphBean;
 
 /**
  * Class CmsParagraphController
@@ -49,9 +55,6 @@ class CmsParagraphController extends ArticleController
         return new CmsParagraphDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
-
-
-
     protected function createEdit(): BaseEdit
     {
         $edit = new CmsParagraphEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
@@ -65,6 +68,8 @@ class CmsParagraphController extends ArticleController
     {
         return new CmsParagraphDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
+
+
 
 
 }

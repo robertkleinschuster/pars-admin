@@ -156,6 +156,7 @@ return [
     'cmspage.id' => 'Seite',
     'cmspagetype.code' => 'Seiten Typ',
     'cmspagetype.code.home' => 'Startseite',
+    'cmspagetype.code.poll' => 'Abstimmung',
     'cmspagetype.code.about' => 'Über',
     'cmspagetype.code.blog' => 'Blog',
     'cmspagetype.code.post' => 'Posting',
