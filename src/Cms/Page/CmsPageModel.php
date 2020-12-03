@@ -76,6 +76,7 @@ class CmsPageModel extends ArticleModel
                 foreach ($beanList as $item) {
                     $item->getArticle_Data()->set('poll', 0);
                     $item->getArticle_Data()->set('poll_value', 0);
+                    $item->getArticle_Data()->set('poll_names', '');
                 }
                 $paragraphProcessor = new CmsParagraphBeanProcessor($this->getDbAdpater());
                 $paragraphProcessor->setBeanList($beanList);

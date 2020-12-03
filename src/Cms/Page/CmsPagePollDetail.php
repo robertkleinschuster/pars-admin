@@ -62,10 +62,14 @@ class CmsPagePollDetail extends BaseDetail implements BeanAwareInterface
             $this->push($toolbar);
 
             $resultMap = [];
+            $resultMapNames = [];
             foreach ($paragraphList as $paragraph) {
                 if ($paragraph instanceof ArticleBean) {
                     if ($paragraph->getArticle_Data()->exists('poll')) {
                         $resultMap[$paragraph->ArticleTranslation_Name] = $paragraph->getArticle_Data()->get('poll');
+                    }
+                    if ($paragraph->getArticle_Data()->exists('poll_names')) {
+                        $resultMapNames[$paragraph->ArticleTranslation_Name] = $paragraph->getArticle_Data()->get('poll_names');
                     }
                 }
             }
@@ -75,7 +79,8 @@ class CmsPagePollDetail extends BaseDetail implements BeanAwareInterface
                     if ($max > 0 && $item > 0) {
                         $progress = new Progress($item / $max * 100);
                         $progress->setStyle(Progress::STYLE_SUCCESS);
-                        $span = new Span($title . ': ' . $item);
+                        $names =  isset($resultMapNames[$title]) ? ' - ' . $resultMapNames[$title] :'';
+                        $span = new Span($title .$names);
                         $this->append($span);
                         $this->append($progress);
                     }
