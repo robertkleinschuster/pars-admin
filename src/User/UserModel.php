@@ -3,6 +3,7 @@
 namespace Pars\Admin\User;
 
 use Pars\Admin\Base\CrudModel;
+use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Model\Authentication\User\UserBeanFinder;
@@ -56,7 +57,7 @@ class UserModel extends CrudModel
         return $options;
     }
 
-    public function handleSubmit(SubmitParameter $submitParameter, IdParameter $idParameter, array $attribute_List)
+    public function handleSubmit(SubmitParameter $submitParameter, IdParameter $idParameter, IdListParameter $idListParameter, array $attribute_List)
     {
         switch ($submitParameter->getMode()) {
             case SubmitParameter::MODE_SAVE:
@@ -68,6 +69,6 @@ class UserModel extends CrudModel
                 }
                 break;
         }
-        parent::handleSubmit($submitParameter, $idParameter, $attribute_List);
+        parent::handleSubmit($submitParameter, $idParameter, $idListParameter, $attribute_List);
     }
 }

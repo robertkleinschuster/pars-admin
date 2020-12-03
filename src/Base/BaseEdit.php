@@ -19,6 +19,7 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface
     public ?string $token = null;
     public ?string $indexPath = null;
     public bool $create = false;
+    public bool $createBulk = false;
 
     protected function initialize()
     {
@@ -40,7 +41,9 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface
                 $formGroup->setError($this->getValidationHelper()->getSummary($formGroup->getName()));
             }
         }
-        if ($this->isCreate()) {
+        if ($this->isCreateBulk()) {
+            $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('edit.submit'), (new SubmitParameter())->setCreateBulk(), null, '', 50, 1);
+        } elseif ($this->isCreate()) {
             $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('edit.submit'), (new SubmitParameter())->setCreate(), null, '', 50, 1);
         } else {
             $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('edit.submit'), (new SubmitParameter())->setSave(), null, '', 50, 1);
@@ -62,6 +65,22 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface
 
             }
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCreateBulk(): bool
+    {
+        return $this->createBulk;
+    }
+
+    /**
+     * @param bool $createBulk
+     */
+    public function setCreateBulk(bool $createBulk): void
+    {
+        $this->createBulk = $createBulk;
     }
 
 

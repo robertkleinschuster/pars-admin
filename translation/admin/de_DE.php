@@ -63,6 +63,7 @@ return [
     'delete.title'   => 'Löschen',
     'delete.submit'   => 'Löschen',
     'delete.cancel'   => 'Abbrechen',
+    'delete_bulk.button'   => 'Auswahl löschen',
     'noselection' => 'Keine Auswahl',
     'delete.heading' => 'Sind sie sicher, dass sie den Eintrag löschen wollen?',
     'delete.text' => 'Dieser Vorgang kann nicht rückgängig gemacht werden.',

@@ -7,6 +7,7 @@ use Pars\Admin\Base\BaseModel;
 use Pars\Core\Database\Updater\DataUpdater;
 use Pars\Core\Database\Updater\SchemaUpdater;
 use Pars\Core\Database\Updater\SpecialUpdater;
+use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 
@@ -45,7 +46,7 @@ class UpdateModel extends BaseModel
      * @param array $attribute_List
      * @throws \Niceshops\Core\Exception\AttributeNotFoundException
      */
-    public function handleSubmit(SubmitParameter $submitParameter, IdParameter $idParameter, array $attribute_List)
+    public function handleSubmit(SubmitParameter $submitParameter, IdParameter $idParameter, IdListParameter $idListParameter, array $attribute_List)
     {
         switch ($submitParameter->getMode()) {
             case 'schema':

@@ -9,6 +9,7 @@ use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\SystemNavigation;
 use Pars\Admin\Role\RoleController;
+use Pars\Admin\Role\RoleOverview;
 
 class UserRoleController extends RoleController
 {
@@ -50,7 +51,14 @@ class UserRoleController extends RoleController
     protected function createEdit(): BaseEdit
     {
         $edit = new UserRoleEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $edit->setRoleBeanList($this->getModel()->getRoleBeanList($this->getUserBean()->getPermissions(), $this->getControllerRequest()->getId()));
+        $overview = new RoleOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $overview->setBeanList($this->getModel()->getRoleBeanList($this->getUserBean()->getPermissions(), $this->getControllerRequest()->getId()));
+        $overview->setShowDeleteBulk(false);
+        $overview->setShowCreate(false);
+        $overview->setShowEdit(false);
+        $overview->setShowDetail(false);
+        $overview->setShowDelete(false);
+        $edit->getForm()->push($overview);
         return $edit;
     }
 

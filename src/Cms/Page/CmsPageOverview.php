@@ -7,13 +7,13 @@ namespace Pars\Admin\Cms\Page;
 use Pars\Admin\Article\ArticleOverview;
 use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Field\Span;
+use Pars\Helper\Parameter\IdListParameter;
 
 class CmsPageOverview extends ArticleOverview
 {
     protected function initialize()
     {
         $this->setSection($this->translate('section.page'));
-
         $span = new Badge('{CmsPageState_Code}');
         $span->setFormat(new CmsPageStateFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {

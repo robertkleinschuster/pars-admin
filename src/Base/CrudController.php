@@ -4,6 +4,7 @@ namespace Pars\Admin\Base;
 
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Span;
+use Pars\Component\Base\Form\Form;
 
 /**
  * Class CrudController
@@ -16,6 +17,7 @@ abstract class CrudController extends BaseController
     public function indexAction()
     {
         $overview = $this->createOverview();
+        $overview->setToken($this->generateToken('submit_token'));
         $overview->setBeanList($this->getModel()->getBeanList());
         $this->getView()->append($overview);
         return $overview;

@@ -7,6 +7,7 @@ namespace Pars\Admin\Cms\Menu;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Field\Span;
+use Pars\Helper\Parameter\IdListParameter;
 
 class CmsMenuOverview extends BaseOverview
 {

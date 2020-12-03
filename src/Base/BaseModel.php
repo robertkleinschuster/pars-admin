@@ -3,6 +3,7 @@
 namespace Pars\Admin\Base;
 
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
+use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Model\Authentication\User\UserBean;
@@ -106,7 +107,7 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
         $this->getValidationHelper()->addError('Permission', $this->translate('permission.edit.denied'));
     }
 
-    public function handleSubmit(SubmitParameter $submitParameter, IdParameter $idParameter, array $attribute_List)
+    public function handleSubmit(SubmitParameter $submitParameter, IdParameter $idParameter, IdListParameter $idListParameter, array $attribute_List)
     {
         switch ($submitParameter->getMode()) {
             case SubmitParameter::MODE_SAVE:
@@ -128,7 +129,7 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
                 }
                 break;
         }
-        parent::handleSubmit($submitParameter, $idParameter, $attribute_List);
+        parent::handleSubmit($submitParameter, $idParameter, $idListParameter, $attribute_List);
     }
 
 

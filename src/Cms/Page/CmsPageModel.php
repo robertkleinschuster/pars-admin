@@ -3,6 +3,7 @@
 namespace Pars\Admin\Cms\Page;
 
 use Pars\Admin\Article\ArticleModel;
+use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
@@ -63,7 +64,7 @@ class CmsPageModel extends ArticleModel
         return $options;
     }
 
-    public function handleSubmit(SubmitParameter $submitParameter, IdParameter $idParameter, array $attribute_List)
+    public function handleSubmit(SubmitParameter $submitParameter, IdParameter $idParameter, IdListParameter $idListParameter, array $attribute_List)
     {
         switch ($submitParameter->getMode()) {
             case 'reset_poll':
@@ -108,7 +109,7 @@ class CmsPageModel extends ArticleModel
                 }
                 break;
         }
-        parent::handleSubmit($submitParameter, $idParameter, $attribute_List);
+        parent::handleSubmit($submitParameter, $idParameter, $idListParameter, $attribute_List);
     }
 
 

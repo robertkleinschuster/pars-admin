@@ -10,6 +10,7 @@ use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Cms\Paragraph\CmsParagraphController;
+use Pars\Admin\Cms\Paragraph\CmsParagraphOverview;
 
 /**
  * Class CmsPageParagraphController
@@ -56,7 +57,14 @@ class CmsPageParagraphController extends CmsParagraphController
     protected function createEdit(): BaseEdit
     {
         $edit = new CmsPageParagraphEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $edit->setParagraphOptions($this->getModel()->getParagraph_Options());
+        $overview = new CmsParagraphOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $overview->setShowDeleteBulk(false);
+        $overview->setShowCreate(false);
+        $overview->setShowEdit(false);
+        $overview->setShowDetail(false);
+        $overview->setShowDelete(false);
+        $overview->setBeanList($this->getModel()->getParagraphBeanList());
+        $edit->getForm()->push($overview);
         return $edit;
     }
 

@@ -27,4 +27,23 @@ class UserRoleOverview extends RoleOverview
              'Person_ID'
         ];
     }
+
+    protected function getRedirectController(): string
+    {
+        return 'user';
+    }
+
+    protected function getRedirectAction(): string
+    {
+        return 'detail';
+    }
+
+    protected function getRedirectIdFields(): array
+    {
+        return [
+            'Person_ID'
+        ];
+    }
+
+
 }

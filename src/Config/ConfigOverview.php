@@ -13,6 +13,7 @@ class ConfigOverview extends BaseOverview
     {
         $this->setSection($this->translate('section.config'));
         $this->setShowDelete(false);
+        $this->setShowDeleteBulk(false);
         $this->setShowCreate(false);
         $this->addField('Config_Code', $this->translate('config.code'));
         $this->addField('Config_Value', $this->translate('config.value'));

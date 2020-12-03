@@ -56,7 +56,14 @@ class RolePermissionController extends CrudController
     protected function createEdit(): BaseEdit
     {
         $edit = new RolePermissionEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $edit->setPermissionBeanList($this->getModel()->getPermissionBeanList($this->getUserBean()->getPermissions(), $this->getControllerRequest()->getId()));
+        $overview = new RolePermissionOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $overview->setBeanList($this->getModel()->getPermissionBeanList($this->getUserBean()->getPermissions(), $this->getControllerRequest()->getId()));
+        $overview->setShowDeleteBulk(false);
+        $overview->setShowCreate(false);
+        $overview->setShowEdit(false);
+        $overview->setShowDetail(false);
+        $overview->setShowDelete(false);
+        $edit->getForm()->push($overview);
         return $edit;
     }
 

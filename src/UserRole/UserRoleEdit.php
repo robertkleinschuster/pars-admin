@@ -14,14 +14,8 @@ class UserRoleEdit extends RoleEdit
 
     protected function initFields()
     {
-        $options = [];
-        if ($this->hasRoleBeanList()) {
-            foreach ($this->getRoleBeanList() as $bean) {
-                $options[$bean->get('UserRole_ID')] = $bean->get('UserRole_Name');
+        $this->setCreateBulk(true);
             }
-        }
-        $this->getForm()->addSelect('UserRole_ID', $options, '{UserRole_ID}', $this->translate('userrole.name'));
-    }
 
 
     /**

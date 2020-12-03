@@ -45,6 +45,7 @@ class CmsMenuModel extends CrudModel
     {
         $options = [];
         $finder = new CmsMenuStateBeanFinder($this->getDbAdpater());
+        $finder->setCmsMenuState_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('CmsMenuState_Code')] = $this->translate('cmsmenustate.code.' . $bean->get('CmsMenuState_Code'));
         }
@@ -55,6 +56,7 @@ class CmsMenuModel extends CrudModel
     {
         $options = [];
         $finder = new CmsMenuTypeBeanFinder($this->getDbAdpater());
+        $finder->setCmsMenuType_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('CmsMenuType_Code')] = $this->translate('cmsmenutype.code.' . $bean->get('CmsMenuType_Code'));
         }

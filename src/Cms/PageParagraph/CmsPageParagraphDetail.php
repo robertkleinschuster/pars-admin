@@ -11,7 +11,6 @@ class CmsPageParagraphDetail extends CmsParagraphDetail
 {
     protected function initialize()
     {
-        #$this->setShowEdit(false);
         parent::initialize();
     }
 

@@ -14,13 +14,7 @@ class RolePermissionEdit extends BaseEdit
 
     protected function initialize()
     {
-        $options = [];
-        if ($this->hasPermissionBeanList()) {
-            foreach ($this->getPermissionBeanList() as $permission) {
-                $options[$permission->get('UserPermission_Code')] = $permission->get('UserPermission_Code');
-            }
-        }
-        $this->getForm()->addSelect('UserPermission_Code', $options, '{UserPermission_Code}', $this->translate('userpermission.code'));
+        $this->setCreateBulk(true);
         parent::initialize();
     }
 

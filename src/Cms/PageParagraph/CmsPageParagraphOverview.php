@@ -5,6 +5,7 @@ namespace Pars\Admin\Cms\PageParagraph;
 
 
 use Pars\Admin\Cms\Paragraph\CmsParagraphOverview;
+use Pars\Helper\Parameter\IdListParameter;
 
 class CmsPageParagraphOverview extends CmsParagraphOverview
 {
@@ -36,17 +37,17 @@ class CmsPageParagraphOverview extends CmsParagraphOverview
         ];
     }
 
-    protected function getMoveRedirectController(): string
+    protected function getRedirectController(): string
     {
         return 'cmspage';
     }
 
-    protected function getMoveRedirectAction(): string
+    protected function getRedirectAction(): string
     {
         return 'detail';
     }
 
-    protected function getMoveRedirectIdFields(): array
+    protected function getRedirectIdFields(): array
     {
         return [
             'CmsPage_ID'

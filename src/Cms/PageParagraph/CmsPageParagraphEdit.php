@@ -12,9 +12,8 @@ class CmsPageParagraphEdit extends CmsParagraphEdit
 
     protected function initFields()
     {
-        if ($this->hasParagraphOptions()) {
-            $this->getForm()->addSelect('CmsParagraph_ID', $this->getParagraphOptions(), $this->translate('cmsparagraph.id'));
-        }
+       $this->setCreateBulk(true);
+       $this->setCreate(false);
     }
 
 
