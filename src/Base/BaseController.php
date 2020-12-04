@@ -257,7 +257,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         } else {
             $converter = new ViewBeanConverter();
         }
-        $converter->setTimezone($this->getModel()->getConfig('timezone'));
+        $converter->setTimezone($this->getModel()->getConfig('admin.timezone'));
         $this->getModel()->setBeanConverter($converter);
         $this->getModel()->initialize();
         if ($this->getModel()->hasBeanProcessor()) {
@@ -269,6 +269,13 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 $processor->setTranslator($this->getTranslator());
             }
         }
+
+        $this->getView()->set('language', $this->getUserBean()->getLocale()->getLocale_Code());
+        $this->getView()->set('title', $this->getModel()->getConfig('admin.title'));
+        $this->getView()->set('author', $this->getModel()->getConfig('admin.author'));
+        $this->getView()->set('favicon', $this->getModel()->getConfig('admin.favicon'));
+        $this->getView()->set('description', $this->getModel()->getConfig('admin.description'));
+        $this->getView()->set('charset', $this->getModel()->getConfig('admin.charset'));
     }
 
 

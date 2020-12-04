@@ -45,7 +45,6 @@ class UserController extends CrudController
     protected function createOverview(): BaseOverview
     {
         $overview =  new UserOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $overview->setCreatePath($this->getPathHelper()->setController('user')->setAction('create'));
         return $overview;
     }
 

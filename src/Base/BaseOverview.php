@@ -4,10 +4,9 @@
 namespace Pars\Admin\Base;
 
 
-use Pars\Component\Base\Field\Button;
 use Pars\Component\Base\Form\Input;
 use Pars\Component\Base\Overview\Overview;
-use Pars\Component\Base\Toolbar\Toolbar;
+use Pars\Component\Base\Toolbar\DeleteButton;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\MoveParameter;
@@ -19,14 +18,12 @@ abstract class BaseOverview extends Overview
 {
     use AdminComponentTrait;
 
-    public ?string $createPath = null;
     public bool $showEdit = true;
     public bool $showEditBulk = false;
     public bool $showDelete = true;
     public bool $showDeleteBulk = true;
     public bool $showDetail = true;
     public bool $showCreate = true;
-    public bool $showCreateBulk = false;
     public bool $showMove = false;
     public ?string $section = null;
     public ?string $token = null;
@@ -79,58 +76,30 @@ abstract class BaseOverview extends Overview
         if ($this->isShowDelete()) {
             $this->setDeletePath($this->getPathHelper()->setController($this->getController())->setAction('delete')->setId($id));
         }
+
+        $createid = (new IdParameter());
+        foreach ($this->getCreateIdFields() as $idField) {
+            $createid->addId($idField);
+        }
+        $createPath = $this->getPathHelper()->setController($this->getController())->setAction('create')->setId($createid)->getPath();
         if ($this->isShowCreate()) {
-            $id = (new IdParameter());
-            foreach ($this->getCreateIdFields() as $idField) {
-                $id->addId($idField);
-            }
-            $this->setCreatePath($this->getPathHelper()->setController($this->getController())->setAction('create')->setId($id));
+            $this->getToolbar()->setCreatePath($createPath);
         }
 
+        $this->setAttribute('method', 'post');
+        $this->setAttribute('action', $createPath);
 
-        if ($this->isShowCreateBulk()) {
-            $id = (new IdParameter());
-            foreach ($this->getCreateIdFields() as $idField) {
-                $id->addId($idField);
-            }
-            $toolbar = new HtmlElement('div.btn-toolbar.mb-4');
-            $button = new Button($this->translate('create_bulk.button'), Button::STYLE_SUCCESS);
-            $button->setPath(
-                $this->getPathHelper()->setController($this->getController())->setAction('create_bulk')->setId($id)
-            );
-            $toolbar->push($button);
-            $this->push($toolbar);
-        }
-
-        $toolbar = new Toolbar();
-
-        if ($this->hasCreatePath()) {
-            $button = new Button($this->translate('create.title'), Button::STYLE_SUCCESS);
-            $button->setPath($this->getCreatePath());
-            $toolbar->push($button);
-        }
 
         if ($this->isShowDeleteBulk()) {
-
             $id = (new IdParameter());
             foreach ($this->getDetailIdFields() as $idField) {
                 $id->addId($idField);
             }
-            $button = new Button($this->translate('delete_bulk.button'), Button::STYLE_DANGER);
-            $button->setType('submit');
-            $button->setName(SubmitParameter::name());
-            $button->setValue(SubmitParameter::createDeleteBulk());
-            $button->setConfirmTitle($this->translate('delete.heading'));
-            $button->setConfirmCancel($this->translate('delete.cancel'));
-            $toolbar->push($button);
+            $button = new DeleteButton(SubmitParameter::name(), SubmitParameter::createDeleteBulk());
+            $button->setConfirm($this->translate('delete_bulk.message'));
+            $this->getToolbar()->push($button);
             $this->setTag('form');
-            $this->setAttribute('method', 'post');
-            $this->setAttribute('action', $this->getPathHelper()
-                ->setController($this->getController())
-                ->setAction('delete')->setId($id)->getPath());
         }
-
-        $this->push($toolbar);
 
 
         if ($this->isShowMove()) {
@@ -175,18 +144,18 @@ abstract class BaseOverview extends Overview
     }
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getSection(): string
     {
         return $this->section;
     }
 
     /**
-    * @param string $section
-    *
-    * @return $this
-    */
+     * @param string $section
+     *
+     * @return $this
+     */
     public function setSection(string $section): self
     {
         $this->section = $section;
@@ -194,8 +163,8 @@ abstract class BaseOverview extends Overview
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasSection(): bool
     {
         return isset($this->section);
@@ -203,7 +172,9 @@ abstract class BaseOverview extends Overview
 
 
     abstract protected function getController(): string;
+
     abstract protected function getDetailIdFields(): array;
+
     protected function getCreateIdFields(): array
     {
         return [];
@@ -242,7 +213,6 @@ abstract class BaseOverview extends Overview
     {
         $this->showMove = $showMove;
     }
-
 
 
     /**
@@ -302,49 +272,6 @@ abstract class BaseOverview extends Overview
 
 
     /**
-    * @return string
-    */
-    public function getCreatePath(): string
-    {
-        return $this->createPath;
-    }
-
-    /**
-    * @param string $createPath
-    *
-    * @return $this
-    */
-    public function setCreatePath(string $createPath): self
-    {
-        $this->createPath = $createPath;
-        return $this;
-    }
-
-    /**
-    * @return bool
-    */
-    public function hasCreatePath(): bool
-    {
-        return isset($this->createPath);
-    }
-
-    /**
-     * @return bool
-     */
-    public function isShowCreateBulk(): bool
-    {
-        return $this->showCreateBulk;
-    }
-
-    /**
-     * @param bool $showCreateBulk
-     */
-    public function setShowCreateBulk(bool $showCreateBulk): void
-    {
-        $this->showCreateBulk = $showCreateBulk;
-    }
-
-    /**
      * @return bool
      */
     public function isShowEditBulk(): bool
@@ -378,18 +305,18 @@ abstract class BaseOverview extends Overview
 
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getToken(): string
     {
         return $this->token;
     }
 
     /**
-    * @param string $token
-    *
-    * @return $this
-    */
+     * @param string $token
+     *
+     * @return $this
+     */
     public function setToken(string $token): self
     {
         $this->token = $token;
@@ -397,8 +324,8 @@ abstract class BaseOverview extends Overview
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasToken(): bool
     {
         return isset($this->token);
