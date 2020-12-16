@@ -2,20 +2,12 @@
 
 namespace Pars\Admin\Locale;
 
-use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\SystemNavigation;
-use Pars\Mvc\Helper\PathHelper;
-use Pars\Helper\Parameter\IdParameter;
-use Pars\Helper\Parameter\MoveParameter;
-use Pars\Helper\Parameter\RedirectParameter;
-use Pars\Mvc\View\Components\Detail\Detail;
-use Pars\Mvc\View\Components\Edit\Edit;
-use Pars\Mvc\View\Components\Overview\Overview;
 
 class LocaleController extends CrudController
 {

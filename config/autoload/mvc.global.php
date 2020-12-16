@@ -19,7 +19,8 @@ return [
             'cmspageparagraph' => \Pars\Admin\Cms\PageParagraph\CmsPageParagraphController::class,
             'filedirectory' => \Pars\Admin\File\Directory\FileDirectoryController::class,
             'file' => \Pars\Admin\File\FileController::class,
-            'config' => \Pars\Admin\Config\ConfigController::class
+            'config' => \Pars\Admin\Config\ConfigController::class,
+            'import' => \Pars\Admin\Import\ImportController::class,
         ],
         'models' => [
             'setup' => \Pars\Admin\Setup\SetupModel::class,
@@ -38,7 +39,8 @@ return [
             'cmspageparagraph' => \Pars\Admin\Cms\PageParagraph\CmsPageParagraphModel::class,
             'filedirectory' => \Pars\Admin\File\Directory\FileDirectoryModel::class,
             'file' => \Pars\Admin\File\FileModel::class,
-            'config' => \Pars\Admin\Config\ConfigModel::class
+            'config' => \Pars\Admin\Config\ConfigModel::class,
+            'import' => \Pars\Admin\Import\ImportModel::class,
         ],
 
     ],

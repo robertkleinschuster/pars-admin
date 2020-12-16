@@ -270,7 +270,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             }
         }
 
-        $this->getView()->set('language', $this->getUserBean()->getLocale()->getLocale_Code());
+        $this->getView()->set('language', $this->getTranslator()->getLocale());
         $this->getView()->set('title', $this->getModel()->getConfig('admin.title'));
         $this->getView()->set('author', $this->getModel()->getConfig('admin.author'));
         $this->getView()->set('favicon', $this->getModel()->getConfig('admin.favicon'));

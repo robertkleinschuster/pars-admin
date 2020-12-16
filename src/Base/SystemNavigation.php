@@ -33,6 +33,11 @@ class SystemNavigation extends BaseNavigation
             'config'
         )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'config'));
         $this->addItem(
+            $this->translate('navigation.system.import'),
+            $this->getPathHelper()->setController('import')->setAction('index'),
+            'import'
+        )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'import'));
+        $this->addItem(
             $this->translate('navigation.system.update'),
             $this->getPathHelper()->setController('update')->setAction('index'),
             'update'
