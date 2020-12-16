@@ -5,17 +5,19 @@ namespace Pars\Admin\Import;
 
 
 use Pars\Admin\Base\BaseEdit;
-use Pars\Admin\Import\Type\ImportTypeBeanList;
 
 class ImportEdit extends BaseEdit
 {
     protected ?array $importTypeOptions = null;
-
+    protected ?array $articleOptions = null;
     protected function initialize()
     {
         $this->getForm()->addText('Import_Name', '{Import_Name}', $this->translate('import.name'), 1);
         if (null !== $this->getImportTypeOptions()) {
             $this->getForm()->addSelect('ImportType_Code', $this->getImportTypeOptions() ,'{ImportType_Code}', $this->translate('importtype.code'));
+        }
+        if (null !== $this->getArticleOptions()) {
+            $this->getForm()->addSelect('Article_ID', $this->getArticleOptions(), '{Article_ID}', $this->translate('article.id'));
         }
         $this->getForm()->addCheckbox('Import_Active', '{Import_Active}', $this->translate('import.active'), 2);
         $days = [];
@@ -53,6 +55,22 @@ class ImportEdit extends BaseEdit
     public function setImportTypeOptions(?array $importTypeOptions): void
     {
         $this->importTypeOptions = $importTypeOptions;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getArticleOptions(): ?array
+    {
+        return $this->articleOptions;
+    }
+
+    /**
+     * @param array|null $articleOptions
+     */
+    public function setArticleOptions(?array $articleOptions): void
+    {
+        $this->articleOptions = $articleOptions;
     }
 
 

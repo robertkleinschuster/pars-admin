@@ -3,6 +3,7 @@
 namespace Pars\Admin\Import;
 
 use Pars\Admin\Base\CrudModel;
+use Pars\Model\Article\Translation\ArticleTranslationBeanFinder;
 use Pars\Model\Import\ImportBeanFinder;
 use Pars\Model\Import\ImportBeanProcessor;
 use Pars\Model\Import\Type\ImportTypeBeanFinder;
@@ -31,6 +32,17 @@ class ImportModel extends CrudModel
         $options = [];
         foreach ($finder->getBeanListDecorator() as $item) {
             $options[$item->get('ImportType_Code')] = $this->translate('importtype.code.' . $item->get('ImportType_Code'));
+        }
+        return $options;
+    }
+
+    public function getArticleOptions(): array
+    {
+        $finder = new ArticleTranslationBeanFinder($this->getDbAdpater());
+        $finder->setLocale_Code($this->getTranslator()->getLocale());
+        $options = [];
+        foreach ($finder->getBeanListDecorator() as $item) {
+            $options[$item->get('Article_ID')] = $item->get('ArticleTranslation_Name');
         }
         return $options;
     }

@@ -73,6 +73,7 @@ class ImportController extends CrudController
     {
         $edit = new ImportEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $edit->setImportTypeOptions($this->getModel()->getImportTypeOptions());
+        $edit->setArticleOptions($this->getModel()->getArticleOptions());
         return $edit;
     }
 
