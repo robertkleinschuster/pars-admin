@@ -18,7 +18,8 @@
         "pars/pars-mvc": "^1.0.x-dev",
         "pars/pars-components": "^1.0.x-dev",
         "pars/pars-helpers": "^1.0.x-dev",
-        "pars/pars-models": "^1.0.x-dev"
+        "pars/pars-models": "^1.0.x-dev",
+        "pars/pars-import": "^1.0.x-dev"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.3.7",
