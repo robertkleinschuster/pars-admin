@@ -43,6 +43,7 @@ $aggregator = new ConfigAggregator([
     \Laminas\Diactoros\ConfigProvider::class,
 
     // Default App module config
+    \Pars\Component\ConfigProvider::class,
     \Pars\Mvc\ConfigProvider::class,
     \Pars\Model\ConfigProvider::class,
     \Pars\Core\ConfigProvider::class,
