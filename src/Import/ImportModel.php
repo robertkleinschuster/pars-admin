@@ -2,7 +2,12 @@
 
 namespace Pars\Admin\Import;
 
+use League\OAuth2\Client\Provider\GenericProvider;
 use Pars\Admin\Base\CrudModel;
+use Pars\Helper\Parameter\IdListParameter;
+use Pars\Helper\Parameter\IdParameter;
+use Pars\Helper\Parameter\SubmitParameter;
+use Pars\Import\Tesla\TeslaImporter;
 use Pars\Model\Article\Translation\ArticleTranslationBeanFinder;
 use Pars\Model\Import\ImportBeanFinder;
 use Pars\Model\Import\ImportBeanProcessor;
@@ -46,5 +51,20 @@ class ImportModel extends CrudModel
         }
         return $options;
     }
+
+    protected function save(array $attributes): void
+    {
+        if (isset($attributes['tesla_username']) || isset($attributes['tesla_password'])) {
+            $importer = new TeslaImporter($this->getBean());
+            if ($importer->setup($attributes)) {
+                parent::save($attributes);
+            }
+            $this->getValidationHelper()->merge($importer->getValidationHelper());
+        } else {
+            parent::save($attributes);
+        }
+    }
+
+
 
 }

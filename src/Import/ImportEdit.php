@@ -5,8 +5,6 @@ namespace Pars\Admin\Import;
 
 
 use Pars\Admin\Base\BaseEdit;
-use Pars\Component\Base\Field\Button;
-use Pars\Mvc\View\HtmlElement;
 
 class ImportEdit extends BaseEdit
 {

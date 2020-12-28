@@ -4,12 +4,17 @@
 namespace Pars\Admin\Import;
 
 
+use League\OAuth2\Client\Token\AccessToken;
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\SystemNavigation;
+use Pars\Admin\Import\Tesla\TeslaImportConfigure;
+use Pars\Component\Base\Alert\Alert;
+use Pars\Import\Tesla\TeslaImporter;
+use Pars\Mvc\Controller\ControllerResponse;
 
 class ImportController extends CrudController
 {
@@ -89,4 +94,48 @@ class ImportController extends CrudController
         return new ImportDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
+    /**
+     * @throws \Niceshops\Bean\Type\Base\BeanException
+     * @throws \Niceshops\Core\Exception\AttributeExistsException
+     * @throws \Niceshops\Core\Exception\AttributeLockException
+     * @throws \Niceshops\Core\Exception\AttributeNotFoundException
+     * @throws \Pars\Mvc\Exception\NotFoundException
+     */
+    public function configureAction()
+    {
+        $bean = $this->getModel()->getBean();
+        switch ($bean->get('ImportType_Code')) {
+            case 'tesla':
+                if (isset($bean->get('Import_Data')['access_token'])) {
+                    $alert = new Alert($this->translate('tesla.authentication.alert'));
+                    $this->getView()->append($alert);
+                }
+                $configure = new TeslaImportConfigure($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+                $configure->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
+                $configure->setBean($bean);
+                $this->getModel()->getBeanConverter()
+                    ->convert($configure->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
+                $configure->setToken($this->generateToken('submit_token'));
+                $this->getView()->append($configure);
+                break;
+        }
+    }
+
+    /**
+     * @throws \Pars\Mvc\Exception\NotFoundException
+     */
+    public function runAction()
+    {
+        $bean = $this->getModel()->getBean();
+        switch ($bean->get('ImportType_Code')) {
+            case 'tesla':
+                $importer = new TeslaImporter($this->getModel()->getBean());
+                $importer->run();
+                $processor = $this->getModel()->getBeanProcessor();
+                $beanList = $this->getModel()->getBeanFinder()->getBeanFactory()->getEmptyBeanList();
+                $beanList->push($importer->getBean());
+                $processor->setBeanList($beanList);
+                $processor->save();
+        }
+    }
 }

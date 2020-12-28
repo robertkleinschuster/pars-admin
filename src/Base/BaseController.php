@@ -294,7 +294,9 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             foreach ($validationHelper->getErrorList('Permission') as $item) {
                 $alert->addParagraph($item);
             }
-            $this->getView()->prepend($alert);
+            if ($this->hasView()) {
+                $this->getView()->prepend($alert);
+            }
             $this->getControllerResponse()->setStatusCode(ControllerResponse::STATUS_PERMISSION_DENIED);
         }
 
@@ -361,6 +363,22 @@ abstract class BaseController extends AbstractController implements AttributeAwa
     public function unauthorized()
     {
         $this->getView()->append(new Alert($this->translate('unauthorized.heading'), $this->translate('unauthorized.text')));
+    }
+
+    /**
+     * @param \Throwable $exception
+     * @return mixed|void
+     * @throws \Niceshops\Bean\Type\Base\BeanException
+     */
+    public function notfound(\Throwable $exception)
+    {
+        if ($this->hasView()) {
+            $alert = new Alert($this->translate('notfound.heading'), $this->translate('notfound.text'));
+            $alert->addParagraph($exception->getMessage());
+            $this->getView()->append($alert);
+        } else {
+            parent::notfound($exception);
+        }
     }
 
     public function clearcacheAction(bool $redirect = true)

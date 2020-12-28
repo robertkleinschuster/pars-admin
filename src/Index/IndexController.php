@@ -10,8 +10,6 @@ use Pars\Component\Base\Field\Progress;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\ListGroup\Group;
 use Pars\Component\Base\ListGroup\Item;
-use Pars\Import\Authentication\OAuth\Configurable\ConfigurableGrant;
-use Pars\Import\Authentication\OAuth\Configurable\ConfigurableProvider;
 use Pars\Mvc\View\HtmlElement;
 
 /**
@@ -79,7 +77,7 @@ class IndexController extends BaseController
 
             $heading->push(new Badge($this->translate('index.no.active.menu'), Badge::STYLE_WARNING));
             $span->push($heading);
-        }  else {
+        } else {
             $score += 10;
             $heading = new HtmlElement('h5.m-1.d-inline');
             $heading->push(new Badge($this->translate('index.active.menu'), Badge::STYLE_SUCCESS));
@@ -159,5 +157,5 @@ class IndexController extends BaseController
         $this->getView()->append($detail);
         $this->getView()->append($group);
     }
-    
+
 }
