@@ -6,6 +6,7 @@ namespace Pars\Admin\Import;
 
 use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\Field\Badge;
+use Pars\Component\Base\Field\Span;
 
 class ImportOverview extends BaseOverview
 {
@@ -13,13 +14,22 @@ class ImportOverview extends BaseOverview
     {
         $this->setSection($this->translate('section.import'));
         $this->addField('Import_Name', $this->translate('import.name'));
-        $this->addField('Import_Day', $this->translate('import.day'));
-        $this->addField('Import_Hour', $this->translate('import.hour'));
-        $this->addField('Import_Minute', $this->translate('import.minute'));
         $active = new Badge('{Import_Active}');
         $active->setFormat(new ImportActiveFieldFormat($this->getTranslator()));
         $this->append($active);
         parent::initialize();
+        $span = new Span();
+        $span->setLabel($this->translate('import.day'));
+        $span->setFormat(new ImportDayFieldFormat($this->getTranslator()));
+        $this->append($span);
+        $span = new Span();
+        $span->setLabel($this->translate('import.hour'));
+        $span->setFormat(new ImportHourFieldFormat($this->getTranslator()));
+        $this->append($span);
+        $span = new Span();
+        $span->setLabel($this->translate('import.minute'));
+        $span->setFormat(new ImportMinuteFieldFormat($this->getTranslator()));
+        $this->append($span);
     }
 
 

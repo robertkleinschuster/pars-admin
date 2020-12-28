@@ -5,6 +5,8 @@ namespace Pars\Admin\Import;
 
 
 use Pars\Admin\Base\BaseEdit;
+use Pars\Component\Base\Field\Button;
+use Pars\Mvc\View\HtmlElement;
 
 class ImportEdit extends BaseEdit
 {
@@ -38,6 +40,20 @@ class ImportEdit extends BaseEdit
         $this->getForm()->addSelect('Import_Day', $days, '{Import_Day}', $this->translate('import.day'), 3, 1);
         $this->getForm()->addSelect('Import_Hour', $hours, '{Import_Hour}', $this->translate('import.hour'), 3, 2);
         $this->getForm()->addSelect('Import_Minute', $minutes, '{Import_Minute}', $this->translate('import.minute'), 3, 3);
+        $button = new Button('New Field');
+        $button->addOption('dynamic-field-add');
+        $button->setData('dynamic-field-label', 'test-label');
+        $button->setData('dynamic-field-name', 'test-name');
+        $button->setData('dynamic-field-container', 'dynamic-field-container');
+        $button->addOption('input-modal');
+        $button->setData('input-title', 'asdf');
+        $button->setData('input-cancel', 'asdf');
+        $button->setData('toggle', 'modal');
+        $button->setData('target', '#input-modal');
+        $this->getElementList()->push($button);
+        $container = new HtmlElement('div');
+        $container->setId('dynamic-field-container');
+        $this->getElementList()->push($container);
         parent::initialize();
     }
 
