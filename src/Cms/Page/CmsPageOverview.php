@@ -6,8 +6,8 @@ namespace Pars\Admin\Cms\Page;
 
 use Pars\Admin\Article\ArticleOverview;
 use Pars\Component\Base\Field\Badge;
+use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Field\Span;
-use Pars\Helper\Parameter\IdListParameter;
 
 class CmsPageOverview extends ArticleOverview
 {
@@ -21,6 +21,10 @@ class CmsPageOverview extends ArticleOverview
             $span->addOption(Span::OPTION_DECORATION_NONE);
         }
         $this->append($span);
+        $icon = new Icon(Icon::ICON_CORNER_UP_RIGHT);
+        $icon->setWidth('16px');
+        $icon->setAccept(new CmsPageRedirectAccept());
+        $this->append($icon);
         $span = new Span('{CmsPageType_Code}', $this->translate('cmspagetype.code'));
         $span->setFormat(new CmsPageTypeFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {
@@ -38,9 +42,9 @@ class CmsPageOverview extends ArticleOverview
 
     protected function getDetailIdFields(): array
     {
-       return [
-           'CmsPage_ID'
-       ];
+        return [
+            'CmsPage_ID'
+        ];
     }
 
 }

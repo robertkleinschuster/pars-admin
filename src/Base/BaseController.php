@@ -399,7 +399,9 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $bundlesConfig = $this->getControllerRequest()->getServerRequest()->getAttribute(BundlesMiddleware::class);
         if ($bundlesConfig !== null) {
             foreach (array_column($bundlesConfig, 'output') as $item) {
-                unlink($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . $item);
+                if (file_exists($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . $item)) {
+                    unlink($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . $item);
+                }
             }
         }
         if ($redirect) {

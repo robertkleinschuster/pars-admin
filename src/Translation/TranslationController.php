@@ -55,7 +55,6 @@ class TranslationController extends CrudController
     public function editAction()
     {
         parent::editAction();
-        $this->clearcacheAction(false);
         $source = $this->getModel()->getTranslationSource();
         if ($source) {
             $detail = $this->createDetail();

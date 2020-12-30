@@ -16,7 +16,7 @@ class TranslationEdit extends BaseEdit
         $this->getForm()->addText('Translation_Code', '{Translation_Code}', $this->translate('translation.code'));
         $this->getForm()->addText('Translation_Text', '{Translation_Text}', $this->translate('translation.text'));
         $options = [
-            'default' => 'default',
+            'frontend' => 'frontend',
             'admin' => 'admin'
         ];
         $this->getForm()->addSelect('Translation_Namespace', $options, '{Translation_Namespace}', $this->translate('translation.namespace'));
