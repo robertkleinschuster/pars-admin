@@ -12,6 +12,7 @@ use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Grid\Container;
 use Pars\Component\Base\Layout\DashboardLayout;
 use Pars\Component\Base\View\BaseView;
+use Pars\Core\Bundles\BundlesMiddleware;
 use Pars\Core\Database\DatabaseBeanSaver;
 use Pars\Core\Database\DatabaseMiddleware;
 use Pars\Core\Logging\LoggingMiddleware;
@@ -383,17 +384,23 @@ abstract class BaseController extends AbstractController implements AttributeAwa
 
     public function clearcacheAction(bool $redirect = true)
     {
-        $result = 'Clear Cache';
-        $result .= "<br>Admin {$this->getTranslator()->getLocale()} Translation: "
-            . $this->getTranslator()->clearCache('admin', $this->getTranslator()->getLocale());
-        $result .= "<br>Default {$this->getTranslator()->getLocale()} Translation: "
-            . $this->getTranslator()->clearCache('default', $this->getTranslator()->getLocale());
+
+        $this->getTranslator()->clearCache('admin', $this->getTranslator()->getLocale());
+        $this->getTranslator()->clearCache('default', $this->getTranslator()->getLocale());
         $this->getTranslator()->clearCache('validation', $this->getTranslator()->getLocale());
+
         if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/../data/cache/admin-config-cache.php')) {
             unlink($_SERVER['DOCUMENT_ROOT'] . '/../data/cache/admin-config-cache.php');
         }
         if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/../data/cache/frontend-config-cache.php')) {
             unlink($_SERVER['DOCUMENT_ROOT'] . '/../data/cache/frontend-config-cache.php');
+        }
+
+        $bundlesConfig = $this->getControllerRequest()->getServerRequest()->getAttribute(BundlesMiddleware::class);
+        if ($bundlesConfig !== null) {
+            foreach (array_column($bundlesConfig, 'output') as $item) {
+                unlink($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . $item);
+            }
         }
         if ($redirect) {
             $this->getControllerResponse()->setRedirect($this->getPathHelper()->setController('index')->setAction('index'));
