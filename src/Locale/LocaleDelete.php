@@ -12,12 +12,11 @@ class LocaleDelete extends BaseDelete
     {
         parent::initialize();
     }
+
     protected function getRedirectController(): string
     {
         return 'locale';
     }
-
-
 
 
 }

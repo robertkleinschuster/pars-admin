@@ -3,8 +3,8 @@
 namespace Pars\Admin\Cms\Post;
 
 use Pars\Admin\Article\ArticleController;
-use Pars\Mvc\Helper\PathHelper;
 use Pars\Helper\Parameter\IdParameter;
+use Pars\Mvc\Helper\PathHelper;
 use Pars\Mvc\View\Components\Detail\Detail;
 use Pars\Mvc\View\Components\Edit\Edit;
 
@@ -34,7 +34,7 @@ class CmsPostController extends ArticleController
 
     protected function addDetailFields(Detail $detail): void
     {
-       parent::addDetailFields($detail);
+        parent::addDetailFields($detail);
         $detail->addText('CmsPostType_Code', $this->translate('cmsposttype.code'))
             ->setChapter($this->translate('article.detail.general'))
             ->setAppendToColumnPrevious(true);

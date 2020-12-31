@@ -6,8 +6,6 @@ use Pars\Admin\Base\CrudModel;
 use Pars\Model\Localization\Locale\LocaleBeanFinder;
 use Pars\Model\Translation\TranslationLoader\TranslationBeanFinder;
 use Pars\Model\Translation\TranslationLoader\TranslationBeanProcessor;
-use Pars\Helper\Parameter\IdParameter;
-use Pars\Helper\Parameter\SubmitParameter;
 
 class TranslationModel extends CrudModel
 {

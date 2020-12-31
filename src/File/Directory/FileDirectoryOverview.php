@@ -20,7 +20,7 @@ class FileDirectoryOverview extends BaseOverview
 
     protected function getController(): string
     {
-       return 'filedirectory';
+        return 'filedirectory';
     }
 
     protected function getDetailIdFields(): array

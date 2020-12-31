@@ -4,7 +4,6 @@
 namespace Pars\Admin\Import;
 
 
-use League\OAuth2\Client\Token\AccessToken;
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
@@ -14,7 +13,6 @@ use Pars\Admin\Base\SystemNavigation;
 use Pars\Admin\Import\Tesla\TeslaImportConfigure;
 use Pars\Component\Base\Alert\Alert;
 use Pars\Import\Tesla\TeslaImporter;
-use Pars\Mvc\Controller\ControllerResponse;
 
 class ImportController extends CrudController
 {
@@ -39,8 +37,6 @@ class ImportController extends CrudController
         $subNavigation->setActive('import');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
-
-
 
 
     /**

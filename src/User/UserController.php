@@ -8,7 +8,6 @@ use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\SystemNavigation;
-use Pars\Component\Base\Edit\Edit;
 
 
 /**
@@ -44,14 +43,14 @@ class UserController extends CrudController
 
     protected function createOverview(): BaseOverview
     {
-        $overview =  new UserOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $overview = new UserOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         return $overview;
     }
 
     public function detailAction()
     {
         parent::detailAction();
-        $this->getView()->set('Person_ID', (int) $this->getControllerRequest()->getId()->getAttribute('Person_ID'));
+        $this->getView()->set('Person_ID', (int)$this->getControllerRequest()->getId()->getAttribute('Person_ID'));
         $this->addSubController('userrole', 'index');
     }
 
@@ -80,6 +79,7 @@ class UserController extends CrudController
         $edit->setToken($this->generateToken('submit_token'));
         $this->getView()->append($edit);
     }
+
     protected function createDelete(): BaseDelete
     {
         $delete = new UserDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());

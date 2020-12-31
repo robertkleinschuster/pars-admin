@@ -3,10 +3,10 @@
 namespace Pars\Admin\Cms\Paragraph;
 
 use Pars\Admin\Article\ArticleModel;
-use Pars\Model\Cms\Paragraph\State\CmsParagraphStateBeanFinder;
-use Pars\Model\Cms\Paragraph\Type\CmsParagraphTypeBeanFinder;
 use Pars\Model\Cms\Paragraph\CmsParagraphBeanFinder;
 use Pars\Model\Cms\Paragraph\CmsParagraphBeanProcessor;
+use Pars\Model\Cms\Paragraph\State\CmsParagraphStateBeanFinder;
+use Pars\Model\Cms\Paragraph\Type\CmsParagraphTypeBeanFinder;
 
 class CmsParagraphModel extends ArticleModel
 {

@@ -5,9 +5,7 @@ namespace Pars\Admin\Update;
 
 
 use Laminas\I18n\Translator\TranslatorInterface;
-use Pars\Admin\Base\AdminComponentTrait;
 use Pars\Admin\Base\BaseEdit;
-use Pars\Component\Base\Edit\Edit;
 use Pars\Core\Database\Updater\AbstractUpdater;
 use Pars\Helper\Parameter\RedirectParameter;
 use Pars\Helper\Parameter\SubmitParameter;
@@ -20,7 +18,7 @@ class Update extends BaseEdit
 
     public function __construct(PathHelper $pathHelper, TranslatorInterface $translator, UserBean $userBean, AbstractUpdater $updater)
     {
-        parent::__construct($pathHelper, $translator,$userBean );
+        parent::__construct($pathHelper, $translator, $userBean);
         $this->updater = $updater;
     }
 
@@ -34,7 +32,7 @@ class Update extends BaseEdit
         ));
         foreach ($previewList as $key => $item) {
             $this->getForm()->addCheckbox($key, '')->setValue('true')
-            ->setLabel($key . ': <br><pre>' . json_encode($item, JSON_PRETTY_PRINT) . '</pre>');
+                ->setLabel($key . ': <br><pre>' . json_encode($item, JSON_PRETTY_PRINT) . '</pre>');
         }
         parent::initialize();
     }

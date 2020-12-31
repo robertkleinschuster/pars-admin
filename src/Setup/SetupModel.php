@@ -4,7 +4,7 @@ namespace Pars\Admin\Setup;
 
 use Pars\Core\Database\Updater\DataUpdater;
 use Pars\Core\Database\Updater\SchemaUpdater;
-use Pars\Model\Authentication\User\UserBeanList;
+use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Authorization\Permission\PermissionBeanFinder;
 use Pars\Model\Authorization\Role\RoleBeanFinder;
 use Pars\Model\Authorization\Role\RoleBeanProcessor;
@@ -12,7 +12,6 @@ use Pars\Model\Authorization\RolePermission\RolePermissionBeanFinder;
 use Pars\Model\Authorization\RolePermission\RolePermissionBeanProcessor;
 use Pars\Model\Authorization\UserRole\UserRoleBeanFinder;
 use Pars\Model\Authorization\UserRole\UserRoleBeanProcessor;
-use Pars\Helper\Parameter\IdParameter;
 
 /**
  * Class SetupModel

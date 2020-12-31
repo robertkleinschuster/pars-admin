@@ -4,7 +4,6 @@ namespace Pars\Admin\Base;
 
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Span;
-use Pars\Component\Base\Form\Form;
 
 /**
  * Class CrudController

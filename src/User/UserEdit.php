@@ -5,8 +5,6 @@ namespace Pars\Admin\User;
 
 
 use Pars\Admin\Base\BaseEdit;
-use Pars\Helper\Parameter\RedirectParameter;
-use Pars\Helper\Parameter\SubmitParameter;
 
 class UserEdit extends BaseEdit
 {
@@ -23,12 +21,12 @@ class UserEdit extends BaseEdit
         $this->getForm()->addPassword('User_Password', '', $this->translate('user.password'), 3, 2);
         $this->getForm()->addText('User_Displayname', '{User_Displayname}', $this->translate('user.displayname'), 2, 1);
         if ($this->hasStateOptions()) {
-            $this->getForm()->addSelect('UserState_Code', $this->getStateOptions(), '{UserState_Code}', $this->translate('userstate.code'),4,2);
+            $this->getForm()->addSelect('UserState_Code', $this->getStateOptions(), '{UserState_Code}', $this->translate('userstate.code'), 4, 2);
         } else {
             $this->getForm()->addHidden('UserState_Code', '{UserState_Code}');
         }
         if ($this->hasLocaleOptions()) {
-            $this->getForm()->addSelect('Locale_Code', $this->getLocaleOptions(), '{Locale_Code}', $this->translate('user.locale'), 4,1);
+            $this->getForm()->addSelect('Locale_Code', $this->getLocaleOptions(), '{Locale_Code}', $this->translate('user.locale'), 4, 1);
         } else {
             $this->getForm()->addHidden('Locale_Code', '{Locale_Code}');
         }
@@ -51,18 +49,18 @@ class UserEdit extends BaseEdit
     }
 
     /**
-    * @return array
-    */
+     * @return array
+     */
     public function getStateOptions(): array
     {
         return $this->stateOptions;
     }
 
     /**
-    * @param array $stateOptions
-    *
-    * @return $this
-    */
+     * @param array $stateOptions
+     *
+     * @return $this
+     */
     public function setStateOptions(array $stateOptions): self
     {
         $this->stateOptions = $stateOptions;
@@ -70,26 +68,26 @@ class UserEdit extends BaseEdit
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasStateOptions(): bool
     {
         return isset($this->stateOptions);
     }
 
     /**
-    * @return array
-    */
+     * @return array
+     */
     public function getLocaleOptions(): array
     {
         return $this->localeOptions;
     }
 
     /**
-    * @param array $localeOptions
-    *
-    * @return $this
-    */
+     * @param array $localeOptions
+     *
+     * @return $this
+     */
     public function setLocaleOptions(array $localeOptions): self
     {
         $this->localeOptions = $localeOptions;
@@ -97,14 +95,12 @@ class UserEdit extends BaseEdit
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasLocaleOptions(): bool
     {
         return isset($this->localeOptions);
     }
-
-
 
 
 }

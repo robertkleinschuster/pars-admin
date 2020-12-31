@@ -2,24 +2,8 @@
 
 namespace Pars\Admin\Base;
 
-use Laminas\I18n\Translator\TranslatorAwareInterface;
-use Niceshops\Bean\Converter\BeanConverterAwareInterface;
-use Niceshops\Bean\Processor\DefaultMetaFieldHandler;
-use Niceshops\Bean\Processor\TimestampMetaFieldHandler;
-use Niceshops\Bean\Saver\BeanSaverAwareInterface;
-use Pars\Component\Base\Alert\Alert;
-use Pars\Component\Base\Field\Icon;
-use Pars\Component\Base\Grid\Container;
-use Pars\Component\Base\Layout\DashboardLayout;
-use Pars\Component\Base\View\BaseView;
-use Pars\Core\Bundles\BundlesMiddleware;
-use Pars\Core\Database\DatabaseBeanSaver;
-use Pars\Core\Database\DatabaseMiddleware;
-use Pars\Core\Logging\LoggingMiddleware;
-use Pars\Core\Translation\TranslatorMiddleware;
-use Pars\Helper\Validation\ValidationHelper;
-use Pars\Model\Authentication\User\UserBean;
 use Laminas\Db\Adapter\Profiler\ProfilerInterface;
+use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Laminas\I18n\Translator\TranslatorInterface;
 use Mezzio\Authentication\UserInterface;
 use Mezzio\Csrf\CsrfGuardInterface;
@@ -28,14 +12,24 @@ use Mezzio\Flash\FlashMessageMiddleware;
 use Mezzio\Flash\FlashMessagesInterface;
 use Mezzio\Session\LazySession;
 use Mezzio\Session\SessionMiddleware;
+use Niceshops\Bean\Converter\BeanConverterAwareInterface;
+use Niceshops\Bean\Processor\DefaultMetaFieldHandler;
+use Niceshops\Bean\Processor\TimestampMetaFieldHandler;
 use Niceshops\Core\Attribute\AttributeAwareInterface;
 use Niceshops\Core\Attribute\AttributeAwareTrait;
 use Niceshops\Core\Option\OptionAwareInterface;
 use Niceshops\Core\Option\OptionAwareTrait;
-use Pars\Model\Config\ConfigBeanFinder;
+use Pars\Component\Base\Alert\Alert;
+use Pars\Component\Base\Layout\DashboardLayout;
+use Pars\Component\Base\View\BaseView;
+use Pars\Core\Bundles\BundlesMiddleware;
+use Pars\Core\Database\DatabaseMiddleware;
+use Pars\Core\Logging\LoggingMiddleware;
+use Pars\Core\Translation\TranslatorMiddleware;
+use Pars\Helper\Validation\ValidationHelper;
+use Pars\Model\Authentication\User\UserBean;
 use Pars\Mvc\Controller\AbstractController;
 use Pars\Mvc\Controller\ControllerResponse;
-use Pars\Helper\Parameter\NavParameter;
 use Pars\Mvc\View\ViewBeanConverter;
 use Psr\Log\LoggerInterface;
 
@@ -113,7 +107,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function getNavigationState(string $id): int
     {
-        return (int) $this->getSession()->get($id) ?? 0;
+        return (int)$this->getSession()->get($id) ?? 0;
     }
 
     /**
@@ -308,12 +302,12 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             $alert->setHeading('Debug');
             $alert->setStyle(Alert::STYLE_WARNING);
             $alert->setHeading(
-                    'Abfragen: '
-                    . count($profiles)
-                    . '<br>'
-                    . array_sum(array_column($profiles, 'elapse'))
-                    . ' ms'
-                );
+                'Abfragen: '
+                . count($profiles)
+                . '<br>'
+                . array_sum(array_column($profiles, 'elapse'))
+                . ' ms'
+            );
             foreach ($profiles as $profile) {
                 $alert->addParagraph($profile['sql'] . "<br>{$profile['elapse']} ms");
             }

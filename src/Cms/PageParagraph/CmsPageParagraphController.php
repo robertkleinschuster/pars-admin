@@ -2,13 +2,11 @@
 
 namespace Pars\Admin\Cms\PageParagraph;
 
-use Pars\Admin\Article\ArticleController;
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
-use Pars\Admin\Base\CrudController;
 use Pars\Admin\Cms\Paragraph\CmsParagraphController;
 use Pars\Admin\Cms\Paragraph\CmsParagraphOverview;
 
@@ -38,7 +36,7 @@ class CmsPageParagraphController extends CmsParagraphController
         $subNavigation->setActive('cmspage');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
         if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute('CmsPage_ID')) {
-            $this->getView()->set('CmsPage_ID', (int) $this->getControllerRequest()->getId()->getAttribute('CmsPage_ID'));
+            $this->getView()->set('CmsPage_ID', (int)$this->getControllerRequest()->getId()->getAttribute('CmsPage_ID'));
         }
     }
 
@@ -73,8 +71,6 @@ class CmsPageParagraphController extends CmsParagraphController
         $delete = new CmsPageParagraphDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         return $delete;
     }
-
-
 
 
 }

@@ -19,18 +19,18 @@ class RolePermissionEdit extends BaseEdit
     }
 
     /**
-    * @return PermissionBeanList
-    */
+     * @return PermissionBeanList
+     */
     public function getPermissionBeanList(): PermissionBeanList
     {
         return $this->permissionBeanList;
     }
 
     /**
-    * @param PermissionBeanList $permissionBeanList
-    *
-    * @return $this
-    */
+     * @param PermissionBeanList $permissionBeanList
+     *
+     * @return $this
+     */
     public function setPermissionBeanList(PermissionBeanList $permissionBeanList): self
     {
         $this->permissionBeanList = $permissionBeanList;
@@ -38,8 +38,8 @@ class RolePermissionEdit extends BaseEdit
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasPermissionBeanList(): bool
     {
         return isset($this->permissionBeanList);

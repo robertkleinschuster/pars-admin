@@ -52,9 +52,9 @@ class CmsPollHandler implements BeanAwareInterface
             $paragraphFinder->initByValueList('Article_Code', $paragraphList->column('Article_Code'));
             $beanList = $paragraphFinder->getBeanList(true);
             foreach ($beanList as $item) {
-                $value =  $item->getArticle_Data()->get('poll');
+                $value = $item->getArticle_Data()->get('poll');
                 if ($max > 0 && $value > 0) {
-                    $item->getArticle_Data()->set('poll_value', $value/$max *100);
+                    $item->getArticle_Data()->set('poll_value', $value / $max * 100);
                 }
             }
             $paragraphProcessor = new CmsParagraphBeanProcessor($this->getModel()->getDbAdpater());

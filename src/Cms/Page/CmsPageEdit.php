@@ -16,29 +16,29 @@ class CmsPageEdit extends ArticleEdit
     {
         parent::initialize();
         if ($this->hasTypeOptions()) {
-            $this->getForm()->addSelect('CmsPageType_Code',$this->getTypeOptions(),'{CmsPageType_Code}' , $this->translate('cmspagetype.code'), 2, 1);
+            $this->getForm()->addSelect('CmsPageType_Code', $this->getTypeOptions(), '{CmsPageType_Code}', $this->translate('cmspagetype.code'), 2, 1);
         }
         if ($this->hasStateOptions()) {
-            $this->getForm()->addSelect('CmsPageState_Code', $this->getStateOptions(),'{CmsPageState_Code}', $this->translate('cmspagestate.code'), 2,2);
+            $this->getForm()->addSelect('CmsPageState_Code', $this->getStateOptions(), '{CmsPageState_Code}', $this->translate('cmspagestate.code'), 2, 2);
         }
         if ($this->hasRedirectOptions()) {
-            $this->getForm()->addSelect('CmsPage_ID_Redirect', $this->getRedirectOptions(),'{CmsPage_ID_Redirect}', $this->translate('cmspage.id.redirect'), 2,3);
+            $this->getForm()->addSelect('CmsPage_ID_Redirect', $this->getRedirectOptions(), '{CmsPage_ID_Redirect}', $this->translate('cmspage.id.redirect'), 2, 3);
         }
     }
 
     /**
-    * @return array
-    */
+     * @return array
+     */
     public function getRedirectOptions(): array
     {
         return $this->pageRedirectOptions;
     }
 
     /**
-    * @param array $pageRedirectOptions
-    *
-    * @return $this
-    */
+     * @param array $pageRedirectOptions
+     *
+     * @return $this
+     */
     public function setRedirectOptions(array $pageRedirectOptions): self
     {
         $this->pageRedirectOptions = $pageRedirectOptions;
@@ -46,8 +46,8 @@ class CmsPageEdit extends ArticleEdit
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasRedirectOptions(): bool
     {
         return isset($this->pageRedirectOptions);
@@ -55,18 +55,18 @@ class CmsPageEdit extends ArticleEdit
 
 
     /**
-    * @return array
-    */
+     * @return array
+     */
     public function getStateOptions(): array
     {
         return $this->pageStateOptions;
     }
 
     /**
-    * @param array $pageStateOptions
-    *
-    * @return $this
-    */
+     * @param array $pageStateOptions
+     *
+     * @return $this
+     */
     public function setStateOptions(array $pageStateOptions): self
     {
         $this->pageStateOptions = $pageStateOptions;
@@ -74,25 +74,26 @@ class CmsPageEdit extends ArticleEdit
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasStateOptions(): bool
     {
         return isset($this->pageStateOptions);
     }
+
     /**
-    * @return array
-    */
+     * @return array
+     */
     public function getTypeOptions(): array
     {
         return $this->pageTypeOptions;
     }
 
     /**
-    * @param array $pageTypeOptions
-    *
-    * @return $this
-    */
+     * @param array $pageTypeOptions
+     *
+     * @return $this
+     */
     public function setTypeOptions(array $pageTypeOptions): self
     {
         $this->pageTypeOptions = $pageTypeOptions;
@@ -100,8 +101,8 @@ class CmsPageEdit extends ArticleEdit
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasTypeOptions(): bool
     {
         return isset($this->pageTypeOptions);

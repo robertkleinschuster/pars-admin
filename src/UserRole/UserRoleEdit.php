@@ -4,7 +4,6 @@
 namespace Pars\Admin\UserRole;
 
 
-use Niceshops\Bean\Type\Base\BeanListInterface;
 use Pars\Admin\Role\RoleEdit;
 use Pars\Model\Authorization\Role\RoleBeanList;
 
@@ -15,22 +14,22 @@ class UserRoleEdit extends RoleEdit
     protected function initFields()
     {
         $this->setCreateBulk(true);
-            }
+    }
 
 
     /**
-    * @return RoleBeanList
-    */
+     * @return RoleBeanList
+     */
     public function getRoleBeanList(): RoleBeanList
     {
         return $this->roleBeanList;
     }
 
     /**
-    * @param RoleBeanList $roleBeanList
-    *
-    * @return $this
-    */
+     * @param RoleBeanList $roleBeanList
+     *
+     * @return $this
+     */
     public function setRoleBeanList(RoleBeanList $roleBeanList): self
     {
         $this->roleBeanList = $roleBeanList;
@@ -38,8 +37,8 @@ class UserRoleEdit extends RoleEdit
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasRoleBeanList(): bool
     {
         return isset($this->roleBeanList);

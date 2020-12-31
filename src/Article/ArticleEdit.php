@@ -23,7 +23,7 @@ abstract class ArticleEdit extends BaseEdit
     {
         $this->getForm()->addText('Article_Code', '{Article_Code}', $this->translate('article.code'), 1, 1);
         $this->getForm()->addText('ArticleTranslation_Code', '{ArticleTranslation_Code}', $this->translate('articletranslation.code'), 1, 2)
-        ->setHint($this->translate('articletranslation.code.hint'));
+            ->setHint($this->translate('articletranslation.code.hint'));
         $this->getForm()->addText('ArticleTranslation_Name', '{ArticleTranslation_Name}', $this->translate('articletranslation.name'), 4, 1);
         $this->getForm()->addText('ArticleTranslation_Title', '{ArticleTranslation_Title}', $this->translate('articletranslation.title'), 4, 2);
         $this->getForm()->addText('ArticleTranslation_Heading', '{ArticleTranslation_Heading}', $this->translate('articletranslation.heading'), 5, 1);

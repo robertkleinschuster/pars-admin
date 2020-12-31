@@ -79,8 +79,8 @@ class CmsPagePollDetail extends BaseDetail implements BeanAwareInterface
                     if ($max > 0 && $item > 0) {
                         $progress = new Progress($item / $max * 100);
                         $progress->setStyle(Progress::STYLE_SUCCESS);
-                        $names =  isset($resultMapNames[$title]) ? ' - ' . $resultMapNames[$title] :'';
-                        $span = new Span($title .$names);
+                        $names = isset($resultMapNames[$title]) ? ' - ' . $resultMapNames[$title] : '';
+                        $span = new Span($title . $names);
                         $this->append($span);
                         $this->append($progress);
                     }
@@ -97,24 +97,24 @@ class CmsPagePollDetail extends BaseDetail implements BeanAwareInterface
 
     protected function getEditIdFields(): array
     {
-       return [
-           'CmsPage_ID'
-       ];
+        return [
+            'CmsPage_ID'
+        ];
     }
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getToken(): string
     {
         return $this->token;
     }
 
     /**
-    * @param string $token
-    *
-    * @return $this
-    */
+     * @param string $token
+     *
+     * @return $this
+     */
     public function setToken(string $token): self
     {
         $this->token = $token;
@@ -122,8 +122,8 @@ class CmsPagePollDetail extends BaseDetail implements BeanAwareInterface
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasToken(): bool
     {
         return isset($this->token);

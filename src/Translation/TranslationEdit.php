@@ -39,18 +39,18 @@ class TranslationEdit extends BaseEdit
 
 
     /**
-    * @return array
-    */
+     * @return array
+     */
     public function getLocaleOptions(): array
     {
         return $this->localeOptions;
     }
 
     /**
-    * @param array $localeOptions
-    *
-    * @return $this
-    */
+     * @param array $localeOptions
+     *
+     * @return $this
+     */
     public function setLocaleOptions(array $localeOptions): self
     {
         $this->localeOptions = $localeOptions;
@@ -58,8 +58,8 @@ class TranslationEdit extends BaseEdit
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasLocaleOptions(): bool
     {
         return isset($this->localeOptions);

@@ -1,6 +1,6 @@
 <?php
 return [
-    'userrole.code.empty'   => 'Der Code darf nicht leer sein!',
+    'userrole.code.empty' => 'Der Code darf nicht leer sein!',
     'userrole.code.unique' => 'Der Code ist bereits vergeben!',
     'user.username.empty' => 'Der Benutzername darf nicht leer sein!',
     'user.username.unique' => 'Der Benutzername ist bereits vergeben!',

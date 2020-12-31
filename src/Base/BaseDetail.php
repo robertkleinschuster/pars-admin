@@ -4,11 +4,9 @@
 namespace Pars\Admin\Base;
 
 
-use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Button;
 use Pars\Component\Base\Field\Icon;
-use Pars\Component\Base\Field\Span;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Mvc\View\HtmlElement;
 
@@ -62,8 +60,6 @@ abstract class BaseDetail extends Detail
         $this->push($toolbar);
         parent::initialize();
     }
-
-
 
 
     /**
@@ -120,7 +116,6 @@ abstract class BaseDetail extends Detail
         $this->showBack = $showBack;
         return $this;
     }
-
 
 
     abstract protected function getIndexController(): string;

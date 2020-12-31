@@ -7,7 +7,6 @@ namespace Pars\Admin\Cms\Paragraph;
 use Pars\Admin\Article\ArticleOverview;
 use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Field\Span;
-use Pars\Helper\Parameter\IdListParameter;
 
 class CmsParagraphOverview extends ArticleOverview
 {
@@ -39,9 +38,9 @@ class CmsParagraphOverview extends ArticleOverview
 
     protected function getDetailIdFields(): array
     {
-       return [
-           'CmsParagraph_ID'
-       ];
+        return [
+            'CmsParagraph_ID'
+        ];
     }
 
 }

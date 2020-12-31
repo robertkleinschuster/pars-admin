@@ -12,6 +12,7 @@ class UserDelete extends BaseDelete
     {
         parent::initialize();
     }
+
     protected function getRedirectController(): string
     {
         return 'user';

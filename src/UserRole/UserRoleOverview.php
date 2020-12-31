@@ -4,7 +4,6 @@
 namespace Pars\Admin\UserRole;
 
 
-use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Role\RoleOverview;
 
 class UserRoleOverview extends RoleOverview
@@ -24,7 +23,7 @@ class UserRoleOverview extends RoleOverview
     protected function getCreateIdFields(): array
     {
         return [
-             'Person_ID'
+            'Person_ID'
         ];
     }
 

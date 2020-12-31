@@ -4,7 +4,6 @@
 namespace Pars\Admin\Translation;
 
 
-use Laminas\I18n\Translator\Translator;
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
 use Niceshops\Bean\Type\Base\BeanInterface;

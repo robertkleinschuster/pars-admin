@@ -31,9 +31,9 @@ class TranslationOverview extends BaseOverview
 
     protected function getDetailIdFields(): array
     {
-       return [
-           'Translation_ID'
-       ];
+        return [
+            'Translation_ID'
+        ];
     }
 
 }

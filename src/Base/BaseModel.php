@@ -2,16 +2,16 @@
 
 namespace Pars\Admin\Base;
 
+use Laminas\Db\Adapter\Adapter;
+use Laminas\Db\Adapter\AdapterAwareInterface;
+use Laminas\Db\Adapter\AdapterAwareTrait;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
+use Laminas\I18n\Translator\TranslatorAwareInterface;
+use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Model\Authentication\User\UserBean;
-use Laminas\Db\Adapter\Adapter;
-use Laminas\Db\Adapter\AdapterAwareInterface;
-use Laminas\Db\Adapter\AdapterAwareTrait;
-use Laminas\I18n\Translator\TranslatorAwareInterface;
-use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Pars\Model\Config\ConfigBeanFinder;
 use Pars\Mvc\Model\AbstractModel;
 use Psr\Log\LoggerAwareInterface;

@@ -2,11 +2,7 @@
 
 namespace Pars\Admin\Import;
 
-use League\OAuth2\Client\Provider\GenericProvider;
 use Pars\Admin\Base\CrudModel;
-use Pars\Helper\Parameter\IdListParameter;
-use Pars\Helper\Parameter\IdParameter;
-use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Import\Tesla\TeslaImporter;
 use Pars\Model\Article\Translation\ArticleTranslationBeanFinder;
 use Pars\Model\Import\ImportBeanFinder;
@@ -64,7 +60,6 @@ class ImportModel extends CrudModel
             parent::save($attributes);
         }
     }
-
 
 
 }

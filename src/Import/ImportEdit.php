@@ -10,11 +10,12 @@ class ImportEdit extends BaseEdit
 {
     protected ?array $importTypeOptions = null;
     protected ?array $articleOptions = null;
+
     protected function initialize()
     {
         $this->getForm()->addText('Import_Name', '{Import_Name}', $this->translate('import.name'), 1);
         if (null !== $this->getImportTypeOptions()) {
-            $this->getForm()->addSelect('ImportType_Code', $this->getImportTypeOptions() ,'{ImportType_Code}', $this->translate('importtype.code'));
+            $this->getForm()->addSelect('ImportType_Code', $this->getImportTypeOptions(), '{ImportType_Code}', $this->translate('importtype.code'));
         }
         if (null !== $this->getArticleOptions()) {
             $this->getForm()->addSelect('Article_ID', $this->getArticleOptions(), '{Article_ID}', $this->translate('article.id'));
@@ -72,8 +73,6 @@ class ImportEdit extends BaseEdit
     {
         $this->articleOptions = $articleOptions;
     }
-
-
 
 
     protected function getRedirectController(): string

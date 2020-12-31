@@ -2,10 +2,9 @@
 
 namespace Pars\Admin\Authentication;
 
-use Pars\Component\Base\Alert\Alert;
-use Pars\Model\Authentication\User\UserBeanFinder;
-use Pars\Admin\Base\BaseController;
 use Mezzio\Authentication\UserInterface;
+use Pars\Admin\Base\BaseController;
+use Pars\Model\Authentication\User\UserBeanFinder;
 
 /**
  * Class AuthenticationController

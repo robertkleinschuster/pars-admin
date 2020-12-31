@@ -6,7 +6,6 @@ use Pars\Admin\Base\BaseModel;
 use Pars\Model\Cms\Menu\CmsMenuBeanFinder;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
 use Pars\Model\Cms\Paragraph\CmsParagraphBeanFinder;
-use Pars\Model\Config\ConfigBeanFinder;
 use Pars\Model\Localization\Locale\LocaleBeanFinder;
 
 class IndexModel extends BaseModel

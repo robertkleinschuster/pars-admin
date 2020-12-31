@@ -24,7 +24,7 @@ class Setup extends UserEdit
         $this->getForm()->addOption('px-3');
         $this->getForm()->addInlineStyle('max-width', '750px');
         $this->getForm()->addOption('mx-auto');
-        $icon = new Icon( 'pars-logo');
+        $icon = new Icon('pars-logo');
         $icon->addInlineStyle('max-width', '200px');
         $icon->addInlineStyle('fill', '#343a40');
         $icon->addOption('mx-auto');
@@ -33,7 +33,7 @@ class Setup extends UserEdit
         $this->getForm()->push(new Headline($this->translate('setup')));
         if ($this->getValidationHelper()->hasError('error')) {
             $alert = new Alert($this->getValidationHelper()->getSummary('error'),
-            $this->getValidationHelper()->getSummary('errorDetails')
+                $this->getValidationHelper()->getSummary('errorDetails')
             );
             $this->getElementList()->unshift($alert);
         }

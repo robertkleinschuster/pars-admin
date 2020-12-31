@@ -53,7 +53,7 @@ class LocaleController extends CrudController
 
     protected function createDelete(): BaseDelete
     {
-        $delete = new LocaleDelete($this->getPathHelper(), $this->getTranslator(),$this->getUserBean());
+        $delete = new LocaleDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         return $delete;
     }
 }

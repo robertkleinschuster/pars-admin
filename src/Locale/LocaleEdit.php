@@ -10,7 +10,7 @@ class LocaleEdit extends BaseEdit
 {
     protected function initialize()
     {
-        $this->getForm()->addText('Locale_Name','{Locale_Name}', $this->translate('locale.name'));
+        $this->getForm()->addText('Locale_Name', '{Locale_Name}', $this->translate('locale.name'));
         if ($this->isCreate()) {
             $this->getForm()->addText('Locale_Code', '{Locale_Code}', $this->translate('locale.code'));
             $this->getForm()->addHidden('Locale_Code_New', 'true');

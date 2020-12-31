@@ -22,7 +22,7 @@ class ConfigOverview extends BaseOverview
 
     protected function getController(): string
     {
-       return 'config';
+        return 'config';
     }
 
     protected function getDetailIdFields(): array

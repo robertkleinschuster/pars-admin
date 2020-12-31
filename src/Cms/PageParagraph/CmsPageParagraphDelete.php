@@ -4,9 +4,7 @@
 namespace Pars\Admin\Cms\PageParagraph;
 
 
-use Pars\Admin\Cms\Page\CmsPageDelete;
 use Pars\Admin\Cms\Paragraph\CmsParagraphDelete;
-use Pars\Admin\Cms\Paragraph\CmsParagraphDetail;
 
 class CmsPageParagraphDelete extends CmsParagraphDelete
 {

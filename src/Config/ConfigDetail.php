@@ -19,7 +19,7 @@ class ConfigDetail extends BaseDetail
 
     protected function getIndexController(): string
     {
-       return 'config';
+        return 'config';
     }
 
     protected function getEditIdFields(): array

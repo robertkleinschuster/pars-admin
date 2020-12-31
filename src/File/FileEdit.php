@@ -21,24 +21,24 @@ class FileEdit extends BaseEdit
         }
         $this->getForm()->addText('File_Name', '{File_Name}', $this->translate('file.name'));
         $this->getForm()->addText('File_Code', '{File_Code}', $this->translate('file.code'));
-        $this->getForm()->addFile('File_Upload', '{File_Upload}',$this->translate('file.upload'));
+        $this->getForm()->addFile('File_Upload', '{File_Upload}', $this->translate('file.upload'));
 
         parent::initialize();
     }
 
     /**
-    * @return array
-    */
+     * @return array
+     */
     public function getTypeOptions(): array
     {
         return $this->typeOptions;
     }
 
     /**
-    * @param array $typeOptions
-    *
-    * @return $this
-    */
+     * @param array $typeOptions
+     *
+     * @return $this
+     */
     public function setTypeOptions(array $typeOptions): self
     {
         $this->typeOptions = $typeOptions;
@@ -46,8 +46,8 @@ class FileEdit extends BaseEdit
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasTypeOptions(): bool
     {
         return isset($this->typeOptions);
@@ -55,18 +55,18 @@ class FileEdit extends BaseEdit
 
 
     /**
-    * @return array
-    */
+     * @return array
+     */
     public function getDirectoryOptions(): array
     {
         return $this->directoryOptions;
     }
 
     /**
-    * @param array $directoryOptions
-    *
-    * @return $this
-    */
+     * @param array $directoryOptions
+     *
+     * @return $this
+     */
     public function setDirectoryOptions(array $directoryOptions): self
     {
         $this->directoryOptions = $directoryOptions;
@@ -74,8 +74,8 @@ class FileEdit extends BaseEdit
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasDirectoryOptions(): bool
     {
         return isset($this->directoryOptions);
@@ -89,9 +89,9 @@ class FileEdit extends BaseEdit
 
     protected function getRedirectIdFields(): array
     {
-       return [
-           'File_ID'
-       ];
+        return [
+            'File_ID'
+        ];
     }
 
 }

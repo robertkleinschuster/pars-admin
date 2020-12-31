@@ -16,10 +16,10 @@ class CmsParagraphEdit extends ArticleEdit
     {
         parent::initFields();
         if ($this->hasTypeOptions()) {
-            $this->getForm()->addSelect('CmsParagraphType_Code',$this->getTypeOptions(),'{CmsParagraphType_Code}' , $this->translate('cmsparagraphtype.code'), 2, 1);
+            $this->getForm()->addSelect('CmsParagraphType_Code', $this->getTypeOptions(), '{CmsParagraphType_Code}', $this->translate('cmsparagraphtype.code'), 2, 1);
         }
         if ($this->hasStateOptions()) {
-            $this->getForm()->addSelect('CmsParagraphState_Code', $this->getStateOptions(),'{CmsParagraphState_Code}', $this->translate('cmsparagraphstate.code'), 2,2);
+            $this->getForm()->addSelect('CmsParagraphState_Code', $this->getStateOptions(), '{CmsParagraphState_Code}', $this->translate('cmsparagraphstate.code'), 2, 2);
         }
     }
 
@@ -37,18 +37,18 @@ class CmsParagraphEdit extends ArticleEdit
     }
 
     /**
-    * @return array
-    */
+     * @return array
+     */
     public function getTypeOptions(): array
     {
         return $this->typeOptions;
     }
 
     /**
-    * @param array $typeOptions
-    *
-    * @return $this
-    */
+     * @param array $typeOptions
+     *
+     * @return $this
+     */
     public function setTypeOptions(array $typeOptions): self
     {
         $this->typeOptions = $typeOptions;
@@ -56,25 +56,26 @@ class CmsParagraphEdit extends ArticleEdit
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasTypeOptions(): bool
     {
         return isset($this->typeOptions);
     }
+
     /**
-    * @return array
-    */
+     * @return array
+     */
     public function getStateOptions(): array
     {
         return $this->stateOptions;
     }
 
     /**
-    * @param array $stateOptions
-    *
-    * @return $this
-    */
+     * @param array $stateOptions
+     *
+     * @return $this
+     */
     public function setStateOptions(array $stateOptions): self
     {
         $this->stateOptions = $stateOptions;
@@ -82,8 +83,8 @@ class CmsParagraphEdit extends ArticleEdit
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasStateOptions(): bool
     {
         return isset($this->stateOptions);

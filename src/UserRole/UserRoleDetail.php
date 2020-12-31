@@ -12,6 +12,7 @@ class UserRoleDetail extends RoleDetail
     {
         return 'user';
     }
+
     protected function getEditController(): string
     {
         return 'userrole';

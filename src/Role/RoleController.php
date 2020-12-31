@@ -3,7 +3,6 @@
 namespace Pars\Admin\Role;
 
 
-use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
@@ -53,7 +52,7 @@ class RoleController extends CrudController
     public function detailAction()
     {
         parent::detailAction();
-        $this->getView()->set('UserRole_ID', (int) $this->getControllerRequest()->getId()->getAttribute('UserRole_ID'));
+        $this->getView()->set('UserRole_ID', (int)$this->getControllerRequest()->getId()->getAttribute('UserRole_ID'));
         $this->addSubController('rolepermission', 'index');
     }
 

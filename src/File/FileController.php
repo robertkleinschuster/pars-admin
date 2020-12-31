@@ -3,15 +3,12 @@
 namespace Pars\Admin\File;
 
 
-use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
-use Pars\Admin\Base\ContentNavigation;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\MediaNavigation;
-use Pars\Helper\Parameter\IdParameter;
 
 /**
  * Class FileController
@@ -44,17 +41,17 @@ class FileController extends CrudController
 
     protected function createOverview(): BaseOverview
     {
-        return new FileOverview($this->getPathHelper(), $this->getTranslator(),$this->getUserBean());
+        return new FileOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
     protected function createDetail(): BaseDetail
     {
-        return new FileDetail($this->getPathHelper(), $this->getTranslator(),$this->getUserBean());
+        return new FileDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
     protected function createEdit(): BaseEdit
     {
-        $edit = new FileEdit($this->getPathHelper(), $this->getTranslator(),$this->getUserBean());
+        $edit = new FileEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $edit->setTypeOptions($this->getModel()->getFileType_Options());
         $edit->setDirectoryOptions($this->getModel()->getFileDirectory_Options());
         return $edit;
@@ -62,7 +59,7 @@ class FileController extends CrudController
 
     protected function createDelete(): BaseDelete
     {
-        return new FileDelete($this->getPathHelper(), $this->getTranslator(),$this->getUserBean());
+        return new FileDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
 

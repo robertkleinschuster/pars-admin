@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Pars\Admin\User;
 
-use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
-use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Badge;
-use Pars\Component\Base\Field\Span;
 
 
 /**
@@ -38,6 +35,7 @@ class UserDetail extends BaseDetail
     {
         return 'user';
     }
+
     protected function getEditController(): string
     {
         return 'user';

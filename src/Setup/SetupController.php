@@ -3,14 +3,9 @@
 namespace Pars\Admin\Setup;
 
 use Laminas\I18n\Translator\TranslatorAwareInterface;
-use Niceshops\Bean\Saver\BeanSaverAwareInterface;
-use Pars\Admin\Authentication\AuthenticationController;
 use Pars\Admin\Authentication\SigninLayout;
 use Pars\Admin\Base\BaseController;
-use Pars\Admin\Base\MainNavigation;
-use Pars\Component\Base\Layout\DashboardLayout;
 use Pars\Component\Base\View\BaseView;
-use Pars\Core\Database\DatabaseBeanSaver;
 use Pars\Core\Database\DatabaseMiddleware;
 use Pars\Helper\Path\PathHelper;
 use Pars\Model\Authentication\User\UserBean;

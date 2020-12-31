@@ -3,10 +3,10 @@
 namespace Pars\Admin\Cms\Post;
 
 use Pars\Admin\Base\CrudModel;
-use Pars\Model\Cms\Post\State\CmsPostStateBeanFinder;
-use Pars\Model\Cms\Post\Type\CmsPostTypeBeanFinder;
 use Pars\Model\Cms\Post\CmsPostBeanFinder;
 use Pars\Model\Cms\Post\CmsPostBeanProcessor;
+use Pars\Model\Cms\Post\State\CmsPostStateBeanFinder;
+use Pars\Model\Cms\Post\Type\CmsPostTypeBeanFinder;
 
 class CmsPostModel extends CrudModel
 {

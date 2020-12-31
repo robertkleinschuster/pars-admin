@@ -7,9 +7,6 @@ namespace Pars\Admin\User;
 use Niceshops\Bean\Type\Base\BeanListAwareTrait;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\Field\Badge;
-use Pars\Component\Base\Field\Button;
-use Pars\Helper\Parameter\IdParameter;
-use Pars\Mvc\View\HtmlElement;
 
 class UserOverview extends BaseOverview
 {

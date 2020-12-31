@@ -3,7 +3,6 @@
 namespace Pars\Admin\Translation;
 
 
-
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
@@ -44,12 +43,12 @@ class TranslationController extends CrudController
 
     protected function createOverview(): BaseOverview
     {
-        return new TranslationOverview($this->getPathHelper(),$this->getTranslator(), $this->getUserBean());
+        return new TranslationOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
     protected function createDetail(): BaseDetail
     {
-        return new TranslationDetail($this->getPathHelper(),$this->getTranslator(), $this->getUserBean());
+        return new TranslationDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
     public function editAction()
@@ -73,14 +72,14 @@ class TranslationController extends CrudController
 
     protected function createEdit(): BaseEdit
     {
-        $edit = new TranslationEdit($this->getPathHelper(),$this->getTranslator(), $this->getUserBean());
+        $edit = new TranslationEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $edit->setLocaleOptions($this->getModel()->getLocale_Options());
         return $edit;
     }
 
     protected function createDelete(): BaseDelete
     {
-        return new TranslationDelete($this->getPathHelper(),$this->getTranslator(), $this->getUserBean());
+        return new TranslationDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
 

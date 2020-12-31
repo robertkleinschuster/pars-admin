@@ -4,7 +4,6 @@
 namespace Pars\Admin\Cms\PageParagraph;
 
 
-use Pars\Admin\Cms\Page\CmsPageDetail;
 use Pars\Admin\Cms\Paragraph\CmsParagraphDetail;
 
 class CmsPageParagraphDetail extends CmsParagraphDetail

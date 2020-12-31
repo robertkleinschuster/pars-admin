@@ -10,6 +10,6 @@ class CmsMenuDelete extends BaseDelete
 {
     protected function getRedirectController(): string
     {
-       return 'cmsmenu';
+        return 'cmsmenu';
     }
 }

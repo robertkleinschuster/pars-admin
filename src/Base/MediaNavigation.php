@@ -10,7 +10,7 @@ class MediaNavigation extends BaseNavigation
     {
         /**
          *  'navigation.media.file' => 'Dateien',
-        'navigation.media.directory' => 'Order',
+         * 'navigation.media.directory' => 'Order',
          */
         $this->addItem(
             $this->translate('navigation.media.file')

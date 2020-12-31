@@ -5,8 +5,6 @@ namespace Pars\Admin\Update;
 use Pars\Admin\Base\BaseController;
 use Pars\Admin\Base\SystemNavigation;
 use Pars\Component\Base\Navigation\Navigation;
-use Pars\Core\Database\Updater\DataUpdater;
-use Pars\Helper\Parameter\SubmitParameter;
 
 /**
  * Class UpdateController

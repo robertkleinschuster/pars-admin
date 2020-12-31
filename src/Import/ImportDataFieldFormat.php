@@ -12,7 +12,7 @@ class ImportDataFieldFormat implements FieldFormatInterface
 {
     public function __invoke(FieldInterface $field, string $value, ?BeanInterface $bean = null): string
     {
-        return '<pre>' . json_encode($bean->get('Import_Data')['data'],JSON_PRETTY_PRINT) . '</pre>';
+        return '<pre>' . json_encode($bean->get('Import_Data')['data'], JSON_PRETTY_PRINT) . '</pre>';
     }
 
 }

@@ -28,7 +28,7 @@ class SigninForm extends Form
         $this->addOption('px-3');
         $this->addInlineStyle('max-width', '450px');
         $this->addOption('mx-auto');
-        $icon = new Icon( 'pars-logo');
+        $icon = new Icon('pars-logo');
         $icon->addInlineStyle('max-width', '200px');
         $icon->addInlineStyle('fill', '#343a40');
         $icon->addOption('mx-auto');
@@ -63,7 +63,8 @@ class SigninForm extends Form
         }
     }
 
-    protected function translate(string $code) {
+    protected function translate(string $code)
+    {
         if ($this->hasTranslator()) {
             return $this->getTranslator()->translate($code, 'admin');
         }
@@ -71,18 +72,18 @@ class SigninForm extends Form
     }
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getError(): string
     {
         return $this->error;
     }
 
     /**
-    * @param string $error
-    *
-    * @return $this
-    */
+     * @param string $error
+     *
+     * @return $this
+     */
     public function setError(string $error): self
     {
         $this->error = $error;
@@ -90,25 +91,26 @@ class SigninForm extends Form
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasError(): bool
     {
         return isset($this->error);
     }
+
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getToken(): string
     {
         return $this->token;
     }
 
     /**
-    * @param string $token
-    *
-    * @return $this
-    */
+     * @param string $token
+     *
+     * @return $this
+     */
     public function setToken(string $token): self
     {
         $this->token = $token;
@@ -116,26 +118,26 @@ class SigninForm extends Form
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasToken(): bool
     {
         return isset($this->token);
     }
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getSignupPath(): string
     {
         return $this->signupPath;
     }
 
     /**
-    * @param string $signupPath
-    *
-    * @return $this
-    */
+     * @param string $signupPath
+     *
+     * @return $this
+     */
     public function setSignupPath(string $signupPath): self
     {
         $this->signupPath = $signupPath;
@@ -143,13 +145,12 @@ class SigninForm extends Form
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasSignupPath(): bool
     {
         return isset($this->signupPath);
     }
-
 
 
 }

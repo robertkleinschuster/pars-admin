@@ -42,6 +42,7 @@ class RoleDetail extends BaseDetail
     {
         return [];
     }
+
     protected function getEditAction(): string
     {
         return 'edit';

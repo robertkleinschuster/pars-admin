@@ -10,5 +10,5 @@ use Pars\Helper\Path\PathHelperAwareInterface;
 
 class BaseNavigation extends Navigation implements PathHelperAwareInterface, TranslatorAwareInterface
 {
-   use AdminComponentTrait;
+    use AdminComponentTrait;
 }

@@ -9,7 +9,6 @@ use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\MediaNavigation;
-use Pars\Helper\Parameter\IdParameter;
 
 /**
  * Class FileDirectoryController

@@ -12,24 +12,24 @@ class CmsPageParagraphEdit extends CmsParagraphEdit
 
     protected function initFields()
     {
-       $this->setCreateBulk(true);
-       $this->setCreate(false);
+        $this->setCreateBulk(true);
+        $this->setCreate(false);
     }
 
 
     /**
-    * @return array
-    */
+     * @return array
+     */
     public function getParagraphOptions(): array
     {
         return $this->paragraphOptions;
     }
 
     /**
-    * @param array $paragraphOptions
-    *
-    * @return $this
-    */
+     * @param array $paragraphOptions
+     *
+     * @return $this
+     */
     public function setParagraphOptions(array $paragraphOptions): self
     {
         $this->paragraphOptions = $paragraphOptions;
@@ -37,8 +37,8 @@ class CmsPageParagraphEdit extends CmsParagraphEdit
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasParagraphOptions(): bool
     {
         return isset($this->paragraphOptions);

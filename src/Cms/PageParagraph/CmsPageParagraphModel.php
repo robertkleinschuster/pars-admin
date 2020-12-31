@@ -37,7 +37,7 @@ class CmsPageParagraphModel extends CmsParagraphModel
         return $options;
     }
 
-    public function getParagraphBeanList ()
+    public function getParagraphBeanList()
     {
         $finder = new CmsParagraphBeanFinder($this->getDbAdpater());
         return $finder->getBeanList();

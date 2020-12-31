@@ -96,7 +96,7 @@ class CmsPageController extends ArticleController
             $cmsPageFinder->setCmsPage_ID($bean->get('CmsPage_ID_Redirect'));
             $alert = new Alert(
                 $this->translate('cmspage.redirect.alert.headline'),
-                $this->translate('cmspage.redirect.alert.text') .': ' . $cmsPageFinder->getBean()->get('ArticleTranslation_Name')
+                $this->translate('cmspage.redirect.alert.text') . ': ' . $cmsPageFinder->getBean()->get('ArticleTranslation_Name')
             );
             $this->getView()->prepend($alert);
         }

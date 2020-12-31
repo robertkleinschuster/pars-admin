@@ -58,18 +58,18 @@ abstract class BaseDelete extends Delete
     }
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getToken(): string
     {
         return $this->token;
     }
 
     /**
-    * @param string $token
-    *
-    * @return $this
-    */
+     * @param string $token
+     *
+     * @return $this
+     */
     public function setToken(string $token): self
     {
         $this->token = $token;
@@ -77,8 +77,8 @@ abstract class BaseDelete extends Delete
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasToken(): bool
     {
         return isset($this->token);
@@ -86,18 +86,18 @@ abstract class BaseDelete extends Delete
 
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getIndexPath(): string
     {
         return $this->indexPath;
     }
 
     /**
-    * @param string $indexPath
-    *
-    * @return $this
-    */
+     * @param string $indexPath
+     *
+     * @return $this
+     */
     public function setIndexPath(string $indexPath): self
     {
         $this->indexPath = $indexPath;
@@ -105,8 +105,8 @@ abstract class BaseDelete extends Delete
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasIndexPath(): bool
     {
         return isset($this->indexPath);

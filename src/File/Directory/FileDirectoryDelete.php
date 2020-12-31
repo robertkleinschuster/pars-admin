@@ -10,7 +10,7 @@ class FileDirectoryDelete extends BaseDelete
 {
     protected function getRedirectController(): string
     {
-       return 'filedirectory';
+        return 'filedirectory';
     }
 
 }

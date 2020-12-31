@@ -7,7 +7,6 @@ namespace Pars\Admin\User;
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
 use Niceshops\Bean\Type\Base\BeanInterface;
-use Niceshops\Core\Option\OptionAwareInterface;
 use Pars\Component\Base\StyleAwareInterface;
 use Pars\Mvc\View\FieldFormatInterface;
 use Pars\Mvc\View\FieldInterface;

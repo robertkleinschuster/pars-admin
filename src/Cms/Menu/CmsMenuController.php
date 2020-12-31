@@ -2,18 +2,12 @@
 
 namespace Pars\Admin\Cms\Menu;
 
-use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
 use Pars\Admin\Base\CrudController;
-use Pars\Admin\Base\SystemNavigation;
-use Pars\Helper\Parameter\IdParameter;
-use Pars\Helper\Parameter\MoveParameter;
-use Pars\Helper\Parameter\RedirectParameter;
-use Pars\Helper\Path\PathHelper;
 
 
 /**
@@ -33,6 +27,7 @@ class CmsMenuController extends CrudController
     {
         return $this->checkPermission('cmsmenu');
     }
+
     protected function initView()
     {
         parent::initView();

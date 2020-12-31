@@ -1,6 +1,6 @@
 <?php
 return [
-    'userrole.code.empty'   => 'The code must not be empty!',
+    'userrole.code.empty' => 'The code must not be empty!',
     'userrole.code.unique' => 'The code is already in use!',
     'user.username.empty' => 'The username must not be empty!',
     'user.username.unique' => 'The username is already in use!',

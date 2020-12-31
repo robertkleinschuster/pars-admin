@@ -18,7 +18,7 @@ class RolePermissionDetail extends BaseDetail
 
     protected function getIndexController(): string
     {
-       return 'role';
+        return 'role';
     }
 
     protected function getEditController(): string
@@ -29,9 +29,9 @@ class RolePermissionDetail extends BaseDetail
 
     protected function getEditIdFields(): array
     {
-       return [
-           'UserRole_ID', 'UserPermission_Code'
-       ];
+        return [
+            'UserRole_ID', 'UserPermission_Code'
+        ];
     }
 
     protected function getIndexAction(): string

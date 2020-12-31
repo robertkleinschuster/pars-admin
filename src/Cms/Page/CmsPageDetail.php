@@ -4,7 +4,6 @@
 namespace Pars\Admin\Cms\Page;
 
 
-use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Article\ArticleDetail;
 use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Field\Span;

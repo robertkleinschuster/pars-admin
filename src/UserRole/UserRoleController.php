@@ -23,6 +23,7 @@ class UserRoleController extends RoleController
     {
         return $this->checkPermission('userrole');
     }
+
     protected function initView()
     {
         parent::initView();
@@ -30,7 +31,7 @@ class UserRoleController extends RoleController
         $subNavigation = new SystemNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('user');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
-        $this->getView()->set('Person_ID', (int) $this->getControllerRequest()->getId()->getAttribute('Person_ID'));
+        $this->getView()->set('Person_ID', (int)$this->getControllerRequest()->getId()->getAttribute('Person_ID'));
     }
 
 

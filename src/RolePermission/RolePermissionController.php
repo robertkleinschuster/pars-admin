@@ -36,7 +36,7 @@ class RolePermissionController extends CrudController
         $subNavigation = new SystemNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('user');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
-        $this->getView()->set('UserRole_ID', (int) $this->getControllerRequest()->getId()->getAttribute('UserRole_ID'));
+        $this->getView()->set('UserRole_ID', (int)$this->getControllerRequest()->getId()->getAttribute('UserRole_ID'));
     }
 
     protected function createOverview(): BaseOverview

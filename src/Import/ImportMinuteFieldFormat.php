@@ -30,7 +30,8 @@ class ImportMinuteFieldFormat implements FieldFormatInterface
             return $this->getTranslator()->translate('import.minute.null', 'admin');
         } else {
             return $bean->get('Import_Minute');
-        }    }
+        }
+    }
 
 
 }

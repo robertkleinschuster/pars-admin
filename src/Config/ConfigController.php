@@ -38,7 +38,7 @@ class ConfigController extends CrudController
 
     protected function createOverview(): BaseOverview
     {
-       return new ConfigOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        return new ConfigOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
     protected function createDetail(): BaseDetail

@@ -6,9 +6,6 @@ namespace Pars\Admin\Locale;
 
 use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\Field\Badge;
-use Pars\Helper\Parameter\IdParameter;
-use Pars\Helper\Parameter\MoveParameter;
-use Pars\Helper\Parameter\RedirectParameter;
 
 class LocaleOverview extends BaseOverview
 {

@@ -31,11 +31,11 @@ class UserRoleModel extends RoleModel
         $finder->setUserRole_Active(true);
         return $finder->getBeanListDecorator()->filter(
             function (BeanInterface $bean) use ($userPermissions, $existing) {
-            if ($bean instanceof RoleBean) {
-                $permissions = $bean->UserPermission_BeanList->column('UserPermission_Code');
-                return empty(array_diff($permissions, $userPermissions))
-                    && !in_array($bean->UserRole_Code, $existing);
-            }
-        });
+                if ($bean instanceof RoleBean) {
+                    $permissions = $bean->UserPermission_BeanList->column('UserPermission_Code');
+                    return empty(array_diff($permissions, $userPermissions))
+                        && !in_array($bean->UserRole_Code, $existing);
+                }
+            });
     }
 }

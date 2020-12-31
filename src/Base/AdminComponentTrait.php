@@ -14,6 +14,7 @@ trait AdminComponentTrait
 {
     use TranslatorAwareTrait;
     use PathHelperAwareTrait;
+
     private UserBean $userBean;
 
     /**

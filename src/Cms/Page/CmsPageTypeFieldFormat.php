@@ -4,7 +4,6 @@
 namespace Pars\Admin\Cms\Page;
 
 
-use Laminas\I18n\Translator\Translator;
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
 use Niceshops\Bean\Type\Base\BeanInterface;
@@ -26,7 +25,7 @@ class CmsPageTypeFieldFormat implements FieldFormatInterface
 
     public function __invoke(FieldInterface $field, string $value, ?BeanInterface $bean = null): string
     {
-       return $this->getTranslator()->translate('cmspagetype.code.' . $bean->get('CmsPageType_Code'), 'admin');
+        return $this->getTranslator()->translate('cmspagetype.code.' . $bean->get('CmsPageType_Code'), 'admin');
     }
 
 }

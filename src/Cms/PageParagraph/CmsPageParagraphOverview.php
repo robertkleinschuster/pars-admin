@@ -5,7 +5,6 @@ namespace Pars\Admin\Cms\PageParagraph;
 
 
 use Pars\Admin\Cms\Paragraph\CmsParagraphOverview;
-use Pars\Helper\Parameter\IdListParameter;
 
 class CmsPageParagraphOverview extends CmsParagraphOverview
 {
