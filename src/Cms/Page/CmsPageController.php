@@ -10,6 +10,7 @@ use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
 use Pars\Component\Base\Alert\Alert;
+use Pars\Component\Base\Toolbar\PreviewButton;
 use Pars\Model\Article\ArticleDataBean;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
 
@@ -50,7 +51,9 @@ class CmsPageController extends ArticleController
     {
         $this->getView()->set('CmsPage_ID', (int)$this->getControllerRequest()->getId()->getAttribute('CmsPage_ID'));
         $this->addSubController('cmspageparagraph', 'index');
-        return new CmsPageDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $detail = new CmsPageDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $detail->setPreviewPath($this->getModel()->getConfig('frontend.domain') . '/{ArticleTranslation_Code}');
+        return $detail;
     }
 
     protected function createEdit(): BaseEdit
@@ -60,6 +63,7 @@ class CmsPageController extends ArticleController
         $edit->setStateOptions($this->getModel()->getCmsPageState_Options());
         $edit->setRedirectOptions($this->getModel()->getCmsPageRedirect_Options());
         $edit->setFileOptions($this->getModel()->getFileOptions());
+        $edit->setLayoutOptions($this->getModel()->getCmsPageLayout_Options());
         return $edit;
     }
 

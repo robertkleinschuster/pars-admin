@@ -35,6 +35,9 @@ class CmsMenuController extends CrudController
         $subNavigation = new ContentNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('cmsmenu');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
+        if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute('CmsMenu_ID_Parent')) {
+            $this->getView()->set('CmsMenu_ID_Parent', (int)$this->getControllerRequest()->getId()->getAttribute('CmsMenu_ID_Parent'));
+        }
     }
 
     protected function createOverview(): BaseOverview
@@ -48,6 +51,9 @@ class CmsMenuController extends CrudController
 
     protected function createDetail(): BaseDetail
     {
+        $id = $this->getControllerRequest()->getId()->getAttribute('CmsMenu_ID');
+        $this->getView()->set('CmsMenu_ID_Parent', (int) $id);
+        $this->addSubController('cmssubmenu', 'index');
         return new CmsMenuDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 

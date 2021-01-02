@@ -26,8 +26,12 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface
 
         $indexPath = $this->getPathHelper()->setController($this->getRedirectController())->setAction($this->getRedirectAction());
         $id = new IdParameter();
-        foreach ($this->getRedirectIdFields() as $indexId) {
-            $id->addId($indexId);
+        foreach ($this->getRedirectIdFields() as $key => $value) {
+            if (is_string($key)) {
+                $id->addId($key, $value);
+            } else {
+                $id->addId($value);
+            }
         }
         $indexPath->addParameter($id);
         $this->setIndexPath($indexPath);
@@ -51,8 +55,12 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface
         if ($this->hasIndexPath()) {
             if ($this->isCreate()) {
                 $id = new IdParameter();
-                foreach ($this->getCreateRedirectIdFields() as $indexId) {
-                    $id->addId($indexId);
+                foreach ($this->getCreateRedirectIdFields() as $key => $value) {
+                    if (is_string($key)) {
+                        $id->addId($key, $value);
+                    } else {
+                        $id->addId($value);
+                    }
                 }
                 $indexPath = $this->getPathHelper()->setController($this->getRedirectController())->setAction($this->getCreateRedirectAction());
                 $indexPath->addParameter($id);

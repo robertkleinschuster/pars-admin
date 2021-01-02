@@ -23,8 +23,12 @@ abstract class BaseDelete extends Delete
 
         $indexPath = $this->getPathHelper()->setController($this->getRedirectController())->setAction($this->getRedirectAction());
         $id = new IdParameter();
-        foreach ($this->getRedirectIdFields() as $indexId) {
-            $id->addId($indexId);
+        foreach ($this->getRedirectIdFields() as $key => $value) {
+            if (is_string($key)) {
+                $id->addId($key, $value);
+            } else {
+                $id->addId($value);
+            }
         }
         $indexPath->addParameter($id);
         $this->setIndexPath($indexPath);

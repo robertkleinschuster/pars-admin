@@ -175,6 +175,8 @@ return [
     'cmspagetype.code.faq' => 'FAQ',
     'cmspagetype.code.contact' => 'Kontakt',
     'cmspagetype.code.gallery' => 'Galerie',
+    'cmspagelayout.code' => 'Seiten Layout',
+    'cmspagelayout.code.default' => 'Standard',
     'cmspagestate.code' => 'Status',
     'cmspagestate.code.active' => 'Aktiv',
     'cmspagestate.code.inactive' => 'Inaktiv',

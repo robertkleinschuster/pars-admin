@@ -4,6 +4,7 @@ namespace Pars\Admin\Cms\PageParagraph;
 
 use Niceshops\Bean\Processor\BeanOrderProcessor;
 use Pars\Admin\Cms\Paragraph\CmsParagraphModel;
+use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Cms\PageParagraph\CmsPageParagraphBeanFinder;
 use Pars\Model\Cms\PageParagraph\CmsPageParagraphBeanProcessor;
 use Pars\Model\Cms\Paragraph\CmsParagraphBeanFinder;
@@ -42,5 +43,18 @@ class CmsPageParagraphModel extends CmsParagraphModel
         $finder = new CmsParagraphBeanFinder($this->getDbAdpater());
         return $finder->getBeanList();
     }
+
+    protected function create(IdParameter $idParameter, array &$attributes): void
+    {
+        parent::initialize();
+        parent::initializeDependencies();
+        parent::create($idParameter, $attributes);
+        if (!$this->getValidationHelper()->hasError()){
+            $this->initialize();
+            $this->initializeDependencies();
+            parent::create($idParameter, $attributes);
+        }
+    }
+
 
 }

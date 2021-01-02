@@ -16,13 +16,13 @@ class CmsMenuEdit extends BaseEdit
     protected function initialize()
     {
         if ($this->hasPageOptions()) {
-            $this->getForm()->addSelect('CmsPage_ID', $this->getPageOptions(), '{CmsPage_ID}', $this->translate('cmspage.id'), 2, 1);
+            $this->getForm()->addSelect('CmsPage_ID', $this->getPageOptions(), '{CmsPage_ID}', $this->translate('cmspage.id'));
         }
         if ($this->hasTypeOptions()) {
-            $this->getForm()->addSelect('CmsMenuType_Code', $this->getTypeOptions(), '{CmsMenuType_Code}', $this->translate('cmsmenutype.code'), 1, 1);
+            $this->getForm()->addSelect('CmsMenuType_Code', $this->getTypeOptions(), '{CmsMenuType_Code}', $this->translate('cmsmenutype.code'));
         }
         if ($this->hasStateOptions()) {
-            $this->getForm()->addSelect('CmsMenuState_Code', $this->getStateOptions(), '{CmsMenuState_Code}', $this->translate('cmsmenustate.code'), 1, 2);
+            $this->getForm()->addSelect('CmsMenuState_Code', $this->getStateOptions(), '{CmsMenuState_Code}', $this->translate('cmsmenustate.code'));
         }
 
         parent::initialize();

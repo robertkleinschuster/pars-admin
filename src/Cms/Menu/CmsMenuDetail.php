@@ -10,6 +10,9 @@ use Pars\Component\Base\Field\Span;
 
 class CmsMenuDetail extends BaseDetail
 {
+
+    protected bool $showType = true;
+
     protected function initialize()
     {
         $this->setSection($this->translate('section.menu'));
@@ -18,9 +21,12 @@ class CmsMenuDetail extends BaseDetail
         $span->setLabel($this->translate('cmsmenustate.code'));
         $span->setFormat(new CmsMenuStateFieldFormat($this->getTranslator()));
         $this->append($span);
-        $span = new Span('{CmsMenuType_Code}', $this->translate('cmsmenutype.code'));
-        $span->setFormat(new CmsMenuTypeFieldFormat($this->getTranslator()));
-        $this->append($span);
+        if ($this->isShowType()){
+            $span = new Span('{CmsMenuType_Code}', $this->translate('cmsmenutype.code'));
+            $span->setFormat(new CmsMenuTypeFieldFormat($this->getTranslator()));
+            $this->append($span);
+        }
+
         $this->setHeadline('{ArticleTranslation_Name}');
         $this->addField('Article_Code', $this->translate('article.code'));
         $this->addField('ArticleTranslation_Code', $this->translate('articletranslation.code'));
@@ -39,5 +45,24 @@ class CmsMenuDetail extends BaseDetail
             'CmsMenu_ID'
         ];
     }
+
+    /**
+     * @return bool
+     */
+    public function isShowType(): bool
+    {
+        return $this->showType;
+    }
+
+    /**
+     * @param bool $showType
+     */
+    public function setShowType(bool $showType): void
+    {
+        $this->showType = $showType;
+    }
+
+
+
 
 }

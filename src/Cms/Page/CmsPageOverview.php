@@ -32,6 +32,13 @@ class CmsPageOverview extends ArticleOverview
             $span->addOption(Span::OPTION_DECORATION_NONE);
         }
         $this->append($span);
+        $span = new Span('{CmsPageLayout_Code}', $this->translate('cmspagelayout.code'));
+        $span->setFormat(new CmsPageLayoutFieldFormat($this->getTranslator()));
+        if ($this->hasDetailPath()) {
+            $span->setPath($this->getDetailPath());
+            $span->addOption(Span::OPTION_DECORATION_NONE);
+        }
+        $this->append($span);
         parent::initialize();
     }
 

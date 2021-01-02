@@ -8,6 +8,8 @@ use Laminas\Db\Adapter\AdapterAwareTrait;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Laminas\I18n\Translator\TranslatorAwareTrait;
+use Niceshops\Bean\Processor\DefaultMetaFieldHandler;
+use Niceshops\Bean\Processor\TimestampMetaFieldHandler;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
@@ -32,6 +34,21 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
      * @var array
      */
     private ?array $config = null;
+
+    public function initializeDependencies()
+    {
+        parent::initializeDependencies();
+        if ($this->hasBeanProcessor()) {
+            $processor = $this->getBeanProcessor();
+            $processor->addMetaFieldHandler(new TimestampMetaFieldHandler('Timestamp_Edit', 'Timestamp_Create'));
+            $processor->addMetaFieldHandler(new DefaultMetaFieldHandler('Person_ID_Edit', $this->getUserBean()->Person_ID, true));
+            $processor->addMetaFieldHandler(new DefaultMetaFieldHandler('Person_ID_Create', $this->getUserBean()->Person_ID));
+            if ($processor instanceof TranslatorAwareInterface && $this->hasTranslator()) {
+                $processor->setTranslator($this->getTranslator());
+            }
+        }
+    }
+
 
     /**
      *

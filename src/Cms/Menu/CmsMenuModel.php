@@ -3,6 +3,7 @@
 namespace Pars\Admin\Cms\Menu;
 
 use Niceshops\Bean\Processor\BeanOrderProcessor;
+use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\CrudModel;
 use Pars\Model\Cms\Menu\CmsMenuBeanFinder;
 use Pars\Model\Cms\Menu\CmsMenuBeanProcessor;
@@ -25,8 +26,14 @@ class CmsMenuModel extends CrudModel
         $this->setBeanOrderProcessor(new BeanOrderProcessor(
             new CmsMenuBeanProcessor($this->getDbAdpater()),
             new CmsMenuBeanFinder($this->getDbAdpater()),
-            'CmsMenu_Order'
+            'CmsMenu_Order',
+            'CmsMenu_ID_Parent'
         ));
+        $this->initFinder();
+    }
+
+    protected function initFinder() {
+        $this->getBeanFinder()->setCmsMenu_ID_Parent(null);
     }
 
 
@@ -62,4 +69,14 @@ class CmsMenuModel extends CrudModel
         }
         return $options;
     }
+
+    public function getEmptyBean(array $data = []): BeanInterface
+    {
+        $bean = parent::getEmptyBean($data);
+        $bean->set('CmsMenuType_Code', 'header');
+        $bean->set('CmsMenuState_Code', 'active');
+        return $bean;
+    }
+
+
 }

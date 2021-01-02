@@ -255,15 +255,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $converter->setTimezone($this->getModel()->getConfig('admin.timezone'));
         $this->getModel()->setBeanConverter($converter);
         $this->getModel()->initialize();
-        if ($this->getModel()->hasBeanProcessor()) {
-            $processor = $this->getModel()->getBeanProcessor();
-            $processor->addMetaFieldHandler(new TimestampMetaFieldHandler('Timestamp_Edit', 'Timestamp_Create'));
-            $processor->addMetaFieldHandler(new DefaultMetaFieldHandler('Person_ID_Edit', $this->getUserBean()->Person_ID, true));
-            $processor->addMetaFieldHandler(new DefaultMetaFieldHandler('Person_ID_Create', $this->getUserBean()->Person_ID));
-            if ($processor instanceof TranslatorAwareInterface) {
-                $processor->setTranslator($this->getTranslator());
-            }
-        }
+        $this->getModel()->initializeDependencies();
 
         $this->getView()->set('language', $this->getTranslator()->getLocale());
         $this->getView()->set('title', $this->getModel()->getConfig('admin.title'));

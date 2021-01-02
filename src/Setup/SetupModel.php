@@ -25,7 +25,7 @@ class SetupModel extends \Pars\Admin\Base\BaseModel
         $this->setBeanFinder(new \Pars\Model\Authentication\User\UserBeanFinder($this->getDbAdpater()));
     }
 
-    protected function create(IdParameter $idParameter, array $attributes): void
+    protected function create(IdParameter $idParameter, array &$attributes): void
     {
 
         $schemaUpdater = new SchemaUpdater($this->getDbAdpater());

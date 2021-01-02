@@ -6,6 +6,8 @@ namespace Pars\Admin\Base;
 
 use Pars\Component\Base\Form\Input;
 use Pars\Component\Base\Overview\Overview;
+use Pars\Component\Base\Toolbar\CreateButton;
+use Pars\Component\Base\Toolbar\CreateNewButton;
 use Pars\Component\Base\Toolbar\DeleteButton;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
@@ -24,6 +26,7 @@ abstract class BaseOverview extends Overview
     public bool $showDeleteBulk = true;
     public bool $showDetail = true;
     public bool $showCreate = true;
+    public bool $showCreateNew = false;
     public bool $showMove = false;
     public ?string $section = null;
     public ?string $token = null;
@@ -39,11 +42,15 @@ abstract class BaseOverview extends Overview
 
         $moveredirectParameter = new RedirectParameter();
         $moveredirectPath = $this->getPathHelper()->setController($this->getRedirectController())->setAction($this->getRedirectAction());
-        $moveRedirectIdParamter = new IdParameter();
-        foreach ($this->getRedirectIdFields() as $moveRedirectIdField) {
-            $moveRedirectIdParamter->addId($moveRedirectIdField);
+        $moveRedirectIdParameter = new IdParameter();
+        foreach ($this->getRedirectIdFields() as $key => $value) {
+            if (is_string($key)) {
+                $moveRedirectIdParameter->addId($key, $value);
+            } else {
+                $moveRedirectIdParameter->addId($value);
+            }
         }
-        $moveredirectPath->setId($moveRedirectIdParamter);
+        $moveredirectPath->setId($moveRedirectIdParameter);
         $moveredirectParameter->setPath($moveredirectPath->getPath());
 
         $redirect = new Input(Input::TYPE_HIDDEN);
@@ -53,8 +60,12 @@ abstract class BaseOverview extends Overview
 
         $this->setBulkFieldName(IdListParameter::name());
         $idList = new IdListParameter();
-        foreach ($this->getDetailIdFields() as $idField) {
-            $idList->addId($idField);
+        foreach ($this->getDetailIdFields() as $key => $value) {
+            if (is_string($key)) {
+                $idList->addId($key, $value);
+            } else {
+                $idList->addId($value);
+            }
         }
         $this->setBulkFieldValue($idList);
 
@@ -63,8 +74,12 @@ abstract class BaseOverview extends Overview
         }
 
         $id = (new IdParameter());
-        foreach ($this->getDetailIdFields() as $idField) {
-            $id->addId($idField);
+        foreach ($this->getDetailIdFields() as $key => $value) {
+            if (is_string($key)) {
+                $id->addId($key, $value);
+            } else {
+                $id->addId($value);
+            }
         }
 
         if ($this->isShowDetail()) {
@@ -78,12 +93,21 @@ abstract class BaseOverview extends Overview
         }
 
         $createid = (new IdParameter());
-        foreach ($this->getCreateIdFields() as $idField) {
-            $createid->addId($idField);
+        foreach ($this->getCreateIdFields() as $key => $value) {
+            if (is_string($key)) {
+                $createid->addId($key, $value);
+            } else{
+                $createid->addId($value);
+            }
         }
         $createPath = $this->getPathHelper()->setController($this->getController())->setAction('create')->setId($createid)->getPath();
         if ($this->isShowCreate()) {
             $this->getToolbar()->setCreatePath($createPath);
+        }
+
+        $createPath = $this->getPathHelper()->setController($this->getController())->setAction('create_new')->setId($createid)->getPath();
+        if ($this->isShowCreateNew()) {
+            $this->getToolbar()->push(new CreateNewButton($createPath));
         }
 
         $this->setAttribute('method', 'post');
@@ -92,8 +116,12 @@ abstract class BaseOverview extends Overview
 
         if ($this->isShowDeleteBulk()) {
             $id = (new IdParameter());
-            foreach ($this->getDetailIdFields() as $idField) {
-                $id->addId($idField);
+            foreach ($this->getDetailIdFields() as $key => $value) {
+                if (is_string($key)) {
+                    $id->addId($key, $value);
+                } else {
+                    $id->addId($value);
+                }
             }
             $button = new DeleteButton(SubmitParameter::name(), SubmitParameter::createDeleteBulk());
             $button->setConfirm($this->translate('delete_bulk.message'));
@@ -104,8 +132,12 @@ abstract class BaseOverview extends Overview
 
         if ($this->isShowMove()) {
             $id = new IdParameter();
-            foreach ($this->getDetailIdFields() as $idField) {
-                $id->addId($idField);
+            foreach ($this->getDetailIdFields() as $key => $value) {
+                if (is_string($key)) {
+                    $id->addId($key, $value);
+                } else {
+                    $id->addId($value);
+                }
             }
             $fragment = 'move-table-' . $this->getController();
             $this->setId($fragment);
@@ -330,6 +362,23 @@ abstract class BaseOverview extends Overview
     {
         return isset($this->token);
     }
+
+    /**
+     * @return bool
+     */
+    public function isShowCreateNew(): bool
+    {
+        return $this->showCreateNew;
+    }
+
+    /**
+     * @param bool $showCreateNew
+     */
+    public function setShowCreateNew(bool $showCreateNew): void
+    {
+        $this->showCreateNew = $showCreateNew;
+    }
+
 
 
 }

@@ -26,4 +26,6 @@ return [
     'locale.code.unique' => 'Der Code ist bereits vergeben!',
     'locale.urlcode.unique' => 'Der URL-Code ist bereits vergeben!',
     'locale.urlcode.empty' => 'Der URL-Code darf nicht leer sein!',
+    'articlestate.code.empty' => 'Der Status darf nicht leer sein!',
+    'articletype.code.empty' => 'Der Typ darf nicht leer sein!',
 ];

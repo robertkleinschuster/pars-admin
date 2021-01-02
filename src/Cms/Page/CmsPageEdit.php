@@ -11,18 +11,22 @@ class CmsPageEdit extends ArticleEdit
     protected ?array $pageStateOptions = null;
     protected ?array $pageTypeOptions = null;
     protected ?array $pageRedirectOptions = null;
+    protected ?array $pageLayoutOptions = null;
 
     protected function initialize()
     {
         parent::initialize();
+        if ($this->hasLayoutOptions()) {
+            $this->getForm()->addSelect('CmsPageLayout_Code', $this->getLayoutOptions(), '{CmsPageLayout_Code}', $this->translate('cmspagelayout.code'), 2, 1);
+        }
         if ($this->hasTypeOptions()) {
-            $this->getForm()->addSelect('CmsPageType_Code', $this->getTypeOptions(), '{CmsPageType_Code}', $this->translate('cmspagetype.code'), 2, 1);
+            $this->getForm()->addSelect('CmsPageType_Code', $this->getTypeOptions(), '{CmsPageType_Code}', $this->translate('cmspagetype.code'), 2, 2);
         }
         if ($this->hasStateOptions()) {
-            $this->getForm()->addSelect('CmsPageState_Code', $this->getStateOptions(), '{CmsPageState_Code}', $this->translate('cmspagestate.code'), 2, 2);
+            $this->getForm()->addSelect('CmsPageState_Code', $this->getStateOptions(), '{CmsPageState_Code}', $this->translate('cmspagestate.code'), 2, 3);
         }
         if ($this->hasRedirectOptions()) {
-            $this->getForm()->addSelect('CmsPage_ID_Redirect', $this->getRedirectOptions(), '{CmsPage_ID_Redirect}', $this->translate('cmspage.id.redirect'), 2, 3);
+            $this->getForm()->addSelect('CmsPage_ID_Redirect', $this->getRedirectOptions(), '{CmsPage_ID_Redirect}', $this->translate('cmspage.id.redirect'), 2, 4);
         }
     }
 
@@ -107,6 +111,34 @@ class CmsPageEdit extends ArticleEdit
     {
         return isset($this->pageTypeOptions);
     }
+
+    /**
+    * @return array
+    */
+    public function getLayoutOptions(): array
+    {
+        return $this->pageLayoutOptions;
+    }
+
+    /**
+    * @param array $pageLayoutOptions
+    *
+    * @return $this
+    */
+    public function setLayoutOptions(array $pageLayoutOptions): self
+    {
+        $this->pageLayoutOptions = $pageLayoutOptions;
+        return $this;
+    }
+
+    /**
+    * @return bool
+    */
+    public function hasLayoutOptions(): bool
+    {
+        return isset($this->pageLayoutOptions);
+    }
+
 
     protected function getRedirectController(): string
     {

@@ -72,5 +72,20 @@ class CmsPageParagraphController extends CmsParagraphController
         return $delete;
     }
 
+    public function create_newAction()
+    {
+        $edit = new CmsPageParagraphCreateNew($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit->setFileOptions($this->getModel()->getFileOptions());
+        $edit->setStateOptions($this->getModel()->getCmsParagraphState_Options());
+        $edit->setTypeOptions($this->getModel()->getCmsParagraphType_Options());
+        $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
+        $edit->setBean($this->getModel()->getEmptyBean($this->getPreviousAttributes()));
+        $this->getModel()->getBeanConverter()
+            ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
+        $edit->setToken($this->generateToken('submit_token'));
+        $edit->setCreate(true);
+        $this->getView()->append($edit);
+        return $edit;
+    }
 
 }

@@ -2,6 +2,7 @@
 
 namespace Pars\Admin\Cms\Paragraph;
 
+use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Article\ArticleModel;
 use Pars\Model\Cms\Paragraph\CmsParagraphBeanFinder;
 use Pars\Model\Cms\Paragraph\CmsParagraphBeanProcessor;
@@ -39,4 +40,14 @@ class CmsParagraphModel extends ArticleModel
         }
         return $options;
     }
+
+    public function getEmptyBean(array $data = []): BeanInterface
+    {
+        $bean = parent::getEmptyBean($data);
+        $bean->set('CmsParagraphType_Code', 'text');
+        $bean->set('CmsParagraphState_Code', 'active');
+        return $bean;
+    }
+
+
 }

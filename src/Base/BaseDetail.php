@@ -7,6 +7,7 @@ namespace Pars\Admin\Base;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Button;
 use Pars\Component\Base\Field\Icon;
+use Pars\Component\Base\Toolbar\Toolbar;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Mvc\View\HtmlElement;
 
@@ -14,6 +15,7 @@ abstract class BaseDetail extends Detail
 {
     use AdminComponentTrait;
 
+    protected ?Toolbar $toolbar = null;
     public ?string $indexPath = null;
     public bool $showEdit = true;
     public bool $showDelete = true;
@@ -23,13 +25,17 @@ abstract class BaseDetail extends Detail
     {
         $indexPath = $this->getPathHelper()->setController($this->getIndexController())->setAction($this->getIndexAction());
         $id = new IdParameter();
-        foreach ($this->getIndexIdFields() as $indexId) {
-            $id->addId($indexId);
+        foreach ($this->getIndexIdFields() as $key => $value) {
+            if (is_string($key)) {
+                $id->addId($key, $value);
+            } else {
+                $id->addId($value);
+            }
         }
         $indexPath->addParameter($id);
         $this->setIndexPath($indexPath);
 
-        $toolbar = new HtmlElement('div.btn-toolbar.mb-4');
+        $toolbar = $this->getToolbar();
 
         if ($this->hasIndexPath() && $this->isShowBack()) {
             $button = new Button(null, Button::STYLE_SECONDARY);
@@ -41,8 +47,12 @@ abstract class BaseDetail extends Detail
             $button = new Button(null, Button::STYLE_WARNING);
             $button->addIcon(Icon::ICON_EDIT_2);
             $id = new IdParameter();
-            foreach ($this->getEditIdFields() as $editIdField) {
-                $id->addId($editIdField);
+            foreach ($this->getEditIdFields() as $key => $value) {
+                if (is_string($key)) {
+                    $id->addId($key, $value);
+                } else {
+                    $id->addId($value);
+                }
             }
             $button->setPath($this->getPathHelper()->setController($this->getEditController())->setAction($this->getEditAction())->setId($id));
             $toolbar->push($button);
@@ -51,8 +61,12 @@ abstract class BaseDetail extends Detail
             $button = new Button(null, Button::STYLE_DANGER);
             $button->addIcon(Icon::ICON_TRASH);
             $id = new IdParameter();
-            foreach ($this->getEditIdFields() as $editIdField) {
-                $id->addId($editIdField);
+            foreach ($this->getEditIdFields() as $key => $value) {
+                if (is_string($key)) {
+                    $id->addId($key, $value);
+                } else {
+                    $id->addId($value);
+                }
             }
             $button->setPath($this->getPathHelper()->setController($this->getEditController())->setAction('delete')->setId($id));
             $toolbar->push($button);
@@ -169,6 +183,27 @@ abstract class BaseDetail extends Detail
     {
         return isset($this->indexPath);
     }
+
+    /**
+     * @return Toolbar|null
+     */
+    public function getToolbar(): ?Toolbar
+    {
+        if (null == $this->toolbar) {
+            $this->toolbar = new Toolbar('div.btn-toolbar.mb-4');
+        }
+        return $this->toolbar;
+    }
+
+    /**
+     * @param Toolbar|null $toolbar
+     */
+    public function setToolbar(?Toolbar $toolbar): void
+    {
+        $this->toolbar = $toolbar;
+    }
+
+
 
 
 }

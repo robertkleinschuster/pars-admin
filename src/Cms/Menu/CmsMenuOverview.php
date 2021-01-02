@@ -12,6 +12,8 @@ class CmsMenuOverview extends BaseOverview
 {
 
 
+    protected bool $showType = true;
+
     protected function initialize()
     {
         $this->setSection($this->translate('section.menu'));
@@ -23,13 +25,16 @@ class CmsMenuOverview extends BaseOverview
             $span->addOption(Span::OPTION_DECORATION_NONE);
         }
         $this->append($span);
-        $span = new Span('{CmsMenuType_Code}', $this->translate('cmsmenutype.code'));
-        $span->setFormat(new CmsMenuTypeFieldFormat($this->getTranslator()));
-        if ($this->hasDetailPath()) {
-            $span->setPath($this->getDetailPath());
-            $span->addOption(Span::OPTION_DECORATION_NONE);
+        if ($this->isShowType()) {
+            $span = new Span('{CmsMenuType_Code}', $this->translate('cmsmenutype.code'));
+            $span->setFormat(new CmsMenuTypeFieldFormat($this->getTranslator()));
+            if ($this->hasDetailPath()) {
+                $span->setPath($this->getDetailPath());
+                $span->addOption(Span::OPTION_DECORATION_NONE);
+            }
+            $this->append($span);
         }
-        $this->append($span);
+
         $this->addField('ArticleTranslation_Name', $this->translate('articletranslation.name'));
         $this->addField('Article_Code', $this->translate('article.code'));
         $this->addField('ArticleTranslation_Code', $this->translate('articletranslation.code'));
@@ -49,4 +54,22 @@ class CmsMenuOverview extends BaseOverview
             'CmsMenu_ID'
         ];
     }
+
+    /**
+     * @return bool
+     */
+    public function isShowType(): bool
+    {
+        return $this->showType;
+    }
+
+    /**
+     * @param bool $showType
+     */
+    public function setShowType(bool $showType): void
+    {
+        $this->showType = $showType;
+    }
+
+
 }
