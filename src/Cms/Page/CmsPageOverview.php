@@ -21,8 +21,8 @@ class CmsPageOverview extends ArticleOverview
             $span->addOption(Span::OPTION_DECORATION_NONE);
         }
         $this->append($span);
-        $icon = new Icon(Icon::ICON_CORNER_UP_RIGHT);
-        $icon->setWidth('16px');
+        $icon = new Icon(Icon::ICON_EXTERNAL_LINK);
+        $icon->addOption('text-danger');
         $icon->setAccept(new CmsPageRedirectAccept());
         $this->append($icon);
         $span = new Span('{CmsPageType_Code}', $this->translate('cmspagetype.code'));

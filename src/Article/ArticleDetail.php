@@ -15,6 +15,7 @@ abstract class ArticleDetail extends BaseDetail
         $this->addField('Article_Code', $this->translate('article.code'));
         $this->addField('ArticleTranslation_Code', $this->translate('articletranslation.code'));
         $this->addField('ArticleTranslation_Title', $this->translate('articletranslation.title'));
+        $this->addField('ArticleTranslation_Keywords', $this->translate('articletranslation.keywords'));
         $this->addField('ArticleTranslation_Heading', $this->translate('articletranslation.heading'));
         $this->addField('ArticleTranslation_SubHeading', $this->translate('articletranslation.subheading'));
         $this->addField('ArticleTranslation_Path', $this->translate('articletranslation.path'));

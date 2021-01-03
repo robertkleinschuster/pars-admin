@@ -134,6 +134,8 @@ return [
     'articletranslation.code.hint' => 'Startseite: /',
     'articletranslation.name' => 'Name (Menü)',
     'articletranslation.title' => 'Titel',
+    'articletranslation.keywords' => 'Keywords',
+    'articletranslation.keywords.hint' => 'Mit "," getrennte Liste.',
     'articletranslation.heading' => 'Überschrift',
     'articletranslation.subheading' => 'Unterüberschrift',
     'articletranslation.path' => 'Link',

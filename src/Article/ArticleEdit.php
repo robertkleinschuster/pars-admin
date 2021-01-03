@@ -26,6 +26,8 @@ abstract class ArticleEdit extends BaseEdit
             ->setHint($this->translate('articletranslation.code.hint'));
         $this->getForm()->addText('ArticleTranslation_Name', '{ArticleTranslation_Name}', $this->translate('articletranslation.name'), 4, 1);
         $this->getForm()->addText('ArticleTranslation_Title', '{ArticleTranslation_Title}', $this->translate('articletranslation.title'), 4, 2);
+        $this->getForm()->addText('ArticleTranslation_Keywords', '{ArticleTranslation_Keywords}', $this->translate('articletranslation.keywords'), 7, 2)
+        ->setHint($this->translate('articletranslation.keywords.hint'));
         $this->getForm()->addText('ArticleTranslation_Heading', '{ArticleTranslation_Heading}', $this->translate('articletranslation.heading'), 5, 1);
         $this->getForm()->addText('ArticleTranslation_SubHeading', '{ArticleTranslation_SubHeading}', $this->translate('articletranslation.subheading'), 5, 2);
         $this->getForm()->addUrl('ArticleTranslation_Path', '{ArticleTranslation_Path}', $this->translate('articletranslation.path'), 6, 1);
