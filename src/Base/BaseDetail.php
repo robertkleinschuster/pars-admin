@@ -15,7 +15,6 @@ abstract class BaseDetail extends Detail
 {
     use AdminComponentTrait;
 
-    protected ?Toolbar $toolbar = null;
     public ?string $indexPath = null;
     public bool $showEdit = true;
     public bool $showDelete = true;
@@ -71,7 +70,6 @@ abstract class BaseDetail extends Detail
             $button->setPath($this->getPathHelper()->setController($this->getEditController())->setAction('delete')->setId($id));
             $toolbar->push($button);
         }
-        $this->push($toolbar);
         parent::initialize();
     }
 
@@ -184,24 +182,7 @@ abstract class BaseDetail extends Detail
         return isset($this->indexPath);
     }
 
-    /**
-     * @return Toolbar|null
-     */
-    public function getToolbar(): ?Toolbar
-    {
-        if (null == $this->toolbar) {
-            $this->toolbar = new Toolbar('div.btn-toolbar.mb-4');
-        }
-        return $this->toolbar;
-    }
 
-    /**
-     * @param Toolbar|null $toolbar
-     */
-    public function setToolbar(?Toolbar $toolbar): void
-    {
-        $this->toolbar = $toolbar;
-    }
 
 
 

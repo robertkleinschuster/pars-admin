@@ -26,6 +26,7 @@ class CmsPageParagraphOverview extends CmsParagraphOverview
         return 'cmspageparagraph';
     }
 
+
     protected function getCreateIdFields(): array
     {
         return [

@@ -9,11 +9,6 @@ class ContentNavigation extends BaseNavigation
     protected function initialize()
     {
         $this->addItem(
-            $this->translate('navigation.content.cmsmenu')
-            , $this->getPathHelper()->setController('cmsmenu')->setAction('index'),
-            'cmsmenu')
-            ->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'cmsmenu'));
-        $this->addItem(
             $this->translate('navigation.content.cmspage')
             , $this->getPathHelper()->setController('cmspage')->setAction('index'),
             'cmspage')
@@ -23,6 +18,11 @@ class ContentNavigation extends BaseNavigation
             , $this->getPathHelper()->setController('cmsparagraph')->setAction('index'),
             'cmsparagraph')
             ->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'cmsparagraph'));
+        $this->addItem(
+            $this->translate('navigation.content.cmsmenu')
+            , $this->getPathHelper()->setController('cmsmenu')->setAction('index'),
+            'cmsmenu')
+            ->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'cmsmenu'));
         $this->setBrand(
             $this->translate('navigation.content'),
             $this->getPathHelper()->setController('cmsmenu')->setAction('index')

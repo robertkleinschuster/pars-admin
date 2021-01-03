@@ -72,7 +72,9 @@ class CmsPageModel extends ArticleModel
         $finder->setCmsPageState_Code('active');
         $options[null] = $this->translate('noselection');
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->get('CmsPage_ID')] = $bean->get('ArticleTranslation_Name');
+            if ($this->getBeanFinder()->count() != 1 || $bean->get('CmsPage_ID') != $this->getBean()->get('CmsPage_ID')) {
+                $options[$bean->get('CmsPage_ID')] = $bean->get('ArticleTranslation_Name');
+            }
         }
         return $options;
     }

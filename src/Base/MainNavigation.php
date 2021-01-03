@@ -14,7 +14,7 @@ class MainNavigation extends BaseNavigation
     {
         $this->addItem(
             $this->translate('navigation.content')
-            , $this->getPathHelper()->setController('cmsmenu')->setAction('index'),
+            , $this->getPathHelper()->setController('cmspage')->setAction('index'),
             'content')->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'content'));
         $this->addItem(
             $this->translate('navigation.media')

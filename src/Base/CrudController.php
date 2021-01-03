@@ -4,6 +4,9 @@ namespace Pars\Admin\Base;
 
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Span;
+use Pars\Component\Base\Grid\Column;
+use Pars\Component\Base\Grid\Row;
+use Pars\Component\Base\Toolbar\CreateButton;
 
 /**
  * Class CrudController
@@ -26,12 +29,16 @@ abstract class CrudController extends BaseController
 
     public function detailAction()
     {
+        $row = new Row();
         $detail = $this->createDetail();
         $bean = $this->getModel()->getBean();
         $detail->setBean($bean);
+        $column = new Column();
+        $column->setBreakpoint(Column::BREAKPOINT_EXTRA_LARGE);
         $this->getView()->append($detail);
+        $row->push($column);
         $metaInfo = new Detail();
-        $metaInfo->setSection($this->translate('meta.info'));
+      #  $metaInfo->setSection($this->translate('meta.info'));
         if ($bean->exists('Person_ID_Create') && !$bean->empty('Person_ID_Create')) {
             if ($bean->get('Person_ID_Create') > 0) {
                 $user = $this->getModel()->getUserById($bean->get('Person_ID_Create'));
@@ -52,6 +59,10 @@ abstract class CrudController extends BaseController
             $date = $this->getModel()->getBeanConverter()->convert($bean)->get('Timestamp_Edit');
             $metaInfo->append(new Span($date, $this->translate('timestamp.edit')));
         }
+        $column = new Column();
+        $column->setBreakpoint(Column::BREAKPOINT_EXTRA_LARGE);
+        $column->push($metaInfo);
+        $row->push($column);
         $this->getView()->append($metaInfo);
         return $detail;
     }

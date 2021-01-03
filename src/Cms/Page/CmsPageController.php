@@ -11,6 +11,7 @@ use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
 use Pars\Component\Base\Alert\Alert;
 use Pars\Component\Base\Toolbar\PreviewButton;
+use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Article\ArticleDataBean;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
 
@@ -98,10 +99,12 @@ class CmsPageController extends ArticleController
         if (!$bean->empty('CmsPage_ID_Redirect')) {
             $cmsPageFinder = new CmsPageBeanFinder($this->getModel()->getDbAdpater());
             $cmsPageFinder->setCmsPage_ID($bean->get('CmsPage_ID_Redirect'));
-            $alert = new Alert(
-                $this->translate('cmspage.redirect.alert.headline'),
-                $this->translate('cmspage.redirect.alert.text') . ': ' . $cmsPageFinder->getBean()->get('ArticleTranslation_Name')
-            );
+            $page = $cmsPageFinder->getBean();
+            $alert = new Alert($this->translate('cmspage.redirect.alert.headline'));
+            $idParameter = new IdParameter();
+            $idParameter->addId('CmsPage_ID', $page->get('CmsPage_ID'));
+            $path = $this->getPathHelper(true)->setId($idParameter);
+            $alert->addParagraph($page->get('ArticleTranslation_Name'))->setPath($path);
             $this->getView()->prepend($alert);
         }
     }

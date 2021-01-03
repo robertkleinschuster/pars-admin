@@ -20,6 +20,7 @@ use Niceshops\Core\Attribute\AttributeAwareTrait;
 use Niceshops\Core\Option\OptionAwareInterface;
 use Niceshops\Core\Option\OptionAwareTrait;
 use Pars\Component\Base\Alert\Alert;
+use Pars\Component\Base\Grid\Container;
 use Pars\Component\Base\Layout\DashboardLayout;
 use Pars\Component\Base\View\BaseView;
 use Pars\Core\Bundles\BundlesMiddleware;

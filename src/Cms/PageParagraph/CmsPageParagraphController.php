@@ -79,7 +79,7 @@ class CmsPageParagraphController extends CmsParagraphController
         $edit->setStateOptions($this->getModel()->getCmsParagraphState_Options());
         $edit->setTypeOptions($this->getModel()->getCmsParagraphType_Options());
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
-        $edit->setBean($this->getModel()->getEmptyBean($this->getPreviousAttributes()));
+        $edit->setBean($this->getModel()->getEmptyBean(array_replace($this->getControllerRequest()->getId()->getAttribute_List(), $this->getPreviousAttributes())));
         $this->getModel()->getBeanConverter()
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
         $edit->setToken($this->generateToken('submit_token'));
