@@ -188,6 +188,7 @@ return [
     'file.id' => 'Datei',
     'file.upload' => 'Datei wählen',
     'file.preview' => 'Vorschau',
+    'file.path' => 'Pfad',
     'filetype.name' => 'Dateityp',
     'filetype.code' => 'Typ',
     'filedirectory.id' => 'Ordner',

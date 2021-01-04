@@ -9,15 +9,28 @@ use Pars\Component\Base\Field\Image;
 
 class FileDetail extends BaseDetail
 {
+    protected ?string $assetDomain = null;
+
     protected function initialize()
     {
+        $path = "/upload/{FileDirectory_Code}/{File_Code}.{FileType_Code}";
+        if ($this->hasAssetDomain()) {
+            $path = $this->getAssetDomain() . $path;
+        }
         $this->setSection($this->translate('section.file'));
         $this->setHeadline('{File_Name}');
-        $this->addField('FileType_Name', $this->translate('filetype.name'));
-        $this->addField('File_Code', $this->translate('file.code'));
-        $image = new Image("/upload/{FileDirectory_Code}/{File_Code}.{FileType_Code}");
+        $image = new Image($path);
         $image->addInlineStyle('max-height', '200px');
+        $image->setLabel($this->translate('file.preview'));
         $this->append($image);
+        $this->addField('File_Code', $this->translate('file.code'));
+
+        $this->addField('File_Code', $this->translate('file.path'))
+            ->setContent($path)
+            ->setPath($path)
+            ->setTarget('_blank');
+
+        $this->addField('FileType_Name', $this->translate('filetype.name'));
         parent::initialize();
     }
 
@@ -33,5 +46,33 @@ class FileDetail extends BaseDetail
             'File_ID'
         ];
     }
+
+    /**
+    * @return string
+    */
+    public function getAssetDomain(): string
+    {
+        return $this->assetDomain;
+    }
+
+    /**
+    * @param string $assetDomain
+    *
+    * @return $this
+    */
+    public function setAssetDomain(string $assetDomain): self
+    {
+        $this->assetDomain = $assetDomain;
+        return $this;
+    }
+
+    /**
+    * @return bool
+    */
+    public function hasAssetDomain(): bool
+    {
+        return isset($this->assetDomain);
+    }
+
 
 }
