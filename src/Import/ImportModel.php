@@ -8,6 +8,7 @@ use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Import\Tesla\TeslaImporter;
 use Pars\Model\Article\Translation\ArticleTranslationBeanFinder;
+use Pars\Model\Cms\Page\CmsPageBeanFinder;
 use Pars\Model\Import\ImportBeanFinder;
 use Pars\Model\Import\ImportBeanProcessor;
 use Pars\Model\Import\Type\ImportTypeBeanFinder;
@@ -42,7 +43,7 @@ class ImportModel extends CrudModel
 
     public function getArticleOptions(): array
     {
-        $finder = new ArticleTranslationBeanFinder($this->getDbAdpater());
+        $finder = new CmsPageBeanFinder($this->getDbAdpater());
         $finder->setLocale_Code($this->getTranslator()->getLocale());
         $options = [];
         foreach ($finder->getBeanListDecorator() as $item) {
