@@ -3,6 +3,9 @@
 namespace Pars\Admin\Import;
 
 use Pars\Admin\Base\CrudModel;
+use Pars\Helper\Parameter\IdListParameter;
+use Pars\Helper\Parameter\IdParameter;
+use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Import\Tesla\TeslaImporter;
 use Pars\Model\Article\Translation\ArticleTranslationBeanFinder;
 use Pars\Model\Import\ImportBeanFinder;
@@ -48,16 +51,31 @@ class ImportModel extends CrudModel
         return $options;
     }
 
-    protected function save(array $attributes): void
+    public function handleSubmit(SubmitParameter $submitParameter, IdParameter $idParameter, IdListParameter $idListParameter, array $attribute_List)
     {
-        if (isset($attributes['tesla_username']) || isset($attributes['tesla_password'])) {
+        parent::handleSubmit($submitParameter, $idParameter, $idListParameter, $attribute_List);
+        switch ($submitParameter->getMode()) {
+            case 'configure':
+                if ($this->hasOption(self::OPTION_EDIT_ALLOWED)) {
+                    $this->configure($attribute_List);
+                } else {
+                    $this->handlePermissionDenied();
+                }
+                break;
+        }
+    }
+
+
+    protected function configure(array $attributes): void
+    {
+        if ($this->getBean()->get('ImportType_Code')) {
             $importer = new TeslaImporter($this->getBean());
-            if ($importer->setup($attributes)) {
-                parent::save($attributes);
+            $importer->setTranslator($this->getTranslator());
+            $importer->setup($attributes);
+            if (!$importer->getValidationHelper()->hasError()) {
+                $this->save($attributes);
             }
             $this->getValidationHelper()->merge($importer->getValidationHelper());
-        } else {
-            parent::save($attributes);
         }
     }
 

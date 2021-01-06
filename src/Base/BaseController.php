@@ -288,6 +288,17 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             $this->getControllerResponse()->setStatusCode(ControllerResponse::STATUS_PERMISSION_DENIED);
         }
 
+        if (count($validationHelper->getErrorList('General'))) {
+            $alert = new Alert();
+            foreach ($validationHelper->getErrorList('General') as $item) {
+                $alert->addParagraph($item);
+            }
+            if ($this->hasView()) {
+                $this->getView()->prepend($alert);
+            }
+            $this->getControllerResponse()->setStatusCode(ControllerResponse::STATUS_PERMISSION_DENIED);
+        }
+
         $profiler = $this->getModel()->getDbAdpater()->getProfiler();
         if ($profiler instanceof ProfilerInterface) {
             $profiles = $profiler->getProfiles();

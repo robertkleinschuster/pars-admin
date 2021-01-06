@@ -126,6 +126,7 @@ class ImportController extends CrudController
         switch ($bean->get('ImportType_Code')) {
             case 'tesla':
                 $importer = new TeslaImporter($this->getModel()->getBean());
+                $importer->setTranslator($this->getTranslator());
                 $importer->run();
                 $processor = $this->getModel()->getBeanProcessor();
                 $beanList = $this->getModel()->getBeanFinder()->getBeanFactory()->getEmptyBeanList();

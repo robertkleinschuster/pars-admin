@@ -58,16 +58,6 @@ abstract class BaseOverview extends Overview
         $redirect->setValue($moveredirectParameter);
         $this->push($redirect);
 
-        $this->setBulkFieldName(IdListParameter::name());
-        $idList = new IdListParameter();
-        foreach ($this->getDetailIdFields() as $key => $value) {
-            if (is_string($key)) {
-                $idList->addId($key, $value);
-            } else {
-                $idList->addId($value);
-            }
-        }
-        $this->setBulkFieldValue($idList);
 
         if ($this->hasSection()) {
             $this->push(new HtmlElement('h3.mb-3', $this->getSection()));
@@ -115,6 +105,17 @@ abstract class BaseOverview extends Overview
 
 
         if ($this->isShowDeleteBulk()) {
+            $this->setBulkFieldName(IdListParameter::name());
+            $idList = new IdListParameter();
+            foreach ($this->getDetailIdFields() as $key => $value) {
+                if (is_string($key)) {
+                    $idList->addId($key, $value);
+                } else {
+                    $idList->addId($value);
+                }
+            }
+            $this->setBulkFieldValue($idList);
+
             $id = (new IdParameter());
             foreach ($this->getDetailIdFields() as $key => $value) {
                 if (is_string($key)) {

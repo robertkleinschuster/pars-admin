@@ -4,6 +4,8 @@
 namespace Pars\Admin\Base;
 
 
+use Niceshops\Core\Mode\ModeAwareInterface;
+use Niceshops\Core\Mode\ModeAwareTrait;
 use Pars\Component\Base\Edit\Edit;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\RedirectParameter;
@@ -11,10 +13,11 @@ use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Helper\Validation\ValidationHelperAwareInterface;
 use Pars\Helper\Validation\ValidationHelperAwareTrait;
 
-abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface
+abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, ModeAwareInterface
 {
     use AdminComponentTrait;
     use ValidationHelperAwareTrait;
+    use ModeAwareTrait;
 
     public ?string $token = null;
     public ?string $indexPath = null;
@@ -49,6 +52,8 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface
             $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('edit.submit'), (new SubmitParameter())->setCreateBulk(), null, '', 50, 1);
         } elseif ($this->isCreate()) {
             $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('edit.submit'), (new SubmitParameter())->setCreate(), null, '', 50, 1);
+        } elseif ($this->hasMode()) {
+            $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('edit.submit'), (new SubmitParameter())->setMode($this->getMode()), null, '', 50, 1);
         } else {
             $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('edit.submit'), (new SubmitParameter())->setSave(), null, '', 50, 1);
         }

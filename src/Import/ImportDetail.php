@@ -6,6 +6,10 @@ namespace Pars\Admin\Import;
 
 use Pars\Admin\Base\BaseDetail;
 use Pars\Component\Base\Field\Badge;
+use Pars\Component\Base\Toolbar\ConfigureButton;
+use Pars\Component\Base\Toolbar\RunButton;
+use Pars\Helper\Parameter\IdParameter;
+use Pars\Helper\Parameter\RedirectParameter;
 
 class ImportDetail extends BaseDetail
 {
@@ -24,6 +28,29 @@ class ImportDetail extends BaseDetail
         $active->setFormat(new ImportActiveFieldFormat($this->getTranslator()));
         $this->append($active);
         parent::initialize();
+
+        $id = (new IdParameter());
+        foreach ($this->getEditIdFields() as $idField) {
+            $id->addId($idField);
+        }
+
+        $redirect = $this->getPathHelper()->setController($this->getIndexController())->setAction('detail')->setId($id)->getPath();
+
+        $this->getToolbar()->push(new ConfigureButton(
+            $this->getPathHelper()
+                ->setController($this->getIndexController())
+                ->setAction('configure')
+                ->setId($id)
+                ->getPath()
+        ));
+        $this->getToolbar()->push(new RunButton(
+            $this->getPathHelper()
+                ->setController($this->getIndexController())
+                ->setAction('run')
+                ->setId($id)
+                ->addParameter((new RedirectParameter())->setPath($redirect)
+                )->getPath()
+        ));
     }
 
 
