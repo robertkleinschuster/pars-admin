@@ -17,7 +17,6 @@ class ConfigOverview extends BaseOverview
         $this->setShowDelete(false);
         $this->setShowDeleteBulk(false);
         $this->setShowCreate(false);
-        $this->setShowDetail(false);
         $this->addField('Config_Code', $this->translate('config.code'));
         $this->addField('Config_Value', $this->translate('config.value'));
 
