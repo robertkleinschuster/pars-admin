@@ -131,7 +131,7 @@ class CmsPageModel extends ArticleModel
     {
         $bean = parent::getEmptyBean($data);
         $bean->set('CmsPageType_Code', 'home');
-        $bean->set('CmsPageLayout_Code', 'default');
+        $bean->set('CmsPageLayout_Code', 'fluid');
         $bean->set('CmsPageState_Code', 'active');
         return $bean;
     }
