@@ -47,7 +47,6 @@ class FileController extends CrudController
     protected function createDetail(): BaseDetail
     {
         $detail = new FileDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $detail->setAssetDomain($this->getModel()->getConfig('asset.domain'));
         return $detail;
     }
 
