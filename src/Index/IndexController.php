@@ -125,7 +125,7 @@ class IndexController extends BaseController
             $progress->setStyle(Progress::STYLE_WARNING);
         } elseif ($score < 100) {
             $progress->setStyle(Progress::STYLE_INFO);
-        } elseif ($score == 100) {
+        } elseif ($score >= 100) {
             $progress->setStyle(Progress::STYLE_SUCCESS);
             $heading = new HtmlElement('h5.mt-3');
             $heading->push(new Badge($this->translate('index.success'), Badge::STYLE_SUCCESS));

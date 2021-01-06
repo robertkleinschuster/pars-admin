@@ -122,17 +122,8 @@ class ImportController extends CrudController
      */
     public function runAction()
     {
-        $bean = $this->getModel()->getBean();
-        switch ($bean->get('ImportType_Code')) {
-            case 'tesla':
-                $importer = new TeslaImporter($this->getModel()->getBean());
-                $importer->setTranslator($this->getTranslator());
-                $importer->run();
-                $processor = $this->getModel()->getBeanProcessor();
-                $beanList = $this->getModel()->getBeanFinder()->getBeanFactory()->getEmptyBeanList();
-                $beanList->push($importer->getBean());
-                $processor->setBeanList($beanList);
-                $processor->save();
+        if (!count($this->getValidationErrorMap())) {
+            $this->getModel()->run();
         }
     }
 }

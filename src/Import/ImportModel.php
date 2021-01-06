@@ -79,5 +79,28 @@ class ImportModel extends CrudModel
         }
     }
 
+    public function run() {
+        $bean = $this->getBean();
+        switch ($bean->get('ImportType_Code')) {
+            case 'tesla':
+                $importer = new TeslaImporter($bean);
+                $importer->setTranslator($this->getTranslator());
+                $importer->run();
+                if ($importer->getValidationHelper()->hasError()) {
+                    $this->getValidationHelper()->merge($importer->getValidationHelper());
+                } else {
+                    $processor = $this->getBeanProcessor();
+                    $beanList = $this->getBeanFinder()->getBeanFactory()->getEmptyBeanList();
+                    $beanList->push($importer->getBean());
+                    $processor->setBeanList($beanList);
+                    $processor->save();
+                    if ($processor->getValidationHelper()->hasError()) {
+                        $this->getValidationHelper()->merge($processor->getValidationHelper());
+                    }
+                }
+
+        }
+    }
+
 
 }
