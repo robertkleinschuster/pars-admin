@@ -39,6 +39,7 @@ abstract class BaseOverview extends Overview
             $input->setValue($this->getToken());
             $this->push($input);
         }
+      #  $this->addOption('ajax');
 
         $moveredirectParameter = new RedirectParameter();
         $moveredirectPath = $this->getPathHelper()->setController($this->getRedirectController())->setAction($this->getRedirectAction());

@@ -16,7 +16,6 @@ class CmsPageDetail extends ArticleDetail
     protected function initialize()
     {
         $this->setSection($this->translate('section.page'));
-
         $span = new Badge('{CmsPageState_Code}');
         $span->setLabel($this->translate('cmspagestate.code'));
         $span->setFormat(new CmsPageStateFieldFormat($this->getTranslator()));
