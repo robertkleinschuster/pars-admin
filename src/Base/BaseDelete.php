@@ -32,6 +32,7 @@ abstract class BaseDelete extends Delete
         }
         $indexPath->addParameter($id);
         $this->setIndexPath($indexPath);
+        $this->addOption('ajax');
 
         $this->setHeading($this->translate('delete.heading'));
         $this->setText($this->translate('delete.text'));

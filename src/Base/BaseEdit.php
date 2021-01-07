@@ -38,6 +38,7 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
         }
         $indexPath->addParameter($id);
         $this->setIndexPath($indexPath);
+        $this->addOption('ajax');
 
         parent::initialize();
         if ($this->hasToken()) {
