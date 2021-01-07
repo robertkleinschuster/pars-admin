@@ -28,6 +28,7 @@ class MainNavigation extends BaseNavigation
         $this->addDropdownRight(
             $this->translate('navigation.user'),
             'user')
+            ->addItem($this->translate('navigation.user.locale'), $this->getPathHelper()->setController('user')->setAction('locale')->setId((new IdParameter())->addId('Person_ID', '{Current_Person_ID}')))
             ->addItem($this->translate('navigation.user.password'), $this->getPathHelper()->setController('user')->setAction('password')->setId((new IdParameter())->addId('Person_ID', '{Current_Person_ID}')))
             ->addItem($this->translate('navigation.user.clearcache'), $this->getPathHelper()->setController('index')->setAction('clearcache'))
             ->addItem($this->translate('navigation.user.logout'), $this->getPathHelper()->setController('auth')->setAction('logout'));

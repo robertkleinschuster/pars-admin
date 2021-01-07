@@ -16,7 +16,6 @@ abstract class ArticleEdit extends BaseEdit
         $this->initFields();
         parent::initialize();
         $this->push(new Paragraph($this->translate('article.paragraph.hint')));
-
     }
 
     protected function initFields()
@@ -37,11 +36,7 @@ abstract class ArticleEdit extends BaseEdit
         if ($this->hasFileOptions()) {
             $this->getForm()->addSelect('File_ID', $this->getFileOptions(), '{File_ID}', $this->translate('file.id'), 9, 1);
         }
-        if ($this->isCreate()) {
-            $this->getForm()->addHidden('Locale_Code', $this->getTranslator()->getLocale());
-        } else {
-            $this->getForm()->addHidden('Locale_Code', '{Locale_Code}');
-        }
+        $this->getForm()->addHidden('Locale_Code', $this->getTranslator()->getLocale());
     }
 
 

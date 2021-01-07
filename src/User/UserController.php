@@ -2,6 +2,7 @@
 
 namespace Pars\Admin\User;
 
+use Mezzio\Authentication\UserInterface;
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
@@ -79,6 +80,19 @@ class UserController extends CrudController
         $edit->setToken($this->generateToken('submit_token'));
         $this->getView()->append($edit);
     }
+
+    public function localeAction()
+    {
+        $edit = new UserLocaleEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit->setLocaleOptions($this->getModel()->getLocale_Options());
+        $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
+        $edit->setBean($this->getModel()->getBean());
+        $this->getModel()->getBeanConverter()
+            ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
+        $edit->setToken($this->generateToken('submit_token'));
+        $this->getView()->append($edit);
+    }
+
 
     protected function createDelete(): BaseDelete
     {
