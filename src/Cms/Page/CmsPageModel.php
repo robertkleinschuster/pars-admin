@@ -69,6 +69,7 @@ class CmsPageModel extends ArticleModel
     {
         $options = [];
         $finder = new CmsPageBeanFinder($this->getDbAdpater());
+        $finder->setLocale_Code($this->getTranslator()->getLocale());
         $finder->setCmsPageState_Code('active');
         $options[null] = $this->translate('noselection');
         foreach ($finder->getBeanListDecorator() as $bean) {

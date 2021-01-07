@@ -33,7 +33,7 @@ class CmsPageParagraphModel extends CmsParagraphModel
     {
         $options = [];
         $finder = new CmsParagraphBeanFinder($this->getDbAdpater());
-
+        $finder->setLocale_Code($this->getTranslator()->getLocale());
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('CmsParagraph_ID')] = $bean->get('ArticleTranslation_Name');
         }
@@ -43,6 +43,7 @@ class CmsPageParagraphModel extends CmsParagraphModel
     public function getParagraphBeanList()
     {
         $finder = new CmsParagraphBeanFinder($this->getDbAdpater());
+        $finder->setLocale_Code($this->getTranslator()->getLocale());
         return $finder->getBeanList();
     }
 
@@ -69,6 +70,7 @@ class CmsPageParagraphModel extends CmsParagraphModel
         $bean = parent::getEmptyBean($data);
         if (isset($data['CmsPage_ID'])) {
             $finder = new CmsPageBeanFinder($this->getDbAdpater());
+            $finder->setLocale_Code($this->getTranslator()->getLocale());
             $finder->setCmsPage_ID($data['CmsPage_ID']);
             $page = $finder->getBean();
             $count = $page->get('CmsParagraph_BeanList')->count() + 1;

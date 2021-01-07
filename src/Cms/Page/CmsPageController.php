@@ -98,6 +98,7 @@ class CmsPageController extends ArticleController
 
         if (!$bean->empty('CmsPage_ID_Redirect')) {
             $cmsPageFinder = new CmsPageBeanFinder($this->getModel()->getDbAdpater());
+            $cmsPageFinder->setLocale_Code($this->getTranslator()->getLocale());
             $cmsPageFinder->setCmsPage_ID($bean->get('CmsPage_ID_Redirect'));
             $page = $cmsPageFinder->getBean();
             $alert = new Alert($this->translate('cmspage.redirect.alert.headline'));
