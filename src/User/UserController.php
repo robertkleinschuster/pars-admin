@@ -52,7 +52,9 @@ class UserController extends CrudController
     {
         parent::detailAction();
         $this->getView()->set('Person_ID', (int)$this->getControllerRequest()->getId()->getAttribute('Person_ID'));
-        $this->addSubController('userrole', 'index');
+        if ($this->getUserBean()->hasPermission('userrole')) {
+            $this->addSubController('userrole', 'index');
+        }
     }
 
 

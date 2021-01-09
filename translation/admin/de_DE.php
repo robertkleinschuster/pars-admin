@@ -92,6 +92,7 @@ return [
     'navigation.user.locale' => 'Sprache/Land ändern',
     'navigation.user.logout' => 'Abmelden',
     'navigation.user.clearcache' => 'Cache leeren',
+    'navigation.user.detail' => 'Mein Konto',
     'permission.detail.denied' => 'Sie verfügen nicht über die erforderliche Berechtigung um diesen Eintrag anzusehen.',
     'permission.edit.denied' => 'Sie verfügen nicht über die erforderliche Berechtigung um diesen Eintrag zu bearbeiten.',
     'permission.create.denied' => 'Sie verfügen nicht über die erforderliche Berechtigung um einen Eintrag zu erstellen.',
