@@ -128,6 +128,7 @@ abstract class BaseOverview extends Overview
             }
             $button = new DeleteButton(SubmitParameter::name(), SubmitParameter::createDeleteBulk());
             $button->setConfirm($this->translate('delete_bulk.message'));
+            $button->addOption('d-none');
             $this->getToolbar()->push($button);
             $this->setTag('form');
         }
