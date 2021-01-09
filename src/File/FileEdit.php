@@ -13,16 +13,16 @@ class FileEdit extends BaseEdit
 
     protected function initialize()
     {
+        $this->getForm()->addFile('File_Upload', '{File_Upload}', $this->translate('file.upload'), 1, 1);
+
         if ($this->hasDirectoryOptions()) {
-            $this->getForm()->addSelect('FileDirectory_ID', $this->getDirectoryOptions(), '{FileDirectory_ID}', $this->translate('filedirectory.id'));
+            $this->getForm()->addSelect('FileDirectory_ID', $this->getDirectoryOptions(), '{FileDirectory_ID}', $this->translate('filedirectory.id'), 2, 1);
         }
         if ($this->hasTypeOptions()) {
-            $this->getForm()->addSelect('FileType_Code', $this->getTypeOptions(), '{FileType_Code}', $this->translate('filetype.code'));
+            $this->getForm()->addSelect('FileType_Code', $this->getTypeOptions(), '{FileType_Code}', $this->translate('filetype.code'), 3, 1);
         }
-        $this->getForm()->addText('File_Name', '{File_Name}', $this->translate('file.name'));
-        $this->getForm()->addText('File_Code', '{File_Code}', $this->translate('file.code'));
-        $this->getForm()->addFile('File_Upload', '{File_Upload}', $this->translate('file.upload'));
-
+        $this->getForm()->addText('File_Name', '{File_Name}', $this->translate('file.name'), 3, 2);
+        $this->getForm()->addText('File_Code', '{File_Code}', $this->translate('file.code'), 3, 3);
         parent::initialize();
     }
 
