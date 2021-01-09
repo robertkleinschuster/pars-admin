@@ -7,6 +7,7 @@ namespace Pars\Admin\Base;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Button;
 use Pars\Component\Base\Field\Icon;
+use Pars\Component\Base\Toolbar\BackButton;
 use Pars\Component\Base\Toolbar\Toolbar;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Mvc\View\HtmlElement;
@@ -37,8 +38,7 @@ abstract class BaseDetail extends Detail
         $toolbar = $this->getToolbar();
 
         if ($this->hasIndexPath() && $this->isShowBack()) {
-            $button = new Button(null, Button::STYLE_SECONDARY);
-            $button->addIcon(Icon::ICON_ARROW_LEFT_CIRCLE);
+            $button = new BackButton();
             $button->setPath($this->getIndexPath());
             $toolbar->push($button);
         }
