@@ -4,10 +4,16 @@
 namespace Pars\Admin\Base;
 
 
+use Pars\Component\Base\Navigation\Navigation;
+
 class ContentNavigation extends BaseNavigation
 {
     protected function initialize()
     {
+        $this->setBackground(Navigation::BACKGROUND_LIGHT);
+        $this->setBreakpoint(Navigation::BREAKPOINT_LARGE);
+      #  $this->addOption('ajax')->addOption('history')->addOption('remote')->setData('component', 'components');
+
         $this->addItem(
             $this->translate('navigation.content.cmspage')
             , $this->getPathHelper()->setController('cmspage')->setAction('index'),
@@ -25,7 +31,7 @@ class ContentNavigation extends BaseNavigation
             ->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'cmsmenu'));
         $this->setBrand(
             $this->translate('navigation.content'),
-            $this->getPathHelper()->setController('cmsmenu')->setAction('index')
+            $this->getPathHelper()->setController('cmspage')->setAction('index')
         );
         parent::initialize();
     }

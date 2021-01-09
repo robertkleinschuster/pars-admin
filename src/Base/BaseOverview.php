@@ -39,7 +39,6 @@ abstract class BaseOverview extends Overview
             $input->setValue($this->getToken());
             $this->push($input);
         }
-        $this->addOption('ajax');
 
         $moveredirectParameter = new RedirectParameter();
         $moveredirectPath = $this->getPathHelper()->setController($this->getRedirectController())->setAction($this->getRedirectAction());
@@ -95,14 +94,15 @@ abstract class BaseOverview extends Overview
         if ($this->isShowCreate()) {
             $this->getToolbar()->setCreatePath($createPath);
         }
+        $this->setAttribute('method', 'post');
+        $this->setAttribute('action', $createPath);
 
         $createPath = $this->getPathHelper()->setController($this->getController())->setAction('create_new')->setId($createid)->getPath();
         if ($this->isShowCreateNew()) {
             $this->getToolbar()->push(new CreateNewButton($createPath));
         }
 
-        $this->setAttribute('method', 'post');
-        $this->setAttribute('action', $createPath);
+
 
         $this->setBulkFieldName(IdListParameter::name());
         $idList = new IdListParameter();
@@ -142,19 +142,15 @@ abstract class BaseOverview extends Overview
                     $id->addId($value);
                 }
             }
-            $fragment = 'move-table-' . $this->getController();
-            $this->setId($fragment);
             $this->setMoveUpPath($this->getPathHelper()
                 ->setController($this->getController())
                 ->setAction('edit')
                 ->setId($id)
-                ->setFragment($fragment)
                 ->addParameter((new MoveParameter())->setUp())
                 ->addParameter($moveredirectParameter));
             $this->setMoveDownPath($this->getPathHelper()
                 ->setController($this->getController())
                 ->setAction('edit')
-                ->setFragment($fragment)
                 ->setId($id)
                 ->addParameter((new MoveParameter())->setDown())
                 ->addParameter($moveredirectParameter));

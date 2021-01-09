@@ -5,6 +5,7 @@ namespace Pars\Admin\Base;
 
 
 use Pars\Component\Base\Field\Icon;
+use Pars\Component\Base\Navigation\Navigation;
 use Pars\Helper\Parameter\IdParameter;
 
 
@@ -12,6 +13,9 @@ class MainNavigation extends BaseNavigation
 {
     protected function initialize()
     {
+        $this->setBackground(Navigation::BACKGROUND_DARK);
+        $this->setBreakpoint(Navigation::BREAKPOINT_MEDIUM);
+
         $this->addItem(
             $this->translate('navigation.content')
             , $this->getPathHelper()->setController('cmspage')->setAction('index'),

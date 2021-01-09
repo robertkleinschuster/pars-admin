@@ -155,7 +155,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function generateToken(string $name): string
     {
-        if (!$this->getSession()->get($name, false)) {
+        if (!$this->getSession()->has($name)) {
             return $this->getGuard()->generateToken($name);
         } else {
             return $this->getSession()->get($name);
@@ -312,6 +312,19 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 $alert->addParagraph($profile['sql'] . "<br>{$profile['elapse']} ms");
             }
             $this->getView()->prepend($alert);
+        }
+        if ($this->hasView() && $this->getView()->hasLayout()) {
+            $layout = $this->getView()->getLayout();
+            if ($layout instanceof DashboardLayout) {
+                $layout->getSubNavigation()->setId('subnavigation');
+                if ($this->getControllerRequest()->isAjax()) {
+                    $this->getControllerResponse()->getInjector()->addHtml(
+                        $layout->getSubNavigation()->render(),
+                        '#subnavigation',
+                        'replace'
+                    );
+                }
+            }
         }
     }
 

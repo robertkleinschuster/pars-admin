@@ -38,7 +38,6 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
         }
         $indexPath->addParameter($id);
         $this->setIndexPath($indexPath);
-        $this->addOption('ajax');
 
         parent::initialize();
         if ($this->hasToken()) {
@@ -51,12 +50,16 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
         }
         if ($this->isCreateBulk()) {
             $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('edit.submit'), (new SubmitParameter())->setCreateBulk(), null, '', 50, 1);
+            $this->getForm()->addHidden(SubmitParameter::name(), (new SubmitParameter())->setCreateBulk());
         } elseif ($this->isCreate()) {
             $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('edit.submit'), (new SubmitParameter())->setCreate(), null, '', 50, 1);
+            $this->getForm()->addHidden(SubmitParameter::name(), (new SubmitParameter())->setCreate());
         } elseif ($this->hasMode()) {
             $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('edit.submit'), (new SubmitParameter())->setMode($this->getMode()), null, '', 50, 1);
+            $this->getForm()->addHidden(SubmitParameter::name(), (new SubmitParameter())->setMode($this->getMode()));
         } else {
             $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('edit.submit'), (new SubmitParameter())->setSave(), null, '', 50, 1);
+            $this->getForm()->addHidden(SubmitParameter::name(), (new SubmitParameter())->setSave());
         }
         if ($this->hasIndexPath()) {
             if ($this->isCreate()) {

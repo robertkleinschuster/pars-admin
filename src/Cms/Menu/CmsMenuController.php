@@ -8,6 +8,7 @@ use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
 use Pars\Admin\Base\CrudController;
+use Pars\Component\Base\Ajax\Ajax;
 
 
 /**

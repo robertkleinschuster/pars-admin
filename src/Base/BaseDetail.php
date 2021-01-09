@@ -33,7 +33,6 @@ abstract class BaseDetail extends Detail
         }
         $indexPath->addParameter($id);
         $this->setIndexPath($indexPath);
-        $this->addOption('ajax');
 
         $toolbar = $this->getToolbar();
 

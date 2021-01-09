@@ -32,13 +32,13 @@ abstract class BaseDelete extends Delete
         }
         $indexPath->addParameter($id);
         $this->setIndexPath($indexPath);
-        $this->addOption('ajax');
 
         $this->setHeading($this->translate('delete.heading'));
         $this->setText($this->translate('delete.text'));
         parent::initialize();
         $form = new Form();
         $form->addSubmit(SubmitParameter::name(), $this->translate('delete.submit'), SubmitParameter::createDelete(), Submit::STYLE_DANGER, null, 1, 2);
+        $form->addHidden(SubmitParameter::name(), SubmitParameter::createDelete());
 
         if ($this->hasIndexPath()) {
             $form->addCancel($this->translate('delete.cancel'), $this->getIndexPath(), 1, 1);

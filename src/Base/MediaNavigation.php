@@ -4,14 +4,16 @@
 namespace Pars\Admin\Base;
 
 
+use Pars\Component\Base\Navigation\Navigation;
+
 class MediaNavigation extends BaseNavigation
 {
     protected function initialize()
     {
-        /**
-         *  'navigation.media.file' => 'Dateien',
-         * 'navigation.media.directory' => 'Order',
-         */
+        $this->setBackground(Navigation::BACKGROUND_LIGHT);
+        $this->setBreakpoint(Navigation::BREAKPOINT_LARGE);
+       # $this->addOption('ajax')->addOption('history')->addOption('remote')->setData('component', 'components');
+
         $this->addItem(
             $this->translate('navigation.media.file')
             , $this->getPathHelper()->setController('file')->setAction('index'),
