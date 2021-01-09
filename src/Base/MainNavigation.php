@@ -7,6 +7,8 @@ namespace Pars\Admin\Base;
 use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Navigation\Navigation;
 use Pars\Helper\Parameter\IdParameter;
+use Pars\Helper\Parameter\Parameter;
+use Pars\Helper\Parameter\SubmitParameter;
 
 
 class MainNavigation extends BaseNavigation
@@ -35,7 +37,7 @@ class MainNavigation extends BaseNavigation
             ->addItem($this->translate('navigation.user.detail'), $this->getPathHelper()->setController('user')->setAction('detail')->setId((new IdParameter())->addId('Person_ID', '{Current_Person_ID}')))
             ->addItem($this->translate('navigation.user.locale'), $this->getPathHelper()->setController('user')->setAction('locale')->setId((new IdParameter())->addId('Person_ID', '{Current_Person_ID}')))
             ->addItem($this->translate('navigation.user.password'), $this->getPathHelper()->setController('user')->setAction('password')->setId((new IdParameter())->addId('Person_ID', '{Current_Person_ID}')))
-            ->addItem($this->translate('navigation.user.clearcache'), $this->getPathHelper()->setController('index')->setAction('clearcache'))
+            ->addItem($this->translate('navigation.user.clearcache'), $this->getPathHelper()->setController('index')->setAction('index')->addParameter(new Parameter('clearcache', 'pars'))->getPath())
             ->addItem($this->translate('navigation.user.logout'), $this->getPathHelper()->setController('auth')->setAction('logout'));
 
         $logo = new Icon('pars-logo');

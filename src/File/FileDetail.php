@@ -13,7 +13,7 @@ class FileDetail extends BaseDetail
 
     protected function initialize()
     {
-        $path = "/upload/{FileDirectory_Code}/{File_Code}.{FileType_Code}";
+        $path = "/u/{FileDirectory_Code}/{File_Code}.{FileType_Code}";
         if ($this->hasAssetDomain()) {
             $path = $this->getAssetDomain() . $path;
         }
