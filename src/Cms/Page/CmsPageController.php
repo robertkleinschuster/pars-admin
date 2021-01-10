@@ -12,7 +12,7 @@ use Pars\Admin\Base\ContentNavigation;
 use Pars\Component\Base\Alert\Alert;
 use Pars\Component\Base\Toolbar\PreviewButton;
 use Pars\Helper\Parameter\IdParameter;
-use Pars\Model\Article\ArticleDataBean;
+use Pars\Model\Article\DataBean;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
 
 
@@ -77,7 +77,7 @@ class CmsPageController extends ArticleController
     {
         $edit = parent::editAction();
         if ($edit->getBean()->get('CmsPageType_Code') == 'poll') {
-            $edit->getForm()->addHidden('Article_Data[__class]', ArticleDataBean::class);
+            $edit->getForm()->addHidden('Article_Data[__class]', DataBean::class);
             $edit->getForm()->addCheckbox('Article_Data[vote_once]', '{Article_Data[vote_once]}', $this->translate('article.data.vote.once')
                 , 3, 1);
         }
@@ -88,7 +88,7 @@ class CmsPageController extends ArticleController
     public function detailAction()
     {
         $detail = parent::detailAction();
-        $this->handlePoll($detail->getBean());
+        $this->handleData($detail->getBean());
         $this->loadRedirectInfo($detail->getBean());
         return $detail;
     }
@@ -110,13 +110,17 @@ class CmsPageController extends ArticleController
         }
     }
 
-    protected function handlePoll(BeanInterface $bean)
+    protected function handleData(BeanInterface $bean)
     {
-        if ($bean->get('CmsPageType_Code') == 'poll') {
-            $detail = new CmsPagePollDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-            $detail->setToken($this->generateToken('submit_token'));
-            $detail->setBean($bean);
-            $this->getView()->prepend($detail);
+        switch ($bean->get('CmsPageType_Code')) {
+            case 'contact':
+                $this->addSubController('articledata', 'index', [
+                   'fields' => [
+                       'ArticleData_Data[name]' => $this->translate('articledata.data.contact.name'),
+                       'ArticleData_Data[email]' => $this->translate('articledata.data.contact.email')
+                   ]
+                ]);
+                break;
         }
     }
 

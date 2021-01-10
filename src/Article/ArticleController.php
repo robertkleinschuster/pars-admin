@@ -9,6 +9,17 @@ use Pars\Admin\File\FileDetail;
 abstract class ArticleController extends CrudController
 {
 
+    protected function initModel()
+    {
+        parent::initModel();
+        $this->setPermissions('article.create', 'article.edit', 'article.delete');
+    }
+
+    public function isAuthorized(): bool
+    {
+        return $this->checkPermission('article');
+    }
+
     public function detailAction()
     {
         $detail = parent::detailAction();

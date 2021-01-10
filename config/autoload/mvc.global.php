@@ -22,6 +22,7 @@ return [
             'file' => \Pars\Admin\File\FileController::class,
             'config' => \Pars\Admin\Config\ConfigController::class,
             'import' => \Pars\Admin\Import\ImportController::class,
+            'articledata' => \Pars\Admin\Article\Data\ArticleDataController::class,
         ],
         'models' => [
             'setup' => \Pars\Admin\Setup\SetupModel::class,
@@ -43,6 +44,7 @@ return [
             'file' => \Pars\Admin\File\FileModel::class,
             'config' => \Pars\Admin\Config\ConfigModel::class,
             'import' => \Pars\Admin\Import\ImportModel::class,
+            'articledata' => \Pars\Admin\Article\Data\ArticleDataModel::class
         ],
 
     ],
