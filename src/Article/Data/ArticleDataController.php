@@ -24,6 +24,20 @@ class ArticleDataController extends CrudController
         return $this->checkPermission('article');
     }
 
+    public function indexAction()
+    {
+        if ($this->hasParent() && $this->getParent()->hasView()) {
+            $parentBean = $this->getParent()->getModel()->getBean();
+            $this->getModel()->getBeanFinder()->filter(['Article_ID' => $parentBean->get('Article_ID')]);
+            $overview = parent::indexAction();
+            $overview->set('parent', $parentBean);
+        } else {
+            $overview = parent::indexAction();
+        }
+        return $overview;
+    }
+
+
     protected function createOverview(): BaseOverview
     {
         return new ArticleDataOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());

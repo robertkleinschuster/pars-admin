@@ -5,6 +5,7 @@ namespace Pars\Admin\Article\Data;
 
 
 use Pars\Admin\Base\BaseOverview;
+use Pars\Model\Cms\Page\CmsPageBean;
 
 class ArticleDataOverview extends BaseOverview
 {
@@ -19,9 +20,16 @@ class ArticleDataOverview extends BaseOverview
         $this->setShowMove(false);
         $this->setSection($this->translate('section.data'));
         $this->addField('ArticleData_Timestamp', $this->translate('articledata.timestamp'));
-        if (isset($this->get('data')['fields'])) {
-            foreach ($this->get('data')['fields'] as $field => $label) {
-                $this->addField($field, $label);
+        if ($this->exists('parent')) {
+            $parent = $this->get('parent');
+            if ($parent instanceof CmsPageBean) {
+                switch ($parent->CmsPageType_Code) {
+                    case 'contact':
+                        $this->setSection($this->translate('section.data.contact'));
+                        $this->addField('ArticleData_Data[name]', $this->translate('articledata.data.name'));
+                        $this->addField('ArticleData_Data[email]', $this->translate('articledata.data.email'));
+                        break;
+                }
             }
         }
         parent::initialize();
@@ -33,8 +41,26 @@ class ArticleDataOverview extends BaseOverview
         return 'articledata';
     }
 
+    protected function getRedirectController(): string
+    {
+        if ($this->exists('parent')) {
+            $parent = $this->get('parent');
+            if ($parent instanceof CmsPageBean) {
+                return 'cmspage';
+            }
+        }
+        return $this->getController();
+    }
+
+
     protected function getRedirectAction(): string
     {
+        if ($this->exists('parent')) {
+            $parent = $this->get('parent');
+            if ($parent instanceof CmsPageBean) {
+                return 'detail';
+            }
+        }
         return 'index';
     }
 
@@ -47,12 +73,18 @@ class ArticleDataOverview extends BaseOverview
 
     protected function getRedirectIdFields(): array
     {
-        return ['ArticleData_ID'];
+        if ($this->exists('parent')) {
+            $parent = $this->get('parent');
+            if ($parent instanceof CmsPageBean) {
+                return ['CmsPage_ID'];
+            }
+        }
+        return [];
     }
 
     protected function getCreateIdFields(): array
     {
-        return ['ArticleData_ID'];
+        return [];
     }
 
 

@@ -5,11 +5,14 @@ namespace Pars\Admin\Cms\Menu;
 
 
 use Pars\Admin\Base\BaseDetail;
+use Pars\Admin\Cms\Page\CmsPageDetail;
 use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Field\Span;
+use Pars\Component\Base\Toolbar\PreviewButton;
 
 class CmsMenuDetail extends BaseDetail
 {
+    protected ?string $previewPath = null;
 
     protected bool $showType = true;
 
@@ -31,7 +34,9 @@ class CmsMenuDetail extends BaseDetail
         $this->addField('Article_Code', $this->translate('article.code'));
         $this->addField('ArticleTranslation_Code', $this->translate('articletranslation.code'));
         parent::initialize();
-
+        if ($this->hasPreviewPath()) {
+            $this->getToolbar()->push((new PreviewButton($this->getPreviewPath()))->setTarget('_blank'));
+        }
     }
 
     protected function getIndexController(): string
@@ -62,6 +67,32 @@ class CmsMenuDetail extends BaseDetail
         $this->showType = $showType;
     }
 
+    /**
+     * @return string
+     */
+    public function getPreviewPath(): string
+    {
+        return $this->previewPath;
+    }
+
+    /**
+     * @param string $previewPath
+     *
+     * @return $this
+     */
+    public function setPreviewPath(string $previewPath): self
+    {
+        $this->previewPath = $previewPath;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasPreviewPath(): bool
+    {
+        return isset($this->previewPath);
+    }
 
 
 

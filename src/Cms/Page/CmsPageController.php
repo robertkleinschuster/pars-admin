@@ -51,7 +51,6 @@ class CmsPageController extends ArticleController
     protected function createDetail(): BaseDetail
     {
         $this->getView()->set('CmsPage_ID', (int)$this->getControllerRequest()->getId()->getAttribute('CmsPage_ID'));
-        $this->addSubController('cmspageparagraph', 'index');
         $detail = new CmsPageDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $detail->setPreviewPath($this->getModel()->getConfig('frontend.domain') . '/{ArticleTranslation_Code}');
         return $detail;
@@ -88,7 +87,8 @@ class CmsPageController extends ArticleController
     public function detailAction()
     {
         $detail = parent::detailAction();
-        $this->handleData($detail->getBean());
+        $this->addSubController('cmspageparagraph', 'index');
+        $this->addSubController('articledata', 'index');
         $this->loadRedirectInfo($detail->getBean());
         return $detail;
     }
@@ -109,19 +109,4 @@ class CmsPageController extends ArticleController
             $this->getView()->prepend($alert);
         }
     }
-
-    protected function handleData(BeanInterface $bean)
-    {
-        switch ($bean->get('CmsPageType_Code')) {
-            case 'contact':
-                $this->addSubController('articledata', 'index', [
-                   'fields' => [
-                       'ArticleData_Data[name]' => $this->translate('articledata.data.contact.name'),
-                       'ArticleData_Data[email]' => $this->translate('articledata.data.contact.email')
-                   ]
-                ]);
-                break;
-        }
-    }
-
 }

@@ -47,7 +47,9 @@ class CmsSubMenuController extends CmsMenuController
 
     protected function createDetail(): BaseDetail
     {
-        return new CmsSubMenuDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $detail = new CmsSubMenuDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $detail->setPreviewPath($this->getModel()->getConfig('frontend.domain') . '/{ArticleTranslation_Code}');
+        return $detail;
     }
 
     protected function createEdit(): BaseEdit

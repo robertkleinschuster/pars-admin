@@ -26,6 +26,7 @@ return [
     'section.translation' => 'Übersetzungen',
     'section.config' => 'Einstellungen',
     'section.data' => 'Daten',
+    'section.data.contact' => 'Kontaktanfragen',
     'detail.title' => 'Details',
     'create.button' => 'Erstellen',
     'create.submit' => 'Speichern',
