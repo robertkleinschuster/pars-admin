@@ -25,65 +25,22 @@ class CmsPagePollDetail extends BaseDetail implements BeanAwareInterface
 
     protected ?string $token = null;
 
+    protected array $resultData = [];
+
     protected function initialize()
     {
         $this->setShowDelete(false);
         $this->setShowBack(false);
         $this->setShowEdit(false);
-        $paragraphList = $this->getBean()->get('CmsParagraph_BeanList');
-        if ($paragraphList instanceof BeanListInterface) {
-            $id = new IdParameter();
-            foreach ($this->getEditIdFields() as $editIdField) {
-                $id->addId($editIdField);
-            }
-            $this->push(new HtmlElement('h3.mb-3', 'Ergebnis'));
-            $toolbar = new Form();
-            $toolbar->addOption('btn-toolbar');
-            $toolbar->addOption('mb-4');
-            $button = new Button('', Button::STYLE_WARNING);
-            $button->setType('submit');
-            $button->setName(SubmitParameter::name());
-            $button->setValue((new SubmitParameter())->setMode('reset_poll'));
-            $button->push(new Icon(Icon::ICON_TRASH));
-            $toolbar->push($button);
-
-            $button = new Button('', Button::STYLE_SUCCESS);
-            $button->setType('submit');
-            $button->setName(SubmitParameter::name());
-            $button->setValue((new SubmitParameter())->setMode('show_poll'));
-            $button->push(new Icon(Icon::ICON_EYE));
-            $toolbar->addHidden(RedirectParameter::name(), (new RedirectParameter())->setPath(
-                $this->getPathHelper()->setController($this->getIndexController())->setAction('detail')->setId($id)->getPath()
-            ));
-            if ($this->hasToken()) {
-                $toolbar->addHidden('submit_token', $this->getToken());
-            }
-            $toolbar->push($button);
-            $this->push($toolbar);
-
-            $resultMap = [];
-            $resultMapNames = [];
-            foreach ($paragraphList as $paragraph) {
-                if ($paragraph instanceof ArticleBean) {
-                    if ($paragraph->getArticle_Data()->exists('poll')) {
-                        $resultMap[$paragraph->ArticleTranslation_Name] = $paragraph->getArticle_Data()->get('poll');
-                    }
-                    if ($paragraph->getArticle_Data()->exists('poll_names')) {
-                        $resultMapNames[$paragraph->ArticleTranslation_Name] = $paragraph->getArticle_Data()->get('poll_names');
-                    }
-                }
-            }
-            if (count($resultMap)) {
-                $max = max($resultMap);
-                foreach ($resultMap as $title => $item) {
-                    if ($max > 0 && $item > 0) {
-                        $progress = new Progress($item / $max * 100);
-                        $progress->setStyle(Progress::STYLE_SUCCESS);
-                        $names = isset($resultMapNames[$title]) ? ' - ' . $resultMapNames[$title] : '';
-                        $span = new Span($title . $names);
-                        $this->append($span);
-                        $this->append($progress);
-                    }
+        if (count($this->getResultData())) {
+            $max = max($this->getResultData());
+            foreach ($this->getResultData() as $title => $item) {
+                if ($max > 0 && $item > 0) {
+                    $progress = new Progress($item / $max * 100);
+                    $progress->setStyle(Progress::STYLE_SUCCESS);
+                    $span = new Span($title . ': ' . $item);
+                    $this->append($span);
+                    $this->append($progress);
                 }
             }
         }
@@ -128,6 +85,24 @@ class CmsPagePollDetail extends BaseDetail implements BeanAwareInterface
     {
         return isset($this->token);
     }
+
+    /**
+     * @return array
+     */
+    public function getResultData(): array
+    {
+        return $this->resultData;
+    }
+
+    /**
+     * @param array $data
+     */
+    public function setResultData(array $data): void
+    {
+        $this->resultData = $data;
+    }
+
+
 
 
 }

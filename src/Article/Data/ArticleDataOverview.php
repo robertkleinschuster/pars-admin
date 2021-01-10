@@ -5,6 +5,7 @@ namespace Pars\Admin\Article\Data;
 
 
 use Pars\Admin\Base\BaseOverview;
+use Pars\Admin\Cms\Page\CmsPagePollDetail;
 use Pars\Model\Cms\Page\CmsPageBean;
 
 class ArticleDataOverview extends BaseOverview
@@ -25,9 +26,10 @@ class ArticleDataOverview extends BaseOverview
             if ($parent instanceof CmsPageBean) {
                 switch ($parent->CmsPageType_Code) {
                     case 'contact':
-                        $this->setSection($this->translate('section.data.contact'));
-                        $this->addField('ArticleData_Data[name]', $this->translate('articledata.data.name'));
-                        $this->addField('ArticleData_Data[email]', $this->translate('articledata.data.email'));
+                        $this->contact();
+                        break;
+                    case 'poll':
+                        $this->poll();
                         break;
                 }
             }
@@ -35,6 +37,32 @@ class ArticleDataOverview extends BaseOverview
         parent::initialize();
     }
 
+
+    protected function poll()
+    {
+        $this->setSection($this->translate('section.data.poll'));
+        $this->addField('ArticleData_Data[name]', $this->translate('articledata.data.name'));
+        $this->addField('ArticleData_Data[option]', $this->translate('articledata.data.option'));
+        $data = [];
+        foreach ($this->getBeanList() as $bean) {
+            if (isset($data[$bean->ArticleData_Data['option']])) {
+                $data[$bean->ArticleData_Data['option']]++;
+            } else {
+                $data[$bean->ArticleData_Data['option']] = 1;
+            }
+        }
+        $pollDetal = new CmsPagePollDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $pollDetal->setResultData($data);
+        $this->getBefore()->push($pollDetal);
+    }
+
+
+    public function contact()
+    {
+        $this->setSection($this->translate('section.data.contact'));
+        $this->addField('ArticleData_Data[name]', $this->translate('articledata.data.name'));
+        $this->addField('ArticleData_Data[email]', $this->translate('articledata.data.email'));
+    }
 
     protected function getController(): string
     {
