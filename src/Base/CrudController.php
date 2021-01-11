@@ -42,22 +42,22 @@ abstract class CrudController extends BaseController
         if ($bean->exists('Person_ID_Create') && !$bean->empty('Person_ID_Create')) {
             if ($bean->get('Person_ID_Create') > 0) {
                 $user = $this->getModel()->getUserById($bean->get('Person_ID_Create'));
-                $metaInfo->append(new Span($user->get('User_Displayname'), $this->translate('user.create')));
+                $metaInfo->append(new Span($user->get('User_Displayname'), $this->translate('user.create')), 1, 1);
             }
         }
         if ($bean->exists('Person_ID_Edit') && !$bean->empty('Person_ID_Edit')) {
             if ($bean->get('Person_ID_Edit') > 0) {
                 $user = $this->getModel()->getUserById($bean->get('Person_ID_Edit'));
-                $metaInfo->append(new Span($user->get('User_Displayname'), $this->translate('user.edit')));
+                $metaInfo->append(new Span($user->get('User_Displayname'), $this->translate('user.edit')), 2, 1);
             }
         }
         if ($bean->exists('Timestamp_Create') && !$bean->empty('Timestamp_Create')) {
             $date = $this->getModel()->getBeanConverter()->convert($bean)->get('Timestamp_Create');
-            $metaInfo->append(new Span($date, $this->translate('timestamp.create')));
+            $metaInfo->append(new Span($date, $this->translate('timestamp.create')), 1, 2);
         }
         if ($bean->exists('Timestamp_Edit') && !$bean->empty('Timestamp_Edit')) {
             $date = $this->getModel()->getBeanConverter()->convert($bean)->get('Timestamp_Edit');
-            $metaInfo->append(new Span($date, $this->translate('timestamp.edit')));
+            $metaInfo->append(new Span($date, $this->translate('timestamp.edit')), 2, 2);
         }
         $column = new Column();
         $column->setBreakpoint(Column::BREAKPOINT_EXTRA_LARGE);

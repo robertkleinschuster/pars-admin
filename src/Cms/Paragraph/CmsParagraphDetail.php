@@ -14,14 +14,18 @@ class CmsParagraphDetail extends ArticleDetail
     {
         $this->setSection($this->translate('section.paragraph'));
 
+
         $span = new Badge('{CmsParagraphState_Code}');
         $span->setLabel($this->translate('cmsparagraphstate.code'));
         $span->setFormat(new CmsParagraphStateFieldFormat($this->getTranslator()));
-        $this->append($span);
+        $this->append($span, 2, 1);
         $span = new Span('{CmsParagrphType_Code}', $this->translate('cmsparagraphtype.code'));
         $span->setFormat(new CmsParagraphTypeFieldFormat($this->getTranslator()));
-        $this->append($span);
+        $this->append($span, 2, 2);
+
         parent::initialize();
+
+
     }
 
     protected function getIndexController(): string
