@@ -3,10 +3,11 @@
 namespace Pars\Admin\Cms\Post;
 
 use Pars\Admin\Article\ArticleController;
-use Pars\Helper\Parameter\IdParameter;
-use Pars\Mvc\Helper\PathHelper;
-use Pars\Mvc\View\Components\Detail\Detail;
-use Pars\Mvc\View\Components\Edit\Edit;
+use Pars\Admin\Base\BaseDelete;
+use Pars\Admin\Base\BaseDetail;
+use Pars\Admin\Base\BaseEdit;
+use Pars\Admin\Base\BaseOverview;
+use Pars\Admin\Base\ContentNavigation;
 
 /**
  * Class CmsPostController
@@ -26,33 +27,41 @@ class CmsPostController extends ArticleController
         return $this->checkPermission('cmspost');
     }
 
-    protected function getDetailPath(): PathHelper
+    protected function initView()
     {
-        return $this->getPathHelper()->setId((new IdParameter())->addId('CmsPost_ID'));
+        parent::initView();
+        $this->getView()->getLayout()->getNavigation()->setActive('content');
+        $subNavigation = new ContentNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation->setActive('cmspage');
+        $this->getView()->getLayout()->setSubNavigation($subNavigation);
+        if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute('CmsPage_ID')) {
+            $this->getView()->set('CmsPage_ID', (int) $this->getControllerRequest()->getId()->getAttribute('CmsPage_ID'));
+        }
     }
 
-
-    protected function addDetailFields(Detail $detail): void
+    protected function createOverview(): BaseOverview
     {
-        parent::addDetailFields($detail);
-        $detail->addText('CmsPostType_Code', $this->translate('cmsposttype.code'))
-            ->setChapter($this->translate('article.detail.general'))
-            ->setAppendToColumnPrevious(true);
-        $detail->addText('CmsPostState_Code', $this->translate('cmspoststate.code'))
-            ->setChapter($this->translate('article.detail.general'))
-            ->setAppendToColumnPrevious(true);
+        return new CmsPostOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
-    protected function addEditFields(Edit $edit): void
+    protected function createDetail(): BaseDetail
     {
-        parent::addEditFields($edit);
-        $edit->addSelect('CmsPostType_Code', $this->translate('cmsposttype.code'))
-            ->setChapter($this->translate('article.edit.general'))
-            ->setSelectOptions($this->getModel()->getCmsPostType_Options())
-            ->setAppendToColumnPrevious(true);
-        $edit->addSelect('CmsPostState_Code', $this->translate('cmspoststate.code'))
-            ->setChapter($this->translate('article.edit.general'))
-            ->setSelectOptions($this->getModel()->getCmsPostState_Options())
-            ->setAppendToColumnPrevious(true);
+        $detail = new CmsPostDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $detail->setPreviewPath($this->getModel()->getConfig('frontend.domain') . '/{ArticleTranslation_Code}');
+        return $detail;
     }
+
+    protected function createEdit(): BaseEdit
+    {
+        $edit = new CmsPostEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit->setStateOptions($this->getModel()->getCmsPostState_Options());
+        $edit->setTypeOptions($this->getModel()->getCmsPostType_Options());
+        return $edit;
+    }
+
+    protected function createDelete(): BaseDelete
+    {
+        return new CmsPostDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+    }
+
 }

@@ -88,6 +88,7 @@ class CmsPageController extends ArticleController
     {
         $detail = parent::detailAction();
         $this->addSubController('cmspageparagraph', 'index');
+        $this->addSubController('cmspost', 'index');
         switch ($detail->getBean()->get('CmsPageType_Code')) {
             case 'contact':
                 $this->addSubController('articledata', 'index', self::SUB_CONTROLLER_MODE_APPEND);

@@ -175,6 +175,15 @@ abstract class BaseOverview extends Overview
         ];
     }
 
+    abstract protected function getController(): string;
+
+    abstract protected function getDetailIdFields(): array;
+
+    protected function getCreateIdFields(): array
+    {
+        return [];
+    }
+
     /**
      * @return string
      */
@@ -203,14 +212,7 @@ abstract class BaseOverview extends Overview
     }
 
 
-    abstract protected function getController(): string;
 
-    abstract protected function getDetailIdFields(): array;
-
-    protected function getCreateIdFields(): array
-    {
-        return [];
-    }
 
     /**
      * @return bool

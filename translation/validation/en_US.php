@@ -34,4 +34,5 @@ return [
     'locale.urlcode.empty' => 'The URL-Code must not be empty!',
     'articlestate.code.empty' => 'The state must not be empty!',
     'articletype.code.empty' => 'The type must not be empty!',
+    'cmspost.publishtimestamp.empty' => 'The publish timestamp must not be empty!'
 ];

@@ -2,6 +2,7 @@
 
 namespace Pars\Admin\Cms\Post;
 
+use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\CrudModel;
 use Pars\Model\Cms\Post\CmsPostBeanFinder;
 use Pars\Model\Cms\Post\CmsPostBeanProcessor;
@@ -23,7 +24,7 @@ class CmsPostModel extends CrudModel
         $finder = new CmsPostTypeBeanFinder($this->getDbAdpater());
         $finder->setCmsPostType_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->getData('CmsPostType_Code')] = $bean->getData('CmsPostType_Code');
+            $options[$bean->get('CmsPostType_Code')] = $bean->get('CmsPostType_Code');
         }
         return $options;
     }
@@ -34,8 +35,17 @@ class CmsPostModel extends CrudModel
         $finder = new CmsPostStateBeanFinder($this->getDbAdpater());
         $finder->setCmsPostState_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->getData('CmsPostState_Code')] = $bean->getData('CmsPostState_Code');
+            $options[$bean->get('CmsPostState_Code')] = $bean->get('CmsPostState_Code');
         }
         return $options;
     }
+
+    public function getEmptyBean(array $data = []): BeanInterface
+    {
+        $bean = parent::getEmptyBean($data);
+        $bean->set('CmsPost_PublishTimestamp', new \DateTime());
+        return $bean;
+    }
+
+
 }

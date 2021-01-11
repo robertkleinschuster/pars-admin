@@ -80,54 +80,6 @@ class CmsPageModel extends ArticleModel
         return $options;
     }
 
-    public function handleSubmit(SubmitParameter $submitParameter, IdParameter $idParameter, IdListParameter $idListParameter, array $attribute_List)
-    {
-        switch ($submitParameter->getMode()) {
-            case 'reset_poll':
-                $paragraphFinder = new CmsParagraphBeanFinder($this->getDbAdpater());
-                $paragraphFinder->initByValueList(
-                    'Article_Code',
-                    $this->getBean()->get('CmsParagraph_BeanList')->column('Article_Code')
-                );
-                $beanList = $paragraphFinder->getBeanList(true);
-                foreach ($beanList as $item) {
-                    $item->getArticle_Data()->set('poll', 0);
-                    $item->getArticle_Data()->set('poll_value', 0);
-                    $item->getArticle_Data()->set('poll_names', '');
-                }
-                $paragraphProcessor = new CmsParagraphBeanProcessor($this->getDbAdpater());
-                $paragraphProcessor->setBeanList($beanList);
-                $paragraphProcessor->save();
-                break;
-            case 'show_poll':
-                $paragraphFinder = new CmsParagraphBeanFinder($this->getDbAdpater());
-                $paragraphFinder->initByValueList(
-                    'Article_Code',
-                    $this->getBean()->get('CmsParagraph_BeanList')->column('Article_Code')
-                );
-                try {
-                    $max = max(array_column(
-                            $this->getBean()->get('CmsParagraph_BeanList')->column('Article_Data'),
-                            'poll')
-                    );
-                    $beanList = $paragraphFinder->getBeanList(true);
-                    foreach ($beanList as $item) {
-                        $value = $item->getArticle_Data()->get('poll');
-                        if ($max > 0 && $value > 0) {
-                            $item->getArticle_Data()->set('poll_value', $value / $max * 100);
-                        }
-                    }
-                    $paragraphProcessor = new CmsParagraphBeanProcessor($this->getDbAdpater());
-                    $paragraphProcessor->setBeanList($beanList);
-                    $paragraphProcessor->save();
-                } catch (\Exception $exception) {
-
-                }
-                break;
-        }
-        parent::handleSubmit($submitParameter, $idParameter, $idListParameter, $attribute_List);
-    }
-
     public function getEmptyBean(array $data = []): BeanInterface
     {
         $bean = parent::getEmptyBean($data);
@@ -136,6 +88,4 @@ class CmsPageModel extends ArticleModel
         $bean->set('CmsPageState_Code', 'active');
         return $bean;
     }
-
-
 }

@@ -11,6 +11,7 @@ class ArticleDataDetail extends BaseDetail
     protected function initialize()
     {
         $this->setShowEdit(false);
+        $this->addField('ArticleData_Timestamp', $this->translate('articledata.timestamp'));
         $data = $this->getBean()->get('ArticleData_Data');
         foreach ($data as $key => $value) {
             if (!is_array($value)) {
