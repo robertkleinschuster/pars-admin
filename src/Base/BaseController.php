@@ -102,9 +102,9 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      * @param string $id
      * @return mixed
      */
-    protected function getNavigationState(string $id): int
+    public function getNavigationState(string $id): int
     {
-        return (int)$this->getSession()->get($id) ?? 0;
+        return (int) $this->getSession()->get($id, 1);
     }
 
     /**
@@ -316,11 +316,23 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         if ($this->hasView() && $this->getView()->hasLayout()) {
             $layout = $this->getView()->getLayout();
             if ($layout instanceof DashboardLayout) {
+                $bean = $this->getView();
+                if ($this->getView()->hasBeanConverter()) {
+                    $bean = $this->getView()->getBeanConverter()->convert($this->getView());
+                }
                 $layout->getSubNavigation()->setId('subnavigation');
                 if ($this->getControllerRequest()->isAjax()) {
                     $this->getControllerResponse()->getInjector()->addHtml(
-                        $layout->getSubNavigation()->render(),
+                        $layout->getSubNavigation()->render($bean, true),
                         '#subnavigation',
+                        'replace'
+                    );
+                }
+                $layout->getNavigation()->setId('navigation');
+                if ($this->getControllerRequest()->isAjax()) {
+                    $this->getControllerResponse()->getInjector()->addHtml(
+                        $layout->getNavigation()->render($bean, true),
+                        '#navigation',
                         'replace'
                     );
                 }

@@ -8,7 +8,6 @@ use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
 use Pars\Admin\Base\CrudController;
-use Pars\Component\Base\Ajax\Ajax;
 
 
 /**
@@ -54,7 +53,7 @@ class CmsMenuController extends CrudController
     {
         $id = $this->getControllerRequest()->getId()->getAttribute('CmsMenu_ID');
         $this->getView()->set('CmsMenu_ID_Parent', (int) $id);
-        $this->addSubController('cmssubmenu', 'index');
+        $this->pushAction('cmssubmenu', 'index');
         $detail = new CmsMenuDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $detail->setPreviewPath($this->getModel()->getConfig('frontend.domain') . '/{ArticleTranslation_Code}');
         return $detail;

@@ -21,15 +21,16 @@ class MainNavigation extends BaseNavigation
         $this->addItem(
             $this->translate('navigation.content')
             , $this->getPathHelper()->setController('cmspage')->setAction('index'),
-            'content')->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'content'));
+            'content')->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'content'))->addOption('cache');
         $this->addItem(
             $this->translate('navigation.media')
             , $this->getPathHelper()->setController('file')->setAction('index'),
-            'media')->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'media'));
+            'media')->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'media'))->addOption('cache');
         $this->addItem(
             $this->translate('navigation.system')
             , $this->getPathHelper()->setController('user')->setAction('index'),
-            'system')->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'system'));
+            'system')->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'system'))->addOption('cache');
+
 
         $this->addDropdownRight(
             $this->translate('navigation.user'),

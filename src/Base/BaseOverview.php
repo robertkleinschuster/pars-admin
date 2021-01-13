@@ -6,7 +6,6 @@ namespace Pars\Admin\Base;
 
 use Pars\Component\Base\Form\Input;
 use Pars\Component\Base\Overview\Overview;
-use Pars\Component\Base\Toolbar\CreateButton;
 use Pars\Component\Base\Toolbar\CreateNewButton;
 use Pars\Component\Base\Toolbar\DeleteButton;
 use Pars\Helper\Parameter\IdListParameter;
@@ -14,7 +13,6 @@ use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\MoveParameter;
 use Pars\Helper\Parameter\RedirectParameter;
 use Pars\Helper\Parameter\SubmitParameter;
-use Pars\Mvc\View\HtmlElement;
 
 abstract class BaseOverview extends Overview
 {
@@ -28,7 +26,6 @@ abstract class BaseOverview extends Overview
     public bool $showCreate = true;
     public bool $showCreateNew = false;
     public bool $showMove = false;
-    public ?string $section = null;
     public ?string $token = null;
 
     protected function initialize()
@@ -60,7 +57,7 @@ abstract class BaseOverview extends Overview
 
 
         if ($this->hasSection()) {
-            $this->push(new HtmlElement('h3.mb-3', $this->getSection()));
+            $this->setName($this->getSection());
         }
 
         $id = (new IdParameter());
@@ -189,7 +186,7 @@ abstract class BaseOverview extends Overview
      */
     public function getSection(): string
     {
-        return $this->section;
+        return $this->getName();
     }
 
     /**
@@ -199,8 +196,7 @@ abstract class BaseOverview extends Overview
      */
     public function setSection(string $section): self
     {
-        $this->section = $section;
-        return $this;
+        return $this->setName($section);
     }
 
     /**
@@ -208,10 +204,8 @@ abstract class BaseOverview extends Overview
      */
     public function hasSection(): bool
     {
-        return isset($this->section);
+        return $this->hasName();
     }
-
-
 
 
     /**

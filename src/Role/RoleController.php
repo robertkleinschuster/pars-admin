@@ -53,7 +53,7 @@ class RoleController extends CrudController
     {
         parent::detailAction();
         $this->getView()->set('UserRole_ID', (int)$this->getControllerRequest()->getId()->getAttribute('UserRole_ID'));
-        $this->addSubController('rolepermission', 'index');
+        $this->pushAction('rolepermission', 'index');
     }
 
     protected function createEdit(): BaseEdit

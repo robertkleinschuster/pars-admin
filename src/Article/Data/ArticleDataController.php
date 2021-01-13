@@ -8,6 +8,7 @@ use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
+use Pars\Admin\Base\ContentNavigation;
 use Pars\Admin\Base\CrudController;
 
 class ArticleDataController extends CrudController
@@ -17,6 +18,18 @@ class ArticleDataController extends CrudController
     {
         parent::initModel();
         $this->setPermissions('article.create', 'article.edit', 'article.delete');
+    }
+
+    protected function initView()
+    {
+        parent::initView();
+        $this->getView()->getLayout()->getNavigation()->setActive('content');
+        $subNavigation = new ContentNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation->setActive('cmspage');
+        $this->getView()->getLayout()->setSubNavigation($subNavigation);
+        if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute('CmsPage_ID')) {
+            $this->getView()->set('CmsPage_ID', (int) $this->getControllerRequest()->getId()->getAttribute('CmsPage_ID'));
+        }
     }
 
     public function isAuthorized(): bool

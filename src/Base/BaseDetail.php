@@ -44,6 +44,7 @@ abstract class BaseDetail extends Detail
         }
         if ($this->isShowEdit()) {
             $button = new Button(null, Button::STYLE_WARNING);
+            $button->addOption('my-2');
             $button->addIcon(Icon::ICON_EDIT_2);
             $id = new IdParameter();
             foreach ($this->getEditIdFields() as $key => $value) {
@@ -58,6 +59,7 @@ abstract class BaseDetail extends Detail
         }
         if ($this->isShowDelete()) {
             $button = new Button(null, Button::STYLE_DANGER);
+            $button->addOption('my-2');
             $button->addIcon(Icon::ICON_TRASH);
             $id = new IdParameter();
             foreach ($this->getEditIdFields() as $key => $value) {

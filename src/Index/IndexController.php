@@ -3,7 +3,6 @@
 namespace Pars\Admin\Index;
 
 use Pars\Admin\Base\BaseController;
-use Pars\Component\Base\Ajax\Ajax;
 use Pars\Component\Base\Alert\Alert;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Badge;
