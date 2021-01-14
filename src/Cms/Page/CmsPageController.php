@@ -87,14 +87,14 @@ class CmsPageController extends ArticleController
     public function detailAction()
     {
         $detail = parent::detailAction();
-        $this->pushAction('cmspost', 'index');
-        $this->pushAction('cmspageparagraph', 'index');
+        $this->pushAction('cmspost', 'index', $this->translate('section.post'), self::SUB_ACTION_MODE_PREPEND);
+        $this->pushAction('cmspageparagraph', 'index', $this->translate('section.paragraph'), self::SUB_ACTION_MODE_PREPEND);
         switch ($detail->getBean()->get('CmsPageType_Code')) {
             case 'contact':
-                $this->pushAction('articledata', 'index');
+                $this->pushAction('articledata', 'index', $this->translate('section.data.contact'), self::SUB_ACTION_MODE_PREPEND);
                 break;
             case 'poll':
-                $this->pushAction('articledata', 'index');
+                $this->pushAction('articledata', 'index', $this->translate('section.data.poll'), self::SUB_ACTION_MODE_PREPEND);
                 break;
         }
         $this->loadRedirectInfo($detail->getBean());

@@ -7,7 +7,6 @@ namespace Pars\Admin\Cms\Page;
 use Pars\Admin\Article\ArticleDetail;
 use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Field\Span;
-use Pars\Component\Base\Toolbar\PreviewButton;
 
 class CmsPageDetail extends ArticleDetail
 {

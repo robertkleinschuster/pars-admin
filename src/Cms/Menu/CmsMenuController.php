@@ -53,7 +53,7 @@ class CmsMenuController extends CrudController
     {
         $id = $this->getControllerRequest()->getId()->getAttribute('CmsMenu_ID');
         $this->getView()->set('CmsMenu_ID_Parent', (int) $id);
-        $this->pushAction('cmssubmenu', 'index');
+        $this->pushAction('cmssubmenu', 'index', $this->translate('section.menu'));
         $detail = new CmsMenuDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $detail->setPreviewPath($this->getModel()->getConfig('frontend.domain') . '/{ArticleTranslation_Code}');
         return $detail;
