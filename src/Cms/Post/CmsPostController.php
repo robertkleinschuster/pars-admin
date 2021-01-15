@@ -47,7 +47,7 @@ class CmsPostController extends ArticleController
     protected function createDetail(): BaseDetail
     {
         $detail = new CmsPostDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $detail->setPreviewPath($this->getModel()->getConfig('frontend.domain') . '/{ArticleTranslation_Code}');
+        $detail->setPreviewPath($this->getModel()->getConfig('frontend.domain') . '/{ArticleTranslation_Code}?clearcache=pars');
         return $detail;
     }
 
