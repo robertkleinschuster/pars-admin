@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use Laminas\HttpHandlerRunner\Emitter\EmitterInterface;
+use Laminas\HttpHandlerRunner\Emitter\EmitterStack;
+use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
+
 return [
     // Provides application-wide services.
     // We recommend using fully-qualified class names whenever possible as
@@ -25,6 +29,11 @@ return [
             // Fully\Qualified\ClassName::class => Fully\Qualified\FactoryName::class,
             Pars\Admin\Application::class => Pars\Admin\ApplicationFactory::class,
             Pars\Admin\ApplicationContainer::class => Pars\Admin\ApplicationContainerFactory::class,
+            EmitterInterface::class => function(\Psr\Container\ContainerInterface $container) {
+                $stack = new EmitterStack();
+                $stack->push(new \Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter());
+                return $stack;
+            },
         ],
     ],
 ];
