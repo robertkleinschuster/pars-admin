@@ -2,6 +2,7 @@
 
 namespace Pars\Admin\Cms\Menu;
 
+use Pars\Admin\Article\ArticleDetail;
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
@@ -58,6 +59,25 @@ class CmsMenuController extends CrudController
         $detail->setPreviewPath($this->getModel()->getConfig('frontend.domain') . '/{ArticleTranslation_Code}?clearcache=pars');
         return $detail;
     }
+
+    public function detailAction()
+    {
+        $detail = parent::detailAction();
+        $bean =  $detail->getBean();
+        if ($bean->isset('ArticleTranslation_Code')) {
+            $code = $bean->get('ArticleTranslation_Code');
+            if ($code == '/') {
+                $code = '';
+            }
+            if ($detail instanceof CmsMenuDetail) {
+                $detail->setPreviewPath(
+                    $this->getModel()->getConfig('frontend.domain') . '/' .  $this->getUserBean()->getLocale()->getUrl_Code() . "/$code?clearcache=pars"
+                );
+            }
+        }
+        return $detail;
+    }
+
 
     protected function createEdit(): BaseEdit
     {

@@ -44,7 +44,6 @@ class CmsParagraphController extends ArticleController
     protected function createDetail(): BaseDetail
     {
         $detail = new CmsParagraphDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $detail->setPreviewPath($this->getModel()->getConfig('frontend.domain') . '/{ArticleTranslation_Code}?clearcache=pars');
         return $detail;
     }
 
