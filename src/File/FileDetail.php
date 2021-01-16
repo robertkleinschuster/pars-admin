@@ -18,7 +18,7 @@ class FileDetail extends BaseDetail
             $path = $this->getAssetDomain() . $path;
         }
         $this->setSection($this->translate('section.file'));
-        $this->setHeadline('{File_Name}');
+        $this->addField('File_Name', $this->translate('file.name'));
         $image = new Image($path);
         $image->addInlineStyle('max-height', '200px');
         $image->setLabel($this->translate('file.preview'));

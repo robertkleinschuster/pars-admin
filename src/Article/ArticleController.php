@@ -27,10 +27,10 @@ abstract class ArticleController extends CrudController
         if (!$bean->empty('File_BeanList') && !$bean->get('File_BeanList')->isEmpty()) {
             $fileOverview = new FileDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
             $fileOverview->setShowDelete(false);
-            $fileOverview->setShowEdit(false);
+            $fileOverview->setShowEdit(true);
             $fileOverview->setShowBack(false);
             $fileOverview->setBean($bean->get('File_BeanList')->first());
-            $this->getView()->append($fileOverview);
+            $this->getView()->getLayout()->getComponentListAfter()->push($fileOverview);
         }
         if ($bean->isset('ArticleTranslation_Code')) {
             $code = $bean->get('ArticleTranslation_Code');
