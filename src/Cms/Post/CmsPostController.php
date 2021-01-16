@@ -56,6 +56,7 @@ class CmsPostController extends ArticleController
         $edit = new CmsPostEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $edit->setStateOptions($this->getModel()->getCmsPostState_Options());
         $edit->setTypeOptions($this->getModel()->getCmsPostType_Options());
+        $edit->setFileOptions($this->getModel()->getFileOptions());
         return $edit;
     }
 

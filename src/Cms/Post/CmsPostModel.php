@@ -3,13 +3,14 @@
 namespace Pars\Admin\Cms\Post;
 
 use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Admin\Article\ArticleModel;
 use Pars\Admin\Base\CrudModel;
 use Pars\Model\Cms\Post\CmsPostBeanFinder;
 use Pars\Model\Cms\Post\CmsPostBeanProcessor;
 use Pars\Model\Cms\Post\State\CmsPostStateBeanFinder;
 use Pars\Model\Cms\Post\Type\CmsPostTypeBeanFinder;
 
-class CmsPostModel extends CrudModel
+class CmsPostModel extends ArticleModel
 {
     public function initialize()
     {
@@ -24,7 +25,7 @@ class CmsPostModel extends CrudModel
         $finder = new CmsPostTypeBeanFinder($this->getDbAdpater());
         $finder->setCmsPostType_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->get('CmsPostType_Code')] = $bean->get('CmsPostType_Code');
+            $options[$bean->get('CmsPostType_Code')] = $this->translate('cmsposttype.code.' . $bean->get('CmsPostType_Code'));
         }
         return $options;
     }
@@ -35,7 +36,7 @@ class CmsPostModel extends CrudModel
         $finder = new CmsPostStateBeanFinder($this->getDbAdpater());
         $finder->setCmsPostState_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->get('CmsPostState_Code')] = $bean->get('CmsPostState_Code');
+            $options[$bean->get('CmsPostState_Code')] = $this->translate('cmspoststate.code.' . $bean->get('CmsPostState_Code'));
         }
         return $options;
     }
