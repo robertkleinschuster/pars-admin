@@ -6,8 +6,6 @@ use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
-use Pars\Admin\Base\ContentNavigation;
-use Pars\Admin\Base\CrudController;
 
 
 /**

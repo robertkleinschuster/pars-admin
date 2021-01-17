@@ -2,7 +2,6 @@
 
 namespace Pars\Admin\User;
 
-use Mezzio\Authentication\UserInterface;
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;

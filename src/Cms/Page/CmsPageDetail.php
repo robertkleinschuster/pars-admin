@@ -6,8 +6,6 @@ namespace Pars\Admin\Cms\Page;
 
 use Pars\Admin\Article\ArticleDetail;
 use Pars\Component\Base\Field\Badge;
-use Pars\Component\Base\Field\Headline;
-use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Field\Span;
 use Pars\Model\Article\DataBean;
 

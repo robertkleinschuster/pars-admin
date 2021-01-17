@@ -7,7 +7,6 @@ use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Import\Tesla\TeslaImporter;
-use Pars\Model\Article\Translation\ArticleTranslationBeanFinder;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
 use Pars\Model\Import\ImportBeanFinder;
 use Pars\Model\Import\ImportBeanProcessor;

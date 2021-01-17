@@ -10,7 +10,6 @@ use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
 use Pars\Component\Base\Alert\Alert;
-use Pars\Component\Base\Toolbar\PreviewButton;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Article\DataBean;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;

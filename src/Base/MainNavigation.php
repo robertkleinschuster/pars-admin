@@ -8,7 +8,6 @@ use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Navigation\Navigation;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\Parameter;
-use Pars\Helper\Parameter\SubmitParameter;
 
 
 class MainNavigation extends BaseNavigation

@@ -12,7 +12,6 @@ use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\SystemNavigation;
 use Pars\Admin\Import\Tesla\TeslaImportConfigure;
 use Pars\Component\Base\Alert\Alert;
-use Pars\Import\Tesla\TeslaImporter;
 
 class ImportController extends CrudController
 {

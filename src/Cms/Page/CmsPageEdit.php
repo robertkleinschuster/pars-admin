@@ -4,14 +4,9 @@
 namespace Pars\Admin\Cms\Page;
 
 
-use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Article\ArticleEdit;
 use Pars\Admin\Base\NotEmptyWarningFieldFormat;
 use Pars\Admin\Base\ValueWarningFieldFormat;
-use Pars\Component\Base\BorderAwareInterface;
-use Pars\Component\Base\Form\Select;
-use Pars\Mvc\View\FieldFormatInterface;
-use Pars\Mvc\View\FieldInterface;
 
 class CmsPageEdit extends ArticleEdit
 {

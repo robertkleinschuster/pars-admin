@@ -6,7 +6,6 @@ use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Grid\Column;
 use Pars\Component\Base\Grid\Row;
-use Pars\Component\Base\Toolbar\CreateButton;
 
 /**
  * Class CrudController

@@ -5,7 +5,6 @@ namespace Pars\Admin\Cms\Menu;
 
 
 use Pars\Admin\Base\BaseDetail;
-use Pars\Admin\Cms\Page\CmsPageDetail;
 use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Toolbar\PreviewButton;

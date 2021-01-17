@@ -6,18 +6,9 @@ namespace Pars\Admin\Cms\Page;
 
 use Niceshops\Bean\Type\Base\BeanAwareInterface;
 use Niceshops\Bean\Type\Base\BeanAwareTrait;
-use Niceshops\Bean\Type\Base\BeanListInterface;
 use Pars\Admin\Base\BaseDetail;
-use Pars\Component\Base\Field\Button;
-use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Field\Progress;
 use Pars\Component\Base\Field\Span;
-use Pars\Component\Base\Form\Form;
-use Pars\Helper\Parameter\IdParameter;
-use Pars\Helper\Parameter\RedirectParameter;
-use Pars\Helper\Parameter\SubmitParameter;
-use Pars\Model\Article\ArticleBean;
-use Pars\Mvc\View\HtmlElement;
 
 class CmsPagePollDetail extends BaseDetail implements BeanAwareInterface
 {

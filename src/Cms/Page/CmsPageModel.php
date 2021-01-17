@@ -4,17 +4,12 @@ namespace Pars\Admin\Cms\Page;
 
 use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Article\ArticleModel;
-use Pars\Helper\Parameter\IdListParameter;
-use Pars\Helper\Parameter\IdParameter;
-use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Model\Article\DataBean;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
 use Pars\Model\Cms\Page\CmsPageBeanProcessor;
 use Pars\Model\Cms\Page\Layout\CmsPageLayoutBeanFinder;
 use Pars\Model\Cms\Page\State\CmsPageStateBeanFinder;
 use Pars\Model\Cms\Page\Type\CmsPageTypeBeanFinder;
-use Pars\Model\Cms\Paragraph\CmsParagraphBeanFinder;
-use Pars\Model\Cms\Paragraph\CmsParagraphBeanProcessor;
 
 /**
  * Class CmsPageModel

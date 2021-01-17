@@ -2,7 +2,6 @@
 
 namespace Pars\Admin\Cms\Menu;
 
-use Pars\Admin\Article\ArticleDetail;
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;

@@ -3,8 +3,6 @@
 declare(strict_types=1);
 
 use Laminas\HttpHandlerRunner\Emitter\EmitterInterface;
-use Laminas\HttpHandlerRunner\Emitter\EmitterStack;
-use Laminas\HttpHandlerRunner\Emitter\SapiEmitter;
 
 return [
     // Provides application-wide services.

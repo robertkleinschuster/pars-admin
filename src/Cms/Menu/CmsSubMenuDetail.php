@@ -4,10 +4,6 @@
 namespace Pars\Admin\Cms\Menu;
 
 
-use Pars\Admin\Base\BaseDetail;
-use Pars\Component\Base\Field\Badge;
-use Pars\Component\Base\Field\Span;
-
 class CmsSubMenuDetail extends CmsMenuDetail
 {
     protected function initialize()

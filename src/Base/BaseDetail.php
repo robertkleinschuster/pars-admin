@@ -8,9 +8,7 @@ use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Button;
 use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Toolbar\BackButton;
-use Pars\Component\Base\Toolbar\Toolbar;
 use Pars\Helper\Parameter\IdParameter;
-use Pars\Mvc\View\HtmlElement;
 
 abstract class BaseDetail extends Detail
 {
