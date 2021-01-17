@@ -10,6 +10,7 @@ require 'vendor/autoload.php';
  */
 (function () {
 
+
     /** @var \Psr\Container\ContainerInterface $container */
     $container = require __DIR__ . '/../config/container.php';
     $adapter = $container->get(\Laminas\Db\Adapter\AdapterInterface::class);
