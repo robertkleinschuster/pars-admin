@@ -9,6 +9,7 @@ use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Field\Headline;
 use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Field\Span;
+use Pars\Model\Article\DataBean;
 
 class CmsPageDetail extends ArticleDetail
 {
@@ -27,9 +28,11 @@ class CmsPageDetail extends ArticleDetail
         $span->setFormat(new CmsPageLayoutFieldFormat($this->getTranslator()));
         $this->append($span, 3, 1);
         $data = $this->getBean()->get('Article_Data');
-        foreach ($data as $key => $value) {
-            if (!is_array($value) && strpos($key, '__class') === false) {
-                $this->addField("Article_Data[$key]", $this->translate('article.data.' . $key));
+        if ($data instanceof DataBean) {
+            foreach ($data as $key => $value) {
+                if (!is_array($value) && strpos($key, '__class') === false) {
+                    $this->addField("Article_Data[$key]", $this->translate('article.data.' . $key));
+                }
             }
         }
         parent::initialize();
