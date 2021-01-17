@@ -29,11 +29,7 @@ return [
             // Fully\Qualified\ClassName::class => Fully\Qualified\FactoryName::class,
             Pars\Admin\Application::class => Pars\Admin\ApplicationFactory::class,
             Pars\Admin\ApplicationContainer::class => Pars\Admin\ApplicationContainerFactory::class,
-            EmitterInterface::class => function(\Psr\Container\ContainerInterface $container) {
-                $stack = new EmitterStack();
-                $stack->push(new \Laminas\HttpHandlerRunner\Emitter\SapiStreamEmitter());
-                return $stack;
-            },
+            EmitterInterface::class => \Pars\Core\Emitter\EmitterFactory::class,
         ],
     ],
 ];
