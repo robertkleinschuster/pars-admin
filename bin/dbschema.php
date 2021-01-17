@@ -12,5 +12,6 @@ require 'vendor/autoload.php';
     $adapter = $container->get(\Laminas\Db\Adapter\AdapterInterface::class);
 
     $schemaUpdater = new \Pars\Core\Database\Updater\SchemaUpdater($adapter);
-    echo json_encode($schemaUpdater->executeSilent(), JSON_PRETTY_PRINT);
+    $schemaUpdater->executeSilent();
+    echo 'Schema Updated';
 })();
