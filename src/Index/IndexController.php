@@ -10,6 +10,8 @@ use Pars\Component\Base\Field\Progress;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\ListGroup\Group;
 use Pars\Component\Base\ListGroup\Item;
+use Pars\Helper\Parameter\IdParameter;
+use Pars\Model\Article\Data\ArticleDataBeanFinder;
 use Pars\Mvc\View\HtmlElement;
 
 /**
@@ -117,28 +119,28 @@ class IndexController extends BaseController
                 }
             }
         }
-
+        $progress->setValue($score);
+        $span->push($progress);
 
         if ($score <= 40) {
             $progress->setStyle(Progress::STYLE_DANGER);
         } elseif ($score <= 60) {
             $progress->setStyle(Progress::STYLE_WARNING);
-        } elseif ($score < 100) {
+        } elseif ($score < 99) {
             $progress->setStyle(Progress::STYLE_INFO);
-        } elseif ($score >= 100) {
+        } elseif ($score >= 99) {
+            $span->getElementList()->clear();
             $progress->setStyle(Progress::STYLE_SUCCESS);
             $heading = new HtmlElement('h5.mt-3');
             $heading->push(new Badge($this->translate('index.success'), Badge::STYLE_SUCCESS));
-            $span->push($heading);
+            #  $span->push($heading);
             $alert->setHeading($this->translate('index.alert.headline.complete'));
             $alert->setStyle(Alert::STYLE_SUCCESS);
         }
-        $progress->setValue($score);
 
-        $span->push($progress);
-
-        $detail->append($span);
-
+        if ($span->getElementList()->count()) {
+            $detail->append($span);
+        }
 
         $group = new Group();
         $item = new Item();
@@ -160,7 +162,27 @@ class IndexController extends BaseController
         $item->setContent($this->translate('index.create.menu'));
         $item->setPath($this->getPathHelper()->setController('cmsmenu')->setAction('create'));
         $group->push($item);
+
+        $messages = new Detail();
+        $messages->setHeadline($this->translate('index.messages'));
+        $articleDataFinder = new ArticleDataBeanFinder($this->getModel()->getDbAdpater());
+        $articleDataFinder->order(['Timestamp_Create' => ArticleDataBeanFinder::ORDER_MODE_DESC]);
+        $articleDataFinder->limit(5, 0);
+        foreach ($articleDataFinder->getBeanListDecorator() as $item) {
+            $data = $item->get('ArticleData_Data');
+            if (isset($data['email'])) {
+                $messages->addField('', empty($data['name']) ? $data['email'] : $data['name'] . ' - ' . $data['email'])->setContent(empty($data['subject']) ? $data['message'] : $data['subject'])->setPath(
+                    $this->getPathHelper()->setController('articledata')->setAction('detail')->setId((new IdParameter())->addId('ArticleData_ID', $item->get('ArticleData_ID')))->getPath()
+                );
+            }
+        }
+
         $this->getView()->append($detail);
+
+        if ($messages->getJumbotron()->getFieldList()->count()) {
+            $this->getView()->append($messages);
+        }
+
         $this->getView()->append($group);
     }
 

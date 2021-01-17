@@ -60,6 +60,7 @@ return [
     'index.config.empty' => 'Einstellung fehlt',
     'index.config.invalid' => 'Einstellung ungültig',
     'index.config.ok' => 'Einstellung ok',
+    'index.messages' => 'Anfragen',
     'timestamp.create' => 'Erstellt',
     'timestamp.edit' => 'Bearbeitet',
     'update.database' => 'Datenbank',
