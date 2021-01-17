@@ -79,6 +79,11 @@ class CmsPageController extends ArticleController
             $edit->getForm()->addCheckbox('Article_Data[vote_once]', '{Article_Data[vote_once]}', $this->translate('article.data.vote.once')
                 , 3, 1);
         }
+        if ($edit->getBean()->get('CmsPageType_Code') == 'contact') {
+            $edit->getForm()->addHidden('Article_Data[__class]', DataBean::class);
+            $edit->getForm()->addEmail('Article_Data[contact_email]', '{Article_Data[contact_email]}', $this->translate('article.data.contact_email')
+                , 3, 1)->getInput()->setRequired(true);
+        }
         return $edit;
     }
 
