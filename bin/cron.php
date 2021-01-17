@@ -11,7 +11,7 @@ require 'vendor/autoload.php';
 (function () {
 
     /** @var \Psr\Container\ContainerInterface $container */
-    $container = require 'config/container.php';
+    $container = require __DIR__ . '/../config/container.php';
     $adapter = $container->get(\Laminas\Db\Adapter\AdapterInterface::class);
 
     $finder = new \Pars\Model\Import\ImportBeanFinder($adapter);
