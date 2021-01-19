@@ -25,6 +25,8 @@ class CmsPageOverview extends ArticleOverview
         $icon->addOption('text-danger');
         $icon->setAccept(new CmsPageRedirectAccept());
         $this->append($icon);
+
+        parent::initialize();
         $span = new Span('{CmsPageType_Code}', $this->translate('cmspagetype.code'));
         $span->setFormat(new CmsPageTypeFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {
@@ -39,7 +41,6 @@ class CmsPageOverview extends ArticleOverview
             $span->addOption(Span::OPTION_DECORATION_NONE);
         }
         $this->append($span);
-        parent::initialize();
     }
 
     protected function getController(): string

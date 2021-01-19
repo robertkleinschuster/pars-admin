@@ -19,6 +19,7 @@ class CmsPostOverview extends ArticleOverview
             $span->addOption(Span::OPTION_DECORATION_NONE);
         }
         $this->append($span);
+        parent::initialize();
         $this->setSection($this->translate('section.post'));
         $span = new Span('{CmsPostType_Code}', $this->translate('cmsposttype.code'));
         $span->setFormat(new CmsPostTypeFieldFormat($this->getTranslator()));
@@ -28,7 +29,6 @@ class CmsPostOverview extends ArticleOverview
         }
         $this->append($span);
         $this->addField('CmsPost_PublishTimestamp', $this->translate('cmspost.publishtimestamp'));
-        parent::initialize();
     }
 
 

@@ -5,7 +5,9 @@ namespace Pars\Admin\Article;
 
 
 use Pars\Admin\Base\BaseDetail;
+use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Toolbar\PreviewButton;
+use Pars\Model\Article\DataBean;
 
 abstract class ArticleDetail extends BaseDetail
 {
@@ -26,6 +28,37 @@ abstract class ArticleDetail extends BaseDetail
         $this->addField('ArticleTranslation_Teaser', $this->translate('articletranslation.teaser'), 8, 2);
         $this->addField('ArticleTranslation_Footer', $this->translate('articletranslation.footer'), 9, 1);
         $this->addField('ArticleTranslation_Text', $this->translate('articletranslation.text'), 10, 1);
+        if (!$this->getBean()->empty('Article_Data')) {
+            $data = $this->getBean()->get('Article_Data');
+            if ($data instanceof DataBean) {
+                foreach ($data as $key => $value) {
+                    if (!is_array($value) && strpos($key, '__class') === false && isset($value)) {
+                        switch ($data->type($key)) {
+                            case DataBean::DATA_TYPE_BOOL:
+                                if ($value === true) {
+                                    $icon = new Icon(Icon::ICON_CHECK);
+                                    $icon->addOption('text-success');
+                                    $icon->setLabel($this->translate('article.data.' . $key));
+                                    $this->append($icon);
+                                } else {
+                                    $icon = new Icon(Icon::ICON_X);
+                                    $icon->addOption('text-danger');
+                                    $icon->setLabel($this->translate('article.data.' . $key));
+                                    $this->append($icon);
+                                }
+                                break;
+                            case DataBean::DATA_TYPE_FLOAT:
+                            case DataBean::DATA_TYPE_INT:
+                            case DataBean::DATA_TYPE_STRING:
+                                if ($value) {
+                                    $this->addField("Article_Data[$key]", $this->translate('article.data.' . $key));
+                                }
+                                break;
+                        }
+                    }
+                }
+            }
+        }
         parent::initialize();
         if ($this->hasPreviewPath()) {
             $this->getToolbar()->push((new PreviewButton($this->getPreviewPath()))->setTarget('_blank'));

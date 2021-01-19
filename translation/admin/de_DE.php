@@ -137,6 +137,8 @@ return [
     'article.data.vote.once' => 'Auf eine Stimme beschränken',
     'article.data.vote_once' => 'Auf eine Stimme beschränken',
     'article.data.contact_email' => 'Kontakt E-Mail',
+    'article.data.author' => 'Author (im Frontend sichtbar)',
+    'article.data.editor' => 'Editor (im Frontend sichtbar)',
     'article.paragraph.hint' => 'Absätze können hinzugefügt werden wenn der Eintrag erstellt wurde.',
     'articletype.code' => 'Typ',
     'articlestate.code' => 'Status',

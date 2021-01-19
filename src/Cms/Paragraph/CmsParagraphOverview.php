@@ -20,6 +20,9 @@ class CmsParagraphOverview extends ArticleOverview
             $span->addOption(Span::OPTION_DECORATION_NONE);
         }
         $this->append($span);
+
+        parent::initialize();
+
         $span = new Span('{CmsParagrphType_Code}', $this->translate('cmsparagraphtype.code'));
         $span->setFormat(new CmsParagraphTypeFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {
@@ -27,7 +30,6 @@ class CmsParagraphOverview extends ArticleOverview
             $span->addOption(Span::OPTION_DECORATION_NONE);
         }
         $this->append($span);
-        parent::initialize();
     }
 
 

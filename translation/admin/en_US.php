@@ -136,6 +136,8 @@ return [
     'article.data.vote.once' => 'Limit to one vote',
     'article.data.vote_once' => 'Limit to one vote',
     'article.data.contact_email' => 'Contact E-Mail',
+    'article.data.author' => 'Author (visible in frontend)',
+    'article.data.editor' => 'Editor (visible in frontend)',
     'article.paragraph.hint' => 'Paragraphs can be added when the entry is created.',
     'articletype.code' => 'Type',
     'articlestate.code' => 'State',

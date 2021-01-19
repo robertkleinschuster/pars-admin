@@ -20,21 +20,6 @@ class CmsPostModel extends ArticleModel
         $this->getBeanFinder()->setLocale_Code($this->getTranslator()->getLocale());
     }
 
-    protected function create(IdParameter $idParameter, array &$attributes): void
-    {
-
-        $attributes['Article_Data']['__class'] = DataBean::class;
-        $attributes['Article_Data']['User_Displayname_Create'] = $this->getUserBean()->User_Displayname;
-        parent::create($idParameter, $attributes);
-    }
-
-
-    protected function save(array $attributes): void
-    {
-        $attributes['Article_Data']['__class'] = DataBean::class;
-        $attributes['Article_Data']['User_Displayname_Edit'] = $this->getUserBean()->User_Displayname;
-        parent::save($attributes);
-    }
 
 
     public function getCmsPostType_Options(): array
