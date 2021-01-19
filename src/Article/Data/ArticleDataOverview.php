@@ -45,10 +45,12 @@ class ArticleDataOverview extends BaseOverview
         $this->addField('ArticleData_Data[option]', $this->translate('articledata.data.option'));
         $data = [];
         foreach ($this->getBeanList() as $bean) {
-            if (isset($data[$bean->ArticleData_Data['option']])) {
-                $data[$bean->ArticleData_Data['option']]++;
-            } else {
-                $data[$bean->ArticleData_Data['option']] = 1;
+            if (isset($bean->ArticleData_Data['option'])) {
+                if (isset($data[$bean->ArticleData_Data['option']])) {
+                    $data[$bean->ArticleData_Data['option']]++;
+                } else {
+                    $data[$bean->ArticleData_Data['option']] = 1;
+                }
             }
         }
         $pollDetal = new CmsPagePollDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
