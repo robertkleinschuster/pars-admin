@@ -16,6 +16,7 @@ class ConfigEdit extends BaseEdit
             ->getInput()->setDisabled(true);
         if (!$this->getBean()->empty('Config_Options') && count($this->getBean()->get('Config_Options'))) {
             $options = [];
+            $options[] = null;
             foreach ($this->getBean()->get('Config_Options') as $option) {
                 $options[$option] = $option;
             }
