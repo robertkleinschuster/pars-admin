@@ -80,7 +80,7 @@ class CmsPageModel extends ArticleModel
     {
         $bean = parent::getEmptyBean($data);
         $bean->set('CmsPageType_Code', 'home');
-        $bean->set('CmsPageLayout_Code', 'narrow');
+        $bean->set('CmsPageLayout_Code', 'default');
         $bean->set('CmsPageState_Code', 'active');
         $bean->set('Article_Data', new DataBean());
         return $bean;

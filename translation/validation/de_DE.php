@@ -32,6 +32,7 @@ return [
     'file.upload.error.form.size' => 'Fehler beim hochladen der Datei (Größe überschritten: FORM)!',
     'file.upload.error.init.size' => 'Fehler beim hochladen der Datei (Größe überschritten: INI)!',
     'file.upload.error.no.file' => 'Es muss eine Datei gewählt werden!',
+    'file.id.empty' => 'Die Datei darf nicht leer sein!',
     'locale.name.empty' => 'Die Bezeichnung darf nicht leer sein!',
     'locale.code.empty' => 'Der Code darf nicht leer sein!',
     'locale.code.unique' => 'Der Code ist bereits vergeben!',

@@ -32,6 +32,7 @@ return [
     'file.upload.error.form.size' => 'Max size exceeded: FORM!',
     'file.upload.error.init.size' => 'Max size exceeded: INI!',
     'file.upload.error.no.file' => 'No file selected!',
+    'file.id.empty' => 'The file must not be empty!',
     'locale.name.empty' => 'The language/country name must not be empty!',
     'locale.code.empty' => 'The language/country code must not be empty!',
     'locale.code.unique' => 'The language/country code is already in use!',
