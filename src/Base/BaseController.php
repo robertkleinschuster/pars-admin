@@ -2,6 +2,7 @@
 
 namespace Pars\Admin\Base;
 
+use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Profiler\ProfilerInterface;
 use Laminas\I18n\Translator\TranslatorInterface;
 use Mezzio\Authentication\UserInterface;
@@ -104,7 +105,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     public function getNavigationState(string $id): int
     {
-        return (int) $this->getSession()->get($id, 1);
+        return (int)$this->getSession()->get($id, 1);
     }
 
     /**
@@ -376,6 +377,13 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         } else {
             $this->getControllerResponse()->setBody($exception->getMessage());
             $this->getControllerResponse()->removeOption(ControllerResponse::OPTION_RENDER_RESPONSE);
+        }
+        $adapter = $this->getControllerRequest()->getServerRequest()->getAttribute(DatabaseMiddleware::ADAPTER_ATTRIBUTE);
+        if ($adapter instanceof AdapterInterface) {
+            if ($adapter->getDriver()->getConnection()->inTransaction()
+                && $adapter->getDriver()->getConnection()->isConnected()) {
+                $adapter->getDriver()->getConnection()->rollback();
+            }
         }
     }
 
