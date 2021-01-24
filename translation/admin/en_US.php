@@ -205,6 +205,7 @@ return [
     'cmspagetype.code.columns' => 'Columns',
     'cmspagetype.code.tiles' => 'Tiles',
     'cmspagetype.code.tesla' => 'Tesla',
+    'cmspagetype.code.redirect' => 'Redirect (external)',
     'cmspagetype.code.custom_1' => 'Custom 1',
     'cmspagetype.code.custom_2' => 'Custom 2',
     'cmspagetype.code.custom_3' => 'Custom 3',

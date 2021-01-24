@@ -206,6 +206,7 @@ return [
     'cmspagetype.code.tiles' => 'Kacheln',
     'cmspagetype.code.columns' => 'Spalten',
     'cmspagetype.code.tesla' => 'Tesla',
+    'cmspagetype.code.redirect' => 'Umleitung (Extern)',
     'cmspagetype.code.custom_1' => 'Benutzerdefiniert 1',
     'cmspagetype.code.custom_2' => 'Benutzerdefiniert 2',
     'cmspagetype.code.custom_3' => 'Benutzerdefiniert 3',
