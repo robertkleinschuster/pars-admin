@@ -25,6 +25,7 @@ class Update extends BaseEdit
 
     protected function initialize()
     {
+        $this->setShowSubmit(false);
         $previewList = $this->updater->getPreviewMap();
         $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('update.submit'), (new SubmitParameter())->setMode($this->updater->getCode()));
         $this->getForm()->addHidden(RedirectParameter::name(), (new RedirectParameter())->setPath(
