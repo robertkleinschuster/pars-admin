@@ -24,12 +24,7 @@ class UpdateModel extends BaseModel
         return new SchemaUpdater($this->getDbAdpater());
     }
 
-    public function getConstraintUpdater()
-    {
-        $updater = new SchemaUpdater($this->getDbAdpater());
-        $updater->setConstraintsOnly(true);
-        return $updater;
-    }
+
 
     public function getDataUpdater()
     {
@@ -59,16 +54,6 @@ class UpdateModel extends BaseModel
             case 'schema':
                 if ($this->hasOption(self::OPTION_SCHEMA_ALLOWED)) {
                     $schemaUpdater = new SchemaUpdater($this->getDbAdpater());
-                    $schemaUpdater->execute($attribute_List);
-                    $this->getValidationHelper()->addErrorFieldMap($schemaUpdater->getValidationHelper()->getErrorFieldMap());
-                } else {
-                    $this->handlePermissionDenied();
-                }
-                break;
-            case 'constraints':
-                if ($this->hasOption(self::OPTION_SCHEMA_ALLOWED)) {
-                    $schemaUpdater = new SchemaUpdater($this->getDbAdpater());
-                    $schemaUpdater->setConstraintsOnly(true);
                     $schemaUpdater->execute($attribute_List);
                     $this->getValidationHelper()->addErrorFieldMap($schemaUpdater->getValidationHelper()->getErrorFieldMap());
                 } else {

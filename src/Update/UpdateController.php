@@ -47,7 +47,6 @@ class UpdateController extends BaseController
         $this->updateNavigation->setRounded(Navigation::ROUNDED_NONE);
         $this->updateNavigation->addItem($this->translate('update.database.data'), $this->getPathHelper()->setController('update')->setAction('data'), 'data');
         $this->updateNavigation->addItem($this->translate('update.database.schema'), $this->getPathHelper()->setController('update')->setAction('schema'), 'schema');
-        $this->updateNavigation->addItem($this->translate('update.database.constraints'), $this->getPathHelper()->setController('update')->setAction('constraints'), 'constraints');
         $this->updateNavigation->addItem($this->translate('update.database.special'), $this->getPathHelper()->setController('update')->setAction('special'), 'special');
         $this->getView()->append($this->updateNavigation);
     }
@@ -62,15 +61,6 @@ class UpdateController extends BaseController
     {
         $this->updateNavigation->setActive('schema');
         $update = new Update($this->getPathHelper(), $this->getTranslator(), $this->getUserBean(), $this->getModel()->getSchemaUpdater());
-        $update->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
-        $update->setToken($this->generateToken('submit_token'));
-        $this->getView()->append($update);
-    }
-
-    public function constraintsAction()
-    {
-        $this->updateNavigation->setActive('constraints');
-        $update = new Update($this->getPathHelper(), $this->getTranslator(), $this->getUserBean(), $this->getModel()->getConstraintUpdater());
         $update->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $update->setToken($this->generateToken('submit_token'));
         $this->getView()->append($update);
