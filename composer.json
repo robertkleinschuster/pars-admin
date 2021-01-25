@@ -65,7 +65,7 @@
     "post-install-cmd": [
       "@clear-config-cache",
       "php bin/dbschema.php",
-      "php bin/dbdata.php"
+      "php bin/dbdata.php",
       "php bin/dbspecial.php"
     ],
     "serve": "php -S 0.0.0.0:8080 -t public/",
