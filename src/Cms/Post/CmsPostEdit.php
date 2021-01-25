@@ -15,14 +15,17 @@ class CmsPostEdit extends ArticleEdit
 
     protected function initialize()
     {
-        if ($this->hasTypeOptions()) {
-            $this->getForm()->addSelect('CmsPostType_Code', $this->getTypeOptions(), '{CmsPostType_Code}', $this->translate('cmsposttype.code'), 2, 2);
+        if (!$this->textOnly) {
+            if ($this->hasTypeOptions()) {
+                $this->getForm()->addSelect('CmsPostType_Code', $this->getTypeOptions(), '{CmsPostType_Code}', $this->translate('cmsposttype.code'), 2, 2);
+            }
+            if ($this->hasStateOptions()) {
+                $this->getForm()->addSelect('CmsPostState_Code', $this->getStateOptions(), '{CmsPostState_Code}', $this->translate('cmspoststate.code'), 2, 3)
+                    ->setFormat(new ValueWarningFieldFormat('CmsPostState_Code', 'inactive'));
+            }
+            $this->getForm()->addDateTime('CmsPost_PublishTimestamp', '{CmsPost_PublishTimestamp}', $this->translate('cmspost.publishtimestamp'), 3, 1);
+
         }
-        if ($this->hasStateOptions()) {
-            $this->getForm()->addSelect('CmsPostState_Code', $this->getStateOptions(), '{CmsPostState_Code}', $this->translate('cmspoststate.code'), 2, 3)
-                ->setFormat(new ValueWarningFieldFormat('CmsPostState_Code', 'inactive'));
-        }
-        $this->getForm()->addDateTime('CmsPost_PublishTimestamp', '{CmsPost_PublishTimestamp}', $this->translate('cmspost.publishtimestamp'), 3, 1);
         parent::initialize();
     }
 

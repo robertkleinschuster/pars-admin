@@ -5,8 +5,10 @@ namespace Pars\Admin\Article;
 
 
 use Pars\Admin\Base\BaseDetail;
+use Pars\Component\Base\Field\Button;
 use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Toolbar\PreviewButton;
+use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Article\DataBean;
 
 abstract class ArticleDetail extends BaseDetail
@@ -60,6 +62,21 @@ abstract class ArticleDetail extends BaseDetail
             }
         }
         parent::initialize();
+        if ($this->isShowEdit()) {
+            $button = new Button(null, Button::STYLE_PRIMARY);
+            $button->addOption('my-2');
+            $button->addIcon(Icon::ICON_EDIT);
+            $id = new IdParameter();
+            foreach ($this->getEditIdFields() as $key => $value) {
+                if (is_string($key)) {
+                    $id->addId($key, $value);
+                } else {
+                    $id->addId($value);
+                }
+            }
+            $button->setPath($this->getPathHelper()->setController($this->getEditController())->setAction('edit_text')->setId($id));
+            $this->getToolbar()->push($button);
+        }
         if ($this->hasPreviewPath()) {
             $this->getToolbar()->push((new PreviewButton($this->getPreviewPath()))->setTarget('_blank'));
         }

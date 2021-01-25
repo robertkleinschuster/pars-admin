@@ -11,7 +11,6 @@ use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
 use Pars\Component\Base\Alert\Alert;
 use Pars\Helper\Parameter\IdParameter;
-use Pars\Model\Article\DataBean;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
 
 
@@ -82,6 +81,23 @@ class CmsPageController extends ArticleController
                 , 3, 1)->getInput()->setRequired(true);
         }
         return $edit;
+    }
+
+    public function createAction()
+    {
+        $create = parent::createAction();
+        if ($this->getControllerRequest()->getId()->hasAttribute('CmsPageType_Code')) {
+            $create->getBean()->set('CmsPageType_Code', $this->getControllerRequest()->getId()->getAttribute('CmsPageType_Code'));
+            if ($create->getBean()->get('CmsPageType_Code') == 'poll') {
+                $create->getForm()->addCheckbox('Article_Data[vote_once]', '{Article_Data[vote_once]}', $this->translate('article.data.vote.once')
+                    , 3, 1);
+            }
+            if ($create->getBean()->get('CmsPageType_Code') == 'contact') {
+                $create->getForm()->addEmail('Article_Data[contact_email]', '{Article_Data[contact_email]}', $this->translate('article.data.contact_email')
+                    , 3, 1)->getInput()->setRequired(true);
+            }
+        }
+        return $create;
     }
 
 

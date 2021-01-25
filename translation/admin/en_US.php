@@ -67,6 +67,7 @@ return [
     'update.database.data' => 'Data',
     'update.database.schema' => 'Schema',
     'update.database.special' => 'Special',
+    'update.database.constraints' => 'Constraints',
     'delete.title' => 'Delete',
     'delete.submit' => 'Delete',
     'delete.cancel' => 'Cancel',

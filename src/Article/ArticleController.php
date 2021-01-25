@@ -45,4 +45,13 @@ abstract class ArticleController extends CrudController
         }
         return $detail;
     }
+
+    public function edit_textAction()
+    {
+        $edit = $this->editAction();
+        if ($edit instanceof ArticleEdit) {
+            $edit->setTextOnly(true);
+        }
+        return $edit;
+    }
 }
