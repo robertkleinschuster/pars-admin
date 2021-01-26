@@ -7,19 +7,16 @@ namespace Pars\Admin\Article;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Component\Base\Field\Button;
 use Pars\Component\Base\Field\Icon;
+use Pars\Component\Base\Toolbar\DropdownEditButton;
 use Pars\Component\Base\Toolbar\EditButton;
 use Pars\Component\Base\Toolbar\PreviewButton;
-use Pars\Component\Base\Toolbar\Toolbar;
 use Pars\Helper\Parameter\EditLocaleParameter;
 use Pars\Helper\Parameter\IdParameter;
-use Pars\Helper\Parameter\Parameter;
 use Pars\Model\Article\DataBean;
-use Pars\Model\Localization\Locale\LocaleBeanList;
 
 abstract class ArticleDetail extends BaseDetail
 {
     protected ?string $previewPath = null;
-    protected ?LocaleBeanList $locale_List = null;
 
     protected function initialize()
     {
@@ -67,29 +64,6 @@ abstract class ArticleDetail extends BaseDetail
                 }
             }
         }
-
-        if ($this->isShowEdit() && $this->hasLocale_List()) {
-            foreach ($this->getLocale_List() as $locale) {
-                $button = new EditButton();
-                $button->setContent($locale->get('Locale_Name'));
-                $id = new IdParameter();
-                foreach ($this->getEditIdFields() as $key => $value) {
-                    if (is_string($key)) {
-                        $id->addId($key, $value);
-                    } else {
-                        $id->addId($value);
-                    }
-                }
-                $button->setPath($this->getPathHelper()
-                    ->setController($this->getEditController())
-                    ->setAction($this->getEditAction())
-                    ->setId($id)
-                    ->addParameter(new EditLocaleParameter($locale->get('Locale_UrlCode')))
-                );
-                $this->getSubToolbar()->push($button);
-            }
-        }
-
         parent::initialize();
         if ($this->isShowEdit()) {
             $button = new Button(null, Button::STYLE_PRIMARY);
@@ -140,31 +114,5 @@ abstract class ArticleDetail extends BaseDetail
         return isset($this->previewPath);
     }
 
-    /**
-    * @return LocaleBeanList
-    */
-    public function getLocale_List(): LocaleBeanList
-    {
-        return $this->locale_List;
-    }
-
-    /**
-    * @param LocaleBeanList $locale_List
-    *
-    * @return $this
-    */
-    public function setLocale_List(LocaleBeanList $locale_List): self
-    {
-        $this->locale_List = $locale_List;
-        return $this;
-    }
-
-    /**
-    * @return bool
-    */
-    public function hasLocale_List(): bool
-    {
-        return isset($this->locale_List);
-    }
 
 }

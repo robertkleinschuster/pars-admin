@@ -4,11 +4,16 @@
 namespace Pars\Admin\Base;
 
 
+use Pars\Admin\Article\ArticleDetail;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Button;
 use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Toolbar\BackButton;
+use Pars\Component\Base\Toolbar\DropdownEditButton;
+use Pars\Component\Base\Toolbar\EditButton;
+use Pars\Helper\Parameter\EditLocaleParameter;
 use Pars\Helper\Parameter\IdParameter;
+use Pars\Model\Localization\Locale\LocaleBeanList;
 
 abstract class BaseDetail extends Detail
 {
@@ -18,6 +23,7 @@ abstract class BaseDetail extends Detail
     public bool $showEdit = true;
     public bool $showDelete = true;
     public bool $showBack = true;
+    protected ?LocaleBeanList $locale_List = null;
 
     protected function initialize()
     {
@@ -40,7 +46,37 @@ abstract class BaseDetail extends Detail
             $button->setPath($this->getIndexPath());
             $toolbar->push($button);
         }
-        if ($this->isShowEdit()) {
+
+        if ($this->isShowEdit() && $this->hasLocale_List()) {
+            $button = new EditButton();
+            $id = new IdParameter();
+            foreach ($this->getEditIdFields() as $key => $value) {
+                if (is_string($key)) {
+                    $id->addId($key, $value);
+                } else {
+                    $id->addId($value);
+                }
+            }
+            $button->setPath($this->getPathHelper()
+                ->setController($this->getEditController())
+                ->setAction($this->getEditAction())
+                ->setId($id)->getPath()
+            );
+            $dropdown = new DropdownEditButton($button);
+            foreach ($this->getLocale_List() as $locale) {
+                $button = new Button();
+                $button->setContent($locale->get('Locale_Name'));
+                $button->setPath($this->getPathHelper()
+                    ->setController($this->getEditController())
+                    ->setAction($this->getEditAction())
+                    ->setId($id)
+                    ->addParameter(new EditLocaleParameter($locale->get('Locale_UrlCode')))
+                    ->getPath()
+                );
+                $dropdown->getDropdownList()->push($button);
+            }
+            $this->getToolbar()->push($dropdown);
+        } else if ($this->isShowEdit()) {
             $button = new Button(null, Button::STYLE_WARNING);
             $button->addOption('my-2');
             $button->addIcon(Icon::ICON_EDIT_2);
@@ -183,6 +219,32 @@ abstract class BaseDetail extends Detail
     }
 
 
+    /**
+     * @return LocaleBeanList
+     */
+    public function getLocale_List(): LocaleBeanList
+    {
+        return $this->locale_List;
+    }
+
+    /**
+     * @param LocaleBeanList $locale_List
+     *
+     * @return $this
+     */
+    public function setLocale_List(LocaleBeanList $locale_List): self
+    {
+        $this->locale_List = $locale_List;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasLocale_List(): bool
+    {
+        return isset($this->locale_List);
+    }
 
 
 

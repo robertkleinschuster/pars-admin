@@ -314,7 +314,9 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             }
             $this->getView()->prepend($alert);
         }
-        if ($this->hasView() && $this->getView()->hasLayout()) {
+        if ($this->hasView() && $this->getView()->hasLayout()
+        && !$this->getControllerRequest()->hasEditLocale()
+        ) {
             $layout = $this->getView()->getLayout();
             if ($layout instanceof DashboardLayout) {
                 $bean = $this->getView();
