@@ -86,7 +86,7 @@ class CmsPageController extends ArticleController
     public function createAction()
     {
         $create = parent::createAction();
-        if ($this->getControllerRequest()->getId()->hasAttribute('CmsPageType_Code')) {
+        if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute('CmsPageType_Code')) {
             $create->getBean()->set('CmsPageType_Code', $this->getControllerRequest()->getId()->getAttribute('CmsPageType_Code'));
             if ($create->getBean()->get('CmsPageType_Code') == 'poll') {
                 $create->getForm()->addCheckbox('Article_Data[vote_once]', '{Article_Data[vote_once]}', $this->translate('article.data.vote.once')
