@@ -13,7 +13,7 @@ abstract class ArticleEdit extends BaseEdit
     public ?array $fileOptions = null;
 
     public bool $textOnly = false;
-
+    public bool $translationOnly = false;
     public ?LocaleBeanList $locale_List = null;
 
     protected function initialize()
@@ -26,8 +26,11 @@ abstract class ArticleEdit extends BaseEdit
     protected function initFields()
     {
         if (!$this->textOnly) {
-            $this->getForm()->addText('Article_Code', '{Article_Code}', $this->translate('article.code'), 1, 1)
-                ->setHint($this->translate('article.code.hint'));
+            if (!$this->translationOnly) {
+                $this->getForm()->addText('Article_Code', '{Article_Code}', $this->translate('article.code'), 1, 1)
+                    ->setHint($this->translate('article.code.hint'));
+            }
+
             $this->getForm()->addText('ArticleTranslation_Code', '{ArticleTranslation_Code}', $this->translate('articletranslation.code'), 1, 2)
                 ->setHint($this->translate('articletranslation.code.hint'));
             $this->getForm()->addText('ArticleTranslation_Host', '{ArticleTranslation_Host}', $this->translate('articletranslation.host'), 1, 3)
@@ -114,5 +117,15 @@ abstract class ArticleEdit extends BaseEdit
     {
         return isset($this->locale_List);
     }
+
+    /**
+     * @param bool $translationOnly
+     */
+    public function setTranslationOnly(bool $translationOnly): void
+    {
+        $this->translationOnly = $translationOnly;
+    }
+
+
 
 }

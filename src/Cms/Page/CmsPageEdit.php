@@ -19,7 +19,7 @@ class CmsPageEdit extends ArticleEdit
     protected function initialize()
     {
         parent::initialize();
-        if (!$this->textOnly) {
+        if (!$this->textOnly && !$this->translationOnly) {
             if ($this->hasLayoutOptions()) {
                 $this->getForm()->addSelect('CmsPageLayout_Code', $this->getLayoutOptions(), '{CmsPageLayout_Code}', $this->translate('cmspagelayout.code'), 2, 1);
             }

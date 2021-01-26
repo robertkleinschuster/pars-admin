@@ -47,6 +47,17 @@ abstract class ArticleController extends CrudController
         return $detail;
     }
 
+    public function editAction()
+    {
+        $edit = parent::editAction();
+        if ($this->getControllerRequest()->hasEditLocale()) {
+            $this->getModel()->getTranslationDefaults($edit->getBean());
+            $edit->setTranslationOnly(true);
+        }
+        return $edit;
+    }
+
+
     public function edit_textAction()
     {
         $edit = $this->editAction();

@@ -15,7 +15,7 @@ class CmsParagraphEdit extends ArticleEdit
     protected function initFields()
     {
         parent::initFields();
-        if (!$this->textOnly) {
+        if (!$this->textOnly && !$this->translationOnly) {
             if ($this->hasTypeOptions()) {
                 $this->getForm()->addSelect('CmsParagraphType_Code', $this->getTypeOptions(), '{CmsParagraphType_Code}', $this->translate('cmsparagraphtype.code'), 2, 1);
             }

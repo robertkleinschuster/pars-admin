@@ -15,7 +15,7 @@ class CmsPostEdit extends ArticleEdit
 
     protected function initialize()
     {
-        if (!$this->textOnly) {
+        if (!$this->textOnly && !$this->translationOnly) {
             if ($this->hasTypeOptions()) {
                 $this->getForm()->addSelect('CmsPostType_Code', $this->getTypeOptions(), '{CmsPostType_Code}', $this->translate('cmsposttype.code'), 2, 2);
             }
