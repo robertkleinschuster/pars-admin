@@ -6,12 +6,15 @@ namespace Pars\Admin\Article;
 
 use Pars\Admin\Base\BaseEdit;
 use Pars\Component\Base\Field\Paragraph;
+use Pars\Model\Localization\Locale\LocaleBeanList;
 
 abstract class ArticleEdit extends BaseEdit
 {
     public ?array $fileOptions = null;
 
     public bool $textOnly = false;
+
+    public ?LocaleBeanList $locale_List = null;
 
     protected function initialize()
     {
@@ -83,6 +86,33 @@ abstract class ArticleEdit extends BaseEdit
     public function hasFileOptions(): bool
     {
         return isset($this->fileOptions);
+    }
+
+    /**
+    * @return LocaleBeanList
+    */
+    public function getLocale_List(): LocaleBeanList
+    {
+        return $this->locale_List;
+    }
+
+    /**
+    * @param LocaleBeanList $locale_List
+    *
+    * @return $this
+    */
+    public function setLocale_List(LocaleBeanList $locale_List): self
+    {
+        $this->locale_List = $locale_List;
+        return $this;
+    }
+
+    /**
+    * @return bool
+    */
+    public function hasLocale_List(): bool
+    {
+        return isset($this->locale_List);
     }
 
 }

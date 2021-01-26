@@ -43,6 +43,7 @@ abstract class ArticleController extends CrudController
                 );
             }
         }
+        $detail->setLocale_List($this->getModel()->getLocale_List());
         return $detail;
     }
 
