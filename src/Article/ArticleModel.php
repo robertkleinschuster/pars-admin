@@ -57,43 +57,43 @@ abstract class ArticleModel extends CrudModel
             ->setLocale_Code($this->getConfig('locale.default'))
             ->limit(1, 0)->getBean();
 
-        if ($bean->empty('ArticleTranslation_Code')) {
+        if ($bean->empty('ArticleTranslation_Code') && $default->isset('ArticleTranslation_Code')) {
             $bean->set('ArticleTranslation_Code', $default->get('ArticleTranslation_Code'));
         }
-        if ($bean->empty('ArticleTranslation_Host')) {
+        if ($bean->empty('ArticleTranslation_Host') && $default->isset('ArticleTranslation_Host')) {
             $bean->set('ArticleTranslation_Host', $default->get('ArticleTranslation_Host'));
         }
-        if ($bean->empty('ArticleTranslation_Active')) {
+        if ($bean->empty('ArticleTranslation_Active') && $default->isset('ArticleTranslation_Active')) {
             $bean->set('ArticleTranslation_Active', $default->get('ArticleTranslation_Active'));
         }
-        if ($bean->empty('ArticleTranslation_Name')) {
+        if ($bean->empty('ArticleTranslation_Name') && $default->isset('ArticleTranslation_Name')) {
             $bean->set('ArticleTranslation_Name', $default->get('ArticleTranslation_Name'));
         }
-        if ($bean->empty('ArticleTranslation_Title')) {
+        if ($bean->empty('ArticleTranslation_Title') && $default->isset('ArticleTranslation_Title')) {
             $bean->set('ArticleTranslation_Title', $default->get('ArticleTranslation_Title'));
         }
-        if ($bean->empty('ArticleTranslation_Keywords')) {
+        if ($bean->empty('ArticleTranslation_Keywords') && $default->isset('ArticleTranslation_Keywords')) {
             $bean->set('ArticleTranslation_Keywords', $default->get('ArticleTranslation_Keywords'));
         }
-        if ($bean->empty('ArticleTranslation_Heading')) {
+        if ($bean->empty('ArticleTranslation_Heading') && $default->isset('ArticleTranslation_Heading')) {
             $bean->set('ArticleTranslation_Heading', $default->get('ArticleTranslation_Heading'));
         }
-        if ($bean->empty('ArticleTranslation_SubHeading')) {
+        if ($bean->empty('ArticleTranslation_SubHeading') && $default->isset('ArticleTranslation_SubHeading')) {
             $bean->set('ArticleTranslation_SubHeading', $default->get('ArticleTranslation_SubHeading'));
         }
-        if ($bean->empty('ArticleTranslation_Path')) {
+        if ($bean->empty('ArticleTranslation_Path')  && $default->isset('ArticleTranslation_Path')) {
             $bean->set('ArticleTranslation_Path', $default->get('ArticleTranslation_Path'));
         }
-        if ($bean->empty('ArticleTranslation_Teaser')) {
+        if ($bean->empty('ArticleTranslation_Teaser') && $default->isset('ArticleTranslation_Teaser')) {
             $bean->set('ArticleTranslation_Teaser', $default->get('ArticleTranslation_Teaser'));
         }
-        if ($bean->empty('ArticleTranslation_Text')) {
+        if ($bean->empty('ArticleTranslation_Text') && $default->isset('ArticleTranslation_Text')) {
             $bean->set('ArticleTranslation_Text', $default->get('ArticleTranslation_Text'));
         }
-        if ($bean->empty('ArticleTranslation_Footer')) {
+        if ($bean->empty('ArticleTranslation_Footer') && $default->isset('ArticleTranslation_Footer')) {
             $bean->set('ArticleTranslation_Footer', $default->get('ArticleTranslation_Footer'));
         }
-        if ($bean->empty('File_ID')) {
+        if ($bean->empty('File_ID') && $default->isset('File_ID')) {
             $bean->set('File_ID', $default->get('File_ID'));
         }
     }
