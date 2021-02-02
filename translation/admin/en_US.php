@@ -23,6 +23,7 @@ return [
     'section.filedirectory' => 'Folders',
     'section.user' => 'Users',
     'section.role' => 'Roles',
+    'section.permission' => 'Permissions',
     'section.locale' => 'Languages/Countries',
     'section.translation' => 'Translations',
     'section.config' => 'Settings',

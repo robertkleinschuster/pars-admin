@@ -16,6 +16,7 @@ class TranslationDetail extends BaseDetail
         $this->addField('Translation_Code', $this->translate('translation.code'));
         $this->addField('Translation_Text', $this->translate('translation.text'));
         $this->addField('Translation_Namespace', $this->translate('translation.namespace'));
+        $this->addField('Locale_Name', $this->translate('locale.name'));
         parent::initialize();
     }
 

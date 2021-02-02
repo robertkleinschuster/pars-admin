@@ -5,6 +5,7 @@ namespace Pars\Admin\RolePermission;
 
 
 use Pars\Admin\Base\BaseOverview;
+use Pars\Component\Base\Field\Span;
 
 class RolePermissionOverview extends BaseOverview
 {
@@ -12,6 +13,7 @@ class RolePermissionOverview extends BaseOverview
     {
         $this->setShowDetail(false);
         $this->addField('UserPermission_Code', $this->translate('userpermission.code'));
+        $this->append((new Span(null, $this->translate('userpermission.description')))->setFormat(new RolePermissionDescriptionFieldFormat($this->getTranslator())));
         parent::initialize();
     }
 

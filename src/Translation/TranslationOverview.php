@@ -16,11 +16,10 @@ class TranslationOverview extends BaseOverview
         $badge = new Badge();
         $badge->setFormat(new TranslationStateFieldFormat($this->getTranslator()));
         $this->append($badge);
-
         $this->addField('Translation_Code', $this->translate('translation.code'));
         $this->addField('Translation_Text', $this->translate('translation.text'));
+        $this->addField('Locale_Name', $this->translate('locale.name'));
         $this->addField('Translation_Namespace', $this->translate('translation.namespace'));
-
         parent::initialize();
     }
 
