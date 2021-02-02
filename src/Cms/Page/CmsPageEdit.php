@@ -21,17 +21,17 @@ class CmsPageEdit extends ArticleEdit
         parent::initialize();
         if (!$this->textOnly && !$this->translationOnly) {
             if ($this->hasLayoutOptions()) {
-                $this->getForm()->addSelect('CmsPageLayout_Code', $this->getLayoutOptions(), '{CmsPageLayout_Code}', $this->translate('cmspagelayout.code'), 2, 1);
+                $this->getForm()->addSelect('CmsPageLayout_Code', $this->getLayoutOptions(), '{CmsPageLayout_Code}', $this->translate('cmspagelayout.code'), 3, 1);
             }
             if ($this->hasTypeOptions()) {
-                $this->getForm()->addSelect('CmsPageType_Code', $this->getTypeOptions(), '{CmsPageType_Code}', $this->translate('cmspagetype.code'), 2, 2);
+                $this->getForm()->addSelect('CmsPageType_Code', $this->getTypeOptions(), '{CmsPageType_Code}', $this->translate('cmspagetype.code'), 3, 2);
             }
             if ($this->hasStateOptions()) {
-                $this->getForm()->addSelect('CmsPageState_Code', $this->getStateOptions(), '{CmsPageState_Code}', $this->translate('cmspagestate.code'), 2, 3)
+                $this->getForm()->addSelect('CmsPageState_Code', $this->getStateOptions(), '{CmsPageState_Code}', $this->translate('cmspagestate.code'), 3, 3)
                     ->setFormat(new ValueWarningFieldFormat('CmsPageState_Code', 'inactive'));
             }
             if ($this->hasRedirectOptions()) {
-                $this->getForm()->addSelect('CmsPage_ID_Redirect', $this->getRedirectOptions(), '{CmsPage_ID_Redirect}', $this->translate('cmspage.id.redirect'), 2, 4)
+                $this->getForm()->addSelect('CmsPage_ID_Redirect', $this->getRedirectOptions(), '{CmsPage_ID_Redirect}', $this->translate('cmspage.id.redirect'), 3, 4)
                     ->setFormat(new NotEmptyWarningFieldFormat('CmsPage_ID_Redirect'));
             }
         }

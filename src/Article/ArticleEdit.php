@@ -31,9 +31,9 @@ abstract class ArticleEdit extends BaseEdit
                     ->setHint($this->translate('article.code.hint'));
             }
 
-            $this->getForm()->addText('ArticleTranslation_Code', '{ArticleTranslation_Code}', $this->translate('articletranslation.code'), 1, 2)
+            $this->getForm()->addText('ArticleTranslation_Code', '{ArticleTranslation_Code}', $this->translate('articletranslation.code'), 2, 1)
                 ->setHint($this->translate('articletranslation.code.hint'));
-            $this->getForm()->addText('ArticleTranslation_Host', '{ArticleTranslation_Host}', $this->translate('articletranslation.host'), 1, 3)
+            $this->getForm()->addText('ArticleTranslation_Host', '{ArticleTranslation_Host}', $this->translate('articletranslation.host'), 2, 2)
                 ->setHint($this->translate('articletranslation.host.hint'));
             $this->getForm()->addCheckbox('ArticleTranslation_Active', '{ArticleTranslation_Active}', $this->translate('articletranslation.active'), 6, 3);
             $this->getForm()->addText('ArticleTranslation_Keywords', '{ArticleTranslation_Keywords}', $this->translate('articletranslation.keywords'), 7, 2)
