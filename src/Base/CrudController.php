@@ -78,6 +78,9 @@ abstract class CrudController extends BaseController
         $edit->setToken($this->generateToken('submit_token'));
         $edit->setCreate(true);
         $this->getView()->append($edit);
+        if ($this->getControllerRequest()->hasData()) {
+            $edit->getBean()->fromArray($this->getControllerRequest()->getData()->getAttributes());
+        }
         return $edit;
     }
 
@@ -90,6 +93,9 @@ abstract class CrudController extends BaseController
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
         $edit->setToken($this->generateToken('submit_token'));
         $this->getView()->append($edit);
+        if ($this->getControllerRequest()->hasData()) {
+            $edit->getBean()->fromArray($this->getControllerRequest()->getData()->getAttributes());
+        }
         return $edit;
     }
 

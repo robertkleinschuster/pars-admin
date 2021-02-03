@@ -35,23 +35,23 @@ abstract class ArticleEdit extends BaseEdit
                 ->setHint($this->translate('articletranslation.code.hint'));
             $this->getForm()->addText('ArticleTranslation_Host', '{ArticleTranslation_Host}', $this->translate('articletranslation.host'), 2, 2)
                 ->setHint($this->translate('articletranslation.host.hint'));
-            $this->getForm()->addCheckbox('ArticleTranslation_Active', '{ArticleTranslation_Active}', $this->translate('articletranslation.active'), 6, 3);
-            $this->getForm()->addText('ArticleTranslation_Keywords', '{ArticleTranslation_Keywords}', $this->translate('articletranslation.keywords'), 7, 2)
+            $this->getForm()->addCheckbox('ArticleTranslation_Active', '{ArticleTranslation_Active}', $this->translate('articletranslation.active'), 3, 1);
+            $this->getForm()->addText('ArticleTranslation_Keywords', '{ArticleTranslation_Keywords}', $this->translate('articletranslation.keywords'), 34, 1)
                 ->setHint($this->translate('articletranslation.keywords.hint'));
-            $this->getForm()->addUrl('ArticleTranslation_Path', '{ArticleTranslation_Path}', $this->translate('articletranslation.path'), 7, 1)
+            $this->getForm()->addUrl('ArticleTranslation_Path', '{ArticleTranslation_Path}', $this->translate('articletranslation.path'), 35, 1)
                 ->setHint($this->translate('articletranslation.path.hint'));
             if ($this->hasFileOptions()) {
-                $this->getForm()->addSelect('File_ID', $this->getFileOptions(), '{File_ID}', $this->translate('file.id'), 8, 1)
+                $this->getForm()->addSelect('File_ID', $this->getFileOptions(), '{File_ID}', $this->translate('file.id'), 36, 1)
                     ->setHint($this->translate('file.id.hint'));
             }
         }
-        $this->getForm()->addText('ArticleTranslation_Name', '{ArticleTranslation_Name}', $this->translate('articletranslation.name'), 4, 1);
-        $this->getForm()->addText('ArticleTranslation_Title', '{ArticleTranslation_Title}', $this->translate('articletranslation.title'), 4, 2);
-        $this->getForm()->addText('ArticleTranslation_Heading', '{ArticleTranslation_Heading}', $this->translate('articletranslation.heading'), 5, 1);
-        $this->getForm()->addText('ArticleTranslation_SubHeading', '{ArticleTranslation_SubHeading}', $this->translate('articletranslation.subheading'), 5, 2);
-        $this->getForm()->addWysiwyg('ArticleTranslation_Teaser', '{ArticleTranslation_Teaser}', $this->translate('articletranslation.teaser'), 9, 1);
-        $this->getForm()->addWysiwyg('ArticleTranslation_Text', '{ArticleTranslation_Text}', $this->translate('articletranslation.text'), 10, 1);
-        $this->getForm()->addWysiwyg('ArticleTranslation_Footer', '{ArticleTranslation_Footer}', $this->translate('articletranslation.footer'), 9, 2);
+        $this->getForm()->addText('ArticleTranslation_Name', '{ArticleTranslation_Name}', $this->translate('articletranslation.name'), 30, 1);
+        $this->getForm()->addText('ArticleTranslation_Title', '{ArticleTranslation_Title}', $this->translate('articletranslation.title'), 30, 2);
+        $this->getForm()->addText('ArticleTranslation_Heading', '{ArticleTranslation_Heading}', $this->translate('articletranslation.heading'), 31, 1);
+        $this->getForm()->addText('ArticleTranslation_SubHeading', '{ArticleTranslation_SubHeading}', $this->translate('articletranslation.subheading'), 31, 2);
+        $this->getForm()->addWysiwyg('ArticleTranslation_Teaser', '{ArticleTranslation_Teaser}', $this->translate('articletranslation.teaser'), 32, 1);
+        $this->getForm()->addWysiwyg('ArticleTranslation_Text', '{ArticleTranslation_Text}', $this->translate('articletranslation.text'), 33, 1);
+        $this->getForm()->addWysiwyg('ArticleTranslation_Footer', '{ArticleTranslation_Footer}', $this->translate('articletranslation.footer'), 32, 2);
         $this->getForm()->addHidden('Locale_Code', $this->getTranslator()->getLocale());
     }
 
