@@ -6,6 +6,7 @@ use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Grid\Column;
 use Pars\Component\Base\Grid\Row;
+use Pars\Mvc\View\ViewBeanConverter;
 
 /**
  * Class CrudController
@@ -52,11 +53,13 @@ abstract class CrudController extends BaseController
         }
         if ($bean->exists('Timestamp_Create') && !$bean->empty('Timestamp_Create')) {
             $date = $this->getModel()->getBeanConverter()->convert($bean)->get('Timestamp_Create');
-            $metaInfo->append(new Span($date, $this->translate('timestamp.create')), 1, 2);
+            $date = new \DateTime($date);
+            $metaInfo->append(new Span($date->format('d.m.Y H:i:s'), $this->translate('timestamp.create')), 1, 2);
         }
         if ($bean->exists('Timestamp_Edit') && !$bean->empty('Timestamp_Edit')) {
             $date = $this->getModel()->getBeanConverter()->convert($bean)->get('Timestamp_Edit');
-            $metaInfo->append(new Span($date, $this->translate('timestamp.edit')), 2, 2);
+            $date = new \DateTime($date);
+            $metaInfo->append(new Span($date->format('d.m.Y H:i:s'), $this->translate('timestamp.edit')), 2, 2);
         }
         $column = new Column();
         $column->setBreakpoint(Column::BREAKPOINT_EXTRA_LARGE);

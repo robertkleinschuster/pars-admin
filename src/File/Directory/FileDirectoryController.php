@@ -48,6 +48,12 @@ class FileDirectoryController extends CrudController
         return new FileDirectoryDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
+    public function detailAction()
+    {
+        $this->pushAction('file', 'index', $this->translate('section.file'));
+        return parent::detailAction();
+    }
+
     protected function createEdit(): BaseEdit
     {
         return new FileDirectoryEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
