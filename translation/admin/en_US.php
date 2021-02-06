@@ -192,6 +192,7 @@ return [
     'cmsparagraphtype.code.default' => 'Standard',
     'site.toolbar.frontend' => 'Open',
     'cmspage.id' => 'Page',
+    'cmspage.import' => 'Import file',
     'cmspage.id.redirect' => 'Redirect to page',
     'cmspage.redirect.alert.headline' => 'This page was redirected.',
     'cmspage.redirect.alert.text' => 'Destination page',

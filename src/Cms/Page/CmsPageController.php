@@ -10,8 +10,12 @@ use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
 use Pars\Component\Base\Alert\Alert;
+use Pars\Component\Base\Toolbar\DownloadButton;
+use Pars\Component\Base\Toolbar\ToolbarButton;
+use Pars\Component\Base\Toolbar\UploadButton;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
+use Pars\Mvc\Controller\ControllerResponse;
 
 
 /**
@@ -83,8 +87,17 @@ class CmsPageController extends ArticleController
                 break;
         }
         $this->loadRedirectInfo($detail->getBean());
+        $detail->getSubToolbar()->push((new DownloadButton())->addOption('noajax')->setPath($this->getPathHelper(true)->setAction('export')->getPath()));
         return $detail;
     }
+
+    public function indexAction()
+    {
+        $overview = parent::indexAction();
+        $overview->getToolbar()->push((new UploadButton())->setPath($this->getPathHelper(true)->setAction('import')->getPath()));
+        return $overview;
+    }
+
 
     protected function loadRedirectInfo(BeanInterface $bean)
     {
@@ -101,5 +114,32 @@ class CmsPageController extends ArticleController
             $alert->addParagraph($page->get('ArticleTranslation_Name'))->setPath($path);
             $this->getView()->prepend($alert);
         }
+    }
+
+    /**
+     * @throws \Niceshops\Core\Exception\AttributeExistsException
+     * @throws \Niceshops\Core\Exception\AttributeLockException
+     * @throws \Pars\Mvc\Exception\NotFoundException
+     */
+    public function exportAction()
+    {
+        $this->getControllerResponse()->setDownload(
+            'page_' . $this->getModel()->getBean()->get('Article_Code') . '.pars',
+            json_encode($this->getModel()->export()),
+            'application/json'
+        );
+    }
+
+
+    public function importAction()
+    {
+        $edit = new CmsPageImport($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
+        $edit->setBean($this->getModel()->getEmptyBean($this->getPreviousAttributes()));
+        $this->getModel()->getBeanConverter()
+            ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
+        $edit->setToken($this->generateToken('submit_token'));
+        $this->getView()->append($edit);
+        return $edit;
     }
 }

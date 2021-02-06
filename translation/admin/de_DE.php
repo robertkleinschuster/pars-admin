@@ -193,6 +193,7 @@ return [
     'cmsparagraphtype.code.default' => 'Standard',
     'site.toolbar.frontend' => 'Öffnen',
     'cmspage.id' => 'Seite',
+    'cmspage.import' => 'Import Datei',
     'cmspage.id.redirect' => 'Umleiten zu Seite',
     'cmspage.redirect.alert.headline' => 'Diese Seite wurde umgeleitet',
     'cmspage.redirect.alert.text' => 'Zielseite',
