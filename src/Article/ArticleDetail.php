@@ -64,7 +64,6 @@ abstract class ArticleDetail extends BaseDetail
                 }
             }
         }
-        parent::initialize();
         if ($this->isShowEdit()) {
             $button = new Button(null, Button::STYLE_PRIMARY);
             $button->addOption('my-2');
@@ -78,8 +77,23 @@ abstract class ArticleDetail extends BaseDetail
                 }
             }
             $button->setPath($this->getPathHelper()->setController($this->getEditController())->setAction('edit_text')->setId($id));
-            $this->getToolbar()->push($button);
+            $dropdown = new DropdownEditButton($button);
+            foreach ($this->getLocale_List() as $locale) {
+                $button = new Button();
+                $button->setContent($locale->get('Locale_Name'));
+                $button->setPath($this->getPathHelper()
+                    ->setController($this->getEditController())
+                    ->setAction('edit_text')
+                    ->setId($id)
+                    ->addParameter(new EditLocaleParameter($locale->get('Locale_UrlCode')))
+                    ->getPath()
+                );
+                $dropdown->getDropdownList()->push($button);
+            }
+            $this->getSubToolbar()->push($dropdown);
         }
+        parent::initialize();
+
         if ($this->hasPreviewPath()) {
             $this->getToolbar()->push((new PreviewButton($this->getPreviewPath()))->setTarget('_blank'));
         }
