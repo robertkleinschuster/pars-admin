@@ -6,6 +6,8 @@ use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Grid\Column;
 use Pars\Component\Base\Grid\Row;
+use Pars\Component\Base\Pagination\Pagination;
+use Pars\Helper\Parameter\PaginationParameter;
 use Pars\Mvc\View\ViewBeanConverter;
 
 /**
@@ -15,6 +17,12 @@ use Pars\Mvc\View\ViewBeanConverter;
  */
 abstract class CrudController extends BaseController
 {
+    protected function initModel()
+    {
+        parent::initModel();
+        $this->getModel()->setCurrentPage($this->getCurrentPagination()->getPage());
+    }
+
 
     public function indexAction()
     {
@@ -22,7 +30,44 @@ abstract class CrudController extends BaseController
         $overview->setToken($this->generateToken('submit_token'));
         $overview->setBeanList($this->getModel()->getBeanList());
         $this->getView()->append($overview);
+        $pagination = new Pagination();
+        $count = $this->getModel()->getBeanFinder()->count();
+        $limit = $this->getDefaultLimit();
+        $pages = ceil($count/$limit);
+        $current = $this->getCurrentPagination();
+        for ($page = 1; $page <= $pages; $page++) {
+            $parameter = new PaginationParameter($page, $limit);
+            $parameter->setController($this->getControllerRequest()->getController());
+            $parameter->setAction($this->getControllerRequest()->getAction());
+            $path = $this->getPathHelper(true)->addParameter($parameter);
+            $pagination->addPage($path->getPath(), $page, $current->getPage() == $page);
+        }
+        $overview->getAfter()->push($pagination);
         return $overview;
+    }
+
+    protected function getCurrentPagination()
+    {
+        $sessionKey = $this->getControllerRequest()->getAction() . $this->getControllerRequest()->getController();
+        if ($this->getControllerRequest()->hasPagingation()) {
+            $current = $this->getControllerRequest()->getPagination();
+            if (!$this->getControllerRequest()->acceptParameter($current)) {
+                $current = new PaginationParameter(1, $this->getDefaultLimit());
+                $current->setController($this->getControllerRequest()->getController());
+                $current->setAction($this->getControllerRequest()->getAction());
+            } else {
+                $this->getSession()->set($sessionKey, $current->getPage());
+            }
+        } elseif ($this->getSession()->has($sessionKey)) {
+            $current = new PaginationParameter($this->getSession()->get($sessionKey), $this->getDefaultLimit());
+            $current->setController($this->getControllerRequest()->getController());
+            $current->setAction($this->getControllerRequest()->getAction());
+        } else {
+            $current = new PaginationParameter(1, $this->getDefaultLimit());
+            $current->setController($this->getControllerRequest()->getController());
+            $current->setAction($this->getControllerRequest()->getAction());
+        }
+        return $current;
     }
 
     abstract protected function createOverview(): BaseOverview;
@@ -114,4 +159,11 @@ abstract class CrudController extends BaseController
     }
 
     abstract protected function createDelete(): BaseDelete;
+
+    protected function getDefaultLimit(): int
+    {
+        return $this->getModel()->getConfig('admin.pagination.limit') ?? 10;
+    }
+
+
 }

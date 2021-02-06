@@ -6,6 +6,8 @@ namespace Pars\Admin\Locale;
 
 use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\Field\Badge;
+use Pars\Helper\Parameter\PaginationParameter;
+use Pars\Mvc\View\HtmlElement;
 
 class LocaleOverview extends BaseOverview
 {
@@ -19,6 +21,7 @@ class LocaleOverview extends BaseOverview
         $this->addField('Locale_Name', $this->translate('locale.name'));
         $this->addField('Locale_Code', $this->translate('locale.code'));
         $this->setShowMove(true);
+
         parent::initialize();
     }
 
