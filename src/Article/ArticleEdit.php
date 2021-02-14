@@ -6,6 +6,8 @@ namespace Pars\Admin\Article;
 
 use Pars\Admin\Base\BaseEdit;
 use Pars\Component\Base\Field\Paragraph;
+use Pars\Component\Base\Form\FileSelect;
+use Pars\Model\File\FileBeanList;
 use Pars\Model\Localization\Locale\LocaleBeanList;
 
 abstract class ArticleEdit extends BaseEdit
@@ -15,6 +17,7 @@ abstract class ArticleEdit extends BaseEdit
     public bool $textOnly = false;
     public bool $translationOnly = false;
     public ?LocaleBeanList $locale_List = null;
+    public ?FileBeanList $fileBeanList = null;
 
     protected function initialize()
     {
@@ -40,8 +43,17 @@ abstract class ArticleEdit extends BaseEdit
                 ->setHint($this->translate('articletranslation.keywords.hint'));
             $this->getForm()->addUrl('ArticleTranslation_Path', '{ArticleTranslation_Path}', $this->translate('articletranslation.path'), 35, 1)
                 ->setHint($this->translate('articletranslation.path.hint'));
-            if ($this->hasFileOptions()) {
-                $this->getForm()->addSelect('File_ID', $this->getFileOptions(), '{File_ID}', $this->translate('file.id'), 36, 1)
+            if ($this->hasFileBeanList()) {
+                $fileSelect = new FileSelect();
+                $fileSelect->addFile($this->translate('noselection'), null);
+                foreach ($this->getFileBeanList() as $file) {
+                    $fileSelect->addFile(
+                        $file->get('File_Code') . '.' .  $file->get('FileType_Code'),
+                        $file->get('File_ID'),
+                        '/u/' . $file->get('FileDirectory_Code')
+                    );
+                }
+                $this->getForm()->addFileSelect('File_ID', $fileSelect, '{File_ID}', $this->translate('file.id'), 36, 1)
                     ->setHint($this->translate('file.id.hint'));
             }
         }
@@ -92,18 +104,18 @@ abstract class ArticleEdit extends BaseEdit
     }
 
     /**
-    * @return LocaleBeanList
-    */
+     * @return LocaleBeanList
+     */
     public function getLocale_List(): LocaleBeanList
     {
         return $this->locale_List;
     }
 
     /**
-    * @param LocaleBeanList $locale_List
-    *
-    * @return $this
-    */
+     * @param LocaleBeanList $locale_List
+     *
+     * @return $this
+     */
     public function setLocale_List(LocaleBeanList $locale_List): self
     {
         $this->locale_List = $locale_List;
@@ -111,8 +123,8 @@ abstract class ArticleEdit extends BaseEdit
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasLocale_List(): bool
     {
         return isset($this->locale_List);
@@ -127,5 +139,31 @@ abstract class ArticleEdit extends BaseEdit
     }
 
 
+    /**
+     * @return FileBeanList
+     */
+    public function getFileBeanList(): FileBeanList
+    {
+        return $this->fileBeanList;
+    }
+
+    /**
+     * @param FileBeanList $fileBeanList
+     *
+     * @return $this
+     */
+    public function setFileBeanList(FileBeanList $fileBeanList): self
+    {
+        $this->fileBeanList = $fileBeanList;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasFileBeanList(): bool
+    {
+        return isset($this->fileBeanList);
+    }
 
 }

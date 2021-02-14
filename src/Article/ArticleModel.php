@@ -43,6 +43,15 @@ abstract class ArticleModel extends CrudModel
     /**
      * @return \Niceshops\Bean\Type\Base\BeanListInterface
      */
+    public function getFileBeanList()
+    {
+        $finder = new FileBeanFinder($this->getDbAdpater());
+        return $finder->getBeanList();
+    }
+
+    /**
+     * @return \Niceshops\Bean\Type\Base\BeanListInterface
+     */
     public function getLocale_List()
     {
         $finder = new LocaleBeanFinder($this->getDbAdpater());

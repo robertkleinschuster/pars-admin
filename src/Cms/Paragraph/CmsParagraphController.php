@@ -52,7 +52,7 @@ class CmsParagraphController extends ArticleController
         $edit = new CmsParagraphEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $edit->setStateOptions($this->getModel()->getCmsParagraphState_Options());
         $edit->setTypeOptions($this->getModel()->getCmsParagraphType_Options());
-        $edit->setFileOptions($this->getModel()->getFileOptions());
+        $edit->setFileBeanList($this->getModel()->getFileBeanList());
         return $edit;
     }
 

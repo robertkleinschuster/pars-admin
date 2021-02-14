@@ -23,7 +23,7 @@ class MainNavigation extends BaseNavigation
             'content')->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'content'))->addOption('cache');
         $this->addItem(
             $this->translate('navigation.media')
-            , $this->getPathHelper()->setController('file')->setAction('index'),
+            , $this->getPathHelper()->setController('filedirectory')->setAction('index'),
             'media')->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'media'))->addOption('cache');
         $this->addItem(
             $this->translate('navigation.system')

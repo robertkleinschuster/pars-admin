@@ -15,15 +15,17 @@ class MediaNavigation extends BaseNavigation
         $this->addOption('ajax')->addOption('history')->addOption('remote')->setData('component', 'components');
 
         $this->addItem(
-            $this->translate('navigation.media.file')
-            , $this->getPathHelper()->setController('file')->setAction('index'),
-            'file')
-            ->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'file'))->addOption('cache');
-        $this->addItem(
             $this->translate('navigation.media.directory')
             , $this->getPathHelper()->setController('filedirectory')->setAction('index'),
             'filedirectory')
             ->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'filedirectory'))->addOption('cache');
+
+        $this->addItem(
+            $this->translate('navigation.media.file')
+            , $this->getPathHelper()->setController('file')->setAction('index'),
+            'file')
+            ->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'file'))->addOption('cache');
+
         $this->setBrand(
             $this->translate('navigation.media'),
             $this->getPathHelper()->setController('file')->setAction('index')
