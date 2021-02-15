@@ -66,6 +66,7 @@ abstract class ArticleDetail extends BaseDetail
         }
         if ($this->isShowEdit()) {
             $button = new Button(null, Button::STYLE_PRIMARY);
+            $button->setModal(true);
             $button->addOption('my-2');
             $button->addIcon(Icon::ICON_EDIT);
             $id = new IdParameter();
@@ -80,6 +81,7 @@ abstract class ArticleDetail extends BaseDetail
             $dropdown = new DropdownEditButton($button);
             foreach ($this->getLocale_List() as $locale) {
                 $button = new Button();
+                $button->setModal(true);
                 $button->setContent($locale->get('Locale_Name'));
                 $button->setPath($this->getPathHelper()
                     ->setController($this->getEditController())

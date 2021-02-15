@@ -32,7 +32,12 @@ class AuthenticationController extends BaseController
             $this->getControllerResponse()->setRedirect($this->getPathHelper()->setController('setup')->setAction('index')->getPath());
         }
         if ($this->getSession()->has(UserInterface::class)) {
-            $this->getControllerResponse()->setRedirect($this->getPathHelper()->setController('index')->setAction('index')->getPath());
+            if ($this->getSession()->has('requested_path')) {
+                $this->getControllerResponse()->setRedirect($this->getSession()->get('requested_path'));
+                $this->getSession()->unset('requested_path');
+            } else {
+                $this->getControllerResponse()->setRedirect($this->getPathHelper()->setController('index')->setAction('index')->getPath());
+            }
             return;
         }
 
