@@ -98,7 +98,7 @@ abstract class BaseOverview extends Overview
 
         $createPath = $this->getPathHelper()->setController($this->getController())->setAction('create_new')->setId($createid)->getPath();
         if ($this->isShowCreateNew()) {
-            $this->getToolbar()->push(new CreateNewButton($createPath));
+            $this->getToolbar()->push((new CreateNewButton($createPath))->setModal(true));
         }
 
 

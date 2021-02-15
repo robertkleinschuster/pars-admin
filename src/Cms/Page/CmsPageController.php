@@ -95,7 +95,7 @@ class CmsPageController extends ArticleController
     public function indexAction()
     {
         $overview = parent::indexAction();
-        $overview->getToolbar()->push((new UploadButton())->setPath($this->getPathHelper(true)->setAction('import')->getPath()));
+        $overview->getToolbar()->push((new UploadButton())->setModal(true)->setPath($this->getPathHelper(true)->setAction('import')->getPath()));
         return $overview;
     }
 

@@ -49,6 +49,7 @@ abstract class BaseDetail extends Detail
 
         if ($this->isShowEdit() && $this->hasLocale_List()) {
             $button = new EditButton();
+            $button->setModal(true);
             $id = new IdParameter();
             foreach ($this->getEditIdFields() as $key => $value) {
                 if (is_string($key)) {
@@ -65,6 +66,7 @@ abstract class BaseDetail extends Detail
             $dropdown = new DropdownEditButton($button);
             foreach ($this->getLocale_List() as $locale) {
                 $button = new Button();
+                $button->setModal(true);
                 $button->setContent($locale->get('Locale_Name'));
                 $button->setPath($this->getPathHelper()
                     ->setController($this->getEditController())
@@ -78,6 +80,7 @@ abstract class BaseDetail extends Detail
             $this->getToolbar()->push($dropdown);
         } else if ($this->isShowEdit()) {
             $button = new Button(null, Button::STYLE_WARNING);
+            $button->setModal(true);
             $button->addOption('my-2');
             $button->addIcon(Icon::ICON_EDIT_2);
             $id = new IdParameter();

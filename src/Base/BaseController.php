@@ -28,6 +28,7 @@ use Pars\Helper\Validation\ValidationHelper;
 use Pars\Model\Authentication\User\UserBean;
 use Pars\Mvc\Controller\AbstractController;
 use Pars\Mvc\Controller\ControllerResponse;
+use Pars\Mvc\Controller\ControllerResponseInjector;
 use Pars\Mvc\View\ViewBeanConverter;
 use Psr\Log\LoggerInterface;
 
@@ -338,6 +339,16 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                         '#navigation',
                         'replace'
                     );
+                }
+                if ($this->getControllerRequest()->isAjax() && $this->getControllerRequest()->hasSubmit()) {
+                    if ($this->getModel()->getValidationHelper()->isValid() &&
+                        $validationHelper->isValid()) {
+                        $this->getControllerResponse()->getInjector()->addHtml(
+                            '<script>$("#ajax-modal").modal("hide")</script>',
+                            'body',
+                            ControllerResponseInjector::MODE_APPEND
+                        );
+                    }
                 }
             }
         }
