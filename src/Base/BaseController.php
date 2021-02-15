@@ -315,6 +315,16 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             }
             $this->getView()->prepend($alert);
         }
+        if ($this->getControllerRequest()->isAjax() && $this->getControllerRequest()->hasSubmit()) {
+            if ($this->getModel()->getValidationHelper()->isValid() &&
+                $validationHelper->isValid()) {
+                $this->getControllerResponse()->getInjector()->addHtml(
+                    '<script>$("#ajax-modal").modal("hide")</script>',
+                    'body',
+                    ControllerResponseInjector::MODE_APPEND
+                );
+            }
+        }
         if ($this->hasView() && $this->getView()->hasLayout()
         && !$this->getControllerRequest()->hasEditLocale()
         ) {
@@ -339,16 +349,6 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                         '#navigation',
                         'replace'
                     );
-                }
-                if ($this->getControllerRequest()->isAjax() && $this->getControllerRequest()->hasSubmit()) {
-                    if ($this->getModel()->getValidationHelper()->isValid() &&
-                        $validationHelper->isValid()) {
-                        $this->getControllerResponse()->getInjector()->addHtml(
-                            '<script>$("#ajax-modal").modal("hide")</script>',
-                            'body',
-                            ControllerResponseInjector::MODE_APPEND
-                        );
-                    }
                 }
             }
         }
