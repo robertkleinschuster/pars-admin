@@ -154,7 +154,13 @@ abstract class CrudController extends BaseController
         $delete = $this->createDelete();
         $delete->setToken($this->generateToken('submit_token'));
         $this->getView()->append($delete);
-        $this->detailAction();
+        $detail = $this->createDetail();
+        $detail->setShowDelete(false);
+        $detail->setShowBack(false);
+        $detail->setShowEdit(false);
+        $bean = $this->getModel()->getBean();
+        $detail->setBean($bean);
+        $this->getView()->append($detail);
         return $delete;
     }
 

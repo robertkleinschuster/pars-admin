@@ -51,10 +51,7 @@ class CmsMenuController extends CrudController
 
     protected function createDetail(): BaseDetail
     {
-        $id = $this->getControllerRequest()->getId()->getAttribute('CmsMenu_ID');
-        $this->getView()->set('CmsMenu_ID_Parent', (int) $id);
-        $this->pushAction('cmssubmenu', 'index', $this->translate('section.menu'));
-        $detail = new CmsMenuDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+       $detail = new CmsMenuDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $detail->setPreviewPath($this->getModel()->getConfig('frontend.domain') . '/{ArticleTranslation_Code}?clearcache=pars');
         return $detail;
     }
@@ -62,6 +59,9 @@ class CmsMenuController extends CrudController
     public function detailAction()
     {
         $detail = parent::detailAction();
+        $id = $this->getControllerRequest()->getId()->getAttribute('CmsMenu_ID');
+        $this->getView()->set('CmsMenu_ID_Parent', (int) $id);
+        $this->pushAction('cmssubmenu', 'index', $this->translate('section.menu'));
         $bean =  $detail->getBean();
         if ($bean->isset('ArticleTranslation_Code')) {
             $code = $bean->get('ArticleTranslation_Code');
