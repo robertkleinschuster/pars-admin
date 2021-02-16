@@ -16,7 +16,7 @@ class Update extends BaseEdit
 {
 
 
-    public function __construct(PathHelper $pathHelper, TranslatorInterface $translator, UserBean $userBean, AbstractUpdater $updater)
+    public function __construct(PathHelper $pathHelper, TranslatorInterface $translator, UserBean $userBean, AbstractUpdater $updater = null)
     {
         parent::__construct($pathHelper, $translator, $userBean);
         $this->updater = $updater;
