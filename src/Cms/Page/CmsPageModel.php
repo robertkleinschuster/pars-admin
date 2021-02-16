@@ -23,6 +23,8 @@ use Pars\Model\Cms\Post\CmsPostBeanProcessor;
 /**
  * Class CmsPageModel
  * @package Pars\Admin\Cms\Page
+ * @method CmsPageBeanFinder getBeanFinder()
+ * @method CmsPageBeanProcessor getBeanProcessor()
  */
 class CmsPageModel extends ArticleModel
 {

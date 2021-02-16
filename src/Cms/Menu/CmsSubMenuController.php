@@ -21,7 +21,6 @@ class CmsSubMenuController extends CmsMenuController
 
     }
 
-
     protected function handleParameter()
     {
         if ($this->getControllerRequest()->getAction() == 'index') {

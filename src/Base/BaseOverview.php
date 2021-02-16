@@ -7,18 +7,16 @@ namespace Pars\Admin\Base;
 use Pars\Component\Base\Form\Input;
 use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Toolbar\CreateNewButton;
-use Pars\Component\Base\Toolbar\DeleteButton;
+use Pars\Component\Base\Toolbar\DeleteBulkButton;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\MoveParameter;
-use Pars\Helper\Parameter\PaginationParameter;
 use Pars\Helper\Parameter\RedirectParameter;
 use Pars\Helper\Parameter\SubmitParameter;
-use Pars\Mvc\View\HtmlElement;
 
-abstract class BaseOverview extends Overview
+abstract class BaseOverview extends Overview implements CrudComponentInterface
 {
-    use AdminComponentTrait;
+    use CrudComponentTrait;
 
     public bool $showEdit = true;
     public bool $showEditBulk = false;
@@ -125,7 +123,7 @@ abstract class BaseOverview extends Overview
                     $id->addId($value);
                 }
             }
-            $button = new DeleteButton(SubmitParameter::name(), SubmitParameter::createDeleteBulk());
+            $button = new DeleteBulkButton(SubmitParameter::name(), SubmitParameter::createDeleteBulk());
             $button->setConfirm($this->translate('delete_bulk.message'));
             $button->addOption('d-none');
             $this->getToolbar()->push($button);

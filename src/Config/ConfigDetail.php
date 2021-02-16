@@ -12,7 +12,7 @@ class ConfigDetail extends BaseDetail
     {
         $this->setSection($this->translate('section.config'));
         $this->setShowDelete(false);
-        $this->setHeadline('{Config_Code}');
+        $this->setHeading('{Config_Code}');
         $this->addField('Config_Value', $this->translate('config.value'));
         parent::initialize();
     }

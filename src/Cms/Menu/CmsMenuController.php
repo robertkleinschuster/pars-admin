@@ -2,7 +2,6 @@
 
 namespace Pars\Admin\Cms\Menu;
 
-use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
@@ -87,8 +86,4 @@ class CmsMenuController extends CrudController
         return $edit;
     }
 
-    protected function createDelete(): BaseDelete
-    {
-        return new CmsMenuDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
 }

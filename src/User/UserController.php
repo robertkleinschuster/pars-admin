@@ -2,10 +2,10 @@
 
 namespace Pars\Admin\User;
 
-use Pars\Admin\Base\BaseDelete;
+use Niceshops\Core\Exception\AttributeExistsException;
+use Niceshops\Core\Exception\AttributeLockException;
+use Niceshops\Core\Exception\AttributeNotFoundException;
 use Pars\Admin\Base\BaseDetail;
-use Pars\Admin\Base\BaseEdit;
-use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\SystemNavigation;
 
@@ -34,38 +34,46 @@ class UserController extends CrudController
 
     /**
      * @return bool
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
      */
     public function isAuthorized(): bool
     {
-        return $this->checkPermission('user')
-            || $this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->getAttribute('Person_ID') == $this->getUserBean()->Person_ID;
+        return $this->checkPermission('user') || $this->isCurrentUser();
     }
 
-    protected function createOverview(): BaseOverview
+    /**
+     * @return bool
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
+    protected function isCurrentUser(): bool
     {
-        $overview = new UserOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $overview;
+        return $this->getControllerRequest()->hasId()
+            && $this->getControllerRequest()->getId()->getAttribute('Person_ID') == $this->getUserBean()->Person_ID;
     }
 
+    /**
+     * @return BaseDetail|void
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
     public function detailAction()
     {
-        parent::detailAction();
+        $detail = parent::detailAction();
         $this->getView()->set('Person_ID', (int)$this->getControllerRequest()->getId()->getAttribute('Person_ID'));
         if ($this->getUserBean()->hasPermission('userrole')) {
             $this->pushAction('userrole', 'index', $this->translate('section.role'));
         }
+        return $detail;
     }
 
-
-    protected function createDetail(): BaseDetail
+    public function editAction()
     {
-        return new UserDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
-
-
-    protected function createEdit(): BaseEdit
-    {
-        $edit = new UserEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = parent::editAction();
         $edit->setStateOptions($this->getModel()->getUserState_Options());
         $edit->setLocaleOptions($this->getModel()->getLocale_Options());
         return $edit;
@@ -92,12 +100,5 @@ class UserController extends CrudController
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
         $edit->setToken($this->generateToken('submit_token'));
         $this->getView()->append($edit);
-    }
-
-
-    protected function createDelete(): BaseDelete
-    {
-        $delete = new UserDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $delete;
     }
 }

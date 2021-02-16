@@ -7,7 +7,6 @@ namespace Pars\Admin\Cms\Page;
 use Pars\Admin\Article\ArticleEdit;
 use Pars\Admin\Base\NotEmptyWarningFieldFormat;
 use Pars\Admin\Base\ValueWarningFieldFormat;
-use Pars\Mvc\View\HtmlElement;
 
 class CmsPageEdit extends ArticleEdit
 {

@@ -13,7 +13,7 @@ class RoleDetail extends BaseDetail
     {
         $this->setSection($this->translate('section.role'));
 
-        $this->setHeadline('{UserRole_Name}');
+        $this->setHeading('{UserRole_Name}');
         $this->addField('UserRole_Code', $this->translate('userrole.code'));
         $active = new Badge('{UserRole_Active}');
         $active->setLabel($this->translate('userrole.active'));

@@ -11,16 +11,29 @@ class CmsParagraphEdit extends ArticleEdit
     private ?array $typeOptions = null;
     private ?array $stateOptions = null;
 
-
-    protected function initFields()
+    protected function initAttributeFields()
     {
-        parent::initFields();
-        if (!$this->textOnly && !$this->translationOnly) {
+        parent::initAttributeFields();
+        if (!$this->isTranslationOnly() && !$this->isTextOnly()) {
             if ($this->hasTypeOptions()) {
-                $this->getForm()->addSelect('CmsParagraphType_Code', $this->getTypeOptions(), '{CmsParagraphType_Code}', $this->translate('cmsparagraphtype.code'), 2, 1);
+                $this->getForm()->addSelect(
+                    'CmsParagraphType_Code',
+                    $this->getTypeOptions(),
+                    '{CmsParagraphType_Code}',
+                    $this->translate('cmsparagraphtype.code'),
+                    2,
+                    1
+                );
             }
             if ($this->hasStateOptions()) {
-                $this->getForm()->addSelect('CmsParagraphState_Code', $this->getStateOptions(), '{CmsParagraphState_Code}', $this->translate('cmsparagraphstate.code'), 2, 2);
+                $this->getForm()->addSelect(
+                    'CmsParagraphState_Code',
+                    $this->getStateOptions(),
+                    '{CmsParagraphState_Code}',
+                    $this->translate('cmsparagraphstate.code'),
+                    2,
+                    2
+                );
             }
         }
     }

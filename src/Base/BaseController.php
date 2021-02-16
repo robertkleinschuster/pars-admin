@@ -13,14 +13,17 @@ use Mezzio\Flash\FlashMessagesInterface;
 use Mezzio\Session\LazySession;
 use Mezzio\Session\SessionMiddleware;
 use Niceshops\Bean\Converter\BeanConverterAwareInterface;
+use Niceshops\Bean\Type\Base\BeanException;
 use Niceshops\Core\Attribute\AttributeAwareInterface;
 use Niceshops\Core\Attribute\AttributeAwareTrait;
+use Niceshops\Core\Exception\AttributeExistsException;
+use Niceshops\Core\Exception\AttributeLockException;
+use Niceshops\Core\Exception\AttributeNotFoundException;
 use Niceshops\Core\Option\OptionAwareInterface;
 use Niceshops\Core\Option\OptionAwareTrait;
 use Pars\Component\Base\Alert\Alert;
 use Pars\Component\Base\Layout\DashboardLayout;
 use Pars\Component\Base\View\BaseView;
-use Pars\Core\Bundles\BundlesMiddleware;
 use Pars\Core\Database\DatabaseMiddleware;
 use Pars\Core\Logging\LoggingMiddleware;
 use Pars\Core\Translation\TranslatorMiddleware;
@@ -31,6 +34,7 @@ use Pars\Mvc\Controller\ControllerResponse;
 use Pars\Mvc\Controller\ControllerResponseInjector;
 use Pars\Mvc\View\ViewBeanConverter;
 use Psr\Log\LoggerInterface;
+use Throwable;
 
 /**
  * Class BaseController
@@ -47,177 +51,15 @@ abstract class BaseController extends AbstractController implements AttributeAwa
     public const ATTRIBUTE_EDIT_PERMISSION = 'edit_permission';
     public const ATTRIBUTE_DELETE_PERMISSION = 'delete_permission';
 
-    /**
-     * @param string $create
-     * @param string $edit
-     * @param string $delete
-     * @throws \Niceshops\Core\Exception\AttributeExistsException
-     * @throws \Niceshops\Core\Exception\AttributeLockException
-     */
-    public function setPermissions(string $create, string $edit, string $delete)
-    {
-        $this->setAttribute(self::ATTRIBUTE_CREATE_PERMISSION, $create);
-        $this->setAttribute(self::ATTRIBUTE_EDIT_PERMISSION, $edit);
-        $this->setAttribute(self::ATTRIBUTE_DELETE_PERMISSION, $delete);
-        if ($this->checkPermission($create)) {
-            $this->getModel()->addOption(BaseModel::OPTION_CREATE_ALLOWED);
-        }
-        if ($this->checkPermission($edit)) {
-            $this->getModel()->addOption(BaseModel::OPTION_EDIT_ALLOWED);
-        }
-        if ($this->checkPermission($delete)) {
-            $this->getModel()->addOption(BaseModel::OPTION_DELETE_ALLOWED);
-        }
-    }
-
-
-    /**
-     * @return TranslatorInterface
-     */
-    protected function getTranslator(): TranslatorInterface
-    {
-        return $this->getControllerRequest()
-            ->getServerRequest()
-            ->getAttribute(TranslatorMiddleware::TRANSLATOR_ATTRIBUTE);
-    }
-
-    /**
-     * @param string $code
-     * @return string
-     */
-    protected function translate(string $code)
-    {
-        return $this->getTranslator()->translate($code, 'admin');
-    }
-
-    /**
-     * @param string $id
-     * @param int $index
-     * @return mixed|void
-     */
-    protected function handleNavigationState(string $id, int $index)
-    {
-        $this->getSession()->set($id, $index);
-    }
-
-    /**
-     * @param string $id
-     * @return mixed
-     */
-    public function getNavigationState(string $id): int
-    {
-        return (int)$this->getSession()->get($id, 1);
-    }
-
-    /**
-     * @param ValidationHelper $validationHelper
-     * @return mixed|void
-     */
-    protected function handleValidationError(ValidationHelper $validationHelper)
-    {
-        $this->getFlashMessanger()->flash('previousAttributes', $this->getControllerRequest()->getAttributes());
-        $this->getFlashMessanger()->flash('validationErrorMap', $validationHelper->getErrorFieldMap());
-    }
-
-    /**
-     * @return bool
-     */
-    protected function handleSubmitSecurity(): bool
-    {
-        if ($this->getControllerRequest()->hasAttribute('submit_token')) {
-            return $this->validateToken('submit_token', $this->getControllerRequest()->getAttribute('submit_token') ?? '');
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @return CsrfGuardInterface
-     */
-    protected function getGuard(): CsrfGuardInterface
-    {
-        return $this->getControllerRequest()->getServerRequest()->getAttribute(CsrfMiddleware::GUARD_ATTRIBUTE);
-    }
-
-    /**
-     * @param string $name
-     * @param $token
-     * @return bool
-     */
-    protected function validateToken(string $name, $token)
-    {
-        $result = $this->getGuard()->validateToken($token, $name);
-        $this->generateToken($name);
-        return $result;
-    }
-
-    /**
-     * @param string $name
-     * @return string
-     */
-    protected function generateToken(string $name): string
-    {
-        if (!$this->getSession()->has($name)) {
-            return $this->getGuard()->generateToken($name);
-        } else {
-            return $this->getSession()->get($name);
-        }
-    }
-
-    /**
-     * @return FlashMessagesInterface
-     */
-    public function getFlashMessanger(): FlashMessagesInterface
-    {
-        return $this->getControllerRequest()->getServerRequest()->getAttribute(FlashMessageMiddleware::FLASH_ATTRIBUTE);
-    }
-
-    /**
-     * @return array
-     */
-    protected function getValidationErrorMap(): array
-    {
-        return $this->getFlashMessanger()->getFlash('validationErrorMap', []);
-    }
-
-    /**
-     * @return array
-     */
-    protected function getPreviousAttributes(): array
-    {
-        return $this->getFlashMessanger()->getFlash('previousAttributes', []);
-    }
-
-    /**
-     * @return LazySession
-     */
-    protected function getSession(): LazySession
-    {
-        return $this->getControllerRequest()->getServerRequest()->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
-    }
-
-    /**
-     * @return UserBean
-     */
-    protected function getUserBean(): UserBean
-    {
-        return $this->getControllerRequest()->getServerRequest()->getAttribute(UserInterface::class) ?? new UserBean();
-    }
-
-    /**
-     * @param string $permission
-     * @return bool
-     */
-    protected function checkPermission(string $permission): bool
-    {
-        return $this->getUserBean()->hasPermission($permission);
-    }
+    public const FLASH_PREVIOUS_ATTRIBUTES = 'previousAttributes';
+    public const FLASH_VALIDATION_ERROR = 'validationErrorMap';
 
     /**
      * @return mixed|void
-     * @throws \Niceshops\Bean\Type\Base\BeanException
-     * @throws \Niceshops\Core\Exception\AttributeExistsException
-     * @throws \Niceshops\Core\Exception\AttributeLockException
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws BeanException
      */
     protected function initView()
     {
@@ -225,7 +67,9 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $this->setView($view);
         $view->setBeanConverter(new ViewBeanConverter());
         $layout = new DashboardLayout();
-        $layout->setNavigation(new MainNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean()));
+        $layout->setNavigation(
+            new MainNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean())
+        );
         $this->getView()->setLayout($layout);
         $this->getView()->set('Current_Person_ID', $this->getUserBean()->Person_ID);
         $this->getView()->set('Current_User_Username', $this->getUserBean()->User_Username);
@@ -266,12 +110,256 @@ abstract class BaseController extends AbstractController implements AttributeAwa
 
 
     /**
+     * @param Throwable $exception
      * @return mixed|void
-     * @throws \Niceshops\Bean\Type\Base\BeanException
+     */
+    public function error(Throwable $exception)
+    {
+        $this->handleErrorLog($exception);
+        $this->handleErrorMessage($exception);
+        $this->handleErrorTransaction();
+    }
+
+    /**
+     * @return mixed|void
+     * @throws BeanException
+     */
+    public function unauthorized()
+    {
+        $this->getView()->append(
+            new Alert(
+                $this->translate('unauthorized.heading'),
+                $this->translate('unauthorized.text')
+            )
+        );
+    }
+
+    /**
+     * @param Throwable $exception
+     * @return mixed|void
+     * @throws BeanException
+     */
+    public function notfound(Throwable $exception)
+    {
+        if ($this->hasView()) {
+            $alert = new Alert(
+                $this->translate('notfound.heading'),
+                $this->translate('notfound.text')
+            );
+            $alert->addParagraph($exception->getMessage());
+            $this->getView()->append($alert);
+        } else {
+            parent::notfound($exception);
+        }
+    }
+
+    /**
+     * @return mixed|void
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
      */
     public function finalize()
     {
         parent::finalize();
+        $this->initializePermissionErrors();
+        $this->initializeProfiler();
+        $this->injectHideModal();
+        $this->injectNavigation();
+    }
+
+    /**
+     * @param string $id
+     * @param int $index
+     * @return mixed|void
+     */
+    protected function handleNavigationState(string $id, int $index)
+    {
+        $this->getSession()->set($id, $index);
+    }
+
+    /**
+     * @param string $id
+     * @return mixed
+     */
+    public function getNavigationState(string $id): int
+    {
+        return (int)$this->getSession()->get($id, 1);
+    }
+
+    /**
+     * @param ValidationHelper $validationHelper
+     * @return mixed|void
+     */
+    protected function handleValidationError(ValidationHelper $validationHelper)
+    {
+        $this->getFlashMessanger()->flash(
+            self::FLASH_PREVIOUS_ATTRIBUTES,
+            $this->getControllerRequest()->getAttributes()
+        );
+        $this->getFlashMessanger()->flash(
+            self::FLASH_VALIDATION_ERROR,
+            $validationHelper->getErrorFieldMap()
+        );
+    }
+
+    /**
+     * @return bool
+     * @throws AttributeNotFoundException
+     */
+    protected function handleSubmitSecurity(): bool
+    {
+        if ($this->getControllerRequest()->hasAttribute('submit_token')) {
+            return $this->validateToken(
+                'submit_token',
+                $this->getControllerRequest()->getAttribute('submit_token') ?? ''
+            );
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @return TranslatorInterface
+     */
+    protected function getTranslator(): TranslatorInterface
+    {
+        return $this->getControllerRequest()
+            ->getServerRequest()
+            ->getAttribute(TranslatorMiddleware::TRANSLATOR_ATTRIBUTE);
+    }
+
+    /**
+     * @return CsrfGuardInterface
+     */
+    protected function getGuard(): CsrfGuardInterface
+    {
+        return $this->getControllerRequest()->getServerRequest()->getAttribute(CsrfMiddleware::GUARD_ATTRIBUTE);
+    }
+
+    /**
+     * @return FlashMessagesInterface
+     */
+    public function getFlashMessanger(): FlashMessagesInterface
+    {
+        return $this->getControllerRequest()->getServerRequest()->getAttribute(FlashMessageMiddleware::FLASH_ATTRIBUTE);
+    }
+
+    /**
+     * @return LazySession
+     */
+    protected function getSession(): LazySession
+    {
+        return $this->getControllerRequest()->getServerRequest()->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
+    }
+
+    /**
+     * @return UserBean
+     */
+    protected function getUserBean(): UserBean
+    {
+        return $this->getControllerRequest()->getServerRequest()->getAttribute(UserInterface::class) ?? new UserBean();
+    }
+
+    /**
+     * @return LoggerInterface
+     */
+    public function getLogger(): LoggerInterface
+    {
+        return $this->getControllerRequest()->getServerRequest()->getAttribute(LoggingMiddleware::LOGGER_ATTRIBUTE);
+    }
+
+
+    /**
+     * @param string $code
+     * @return string
+     */
+    protected function translate(string $code)
+    {
+        return $this->getTranslator()->translate($code, 'admin');
+    }
+
+
+    /**
+     * @param string $name
+     * @return string
+     */
+    protected function generateToken(string $name): string
+    {
+        if (!$this->getSession()->has($name)) {
+            return $this->getGuard()->generateToken($name);
+        } else {
+            return $this->getSession()->get($name);
+        }
+    }
+
+
+    /**
+     * @param string $name
+     * @param $token
+     * @return bool
+     */
+    protected function validateToken(string $name, $token): bool
+    {
+        $result = $this->getGuard()->validateToken($token, $name);
+        $this->generateToken($name);
+        return $result;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getValidationErrorMap(): array
+    {
+        return $this->getFlashMessanger()->getFlash(self::FLASH_VALIDATION_ERROR, []);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getPreviousAttributes(): array
+    {
+        return $this->getFlashMessanger()->getFlash(self::FLASH_PREVIOUS_ATTRIBUTES, []);
+    }
+
+    /**
+     * @param string $permission
+     * @return bool
+     */
+    protected function checkPermission(string $permission): bool
+    {
+        return $this->getUserBean()->hasPermission($permission);
+    }
+
+
+    /**
+     * @param string $create
+     * @param string $edit
+     * @param string $delete
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     */
+    public function setPermissions(string $create, string $edit, string $delete)
+    {
+        $this->setAttribute(self::ATTRIBUTE_CREATE_PERMISSION, $create);
+        $this->setAttribute(self::ATTRIBUTE_EDIT_PERMISSION, $edit);
+        $this->setAttribute(self::ATTRIBUTE_DELETE_PERMISSION, $delete);
+        if ($this->checkPermission($create)) {
+            $this->getModel()->addOption(BaseModel::OPTION_CREATE_ALLOWED);
+        }
+        if ($this->checkPermission($edit)) {
+            $this->getModel()->addOption(BaseModel::OPTION_EDIT_ALLOWED);
+        }
+        if ($this->checkPermission($delete)) {
+            $this->getModel()->addOption(BaseModel::OPTION_DELETE_ALLOWED);
+        }
+    }
+
+    /**
+     *
+     */
+    protected function initializePermissionErrors()
+    {
         $validationHelper = new ValidationHelper();
         $validationHelper->addErrorFieldMap($this->getValidationErrorMap());
         if (count($validationHelper->getErrorList('Permission'))) {
@@ -296,7 +384,13 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             }
             $this->getControllerResponse()->setStatusCode(ControllerResponse::STATUS_PERMISSION_DENIED);
         }
+    }
 
+    /**
+     *
+     */
+    protected function initializeProfiler()
+    {
         $profiler = $this->getModel()->getDbAdpater()->getProfiler();
         if ($profiler instanceof ProfilerInterface) {
             $profiles = $profiler->getProfiles();
@@ -315,9 +409,20 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             }
             $this->getView()->prepend($alert);
         }
+    }
+
+    /**
+     *
+     */
+    protected function injectHideModal()
+    {
         if ($this->getControllerRequest()->isAjax() && $this->getControllerRequest()->hasSubmit()) {
-            if ($this->getModel()->getValidationHelper()->isValid() &&
-                $validationHelper->isValid()) {
+            $validationHelper = new ValidationHelper();
+            $validationHelper->addErrorFieldMap($this->getValidationErrorMap());
+            if (
+                $this->getModel()->getValidationHelper()->isValid()
+                && $validationHelper->isValid()
+            ) {
                 $this->getControllerResponse()->getInjector()->addHtml(
                     '<script>$("#ajax-modal").modal("hide")</script>',
                     'body',
@@ -325,14 +430,24 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 );
             }
         }
-        if ($this->hasView() && $this->getView()->hasLayout()
-        && !$this->getControllerRequest()->hasEditLocale()
+    }
+
+    /**
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
+    protected function injectNavigation()
+    {
+        if (
+            $this->hasView() && $this->getView()->hasLayout()
+            && !$this->getControllerRequest()->hasEditLocale()
         ) {
             $layout = $this->getView()->getLayout();
             if ($layout instanceof DashboardLayout) {
                 $bean = $this->getView();
-                if ($this->getView()->hasBeanConverter()) {
-                    $bean = $this->getView()->getBeanConverter()->convert($this->getView());
+                if ($bean instanceof BeanConverterAwareInterface && $bean->hasBeanConverter()) {
+                    $bean = $bean->getBeanConverter()->convert($this->getView());
                 }
                 $layout->getSubNavigation()->setId('subnavigation');
                 if ($this->getControllerRequest()->isAjax()) {
@@ -354,24 +469,19 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         }
     }
 
-    public function getLogger(): LoggerInterface
+    /**
+     * @param Throwable $throwable
+     */
+    protected function handleErrorLog(Throwable $throwable)
     {
-        return $this->getControllerRequest()->
-        getServerRequest()
-            ->getAttribute(LoggingMiddleware::LOGGER_ATTRIBUTE);
+        $this->getLogger()->error("Error: ", ['exception' => $throwable]);
     }
 
     /**
-     * @param \Throwable $exception
-     * @return mixed|void
-     * @throws \Throwable
+     * @param Throwable $throwable
      */
-    public function error(\Throwable $exception)
+    protected function handleErrorMessage(Throwable $throwable)
     {
-        $this->getControllerRequest()->
-        getServerRequest()
-            ->getAttribute(LoggingMiddleware::LOGGER_ATTRIBUTE)->error("Error: ", ['exception' => $exception]);
-
         $alert = new Alert('');
         $alert->setHeading("Es ist ein Fehler aufgetreten.");
         if ($this->getControllerResponse()->getStatusCode() == 404) {
@@ -379,73 +489,35 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         } else {
             $alert->setStyle(Alert::STYLE_DANGER);
         }
-        $alert->addParagraph($exception->getMessage());
-        $alert->addParagraph("{$exception->getFile()}:{$exception->getLine()}");
+        $alert->addParagraph($throwable->getMessage());
+        $alert->addParagraph("{$throwable->getFile()}:{$throwable->getLine()}");
         $alert->addParagraph('Trace');
-        $trace = explode(PHP_EOL, $exception->getTraceAsString());
+        $trace = explode(PHP_EOL, $throwable->getTraceAsString());
         $trace = array_slice($trace, 0, 5);
         $alert->addParagraph(implode('<br>', $trace));
         if ($this->hasView()) {
             $this->getView()->append($alert);
         } else {
-            $this->getControllerResponse()->setBody($exception->getMessage());
+            $this->getControllerResponse()->setBody($throwable->getMessage());
             $this->getControllerResponse()->removeOption(ControllerResponse::OPTION_RENDER_RESPONSE);
         }
-        $adapter = $this->getControllerRequest()->getServerRequest()->getAttribute(DatabaseMiddleware::ADAPTER_ATTRIBUTE);
-        if ($adapter instanceof AdapterInterface) {
-            if ($adapter->getDriver()->getConnection()->inTransaction()
-                && $adapter->getDriver()->getConnection()->isConnected()) {
-                $adapter->getDriver()->getConnection()->rollback();
-            }
-        }
-    }
-
-
-    public function unauthorized()
-    {
-        $this->getView()->append(new Alert($this->translate('unauthorized.heading'), $this->translate('unauthorized.text')));
     }
 
     /**
-     * @param \Throwable $exception
-     * @return mixed|void
-     * @throws \Niceshops\Bean\Type\Base\BeanException
+     *
      */
-    public function notfound(\Throwable $exception)
+    protected function handleErrorTransaction()
     {
-        if ($this->hasView()) {
-            $alert = new Alert($this->translate('notfound.heading'), $this->translate('notfound.text'));
-            $alert->addParagraph($exception->getMessage());
-            $this->getView()->append($alert);
-        } else {
-            parent::notfound($exception);
-        }
-    }
-
-    public function clearcacheAction(bool $redirect = true)
-    {
-
-        $this->getTranslator()->clearCache('admin', $this->getTranslator()->getLocale());
-        $this->getTranslator()->clearCache('default', $this->getTranslator()->getLocale());
-        $this->getTranslator()->clearCache('validation', $this->getTranslator()->getLocale());
-
-        if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/../data/cache/admin-config-cache.php')) {
-            unlink($_SERVER['DOCUMENT_ROOT'] . '/../data/cache/admin-config-cache.php');
-        }
-        if (file_exists($_SERVER['DOCUMENT_ROOT'] . '/../data/cache/frontend-config-cache.php')) {
-            unlink($_SERVER['DOCUMENT_ROOT'] . '/../data/cache/frontend-config-cache.php');
-        }
-
-        $bundlesConfig = $this->getControllerRequest()->getServerRequest()->getAttribute(BundlesMiddleware::class);
-        if ($bundlesConfig !== null) {
-            foreach (array_column($bundlesConfig, 'output') as $item) {
-                if (file_exists($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . $item)) {
-                    unlink($_SERVER['DOCUMENT_ROOT'] . DIRECTORY_SEPARATOR . $item);
-                }
+        $adapter = $this->getControllerRequest()
+            ->getServerRequest()
+            ->getAttribute(DatabaseMiddleware::ADAPTER_ATTRIBUTE);
+        if ($adapter instanceof AdapterInterface) {
+            if (
+                $adapter->getDriver()->getConnection()->inTransaction()
+                && $adapter->getDriver()->getConnection()->isConnected()
+            ) {
+                $adapter->getDriver()->getConnection()->rollback();
             }
-        }
-        if ($redirect) {
-            $this->getControllerResponse()->setRedirect($this->getPathHelper()->setController('index')->setAction('index'));
         }
     }
 }

@@ -4,22 +4,20 @@
 namespace Pars\Admin\Base;
 
 
-use Pars\Admin\Article\ArticleDetail;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Button;
-use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Toolbar\BackButton;
+use Pars\Component\Base\Toolbar\DeleteButton;
 use Pars\Component\Base\Toolbar\DropdownEditButton;
 use Pars\Component\Base\Toolbar\EditButton;
 use Pars\Helper\Parameter\EditLocaleParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Localization\Locale\LocaleBeanList;
 
-abstract class BaseDetail extends Detail
+abstract class BaseDetail extends Detail implements CrudComponentInterface
 {
-    use AdminComponentTrait;
+    use CrudComponentTrait;
 
-    public ?string $indexPath = null;
     public bool $showEdit = true;
     public bool $showDelete = true;
     public bool $showBack = true;
@@ -27,91 +25,88 @@ abstract class BaseDetail extends Detail
 
     protected function initialize()
     {
-        $indexPath = $this->getPathHelper()->setController($this->getIndexController())->setAction($this->getIndexAction());
-        $id = new IdParameter();
-        foreach ($this->getIndexIdFields() as $key => $value) {
-            if (is_string($key)) {
-                $id->addId($key, $value);
-            } else {
-                $id->addId($value);
-            }
-        }
-        $indexPath->addParameter($id);
-        $this->setIndexPath($indexPath);
-
-        $toolbar = $this->getToolbar();
-
-        if ($this->hasIndexPath() && $this->isShowBack()) {
-            $button = new BackButton();
-            $button->setPath($this->getIndexPath());
-            $toolbar->push($button);
-        }
-
-        if ($this->isShowEdit() && $this->hasLocale_List()) {
-            $button = new EditButton();
-            $button->setModal(true);
-            $id = new IdParameter();
-            foreach ($this->getEditIdFields() as $key => $value) {
-                if (is_string($key)) {
-                    $id->addId($key, $value);
-                } else {
-                    $id->addId($value);
-                }
-            }
-            $button->setPath($this->getPathHelper()
-                ->setController($this->getEditController())
-                ->setAction($this->getEditAction())
-                ->setId($id)->getPath()
-            );
-            $dropdown = new DropdownEditButton($button);
-            foreach ($this->getLocale_List() as $locale) {
-                $button = new Button();
-                $button->setModal(true);
-                $button->setContent($locale->get('Locale_Name'));
-                $button->setPath($this->getPathHelper()
-                    ->setController($this->getEditController())
-                    ->setAction($this->getEditAction())
-                    ->setId($id)
-                    ->addParameter(new EditLocaleParameter($locale->get('Locale_UrlCode')))
-                    ->getPath()
-                );
-                $dropdown->getDropdownList()->push($button);
-            }
-            $this->getToolbar()->push($dropdown);
-        } else if ($this->isShowEdit()) {
-            $button = new Button(null, Button::STYLE_WARNING);
-            $button->setModal(true);
-            $button->addOption('my-2');
-            $button->addIcon(Icon::ICON_EDIT_2);
-            $id = new IdParameter();
-            foreach ($this->getEditIdFields() as $key => $value) {
-                if (is_string($key)) {
-                    $id->addId($key, $value);
-                } else {
-                    $id->addId($value);
-                }
-            }
-            $button->setPath($this->getPathHelper()->setController($this->getEditController())->setAction($this->getEditAction())->setId($id));
-            $toolbar->push($button);
-        }
-        if ($this->isShowDelete()) {
-            $button = new Button(null, Button::STYLE_DANGER);
-            $button->addOption('my-2');
-            $button->addIcon(Icon::ICON_TRASH);
-            $id = new IdParameter();
-            foreach ($this->getEditIdFields() as $key => $value) {
-                if (is_string($key)) {
-                    $id->addId($key, $value);
-                } else {
-                    $id->addId($value);
-                }
-            }
-            $button->setPath($this->getPathHelper()->setController($this->getEditController())->setAction('delete')->setId($id));
-            $toolbar->push($button);
-        }
+        $this->initBackButton();
+        $this->initEditButton();
+        $this->initDeleteButton();
         parent::initialize();
     }
 
+
+    protected function initBackButton()
+    {
+        if ($this->isShowBack()) {
+            $button = new BackButton();
+            $button->setPath($this->generateIndexPath());
+            $this->getToolbar()->push($button);
+        }
+    }
+
+    protected function initEditButton()
+    {
+        if ($this->isShowEdit()) {
+            $button = new EditButton($this->generateEditPath());
+            $button->setModal(true);
+            if ($this->hasLocale_List()) {
+                $dropdown = new DropdownEditButton($button);
+                foreach ($this->getLocale_List() as $locale) {
+                    $button = new Button();
+                    $button->setModal(true);
+                    $button->setContent($locale->get('Locale_Name'));
+                    $button->setPath($this->generateEditPath($locale->get('Locale_UrlCode')));
+                    $dropdown->getDropdownList()->push($button);
+                }
+                $this->getToolbar()->push($dropdown);
+            } else {
+                $this->getToolbar()->push($button);
+            }
+        }
+    }
+
+    protected function initDeleteButton()
+    {
+        if ($this->isShowDelete()) {
+            $this->getToolbar()->push(new DeleteButton($this->generateDeletePath()));
+        }
+    }
+
+    /**
+     * @return string
+     */
+    protected function generateEditPath(string $locale_UrlCode = null): string
+    {
+        $path = $this->getPathHelper()
+            ->setController($this->getEditController())
+            ->setAction($this->getEditAction())
+            ->setId(IdParameter::createFromMap($this->getEditIdFields()));
+        if ($locale_UrlCode) {
+            $path->addParameter(new EditLocaleParameter($locale_UrlCode));
+        }
+        return $path->getPath();
+    }
+
+    /**
+     * @return string
+     */
+    protected function generateDeletePath(): string
+    {
+        return $this->getPathHelper()
+            ->setController($this->getEditController())
+            ->setAction('delete')
+            ->setId(IdParameter::createFromMap($this->getEditIdFields()))
+            ->getPath();
+    }
+
+    /**
+     * @return string
+     */
+    protected function generateIndexPath(): string
+    {
+        $indexPath = $this->getPathHelper()
+            ->setController($this->getIndexController())
+            ->setAction($this->getIndexAction());
+        $indexPath->setId(IdParameter::createFromMap($this->getIndexIdFields()));
+        return $indexPath->getPath();
+    }
 
     /**
      * @return bool
@@ -194,33 +189,6 @@ abstract class BaseDetail extends Detail
         return [];
     }
 
-    /**
-     * @return string
-     */
-    public function getIndexPath(): string
-    {
-        return $this->indexPath;
-    }
-
-    /**
-     * @param string $indexPath
-     *
-     * @return $this
-     */
-    public function setIndexPath(string $indexPath): self
-    {
-        $this->indexPath = $indexPath;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasIndexPath(): bool
-    {
-        return isset($this->indexPath);
-    }
-
 
     /**
      * @return LocaleBeanList
@@ -248,8 +216,6 @@ abstract class BaseDetail extends Detail
     {
         return isset($this->locale_List);
     }
-
-
 
 
 }

@@ -4,6 +4,7 @@
 namespace Pars\Admin\Base;
 
 
+use Pars\Component\Base\Navigation\Item;
 use Pars\Component\Base\Navigation\Navigation;
 
 class MediaNavigation extends BaseNavigation
@@ -33,4 +34,8 @@ class MediaNavigation extends BaseNavigation
         parent::initialize();
     }
 
+    protected function initDirectoryItem(): Item
+    {
+
+    }
 }

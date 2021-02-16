@@ -24,7 +24,7 @@ class IndexController extends BaseController
     public function indexAction()
     {
         $detail = new Detail();
-        $detail->setHeadline($this->translate('index.headline'));
+        $detail->setHeading($this->translate('index.headline'));
         $alert = new Alert();
         $alert->setHeading($this->translate('index.alert.headline.incomplete'));
         $alert->setStyle(Alert::STYLE_WARNING);
@@ -164,7 +164,7 @@ class IndexController extends BaseController
         $group->push($item);
 
         $messages = new Detail();
-        $messages->setHeadline($this->translate('index.messages'));
+        $messages->setHeading($this->translate('index.messages'));
         $articleDataFinder = new ArticleDataBeanFinder($this->getModel()->getDbAdpater());
         $articleDataFinder->order(['Timestamp_Create' => ArticleDataBeanFinder::ORDER_MODE_DESC]);
         $articleDataFinder->limit(5, 0);

@@ -17,7 +17,6 @@ class LocaleController extends CrudController
         $this->setPermissions('locale.create', 'locale.edit', 'locale.delete');
     }
 
-
     public function isAuthorized(): bool
     {
         return $this->checkPermission('locale');
@@ -30,30 +29,5 @@ class LocaleController extends CrudController
         $subNavigation = new SystemNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('locale');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
-    }
-
-
-    protected function createOverview(): BaseOverview
-    {
-        $overview = new LocaleOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $overview;
-    }
-
-    protected function createDetail(): BaseDetail
-    {
-        $detail = new LocaleDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $detail;
-    }
-
-    protected function createEdit(): BaseEdit
-    {
-        $edit = new LocaleEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $edit;
-    }
-
-    protected function createDelete(): BaseDelete
-    {
-        $delete = new LocaleDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $delete;
     }
 }

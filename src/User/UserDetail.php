@@ -18,7 +18,7 @@ class UserDetail extends BaseDetail
     protected function initialize()
     {
         $this->setSection($this->translate('section.user'));
-        $this->setHeadline('{Person_Firstname} {Person_Lastname}');
+        $this->setHeading('{Person_Firstname} {Person_Lastname}');
         $this->addField('User_Username', $this->translate('user.username'));
         $this->addField('User_Displayname', $this->translate('user.displayname'));
         $this->addField('Locale_Name', $this->translate('user.locale'));

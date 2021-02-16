@@ -11,6 +11,11 @@ use Pars\Admin\Base\SystemNavigation;
 use Pars\Admin\Role\RoleController;
 use Pars\Admin\Role\RoleOverview;
 
+/**
+ * Class UserRoleController
+ * @package Pars\Admin\UserRole
+ * @method UserRoleModel getModel()
+ */
 class UserRoleController extends RoleController
 {
     protected function initModel()

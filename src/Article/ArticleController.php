@@ -5,7 +5,10 @@ namespace Pars\Admin\Article;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\File\FileDetail;
 
-
+/**
+ * Class ArticleController
+ * @package Pars\Admin\Article
+ */
 abstract class ArticleController extends CrudController
 {
 
@@ -51,7 +54,7 @@ abstract class ArticleController extends CrudController
     {
         $edit = parent::editAction();
         if ($this->getControllerRequest()->hasEditLocale()) {
-            $this->getModel()->getTranslationDefaults($edit->getBean());
+            $this->getModel()->loadTranslationDefaults($edit->getBean());
             $edit->setTranslationOnly(true);
         }
         return $edit;

@@ -14,6 +14,7 @@ use Pars\Admin\Base\SystemNavigation;
 /**
  * Class UserRoleController
  * @package Pars\Admin\Controller
+ * @method RoleModel getModel()
  */
 class RoleController extends CrudController
 {
@@ -37,35 +38,11 @@ class RoleController extends CrudController
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
 
-    protected function createOverview(): BaseOverview
-    {
-        $overview = new RoleOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $overview;
-    }
-
-    protected function createDetail(): BaseDetail
-    {
-        $detail = new RoleDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $detail;
-    }
-
     public function detailAction()
     {
         parent::detailAction();
         $this->getView()->set('UserRole_ID', (int)$this->getControllerRequest()->getId()->getAttribute('UserRole_ID'));
         $this->pushAction('rolepermission', 'index', $this->translate('section.permission'));
-    }
-
-    protected function createEdit(): BaseEdit
-    {
-        $edit = new RoleEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $edit;
-    }
-
-    protected function createDelete(): BaseDelete
-    {
-        $delete = new RoleDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $delete;
     }
 
 }

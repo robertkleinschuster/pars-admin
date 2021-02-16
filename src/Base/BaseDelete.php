@@ -4,6 +4,8 @@
 namespace Pars\Admin\Base;
 
 
+use Niceshops\Core\Exception\AttributeExistsException;
+use Niceshops\Core\Exception\AttributeLockException;
 use Pars\Component\Base\Delete\Delete;
 use Pars\Component\Base\Form\Form;
 use Pars\Component\Base\Form\Submit;
@@ -11,17 +13,49 @@ use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\RedirectParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 
-abstract class BaseDelete extends Delete
+abstract class BaseDelete extends Delete implements CrudComponentInterface
 {
-    use AdminComponentTrait;
+    use CrudComponentTrait;
 
-    public ?string $indexPath = null;
     public ?string $token = null;
 
+    /**
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     */
     protected function initialize()
     {
+        $this->setHeading($this->translate('delete.heading'));
+        $this->setText($this->translate('delete.text'));
+        parent::initialize();
+        $form = new Form();
+        $form->addSubmit(
+            SubmitParameter::name(),
+            $this->translate('delete.submit'),
+            SubmitParameter::createDelete(),
+            Submit::STYLE_DANGER,
+            null,
+            1,
+            2
+        );
+        $form->addHidden(SubmitParameter::name(), SubmitParameter::createDelete());
+        $form->addCancel($this->translate('delete.cancel'), $this->generateIndexPath());
+        $form->addHidden(RedirectParameter::nameAttr(RedirectParameter::ATTRIBUTE_PATH), $this->generateIndexPath());
+        if ($this->hasToken()) {
+            $form->addHidden('submit_token', $this->getToken());
+        }
+        $this->push($form);
+    }
 
-        $indexPath = $this->getPathHelper()->setController($this->getRedirectController())->setAction($this->getRedirectAction());
+
+    /**
+     * @return string
+     */
+    protected function generateIndexPath(): string
+    {
+        $indexPath = $this->getPathHelper()
+            ->setController($this->getRedirectController())
+            ->setAction($this->getRedirectAction());
         $id = new IdParameter();
         foreach ($this->getRedirectIdFields() as $key => $value) {
             if (is_string($key)) {
@@ -31,23 +65,7 @@ abstract class BaseDelete extends Delete
             }
         }
         $indexPath->addParameter($id);
-        $this->setIndexPath($indexPath);
-
-        $this->setHeading($this->translate('delete.heading'));
-        $this->setText($this->translate('delete.text'));
-        parent::initialize();
-        $form = new Form();
-        $form->addSubmit(SubmitParameter::name(), $this->translate('delete.submit'), SubmitParameter::createDelete(), Submit::STYLE_DANGER, null, 1, 2);
-        $form->addHidden(SubmitParameter::name(), SubmitParameter::createDelete());
-
-        if ($this->hasIndexPath()) {
-            $form->addCancel($this->translate('delete.cancel'), $this->getIndexPath(), 1, 1);
-            $form->addHidden(RedirectParameter::nameAttr(RedirectParameter::ATTRIBUTE_PATH), $this->getIndexPath());
-        }
-        if ($this->hasToken()) {
-            $form->addHidden('submit_token', $this->getToken());
-        }
-        $this->push($form);
+        return $indexPath->getPath();
     }
 
     abstract protected function getRedirectController(): string;
@@ -88,34 +106,4 @@ abstract class BaseDelete extends Delete
     {
         return isset($this->token);
     }
-
-
-    /**
-     * @return string
-     */
-    public function getIndexPath(): string
-    {
-        return $this->indexPath;
-    }
-
-    /**
-     * @param string $indexPath
-     *
-     * @return $this
-     */
-    public function setIndexPath(string $indexPath): self
-    {
-        $this->indexPath = $indexPath;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasIndexPath(): bool
-    {
-        return isset($this->indexPath);
-    }
-
-
 }

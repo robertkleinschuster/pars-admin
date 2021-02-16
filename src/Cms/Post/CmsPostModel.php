@@ -4,8 +4,6 @@ namespace Pars\Admin\Cms\Post;
 
 use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Article\ArticleModel;
-use Pars\Helper\Parameter\IdParameter;
-use Pars\Model\Article\DataBean;
 use Pars\Model\Cms\Post\CmsPostBeanFinder;
 use Pars\Model\Cms\Post\CmsPostBeanProcessor;
 use Pars\Model\Cms\Post\State\CmsPostStateBeanFinder;

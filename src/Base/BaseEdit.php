@@ -13,78 +13,148 @@ use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Helper\Validation\ValidationHelperAwareInterface;
 use Pars\Helper\Validation\ValidationHelperAwareTrait;
 
-abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, ModeAwareInterface
+abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, ModeAwareInterface, CrudComponentInterface
 {
-    use AdminComponentTrait;
+    use CrudComponentTrait;
     use ValidationHelperAwareTrait;
     use ModeAwareTrait;
 
     public ?string $token = null;
-    public ?string $indexPath = null;
     public bool $create = false;
     public bool $createBulk = false;
     public bool $showSubmit = true;
 
     protected function initialize()
     {
-
-        $indexPath = $this->getPathHelper()->setController($this->getRedirectController())->setAction($this->getRedirectAction());
-        $id = new IdParameter();
-        foreach ($this->getRedirectIdFields() as $key => $value) {
-            if (is_string($key)) {
-                $id->addId($key, $value);
-            } else {
-                $id->addId($value);
-            }
-        }
-        $indexPath->addParameter($id);
-        $this->setIndexPath($indexPath);
-
         parent::initialize();
+        $this->initToken();
+        $this->initFieldErrors();
+        $this->initSubmitButton();
+    }
+
+    protected function initToken()
+    {
         if ($this->hasToken()) {
             $this->getForm()->addHidden('submit_token', $this->getToken());
         }
+    }
+
+    protected function initFieldErrors()
+    {
         foreach ($this->getForm()->getFormGroupList() as $formGroup) {
             if ($this->getValidationHelper()->hasError($formGroup->getName())) {
                 $formGroup->setError($this->getValidationHelper()->getSummary($formGroup->getName()));
             }
         }
+    }
+
+    protected function initSubmitButton()
+    {
         if ($this->isShowSubmit()) {
             if ($this->isCreateBulk()) {
-                $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('edit.submit'), (new SubmitParameter())->setCreateBulk(), null, '', 50, 1);
-                $this->getForm()->addHidden(SubmitParameter::name(), (new SubmitParameter())->setCreateBulk());
+                $this->getForm()->addSubmit(
+                    SubmitParameter::name(),
+                    $this->translate('edit.submit'),
+                    (new SubmitParameter())->setCreateBulk(),
+                    null,
+                    '',
+                    50
+                );
+                $this->getForm()->addHidden(
+                    SubmitParameter::name(),
+                    (new SubmitParameter())->setCreateBulk()
+                );
             } elseif ($this->isCreate()) {
-                $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('edit.submit'), (new SubmitParameter())->setCreate(), null, '', 50, 1);
-                $this->getForm()->addHidden(SubmitParameter::name(), (new SubmitParameter())->setCreate());
+                $this->getForm()->addSubmit(
+                    SubmitParameter::name(),
+                    $this->translate('edit.submit'),
+                    (new SubmitParameter())->setCreate(),
+                    null,
+                    '',
+                    50
+                );
+                $this->getForm()->addHidden(
+                    SubmitParameter::name(),
+                    (new SubmitParameter())->setCreate()
+                );
             } elseif ($this->hasMode()) {
-                $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('edit.submit'), (new SubmitParameter())->setMode($this->getMode()), null, '', 50, 1);
-                $this->getForm()->addHidden(SubmitParameter::name(), (new SubmitParameter())->setMode($this->getMode()));
+                $this->getForm()->addSubmit(
+                    SubmitParameter::name(),
+                    $this->translate('edit.submit'),
+                    (new SubmitParameter())->setMode($this->getMode()),
+                    null,
+                    '',
+                    50
+                );
+                $this->getForm()->addHidden(
+                    SubmitParameter::name(),
+                    (new SubmitParameter())->setMode($this->getMode())
+                );
             } else {
-                $this->getForm()->addSubmit(SubmitParameter::name(), $this->translate('edit.submit'), (new SubmitParameter())->setSave(), null, '', 50, 1);
-                $this->getForm()->addHidden(SubmitParameter::name(), (new SubmitParameter())->setSave());
+                $this->getForm()->addSubmit(
+                    SubmitParameter::name(),
+                    $this->translate('edit.submit'),
+                    (new SubmitParameter())->setSave(),
+                    null,
+                    '',
+                    50
+                );
+                $this->getForm()->addHidden(
+                    SubmitParameter::name(),
+                    (new SubmitParameter())->setSave()
+                );
             }
-            if ($this->hasIndexPath()) {
-                if ($this->isCreate()) {
-                    $id = new IdParameter();
-                    foreach ($this->getCreateRedirectIdFields() as $key => $value) {
-                        if (is_string($key)) {
-                            $id->addId($key, $value);
-                        } else {
-                            $id->addId($value);
-                        }
-                    }
-                    $indexPath = $this->getPathHelper()->setController($this->getRedirectController())->setAction($this->getCreateRedirectAction());
-                    $indexPath->addParameter($id);
-                    $this->getForm()->addCancel($this->translate('edit.cancel'), $indexPath, 50, 2);
-                    $this->getForm()->addHidden(RedirectParameter::nameAttr(RedirectParameter::ATTRIBUTE_PATH), $indexPath);
+            if ($this->isCreate()) {
+                $this->getForm()->addCancel(
+                    $this->translate('edit.cancel'),
+                    $this->generateCreateRedirectPath(),
+                    50,
+                    2
+                );
+                $this->getForm()->addHidden(
+                    RedirectParameter::nameAttr(RedirectParameter::ATTRIBUTE_PATH),
+                    $this->generateCreateRedirectPath()
+                );
 
-                } else {
-                    $this->getForm()->addCancel($this->translate('edit.cancel'), $this->getIndexPath(), 50, 2);
-                    $this->getForm()->addHidden(RedirectParameter::nameAttr(RedirectParameter::ATTRIBUTE_PATH), $this->getIndexPath());
+            } else {
+                $this->getForm()->addCancel(
+                    $this->translate('edit.cancel'),
+                    $this->generateIndexPath(),
+                    50,
+                    2
+                );
+                $this->getForm()->addHidden(
+                    RedirectParameter::nameAttr(RedirectParameter::ATTRIBUTE_PATH),
+                    $this->generateIndexPath()
+                );
 
-                }
             }
+
         }
+    }
+
+    /**
+     * @return string
+     */
+    protected function generateIndexPath(): string
+    {
+        $indexPath = $this->getPathHelper()
+            ->setController($this->getRedirectController())
+            ->setAction($this->getRedirectAction());
+        $indexPath->setId(IdParameter::createFromMap($this->getRedirectIdFields()));
+        return $indexPath->getPath();
+    }
+
+    /**
+     * @return string
+     */
+    protected function generateCreateRedirectPath(): string
+    {
+        $indexPath = $this->getPathHelper()
+            ->setController($this->getRedirectController())
+            ->setAction($this->getCreateRedirectAction());
+        $indexPath->setId(IdParameter::createFromMap($this->getCreateRedirectIdFields()));
+        return $indexPath->getPath();
     }
 
     /**
@@ -118,8 +188,6 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
     {
         $this->showSubmit = $showSubmit;
     }
-
-
 
 
     abstract protected function getRedirectController(): string;
@@ -185,33 +253,4 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
         $this->create = $create;
         return $this;
     }
-
-
-    /**
-     * @return string
-     */
-    public function getIndexPath(): string
-    {
-        return $this->indexPath;
-    }
-
-    /**
-     * @param string $indexPath
-     *
-     * @return $this
-     */
-    public function setIndexPath(string $indexPath): self
-    {
-        $this->indexPath = $indexPath;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasIndexPath(): bool
-    {
-        return isset($this->indexPath);
-    }
-
 }

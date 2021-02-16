@@ -2,16 +2,16 @@
 
 namespace Pars\Admin\Translation;
 
-
-use Pars\Admin\Base\BaseDelete;
-use Pars\Admin\Base\BaseDetail;
+use Niceshops\Bean\Type\Base\BeanException;
+use Niceshops\Core\Exception\AttributeExistsException;
+use Niceshops\Core\Exception\AttributeLockException;
+use Niceshops\Core\Exception\AttributeNotFoundException;
 use Pars\Admin\Base\BaseEdit;
-use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\SystemNavigation;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Span;
-
+use Pars\Mvc\Exception\NotFoundException;
 
 /**
  * Class TranslationController
@@ -20,18 +20,33 @@ use Pars\Component\Base\Field\Span;
  */
 class TranslationController extends CrudController
 {
+    /**
+     * @return mixed|void
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
     protected function initModel()
     {
         parent::initModel();
         $this->setPermissions('translation.create', 'translation.edit', 'translation.delete');
     }
 
-
+    /**
+     * @return bool
+     */
     public function isAuthorized(): bool
     {
         return $this->checkPermission('translation');
     }
 
+    /**
+     * @return mixed|void
+     * @throws BeanException
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
     protected function initView()
     {
         parent::initView();
@@ -41,19 +56,19 @@ class TranslationController extends CrudController
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
 
-    protected function createOverview(): BaseOverview
-    {
-        return new TranslationOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
 
-    protected function createDetail(): BaseDetail
-    {
-        return new TranslationDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
-
+    /**
+     * @return BaseEdit
+     * @throws BeanException
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws NotFoundException
+     */
     public function editAction()
     {
-        parent::editAction();
+        $edit = parent::editAction();
+        $edit->setLocaleOptions($this->getModel()->getLocale_Options());
         $source = $this->getModel()->getTranslationSource();
         if ($source) {
             $detail = $this->createDetail();
@@ -67,20 +82,6 @@ class TranslationController extends CrudController
             }
             $this->getView()->append($detail);
         }
-    }
-
-
-    protected function createEdit(): BaseEdit
-    {
-        $edit = new TranslationEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $edit->setLocaleOptions($this->getModel()->getLocale_Options());
         return $edit;
     }
-
-    protected function createDelete(): BaseDelete
-    {
-        return new TranslationDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
-
-
 }

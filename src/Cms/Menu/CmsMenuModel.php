@@ -14,7 +14,8 @@ use Pars\Model\Cms\Page\CmsPageBeanFinder;
 /**
  * Class CmsMenuModel
  * @package Pars\Admin\Cms\Menu
- * @method CmsMenuBeanFinder getBeanFinder() : BeanFinderInterface
+ * @method CmsMenuBeanFinder getBeanFinder()
+ * @method CmsMenuBeanProcessor getBeanProcessor()
  */
 class CmsMenuModel extends CrudModel
 {
@@ -32,7 +33,11 @@ class CmsMenuModel extends CrudModel
         $this->initFinder();
     }
 
-    protected function initFinder() {
+    /**
+     *
+     */
+    protected function initFinder()
+    {
         $this->getBeanFinder()->setCmsMenu_ID_Parent(null);
     }
 

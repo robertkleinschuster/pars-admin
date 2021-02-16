@@ -6,6 +6,10 @@ namespace Pars\Admin\Article;
 
 use Pars\Admin\Base\BaseOverview;
 
+/**
+ * Class ArticleOverview
+ * @package Pars\Admin\Article
+ */
 abstract class ArticleOverview extends BaseOverview
 {
     protected function initialize()

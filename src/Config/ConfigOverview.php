@@ -8,6 +8,10 @@ use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\ColorAwareInterface;
 use Pars\Component\Base\Field\Icon;
 
+/**
+ * Class ConfigOverview
+ * @package Pars\Admin\Config
+ */
 class ConfigOverview extends BaseOverview
 {
 

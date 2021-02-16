@@ -2,17 +2,24 @@
 
 namespace Pars\Admin\Article;
 
+use Niceshops\Bean\Type\Base\BeanException;
 use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\CrudModel;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Article\DataBean;
 use Pars\Model\Article\Translation\ArticleTranslationBeanFinder;
 use Pars\Model\File\FileBeanFinder;
+use Pars\Model\File\FileBeanList;
 use Pars\Model\Localization\Locale\LocaleBeanFinder;
+use Pars\Model\Localization\Locale\LocaleBeanList;
 
 abstract class ArticleModel extends CrudModel
 {
 
+    /**
+     * @param IdParameter $idParameter
+     * @param array $attributes
+     */
     protected function create(IdParameter $idParameter, array &$attributes): void
     {
         $attributes['Article_Data']['__class'] = DataBean::class;
@@ -20,7 +27,9 @@ abstract class ArticleModel extends CrudModel
         parent::create($idParameter, $attributes);
     }
 
-
+    /**
+     * @param array $attributes
+     */
     protected function save(array $attributes): void
     {
         $attributes['Article_Data']['__class'] = DataBean::class;
@@ -28,7 +37,10 @@ abstract class ArticleModel extends CrudModel
         parent::save($attributes);
     }
 
-
+    /**
+     * @return array
+     * @throws BeanException
+     */
     public function getFileOptions(): array
     {
         $options = [];
@@ -41,25 +53,29 @@ abstract class ArticleModel extends CrudModel
     }
 
     /**
-     * @return \Niceshops\Bean\Type\Base\BeanListInterface
+     * @return FileBeanList
      */
-    public function getFileBeanList()
+    public function getFileBeanList(): FileBeanList
     {
         $finder = new FileBeanFinder($this->getDbAdpater());
         return $finder->getBeanList();
     }
 
     /**
-     * @return \Niceshops\Bean\Type\Base\BeanListInterface
+     * @return LocaleBeanList
      */
-    public function getLocale_List()
+    public function getLocale_List(): LocaleBeanList
     {
         $finder = new LocaleBeanFinder($this->getDbAdpater());
         $finder->setLocale_Active(true);
         return $finder->getBeanList();
     }
 
-    public function getTranslationDefaults(BeanInterface $bean)
+    /**
+     * @param BeanInterface $bean
+     * @throws BeanException
+     */
+    public function loadTranslationDefaults(BeanInterface $bean): void
     {
         $default = (new ArticleTranslationBeanFinder($this->getDbAdpater()))
             ->setArticle_ID($bean->Article_ID)

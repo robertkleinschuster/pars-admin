@@ -28,32 +28,10 @@ class ConfigController extends CrudController
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
 
-    /**
-     * @return bool
-     */
     public function isAuthorized(): bool
     {
         return $this->checkPermission('user');
     }
 
-    protected function createOverview(): BaseOverview
-    {
-        return new ConfigOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
-
-    protected function createDetail(): BaseDetail
-    {
-        return new ConfigDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
-
-    protected function createEdit(): BaseEdit
-    {
-        return new ConfigEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
-
-    protected function createDelete(): BaseDelete
-    {
-        return new ConfigDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
 
 }

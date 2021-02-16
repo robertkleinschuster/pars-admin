@@ -2,10 +2,14 @@
 
 namespace Pars\Admin\Translation;
 
+use Niceshops\Bean\Type\Base\BeanException;
+use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\CrudModel;
 use Pars\Model\Localization\Locale\LocaleBeanFinder;
+use Pars\Model\Translation\TranslationLoader\TranslationBean;
 use Pars\Model\Translation\TranslationLoader\TranslationBeanFinder;
 use Pars\Model\Translation\TranslationLoader\TranslationBeanProcessor;
+use Pars\Mvc\Exception\NotFoundException;
 
 class TranslationModel extends CrudModel
 {
@@ -21,15 +25,16 @@ class TranslationModel extends CrudModel
      */
     public function getLocale_Options(): array
     {
-        $options = [];
         $finder = new LocaleBeanFinder($this->getDbAdpater());
         $finder->setLocale_Active(true);
-        foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->get('Locale_Code')] = $bean->get('Locale_Name');
-        }
-        return $options;
+        return $finder->getBeanList()->getSelectOptions();
     }
 
+    /**
+     * @return BeanInterface|TranslationBean|null
+     * @throws BeanException
+     * @throws NotFoundException
+     */
     public function getTranslationSource()
     {
         if ($this->getConfig('locale.default')) {

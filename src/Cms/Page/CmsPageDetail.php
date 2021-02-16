@@ -7,14 +7,17 @@ namespace Pars\Admin\Cms\Page;
 use Pars\Admin\Article\ArticleDetail;
 use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Field\Span;
-use Pars\Model\Article\DataBean;
 
 class CmsPageDetail extends ArticleDetail
 {
 
-    protected function initialize()
+    protected function initSection()
     {
         $this->setSection($this->translate('section.page'));
+    }
+
+    protected function initFields()
+    {
         $span = new Badge('{CmsPageState_Code}');
         $span->setLabel($this->translate('cmspagestate.code'));
         $span->setFormat(new CmsPageStateFieldFormat($this->getTranslator()));
@@ -25,7 +28,7 @@ class CmsPageDetail extends ArticleDetail
         $span = new Span('{CmsPageLayout_Code}', $this->translate('cmspagelayout.code'));
         $span->setFormat(new CmsPageLayoutFieldFormat($this->getTranslator()));
         $this->append($span, 3, 1);
-        parent::initialize();
+        parent::initFields();
     }
 
 

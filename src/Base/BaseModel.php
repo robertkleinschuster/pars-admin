@@ -10,11 +10,14 @@ use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Niceshops\Bean\Processor\DefaultMetaFieldHandler;
 use Niceshops\Bean\Processor\TimestampMetaFieldHandler;
+use Niceshops\Bean\Type\Base\BeanException;
+use Niceshops\Core\Exception\AttributeNotFoundException;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Model\Authentication\User\UserBean;
 use Pars\Model\Config\ConfigBeanFinder;
+use Pars\Mvc\Exception\NotFoundException;
 use Pars\Mvc\Model\AbstractModel;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -26,12 +29,12 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
     use LoggerAwareTrait;
 
     /**
-     * @var UserBean
+     * @var UserBean|null
      */
     private ?UserBean $userBean = null;
 
     /**
-     * @var array
+     * @var array|null
      */
     private ?array $config = null;
 
@@ -40,47 +43,21 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
         parent::initializeDependencies();
         if ($this->hasBeanProcessor()) {
             $processor = $this->getBeanProcessor();
-            $processor->addMetaFieldHandler(new TimestampMetaFieldHandler('Timestamp_Edit', 'Timestamp_Create'));
-            $processor->addMetaFieldHandler(new DefaultMetaFieldHandler('Person_ID_Edit', $this->getUserBean()->Person_ID, true));
-            $processor->addMetaFieldHandler(new DefaultMetaFieldHandler('Person_ID_Create', $this->getUserBean()->Person_ID));
+            $processor->addMetaFieldHandler(
+                new TimestampMetaFieldHandler('Timestamp_Edit', 'Timestamp_Create')
+            );
+            $processor->addMetaFieldHandler(
+                new DefaultMetaFieldHandler('Person_ID_Edit', $this->getUserBean()->Person_ID, true)
+            );
+            $processor->addMetaFieldHandler(
+                new DefaultMetaFieldHandler('Person_ID_Create', $this->getUserBean()->Person_ID)
+            );
             if ($processor instanceof TranslatorAwareInterface && $this->hasTranslator()) {
                 $processor->setTranslator($this->getTranslator());
             }
         }
     }
 
-
-    /**
-     *
-     */
-    public function initConfig()
-    {
-        try {
-            $finder = new ConfigBeanFinder($this->getDbAdpater());
-            $this->config = $finder->getBeanList()->column('Config_Value', 'Config_Code');
-        } catch (InvalidQueryException $exception) {
-            $this->logger->error('DB Error initializing config.', ['exception' => $exception]);
-        }
-    }
-
-    /**
-     * @param string $key
-     * @return mixed
-     */
-    public function getConfig(string $key = null)
-    {
-
-        if ($this->config === null) {
-            $this->initConfig();
-        }
-        if ($key == null) {
-            return $this->config;
-        }
-        if (isset($this->config[$key])) {
-            return $this->config[$key];
-        }
-        return null;
-    }
 
     /**
      * @return Adapter
@@ -124,8 +101,21 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
         $this->getValidationHelper()->addError('Permission', $this->translate('permission.edit.denied'));
     }
 
-    public function handleSubmit(SubmitParameter $submitParameter, IdParameter $idParameter, IdListParameter $idListParameter, array $attribute_List)
-    {
+    /**
+     * @param SubmitParameter $submitParameter
+     * @param IdParameter $idParameter
+     * @param IdListParameter $idListParameter
+     * @param array $attribute_List
+     * @throws BeanException
+     * @throws AttributeNotFoundException
+     * @throws NotFoundException
+     */
+    public function handleSubmit(
+        SubmitParameter $submitParameter,
+        IdParameter $idParameter,
+        IdListParameter $idListParameter,
+        array $attribute_List
+    ) {
         switch ($submitParameter->getMode()) {
             case SubmitParameter::MODE_SAVE:
                 $bean = $this->getBean();
@@ -149,9 +139,44 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
         parent::handleSubmit($submitParameter, $idParameter, $idListParameter, $attribute_List);
     }
 
-
-    public function translate(string $code)
+    /**
+     * @param string $code
+     * @return string
+     */
+    public function translate(string $code): string
     {
         return $this->getTranslator()->translate($code, 'admin');
+    }
+
+    /**
+     *
+     */
+    public function initConfig()
+    {
+        try {
+            $finder = new ConfigBeanFinder($this->getDbAdpater());
+            $this->config = $finder->getBeanList()->column('Config_Value', 'Config_Code');
+        } catch (InvalidQueryException $exception) {
+            $this->logger->error('DB Error initializing config.', ['exception' => $exception]);
+        }
+    }
+
+    /**
+     * @param string|null $key
+     * @return mixed
+     */
+    public function getConfig(string $key = null)
+    {
+
+        if ($this->config === null) {
+            $this->initConfig();
+        }
+        if ($key == null) {
+            return $this->config;
+        }
+        if (isset($this->config[$key])) {
+            return $this->config[$key];
+        }
+        return null;
     }
 }

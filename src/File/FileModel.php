@@ -4,41 +4,49 @@ namespace Pars\Admin\File;
 
 use Pars\Admin\Base\CrudModel;
 use Pars\Model\File\Directory\FileDirectoryBeanFinder;
+use Pars\Model\File\FileBean;
 use Pars\Model\File\FileBeanFinder;
+use Pars\Model\File\FileBeanList;
 use Pars\Model\File\FileBeanProcessor;
 use Pars\Model\File\Type\FileTypeBeanFinder;
 
+/**
+ * Class FileModel
+ * @package Pars\Admin\File
+ * @method FileBeanFinder getBeanFinder()
+ * @method FileBeanProcessor getBeanProcessor()
+ * @method FileBean getBean()
+ * @method FileBean getEmptyBean(array $data = [])
+ * @method FileBeanList getBeanList()
+ */
 class FileModel extends CrudModel
 {
+    /**
+     *
+     */
     public function initialize()
     {
         $this->setBeanFinder(new FileBeanFinder($this->getDbAdpater()));
         $this->setBeanProcessor(new FileBeanProcessor($this->getDbAdpater()));
     }
 
-    public function getFileType_Options()
+    /**
+     * @return array
+     */
+    public function getFileType_Options(): array
     {
-        $options = [];
         $finder = new FileTypeBeanFinder($this->getDbAdpater());
         $finder->setFileType_Active(true);
-
-        $beanList = $finder->getBeanList();
-        foreach ($beanList as $bean) {
-            $options[$bean->get('FileType_Code')] = $bean->get('FileType_Name');
-        }
-        return $options;
+        return $finder->getBeanList()->getSelectOptions();
     }
 
-    public function getFileDirectory_Options()
+    /**
+     * @return array
+     */
+    public function getFileDirectory_Options(): array
     {
-        $options = [];
         $finder = new FileDirectoryBeanFinder($this->getDbAdpater());
         $finder->setFileDirectory_Active(true);
-
-        $beanList = $finder->getBeanList();
-        foreach ($beanList as $bean) {
-            $options[$bean->get('FileDirectory_ID')] = $bean->get('FileDirectory_Name');
-        }
-        return $options;
+        return $finder->getBeanList()->getSelectOptions();
     }
 }

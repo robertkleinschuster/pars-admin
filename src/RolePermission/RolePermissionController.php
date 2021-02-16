@@ -46,12 +46,6 @@ class RolePermissionController extends CrudController
         return $overview;
     }
 
-    protected function createDetail(): BaseDetail
-    {
-        $detail = new RolePermissionDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $detail;
-    }
-
 
     protected function createEdit(): BaseEdit
     {
@@ -66,12 +60,4 @@ class RolePermissionController extends CrudController
         $edit->getForm()->push($overview);
         return $edit;
     }
-
-    protected function createDelete(): BaseDelete
-    {
-        $delete = new RolePermissionDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $delete;
-    }
-
-
 }

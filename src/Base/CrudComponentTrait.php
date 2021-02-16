@@ -6,11 +6,12 @@ namespace Pars\Admin\Base;
 
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
+use Niceshops\Bean\Type\Base\BeanException;
 use Pars\Helper\Path\PathHelper;
 use Pars\Helper\Path\PathHelperAwareTrait;
 use Pars\Model\Authentication\User\UserBean;
 
-trait AdminComponentTrait
+trait CrudComponentTrait
 {
     use TranslatorAwareTrait;
     use PathHelperAwareTrait;
@@ -21,7 +22,10 @@ trait AdminComponentTrait
      * MainNavigation constructor.
      * @param PathHelper $pathHelper
      * @param TranslatorInterface $translator
-     * @throws \Niceshops\Bean\Type\Base\BeanException
+     * @param UserBean $userBean
+     * @throws BeanException
+     * @throws \Niceshops\Core\Exception\AttributeExistsException
+     * @throws \Niceshops\Core\Exception\AttributeLockException
      */
     public function __construct(PathHelper $pathHelper, TranslatorInterface $translator, UserBean $userBean)
     {

@@ -2,14 +2,30 @@
 
 namespace Pars\Admin\Base;
 
+use Niceshops\Bean\Type\Base\BeanException;
+use Niceshops\Core\Exception\AttributeExistsException;
+use Niceshops\Core\Exception\AttributeLockException;
+use Niceshops\Core\Exception\AttributeNotFoundException;
 use Pars\Helper\Parameter\PaginationParameter;
 use Pars\Model\Authentication\User\UserBean;
 use Pars\Model\Authentication\User\UserBeanFinder;
 
+/**
+ * Class CrudModel
+ * @package Pars\Admin\Base
+ */
 abstract class CrudModel extends BaseModel
 {
+    /**
+     * @var int|null
+     */
     protected ?int $currentPage = null;
 
+    /**
+     * @param int $personID
+     * @return UserBean
+     * @throws BeanException
+     */
     public function getUserById(int $personID): UserBean
     {
         $userFinder = new UserBeanFinder($this->getDbAdpater());
@@ -17,6 +33,13 @@ abstract class CrudModel extends BaseModel
         return $userFinder->getBean();
     }
 
+    /**
+     * @param PaginationParameter $paginationParameter
+     * @return mixed|void
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
     public function handlePagination(PaginationParameter $paginationParameter)
     {
         if ($this->hasCurrentPage()) {

@@ -29,7 +29,7 @@ class CmsMenuDetail extends BaseDetail
             $this->append($span);
         }
 
-        $this->setHeadline('{ArticleTranslation_Name}');
+        $this->setHeading('{ArticleTranslation_Name}');
         $this->addField('Article_Code', $this->translate('article.code'));
         $this->addField('ArticleTranslation_Code', $this->translate('articletranslation.code'));
         parent::initialize();

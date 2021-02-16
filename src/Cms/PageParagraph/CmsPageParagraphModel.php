@@ -3,6 +3,7 @@
 namespace Pars\Admin\Cms\PageParagraph;
 
 use Niceshops\Bean\Processor\BeanOrderProcessor;
+use Niceshops\Bean\Type\Base\BeanException;
 use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Cms\Paragraph\CmsParagraphModel;
 use Pars\Helper\Parameter\IdParameter;
@@ -10,7 +11,15 @@ use Pars\Model\Cms\Page\CmsPageBeanFinder;
 use Pars\Model\Cms\PageParagraph\CmsPageParagraphBeanFinder;
 use Pars\Model\Cms\PageParagraph\CmsPageParagraphBeanProcessor;
 use Pars\Model\Cms\Paragraph\CmsParagraphBeanFinder;
+use Pars\Model\Cms\Paragraph\CmsParagraphBeanList;
+use Pars\Mvc\Exception\MvcException;
 
+/**
+ * Class CmsPageParagraphModel
+ * @package Pars\Admin\Cms\PageParagraph
+ * @method CmsPageParagraphBeanFinder getBeanFinder()
+ * @method CmsPageParagraphBeanProcessor getBeanProcessor()
+ */
 class CmsPageParagraphModel extends CmsParagraphModel
 {
     public function initialize()
@@ -28,8 +37,9 @@ class CmsPageParagraphModel extends CmsParagraphModel
 
     /**
      * @return array
+     * @throws BeanException
      */
-    public function getParagraph_Options()
+    public function getParagraph_Options(): array
     {
         $options = [];
         $finder = new CmsParagraphBeanFinder($this->getDbAdpater());
@@ -40,13 +50,20 @@ class CmsPageParagraphModel extends CmsParagraphModel
         return $options;
     }
 
-    public function getParagraphBeanList()
+    /**
+     * @return CmsParagraphBeanList
+     */
+    public function getParagraphBeanList(): CmsParagraphBeanList
     {
         $finder = new CmsParagraphBeanFinder($this->getDbAdpater());
         $finder->setLocale_Code($this->getTranslator()->getLocale());
         return $finder->getBeanList();
     }
 
+    /**
+     * @param IdParameter $idParameter
+     * @param array $attributes
+     */
     protected function create(IdParameter $idParameter, array &$attributes): void
     {
         parent::initialize();
@@ -62,8 +79,8 @@ class CmsPageParagraphModel extends CmsParagraphModel
     /**
      * @param array $data
      * @return BeanInterface
-     * @throws \Niceshops\Bean\Type\Base\BeanException
-     * @throws \Pars\Mvc\Exception\MvcException
+     * @throws BeanException
+     * @throws MvcException
      */
     public function getEmptyBean(array $data = []): BeanInterface
     {
