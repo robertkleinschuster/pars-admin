@@ -153,7 +153,10 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     }
 
     /**
+     * @param bool $context
      * @return PathHelper
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
      */
     protected function generateRedirectPath(bool $context = true): string
     {
@@ -163,6 +166,8 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             ->setId(IdParameter::fromMap($this->getRedirectIdFields()));
         if ($this->hasNextContext() && $context) {
             $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
+        } elseif ($this->hasCurrentContext()) {
+            $path->addParameter(ContextParameter::fromPath($this->getCurrentContext()));
         }
         return $path;
     }
