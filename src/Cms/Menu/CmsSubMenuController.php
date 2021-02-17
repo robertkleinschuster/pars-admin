@@ -15,21 +15,11 @@ use Pars\Admin\Base\BaseOverview;
  */
 class CmsSubMenuController extends CmsMenuController
 {
-    protected function initView()
+    public function indexAction()
     {
-        parent::initView();
-
-    }
-
-    protected function handleParameter()
-    {
-        if ($this->getControllerRequest()->getAction() == 'index') {
-            $id = $this->getControllerRequest()->getId();
-            $id->addId('CmsMenu_ID_Parent', $id->getAttribute('CmsMenu_ID'));
-            $id->unsetAttribute('CmsMenu_ID');
-            $this->getControllerRequest()->setAttribute($id::name(), $id->toString());
-        }
-        parent::handleParameter();
+        $this->getModel()->getBeanFinder()->getBeanLoader()->unsetValue('CmsMenu_ID');
+        $this->getModel()->getBeanFinder()->setCmsMenu_ID_Parent($this->getControllerRequest()->getId()->getAttribute('CmsMenu_ID'));
+        return parent::indexAction();
     }
 
 

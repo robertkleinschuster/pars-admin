@@ -13,6 +13,7 @@ use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Toolbar\DropdownEditButton;
 use Pars\Component\Base\Toolbar\EditTextButton;
 use Pars\Component\Base\Toolbar\PreviewButton;
+use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\EditLocaleParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Article\DataBean;
@@ -118,12 +119,7 @@ abstract class ArticleDetail extends BaseDetail
         if ($this->isShowEdit()) {
             $button = new EditTextButton();
             $button->setModal(true);
-            $button->setPath(
-                $this->getPathHelper()
-                    ->setController($this->getEditController())
-                    ->setAction('edit_text')
-                    ->setId(IdParameter::fromMap($this->getEditIdFields()))
-            );
+            $button->setPath($this->generateEditTextPath());
             $dropdown = new DropdownEditButton($button);
             foreach ($this->getLocale_List() as $locale) {
                 $button = new Button();
@@ -148,7 +144,9 @@ abstract class ArticleDetail extends BaseDetail
             ->setController($this->getEditController())
             ->setAction('edit_text')
             ->setId(IdParameter::fromMap($this->getEditIdFields()));
-        if ($locale_UrlCode) {
+        if ($this->hasNextContext()) {
+            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
+        }        if ($locale_UrlCode) {
             $path->addParameter(new EditLocaleParameter($locale_UrlCode));
         }
         return $path->getPath();

@@ -34,17 +34,34 @@ interface CrudComponentInterface extends TranslatorAwareInterface, PathHelperAwa
     /**
      * @return string
      */
-    public function getContext(): string;
+    public function getCurrentContext(): string;
 
     /**
      * @param string $context
      *
      * @return $this
      */
-    public function setContext(string $context);
+    public function setCurrentContext(string $context);
 
     /**
      * @return bool
      */
-    public function hasContext(): bool;
+    public function hasCurrentContext(): bool;
+
+    /**
+     * @return string
+     */
+    public function getNextContext(): string;
+
+    /**
+     * @param string $nextContext
+     *
+     * @return $this
+     */
+    public function setNextContext(string $nextContext): self;
+
+    /**
+     * @return bool
+     */
+    public function hasNextContext(): bool;
 }

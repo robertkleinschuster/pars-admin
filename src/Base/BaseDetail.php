@@ -10,6 +10,7 @@ use Pars\Component\Base\Toolbar\BackButton;
 use Pars\Component\Base\Toolbar\DeleteButton;
 use Pars\Component\Base\Toolbar\DropdownEditButton;
 use Pars\Component\Base\Toolbar\EditButton;
+use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\EditLocaleParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\Parameter;
@@ -79,8 +80,8 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
             ->setController($this->getEditController())
             ->setAction($this->getEditAction())
             ->setId(IdParameter::fromMap($this->getEditIdFields()));
-        if ($this->hasContext()) {
-            $path->addParameter(new Parameter('context', $this->getContext()));
+        if ($this->hasNextContext()) {
+            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
         }
         if ($locale_UrlCode) {
             $path->addParameter(new EditLocaleParameter($locale_UrlCode));
@@ -97,8 +98,8 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
             ->setController($this->getEditController())
             ->setAction('delete')
             ->setId(IdParameter::fromMap($this->getEditIdFields()));
-        if ($this->hasContext()) {
-            $path->addParameter(new Parameter('context', $this->getContext()));
+        if ($this->hasNextContext()) {
+            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
         }
         return $path->getPath();
     }
@@ -108,8 +109,8 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
      */
     protected function generateIndexPath(): string
     {
-        if ($this->hasContext()) {
-       #     return $this->getContext();
+        if ($this->hasCurrentContext()) {
+            return $this->getCurrentContext();
         }
         $indexPath = $this->getPathHelper()
             ->setController($this->getIndexController())

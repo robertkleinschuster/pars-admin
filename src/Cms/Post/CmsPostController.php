@@ -39,29 +39,12 @@ class CmsPostController extends ArticleController
         }
     }
 
-    protected function createOverview(): BaseOverview
+    public function editAction()
     {
-        return new CmsPostOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
-
-    protected function createDetail(): BaseDetail
-    {
-        $detail = new CmsPostDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $detail;
-    }
-
-    protected function createEdit(): BaseEdit
-    {
-        $edit = new CmsPostEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = parent::editAction();
         $edit->setStateOptions($this->getModel()->getCmsPostState_Options());
         $edit->setTypeOptions($this->getModel()->getCmsPostType_Options());
-        $edit->setFileBeanList($this->getModel()->getFileBeanList());
         return $edit;
-    }
-
-    protected function createDelete(): BaseDelete
-    {
-        return new CmsPostDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
     }
 
 }

@@ -12,6 +12,8 @@ use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\MediaNavigation;
+use Pars\Mvc\Exception\MvcException;
+use Pars\Mvc\Exception\NotFoundException;
 
 /**
  * Class FileController
@@ -58,53 +60,19 @@ class FileController extends CrudController
     }
 
     /**
-     * @return BaseOverview
-     * @throws BeanException
-     * @throws AttributeExistsException
-     * @throws AttributeLockException
-     * @throws AttributeNotFoundException
-     */
-    protected function createOverview(): BaseOverview
-    {
-        return new FileOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
-
-    /**
-     * @return BaseDetail
-     * @throws BeanException
-     * @throws AttributeExistsException
-     * @throws AttributeLockException
-     * @throws AttributeNotFoundException
-     */
-    protected function createDetail(): BaseDetail
-    {
-        return new FileDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
-
-    /**
      * @return BaseEdit
-     * @throws BeanException
      * @throws AttributeExistsException
      * @throws AttributeLockException
      * @throws AttributeNotFoundException
+     * @throws MvcException
+     * @throws NotFoundException
      */
-    protected function createEdit(): BaseEdit
+    public function editAction()
     {
-        $edit = new FileEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = parent::editAction();
         $edit->setTypeOptions($this->getModel()->getFileType_Options());
         $edit->setDirectoryOptions($this->getModel()->getFileDirectory_Options());
         return $edit;
     }
 
-    /**
-     * @return BaseDelete
-     * @throws BeanException
-     * @throws AttributeExistsException
-     * @throws AttributeLockException
-     * @throws AttributeNotFoundException
-     */
-    protected function createDelete(): BaseDelete
-    {
-        return new FileDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
 }

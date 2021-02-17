@@ -23,7 +23,8 @@ trait CrudComponentTrait
     use PathHelperAwareTrait;
 
     private UserBean $userBean;
-    protected ?string $context = null;
+    protected ?string $currentContext = null;
+    protected ?string $nextContext = null;
     /**
      * MainNavigation constructor.
      * @param PathHelper $pathHelper
@@ -61,28 +62,56 @@ trait CrudComponentTrait
     /**
     * @return string
     */
-    public function getContext(): string
+    public function getCurrentContext(): string
     {
-        return $this->context;
+        return $this->currentContext;
     }
 
     /**
-    * @param string $context
+    * @param string $currentContext
     *
     * @return $this
     */
-    public function setContext(string $context)
+    public function setCurrentContext(string $currentContext)
     {
-        $this->context = $context;
+        $this->currentContext = $currentContext;
         return $this;
     }
 
     /**
     * @return bool
     */
-    public function hasContext(): bool
+    public function hasCurrentContext(): bool
     {
-        return isset($this->context);
+        return isset($this->currentContext);
     }
+
+    /**
+    * @return string
+    */
+    public function getNextContext(): string
+    {
+        return $this->nextContext;
+    }
+
+    /**
+    * @param string $nextContext
+    *
+    * @return $this
+    */
+    public function setNextContext(string $nextContext): self
+    {
+        $this->nextContext = $nextContext;
+        return $this;
+    }
+
+    /**
+    * @return bool
+    */
+    public function hasNextContext(): bool
+    {
+        return isset($this->nextContext);
+    }
+
 
 }

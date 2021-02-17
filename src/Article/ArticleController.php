@@ -35,6 +35,7 @@ abstract class ArticleController extends CrudController
         $bean = $detail->getBean();
         if (!$bean->empty('File_BeanList') && !$bean->get('File_BeanList')->isEmpty()) {
             $fileOverview = new FileDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+            $this->injectContext($fileOverview);
             $fileOverview->setShowDelete(false);
             $fileOverview->setShowEdit(true);
             $fileOverview->setShowBack(false);

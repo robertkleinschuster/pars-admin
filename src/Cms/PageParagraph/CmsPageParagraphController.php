@@ -79,6 +79,7 @@ class CmsPageParagraphController extends CmsParagraphController
     public function create_newAction()
     {
         $edit = new CmsPageParagraphCreateNew($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $this->injectContext($edit);
         $edit->setStateOptions($this->getModel()->getCmsParagraphState_Options());
         $edit->setTypeOptions($this->getModel()->getCmsParagraphType_Options());
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());

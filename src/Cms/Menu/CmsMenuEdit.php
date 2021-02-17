@@ -35,8 +35,8 @@ class CmsMenuEdit extends BaseEdit
 
     protected function getRedirectAction(): string
     {
-        if ($this->hasContext()) {
-            switch ($this->getContext()) {
+        if ($this->hasCurrentContext()) {
+            switch ($this->getCurrentContext()) {
                 case self::CONTEXT_DETAIL:
                     return 'detail';
                 case self::CONTEXT_OVERVIEW:
@@ -48,8 +48,8 @@ class CmsMenuEdit extends BaseEdit
 
     protected function getRedirectIdFields(): array
     {
-        if ($this->hasContext()) {
-            switch ($this->getContext()) {
+        if ($this->hasCurrentContext()) {
+            switch ($this->getCurrentContext()) {
                 case self::CONTEXT_OVERVIEW:
                     return [];
                 case self::CONTEXT_DETAIL:

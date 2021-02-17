@@ -138,8 +138,8 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
      */
     protected function generateIndexPath(): string
     {
-        if ($this->hasContext()) {
-            return $this->getContext();
+        if ($this->hasCurrentContext()) {
+            return $this->getCurrentContext();
         }
         $indexPath = $this->getPathHelper()
             ->setController($this->getRedirectController())
@@ -153,6 +153,9 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
      */
     protected function generateCreateRedirectPath(): string
     {
+        if ($this->hasCurrentContext()) {
+            return $this->getCurrentContext();
+        }
         $indexPath = $this->getPathHelper()
             ->setController($this->getRedirectController())
             ->setAction($this->getCreateRedirectAction());

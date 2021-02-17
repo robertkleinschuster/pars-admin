@@ -9,10 +9,10 @@ use Pars\Component\Base\Form\Hidden;
 use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Toolbar\CreateNewButton;
 use Pars\Component\Base\Toolbar\DeleteBulkButton;
+use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\MoveParameter;
-use Pars\Helper\Parameter\Parameter;
 use Pars\Helper\Parameter\RedirectParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Helper\Path\PathHelper;
@@ -43,7 +43,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     protected function initialize()
     {
         $this->setAttribute('method', 'post');
-        $this->setAttribute('action', $this->generateRedirectPath());
+        $this->setAttribute('action', $this->generateDeletePath());
         if ($this->hasToken()) {
             $this->push(new Hidden('submit_token', $this->getToken()));
         }
@@ -83,8 +83,8 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             ->setController($this->getController())
             ->setAction('detail')
             ->setId(IdParameter::fromMap($this->getDetailIdFields()));
-        if ($this->hasContext()) {
-            #$path->addParameter(new Parameter('context', $this->getContext()));
+        if ($this->hasNextContext()) {
+            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
         }
         return $path->getPath();
     }
@@ -94,11 +94,14 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
      */
     protected function generateCreatePath(): string
     {
-        return $this->getPathHelper()
+        $path = $this->getPathHelper()
             ->setController($this->getController())
             ->setAction('create')
-            ->setId(IdParameter::fromMap($this->getCreateIdFields()))
-            ->getPath();
+            ->setId(IdParameter::fromMap($this->getCreateIdFields()));
+        if ($this->hasNextContext()) {
+            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
+        }
+        return $path->getPath();
     }
 
     /**
@@ -106,11 +109,14 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
      */
     protected function generateCreateNewPath(): string
     {
-        return $this->getPathHelper()
+        $path = $this->getPathHelper()
             ->setController($this->getController())
             ->setAction('create_new')
-            ->setId(IdParameter::fromMap($this->getCreateIdFields()))
-            ->getPath();
+            ->setId(IdParameter::fromMap($this->getCreateIdFields()));
+        if ($this->hasNextContext()) {
+            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
+        }
+        return $path->getPath();
     }
 
     /**
@@ -136,37 +142,29 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     protected function initMovePaths()
     {
         if ($this->isShowMove()) {
-            $this->setMoveUpPath(
-                $this->getPathHelper()
-                    ->setController($this->getController())
-                    ->setAction($this->getRedirectAction())
-                    ->setId(IdParameter::fromMap($this->getDetailIdFields()))
-                    ->addParameter(MoveParameter::up())
-                    ->addParameter(RedirectParameter::fromPath($this->generateRedirectPath()))
-                    ->getPath()
-            );
-            $this->setMoveDownPath(
-                $this->getPathHelper()
-                    ->setController($this->getController())
-                    ->setAction($this->getRedirectAction())
-                    ->setId(IdParameter::fromMap($this->getDetailIdFields()))
-                    ->addParameter(RedirectParameter::fromPath($this->generateRedirectPath()))
-                    ->addParameter(MoveParameter::down())
-                    ->addParameter(RedirectParameter::fromPath($this->generateRedirectPath()))
-                    ->getPath()
-            );
+            $path = $this->getPathHelper()
+                ->setController($this->getController())
+                ->setAction($this->getRedirectAction())
+                ->setId(IdParameter::fromMap($this->getDetailIdFields()))
+                ->addParameter(RedirectParameter::fromPath($this->generateRedirectPath(false)));
+            $this->setMoveUpPath($path->clone()->addParameter(MoveParameter::up())->getPath());
+            $this->setMoveDownPath($path->clone()->addParameter(MoveParameter::down())->getPath());
         }
     }
 
     /**
      * @return PathHelper
      */
-    protected function generateRedirectPath(): string
+    protected function generateRedirectPath(bool $context = true): string
     {
-        return $this->getPathHelper()
+        $path = $this->getPathHelper()
             ->setController($this->getRedirectController())
             ->setAction($this->getRedirectAction())
             ->setId(IdParameter::fromMap($this->getRedirectIdFields()));
+        if ($this->hasNextContext() && $context) {
+            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
+        }
+        return $path;
     }
 
     /**
@@ -178,8 +176,8 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             ->setController($this->getController())
             ->setAction('edit')
             ->setId(IdParameter::fromMap($this->getDetailIdFields()));
-        if ($this->hasContext()) {
-            $path->addParameter(new Parameter('context', $this->getContext()));
+        if ($this->hasNextContext()) {
+            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
         }
         return $path->getPath();
     }
@@ -193,8 +191,8 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             ->setController($this->getController())
             ->setAction('delete')
             ->setId(IdParameter::fromMap($this->getDetailIdFields()));
-        if ($this->hasContext()) {
-            $path->addParameter(new Parameter('context', $this->getContext()));
+        if ($this->hasNextContext()) {
+            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
         }
         return $path->getPath();
     }

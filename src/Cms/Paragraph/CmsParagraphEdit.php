@@ -46,8 +46,8 @@ class CmsParagraphEdit extends ArticleEdit
 
     protected function getRedirectAction(): string
     {
-        if ($this->hasContext()) {
-            switch ($this->getContext()) {
+        if ($this->hasCurrentContext()) {
+            switch ($this->getCurrentContext()) {
                 case self::CONTEXT_DETAIL:
                     return 'detail';
                 case self::CONTEXT_OVERVIEW:
@@ -59,8 +59,8 @@ class CmsParagraphEdit extends ArticleEdit
 
     protected function getRedirectIdFields(): array
     {
-        if ($this->hasContext()) {
-            switch ($this->getContext()) {
+        if ($this->hasCurrentContext()) {
+            switch ($this->getCurrentContext()) {
                 case self::CONTEXT_OVERVIEW:
                     return [];
                 case self::CONTEXT_DETAIL:
