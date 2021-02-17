@@ -12,6 +12,7 @@ use Pars\Component\Base\Toolbar\DropdownEditButton;
 use Pars\Component\Base\Toolbar\EditButton;
 use Pars\Helper\Parameter\EditLocaleParameter;
 use Pars\Helper\Parameter\IdParameter;
+use Pars\Helper\Parameter\Parameter;
 use Pars\Model\Localization\Locale\LocaleBeanList;
 
 abstract class BaseDetail extends Detail implements CrudComponentInterface
@@ -25,6 +26,7 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
 
     protected function initialize()
     {
+        $this->setContext(self::CONTEXT_DETAIL);
         $this->initBackButton();
         $this->initEditButton();
         $this->initDeleteButton();
@@ -78,6 +80,9 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
             ->setController($this->getEditController())
             ->setAction($this->getEditAction())
             ->setId(IdParameter::createFromMap($this->getEditIdFields()));
+        if ($this->hasContext()) {
+            $path->addParameter(new Parameter('context', $this->getContext()));
+        }
         if ($locale_UrlCode) {
             $path->addParameter(new EditLocaleParameter($locale_UrlCode));
         }
@@ -89,11 +94,14 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
      */
     protected function generateDeletePath(): string
     {
-        return $this->getPathHelper()
+        $path = $this->getPathHelper()
             ->setController($this->getEditController())
             ->setAction('delete')
-            ->setId(IdParameter::createFromMap($this->getEditIdFields()))
-            ->getPath();
+            ->setId(IdParameter::createFromMap($this->getEditIdFields()));
+        if ($this->hasContext()) {
+            $path->addParameter(new Parameter('context', $this->getContext()));
+        }
+        return $path->getPath();
     }
 
     /**

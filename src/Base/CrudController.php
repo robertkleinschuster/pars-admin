@@ -74,6 +74,10 @@ abstract class CrudController extends BaseController
 
     /**
      * @return BaseOverview
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws BeanException
      * @throws NotFoundException
      */
     public function indexAction()
@@ -247,6 +251,10 @@ abstract class CrudController extends BaseController
     public function editAction()
     {
         $edit = $this->createEdit();
+        if ($this->getControllerRequest()->hasAttribute('context')) {
+            $context = $this->getControllerRequest()->getAttribute('context');
+            $edit->setContext($context);
+        }
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $edit->setBean($this->getModel()->getBean());
         $this->getModel()->getBeanConverter()
@@ -278,6 +286,10 @@ abstract class CrudController extends BaseController
     public function deleteAction()
     {
         $delete = $this->createDelete();
+        if ($this->getControllerRequest()->hasAttribute('context')) {
+            $context = $this->getControllerRequest()->getAttribute('context');
+            $delete->setContext($context);
+        }
         $delete->setToken($this->generateToken('submit_token'));
         $this->getView()->append($delete);
         $detail = $this->createDetail();

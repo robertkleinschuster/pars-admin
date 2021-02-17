@@ -153,17 +153,40 @@ class CmsPageEdit extends ArticleEdit
         return isset($this->pageLayoutOptions);
     }
 
+    protected function getRedirectAction(): string
+    {
+        if ($this->hasContext()) {
+            switch ($this->getContext()) {
+                case self::CONTEXT_DETAIL:
+                    return 'detail';
+                case self::CONTEXT_OVERVIEW:
+                    return 'index';
+            }
+        }
+        return 'detail';
+    }
+
+    protected function getRedirectIdFields(): array
+    {
+        if ($this->hasContext()) {
+            switch ($this->getContext()) {
+                case self::CONTEXT_OVERVIEW:
+                    return [];
+                case self::CONTEXT_DETAIL:
+                    return [
+                        'CmsPage_ID'
+                    ];
+            }
+        }
+        return [
+            'CmsPage_ID'
+        ];
+    }
 
     protected function getRedirectController(): string
     {
         return 'cmspage';
     }
 
-    protected function getRedirectIdFields(): array
-    {
-        return [
-            'CmsPage_ID'
-        ];
-    }
 
 }

@@ -11,6 +11,7 @@ use Pars\Component\Base\Toolbar\DeleteBulkButton;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\MoveParameter;
+use Pars\Helper\Parameter\Parameter;
 use Pars\Helper\Parameter\RedirectParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 
@@ -30,6 +31,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
 
     protected function initialize()
     {
+        $this->setContext(self::CONTEXT_OVERVIEW);
         if ($this->hasToken()) {
             $input = new Input(Input::TYPE_HIDDEN);
             $input->setName('submit_token');
@@ -73,10 +75,10 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             $this->setDetailPath($this->getPathHelper()->setController($this->getController())->setAction('detail')->setId($id));
         }
         if ($this->isShowEdit()) {
-            $this->setEditPath($this->getPathHelper()->setController($this->getController())->setAction('edit')->setId($id));
+            $this->setEditPath($this->generateEditPath());
         }
         if ($this->isShowDelete()) {
-            $this->setDeletePath($this->getPathHelper()->setController($this->getController())->setAction('delete')->setId($id));
+            $this->setDeletePath($this->generateDeletePath());
         }
 
         $createid = (new IdParameter());
@@ -154,6 +156,30 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
                 ->addParameter($moveredirectParameter));
         }
         parent::initialize();
+    }
+
+    protected function generateEditPath(): string
+    {
+        $path = $this->getPathHelper()
+            ->setController($this->getController())
+            ->setAction('edit')
+            ->setId(IdParameter::createFromMap($this->getDetailIdFields()));
+        if ($this->hasContext()) {
+            $path->addParameter(new Parameter('context', $this->getContext()));
+        }
+        return $path->getPath();
+    }
+
+    protected function generateDeletePath(): string
+    {
+        $path = $this->getPathHelper()
+            ->setController($this->getController())
+            ->setAction('delete')
+            ->setId(IdParameter::createFromMap($this->getDetailIdFields()));
+        if ($this->hasContext()) {
+            $path->addParameter(new Parameter('context', $this->getContext()));
+        }
+        return $path->getPath();
     }
 
     protected function getRedirectController(): string

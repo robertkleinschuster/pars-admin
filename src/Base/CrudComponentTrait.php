@@ -17,7 +17,7 @@ trait CrudComponentTrait
     use PathHelperAwareTrait;
 
     private UserBean $userBean;
-
+    protected ?string $context = null;
     /**
      * MainNavigation constructor.
      * @param PathHelper $pathHelper
@@ -47,6 +47,33 @@ trait CrudComponentTrait
     protected function translate(string $code)
     {
         return $this->getTranslator()->translate($code, 'admin');
+    }
+
+    /**
+    * @return string
+    */
+    public function getContext(): string
+    {
+        return $this->context;
+    }
+
+    /**
+    * @param string $context
+    *
+    * @return $this
+    */
+    public function setContext(string $context)
+    {
+        $this->context = $context;
+        return $this;
+    }
+
+    /**
+    * @return bool
+    */
+    public function hasContext(): bool
+    {
+        return isset($this->context);
     }
 
 }

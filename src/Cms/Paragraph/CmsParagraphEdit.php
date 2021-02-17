@@ -44,11 +44,32 @@ class CmsParagraphEdit extends ArticleEdit
         return 'cmsparagraph';
     }
 
+    protected function getRedirectAction(): string
+    {
+        if ($this->hasContext()) {
+            switch ($this->getContext()) {
+                case self::CONTEXT_DETAIL:
+                    return 'detail';
+                case self::CONTEXT_OVERVIEW:
+                    return 'index';
+            }
+        }
+        return 'index';
+    }
+
     protected function getRedirectIdFields(): array
     {
-        return [
-            'CmsParagraph_ID'
-        ];
+        if ($this->hasContext()) {
+            switch ($this->getContext()) {
+                case self::CONTEXT_OVERVIEW:
+                    return [];
+                case self::CONTEXT_DETAIL:
+                    return [
+                        'CmsParagraph_ID'
+                    ];
+            }
+        }
+        return [];
     }
 
     /**

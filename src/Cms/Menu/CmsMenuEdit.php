@@ -33,11 +33,32 @@ class CmsMenuEdit extends BaseEdit
         return 'cmsmenu';
     }
 
+    protected function getRedirectAction(): string
+    {
+        if ($this->hasContext()) {
+            switch ($this->getContext()) {
+                case self::CONTEXT_DETAIL:
+                    return 'detail';
+                case self::CONTEXT_OVERVIEW:
+                    return 'index';
+            }
+        }
+        return 'index';
+    }
+
     protected function getRedirectIdFields(): array
     {
-        return [
-            'CmsMenu_ID'
-        ];
+        if ($this->hasContext()) {
+            switch ($this->getContext()) {
+                case self::CONTEXT_OVERVIEW:
+                    return [];
+                case self::CONTEXT_DETAIL:
+                    return [
+                        'CmsMenu_ID'
+                    ];
+            }
+        }
+        return [];
     }
 
     /**
