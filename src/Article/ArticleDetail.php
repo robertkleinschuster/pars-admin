@@ -122,7 +122,7 @@ abstract class ArticleDetail extends BaseDetail
                 $this->getPathHelper()
                     ->setController($this->getEditController())
                     ->setAction('edit_text')
-                    ->setId(IdParameter::createFromMap($this->getEditIdFields()))
+                    ->setId(IdParameter::fromMap($this->getEditIdFields()))
             );
             $dropdown = new DropdownEditButton($button);
             foreach ($this->getLocale_List() as $locale) {
@@ -147,7 +147,7 @@ abstract class ArticleDetail extends BaseDetail
         $path = $this->getPathHelper()
             ->setController($this->getEditController())
             ->setAction('edit_text')
-            ->setId(IdParameter::createFromMap($this->getEditIdFields()));
+            ->setId(IdParameter::fromMap($this->getEditIdFields()));
         if ($locale_UrlCode) {
             $path->addParameter(new EditLocaleParameter($locale_UrlCode));
         }

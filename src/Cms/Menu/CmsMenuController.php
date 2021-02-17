@@ -39,25 +39,19 @@ class CmsMenuController extends CrudController
         }
     }
 
-    protected function createOverview(): BaseOverview
+    public function indexAction()
     {
-        $overview = new CmsMenuOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $overview = parent::indexAction();
         if (count($this->getModel()->getCmsPage_Options()) == 0) {
             $overview->setShowCreate(false);
         }
         return $overview;
     }
 
-    protected function createDetail(): BaseDetail
-    {
-       $detail = new CmsMenuDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $detail->setPreviewPath($this->getModel()->getConfig('frontend.domain') . '/{ArticleTranslation_Code}?clearcache=pars');
-        return $detail;
-    }
-
     public function detailAction()
     {
         $detail = parent::detailAction();
+        $detail->setPreviewPath($this->getModel()->getConfig('frontend.domain') . '/{ArticleTranslation_Code}?clearcache=pars');
         $id = $this->getControllerRequest()->getId()->getAttribute('CmsMenu_ID');
         $this->getView()->set('CmsMenu_ID_Parent', (int) $id);
         $this->pushAction('cmssubmenu', 'index', $this->translate('section.menu'));
@@ -76,14 +70,12 @@ class CmsMenuController extends CrudController
         return $detail;
     }
 
-
-    protected function createEdit(): BaseEdit
+    public function editAction()
     {
-        $edit = new CmsMenuEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = parent::editAction();
         $edit->setStateOptions($this->getModel()->getCmsMenuState_Options());
         $edit->setTypeOptions($this->getModel()->getCmsMenuType_Options());
         $edit->setPageOptions($this->getModel()->getCmsPage_Options());
         return $edit;
     }
-
 }

@@ -1,10 +1,11 @@
 <?php
 
-
 namespace Pars\Admin\Base;
 
-
-use Pars\Component\Base\Form\Input;
+use Niceshops\Bean\Type\Base\BeanException;
+use Niceshops\Core\Exception\AttributeExistsException;
+use Niceshops\Core\Exception\AttributeLockException;
+use Pars\Component\Base\Form\Hidden;
 use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Toolbar\CreateNewButton;
 use Pars\Component\Base\Toolbar\DeleteBulkButton;
@@ -14,7 +15,12 @@ use Pars\Helper\Parameter\MoveParameter;
 use Pars\Helper\Parameter\Parameter;
 use Pars\Helper\Parameter\RedirectParameter;
 use Pars\Helper\Parameter\SubmitParameter;
+use Pars\Helper\Path\PathHelper;
 
+/**
+ * Class BaseOverview
+ * @package Pars\Admin\Base
+ */
 abstract class BaseOverview extends Overview implements CrudComponentInterface
 {
     use CrudComponentTrait;
@@ -29,50 +35,24 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     public bool $showMove = false;
     public ?string $token = null;
 
+    /**
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws BeanException
+     */
     protected function initialize()
     {
-        $this->setContext(self::CONTEXT_OVERVIEW);
+        $this->setAttribute('method', 'post');
+        $this->setAttribute('action', $this->generateRedirectPath());
         if ($this->hasToken()) {
-            $input = new Input(Input::TYPE_HIDDEN);
-            $input->setName('submit_token');
-            $input->setValue($this->getToken());
-            $this->push($input);
+            $this->push(new Hidden('submit_token', $this->getToken()));
         }
-
-        $moveredirectParameter = new RedirectParameter();
-        $moveredirectPath = $this->getPathHelper()->setController($this->getRedirectController())->setAction($this->getRedirectAction());
-        $moveRedirectIdParameter = new IdParameter();
-        foreach ($this->getRedirectIdFields() as $key => $value) {
-            if (is_string($key)) {
-                $moveRedirectIdParameter->addId($key, $value);
-            } else {
-                $moveRedirectIdParameter->addId($value);
-            }
-        }
-        $moveredirectPath->setId($moveRedirectIdParameter);
-        $moveredirectParameter->setPath($moveredirectPath->getPath());
-
-        $redirect = new Input(Input::TYPE_HIDDEN);
-        $redirect->setName(RedirectParameter::name());
-        $redirect->setValue($moveredirectParameter);
-        $this->push($redirect);
-
-
+        $this->push(new Hidden(RedirectParameter::name(), RedirectParameter::fromPath($this->generateRedirectPath())));
         if ($this->hasSection()) {
             $this->setName($this->getSection());
         }
-
-        $id = (new IdParameter());
-        foreach ($this->getDetailIdFields() as $key => $value) {
-            if (is_string($key)) {
-                $id->addId($key, $value);
-            } else {
-                $id->addId($value);
-            }
-        }
-
         if ($this->isShowDetail()) {
-            $this->setDetailPath($this->getPathHelper()->setController($this->getController())->setAction('detail')->setId($id));
+            $this->setDetailPath($this->generateDetailPath());
         }
         if ($this->isShowEdit()) {
             $this->setEditPath($this->generateEditPath());
@@ -80,128 +60,182 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
         if ($this->isShowDelete()) {
             $this->setDeletePath($this->generateDeletePath());
         }
-
-        $createid = (new IdParameter());
-        foreach ($this->getCreateIdFields() as $key => $value) {
-            if (is_string($key)) {
-                $createid->addId($key, $value);
-            } else{
-                $createid->addId($value);
-            }
-        }
-        $createPath = $this->getPathHelper()->setController($this->getController())->setAction('create')->setId($createid)->getPath();
         if ($this->isShowCreate()) {
-            $this->getToolbar()->setCreatePath($createPath);
+            $this->getToolbar()->setCreatePath($this->generateCreatePath());
         }
-        $this->setAttribute('method', 'post');
-        $this->setAttribute('action', $createPath);
-
-        $createPath = $this->getPathHelper()->setController($this->getController())->setAction('create_new')->setId($createid)->getPath();
         if ($this->isShowCreateNew()) {
-            $this->getToolbar()->push((new CreateNewButton($createPath))->setModal(true));
+            $this->getToolbar()->push((new CreateNewButton($this->generateCreateNewPath()))->setModal(true));
         }
-
-
-
         $this->setBulkFieldName(IdListParameter::name());
-        $idList = new IdListParameter();
-        foreach ($this->getDetailIdFields() as $key => $value) {
-            if (is_string($key)) {
-                $idList->addId($key, $value);
-            } else {
-                $idList->addId($value);
-            }
+        $this->setBulkFieldValue(IdListParameter::fromMap($this->getDetailIdFields()));
+        $this->initDeleteBulkButton();
+        $this->initMovePaths();
+        parent::initialize();
+    }
+
+
+    /**
+     * @return string
+     */
+    protected function generateDetailPath(): string
+    {
+        $path = $this->getPathHelper()
+            ->setController($this->getController())
+            ->setAction('detail')
+            ->setId(IdParameter::fromMap($this->getDetailIdFields()));
+        if ($this->hasContext()) {
+            #$path->addParameter(new Parameter('context', $this->getContext()));
         }
-        $this->setBulkFieldValue($idList);
+        return $path->getPath();
+    }
 
+    /**
+     * @return string
+     */
+    protected function generateCreatePath(): string
+    {
+        return $this->getPathHelper()
+            ->setController($this->getController())
+            ->setAction('create')
+            ->setId(IdParameter::fromMap($this->getCreateIdFields()))
+            ->getPath();
+    }
 
+    /**
+     * @return string
+     */
+    protected function generateCreateNewPath(): string
+    {
+        return $this->getPathHelper()
+            ->setController($this->getController())
+            ->setAction('create_new')
+            ->setId(IdParameter::fromMap($this->getCreateIdFields()))
+            ->getPath();
+    }
+
+    /**
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws BeanException
+     */
+    protected function initDeleteBulkButton()
+    {
         if ($this->isShowDeleteBulk()) {
-
-            $id = (new IdParameter());
-            foreach ($this->getDetailIdFields() as $key => $value) {
-                if (is_string($key)) {
-                    $id->addId($key, $value);
-                } else {
-                    $id->addId($value);
-                }
-            }
-            $button = new DeleteBulkButton(SubmitParameter::name(), SubmitParameter::createDeleteBulk());
+            $button = new DeleteBulkButton(SubmitParameter::name(), SubmitParameter::deleteBulk());
             $button->setConfirm($this->translate('delete_bulk.message'));
             $button->addOption('d-none');
             $this->getToolbar()->push($button);
             $this->setTag('form');
         }
-
-
-        if ($this->isShowMove()) {
-            $id = new IdParameter();
-            foreach ($this->getDetailIdFields() as $key => $value) {
-                if (is_string($key)) {
-                    $id->addId($key, $value);
-                } else {
-                    $id->addId($value);
-                }
-            }
-            $this->setMoveUpPath($this->getPathHelper()
-                ->setController($this->getController())
-                ->setAction('edit')
-                ->setId($id)
-                ->addParameter((new MoveParameter())->setUp())
-                ->addParameter($moveredirectParameter));
-            $this->setMoveDownPath($this->getPathHelper()
-                ->setController($this->getController())
-                ->setAction('edit')
-                ->setId($id)
-                ->addParameter((new MoveParameter())->setDown())
-                ->addParameter($moveredirectParameter));
-        }
-        parent::initialize();
     }
 
+    /**
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     */
+    protected function initMovePaths()
+    {
+        if ($this->isShowMove()) {
+            $this->setMoveUpPath(
+                $this->getPathHelper()
+                    ->setController($this->getController())
+                    ->setAction($this->getRedirectAction())
+                    ->setId(IdParameter::fromMap($this->getDetailIdFields()))
+                    ->addParameter(MoveParameter::up())
+                    ->addParameter(RedirectParameter::fromPath($this->generateRedirectPath()))
+                    ->getPath()
+            );
+            $this->setMoveDownPath(
+                $this->getPathHelper()
+                    ->setController($this->getController())
+                    ->setAction($this->getRedirectAction())
+                    ->setId(IdParameter::fromMap($this->getDetailIdFields()))
+                    ->addParameter(RedirectParameter::fromPath($this->generateRedirectPath()))
+                    ->addParameter(MoveParameter::down())
+                    ->addParameter(RedirectParameter::fromPath($this->generateRedirectPath()))
+                    ->getPath()
+            );
+        }
+    }
+
+    /**
+     * @return PathHelper
+     */
+    protected function generateRedirectPath(): string
+    {
+        return $this->getPathHelper()
+            ->setController($this->getRedirectController())
+            ->setAction($this->getRedirectAction())
+            ->setId(IdParameter::fromMap($this->getRedirectIdFields()));
+    }
+
+    /**
+     * @return string
+     */
     protected function generateEditPath(): string
     {
         $path = $this->getPathHelper()
             ->setController($this->getController())
             ->setAction('edit')
-            ->setId(IdParameter::createFromMap($this->getDetailIdFields()));
+            ->setId(IdParameter::fromMap($this->getDetailIdFields()));
         if ($this->hasContext()) {
             $path->addParameter(new Parameter('context', $this->getContext()));
         }
         return $path->getPath();
     }
 
+    /**
+     * @return string
+     */
     protected function generateDeletePath(): string
     {
         $path = $this->getPathHelper()
             ->setController($this->getController())
             ->setAction('delete')
-            ->setId(IdParameter::createFromMap($this->getDetailIdFields()));
+            ->setId(IdParameter::fromMap($this->getDetailIdFields()));
         if ($this->hasContext()) {
             $path->addParameter(new Parameter('context', $this->getContext()));
         }
         return $path->getPath();
     }
 
+    /**
+     * @return string
+     */
     protected function getRedirectController(): string
     {
         return $this->getController();
     }
 
+    /**
+     * @return string
+     */
     protected function getRedirectAction(): string
     {
         return 'index';
     }
 
+    /**
+     * @return array
+     */
     protected function getRedirectIdFields(): array
     {
-        return [
-        ];
+        return [];
     }
 
+    /**
+     * @return string
+     */
     abstract protected function getController(): string;
 
+    /**
+     * @return array
+     */
     abstract protected function getDetailIdFields(): array;
 
+    /**
+     * @return array
+     */
     protected function getCreateIdFields(): array
     {
         return [];
@@ -268,7 +302,6 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
         $this->showMove = $showMove;
     }
 
-
     /**
      * @return bool
      */
@@ -323,7 +356,6 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
         $this->showEdit = $showEdit;
         return $this;
     }
-
 
     /**
      * @return bool
@@ -400,7 +432,4 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     {
         $this->showCreateNew = $showCreateNew;
     }
-
-
-
 }

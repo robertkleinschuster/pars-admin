@@ -1,9 +1,10 @@
 <?php
 
-
 namespace Pars\Admin\Article\Data;
 
-
+use Niceshops\Bean\Type\Base\BeanException;
+use Niceshops\Core\Exception\AttributeExistsException;
+use Niceshops\Core\Exception\AttributeLockException;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Cms\Page\CmsPagePollDetail;
 use Pars\Model\Cms\Page\CmsPageBean;
@@ -26,10 +27,10 @@ class ArticleDataOverview extends BaseOverview
             if ($parent instanceof CmsPageBean) {
                 switch ($parent->CmsPageType_Code) {
                     case 'contact':
-                        $this->contact();
+                        $this->initContact();
                         break;
                     case 'poll':
-                        $this->poll();
+                        $this->initPoll();
                         break;
                 }
             }
@@ -37,8 +38,12 @@ class ArticleDataOverview extends BaseOverview
         parent::initialize();
     }
 
-
-    protected function poll()
+    /**
+     * @throws BeanException
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     */
+    protected function initPoll()
     {
         $this->setSection($this->translate('section.data.poll'));
         $this->addField('ArticleData_Data[name]', $this->translate('articledata.data.name'));
@@ -58,19 +63,28 @@ class ArticleDataOverview extends BaseOverview
         $this->getBefore()->push($pollDetal);
     }
 
-
-    public function contact()
+    /**
+     *
+     */
+    public function initContact()
     {
         $this->setSection($this->translate('section.data.contact'));
         $this->addField('ArticleData_Data[name]', $this->translate('articledata.data.name'));
         $this->addField('ArticleData_Data[email]', $this->translate('articledata.data.email'));
     }
 
+    /**
+     * @return string
+     */
     protected function getController(): string
     {
         return 'articledata';
     }
 
+    /**
+     * @return string
+     * @throws BeanException
+     */
     protected function getRedirectController(): string
     {
         if ($this->exists('parent')) {
@@ -82,7 +96,10 @@ class ArticleDataOverview extends BaseOverview
         return $this->getController();
     }
 
-
+    /**
+     * @return string
+     * @throws BeanException
+     */
     protected function getRedirectAction(): string
     {
         if ($this->exists('parent')) {
@@ -94,6 +111,9 @@ class ArticleDataOverview extends BaseOverview
         return 'index';
     }
 
+    /**
+     * @return string[]
+     */
     protected function getDetailIdFields(): array
     {
         return [
@@ -101,6 +121,10 @@ class ArticleDataOverview extends BaseOverview
         ];
     }
 
+    /**
+     * @return array|string[]
+     * @throws BeanException
+     */
     protected function getRedirectIdFields(): array
     {
         if ($this->exists('parent')) {
@@ -112,10 +136,11 @@ class ArticleDataOverview extends BaseOverview
         return [];
     }
 
+    /**
+     * @return array
+     */
     protected function getCreateIdFields(): array
     {
         return [];
     }
-
-
 }

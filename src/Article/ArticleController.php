@@ -2,8 +2,14 @@
 
 namespace Pars\Admin\Article;
 
+use Niceshops\Core\Exception\AttributeExistsException;
+use Niceshops\Core\Exception\AttributeLockException;
+use Niceshops\Core\Exception\AttributeNotFoundException;
+use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\File\FileDetail;
+use Pars\Mvc\Exception\MvcException;
+use Pars\Mvc\Exception\NotFoundException;
 
 /**
  * Class ArticleController
@@ -50,9 +56,18 @@ abstract class ArticleController extends CrudController
         return $detail;
     }
 
+    /**
+     * @return BaseEdit
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws MvcException
+     * @throws NotFoundException
+     */
     public function editAction()
     {
         $edit = parent::editAction();
+        $edit->setFileBeanList($this->getModel()->getFileBeanList());
         if ($this->getControllerRequest()->hasEditLocale()) {
             $this->getModel()->loadTranslationDefaults($edit->getBean());
             $edit->setTranslationOnly(true);
@@ -61,9 +76,18 @@ abstract class ArticleController extends CrudController
     }
 
 
+    /**
+     * @return mixed|ArticleEdit|BaseEdit
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws MvcException
+     * @throws NotFoundException
+     */
     public function edit_textAction()
     {
         $edit = $this->editAction();
+        $edit->setFileBeanList($this->getModel()->getFileBeanList());
         if ($edit instanceof ArticleEdit) {
             $edit->setTextOnly(true);
         }

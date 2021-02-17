@@ -14,10 +14,6 @@ class CmsPageParagraphOverview extends CmsParagraphOverview
         $this->setShowEdit(false);
         $this->setShowMove(true);
         $this->setShowCreateNew(true);
-        $id = new IdParameter();
-        foreach ($this->getCreateIdFields() as $createIdField) {
-            $id->addId($createIdField);
-        }
         parent::initialize();
     }
 

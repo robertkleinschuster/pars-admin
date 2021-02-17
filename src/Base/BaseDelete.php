@@ -32,13 +32,13 @@ abstract class BaseDelete extends Delete implements CrudComponentInterface
         $form->addSubmit(
             SubmitParameter::name(),
             $this->translate('delete.submit'),
-            SubmitParameter::createDelete(),
+            SubmitParameter::delete(),
             Submit::STYLE_DANGER,
             null,
             1,
             2
         );
-        $form->addHidden(SubmitParameter::name(), SubmitParameter::createDelete());
+        $form->addHidden(SubmitParameter::name(), SubmitParameter::delete());
         $form->addCancel($this->translate('delete.cancel'), $this->generateIndexPath());
         $form->addHidden(RedirectParameter::nameAttr(RedirectParameter::ATTRIBUTE_PATH), $this->generateIndexPath());
         if ($this->hasToken()) {
@@ -53,18 +53,13 @@ abstract class BaseDelete extends Delete implements CrudComponentInterface
      */
     protected function generateIndexPath(): string
     {
+        if ($this->hasContext()) {
+            return $this->getContext();
+        }
         $indexPath = $this->getPathHelper()
             ->setController($this->getRedirectController())
             ->setAction($this->getRedirectAction());
-        $id = new IdParameter();
-        foreach ($this->getRedirectIdFields() as $key => $value) {
-            if (is_string($key)) {
-                $id->addId($key, $value);
-            } else {
-                $id->addId($value);
-            }
-        }
-        $indexPath->addParameter($id);
+        $indexPath->addParameter(IdParameter::fromMap($this->getRedirectIdFields()));
         return $indexPath->getPath();
     }
 

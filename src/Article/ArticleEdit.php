@@ -16,8 +16,6 @@ use Pars\Model\File\FileBeanList;
  */
 abstract class ArticleEdit extends BaseEdit
 {
-    public ?array $fileOptions = null;
-
     public bool $textOnly = false;
     public bool $translationOnly = false;
     public ?FileBeanList $fileBeanList = null;
@@ -170,34 +168,6 @@ abstract class ArticleEdit extends BaseEdit
     public function setTextOnly(bool $textOnly): void
     {
         $this->textOnly = $textOnly;
-    }
-
-
-    /**
-     * @return array
-     */
-    public function getFileOptions(): array
-    {
-        return $this->fileOptions;
-    }
-
-    /**
-     * @param array $fileOptions
-     *
-     * @return $this
-     */
-    public function setFileOptions(array $fileOptions): self
-    {
-        $this->fileOptions = $fileOptions;
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasFileOptions(): bool
-    {
-        return isset($this->fileOptions);
     }
 
     /**

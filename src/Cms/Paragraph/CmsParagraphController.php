@@ -36,30 +36,14 @@ class CmsParagraphController extends ArticleController
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
 
-    protected function createOverview(): BaseOverview
+    public function editAction()
     {
-        return new CmsParagraphOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
-
-    protected function createDetail(): BaseDetail
-    {
-        $detail = new CmsParagraphDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $detail;
-    }
-
-    protected function createEdit(): BaseEdit
-    {
-        $edit = new CmsParagraphEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = parent::editAction();
         $edit->setStateOptions($this->getModel()->getCmsParagraphState_Options());
         $edit->setTypeOptions($this->getModel()->getCmsParagraphType_Options());
-        $edit->setFileBeanList($this->getModel()->getFileBeanList());
         return $edit;
     }
 
-    protected function createDelete(): BaseDelete
-    {
-        return new CmsParagraphDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
 
 
 }

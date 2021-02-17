@@ -26,7 +26,6 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
 
     protected function initialize()
     {
-        $this->setContext(self::CONTEXT_DETAIL);
         $this->initBackButton();
         $this->initEditButton();
         $this->initDeleteButton();
@@ -79,7 +78,7 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
         $path = $this->getPathHelper()
             ->setController($this->getEditController())
             ->setAction($this->getEditAction())
-            ->setId(IdParameter::createFromMap($this->getEditIdFields()));
+            ->setId(IdParameter::fromMap($this->getEditIdFields()));
         if ($this->hasContext()) {
             $path->addParameter(new Parameter('context', $this->getContext()));
         }
@@ -97,7 +96,7 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
         $path = $this->getPathHelper()
             ->setController($this->getEditController())
             ->setAction('delete')
-            ->setId(IdParameter::createFromMap($this->getEditIdFields()));
+            ->setId(IdParameter::fromMap($this->getEditIdFields()));
         if ($this->hasContext()) {
             $path->addParameter(new Parameter('context', $this->getContext()));
         }
@@ -109,10 +108,13 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
      */
     protected function generateIndexPath(): string
     {
+        if ($this->hasContext()) {
+       #     return $this->getContext();
+        }
         $indexPath = $this->getPathHelper()
             ->setController($this->getIndexController())
             ->setAction($this->getIndexAction());
-        $indexPath->setId(IdParameter::createFromMap($this->getIndexIdFields()));
+        $indexPath->setId(IdParameter::fromMap($this->getIndexIdFields()));
         return $indexPath->getPath();
     }
 

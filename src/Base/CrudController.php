@@ -83,6 +83,7 @@ abstract class CrudController extends BaseController
     public function indexAction()
     {
         $overview = $this->createOverview();
+        $overview->setContext($this->getPathHelper(true)->getPath());
         $overview->setToken($this->generateToken('submit_token'));
         $overview->setBeanList($this->getModel()->getBeanList());
         $this->getView()->append($overview);
@@ -146,6 +147,10 @@ abstract class CrudController extends BaseController
 
     /**
      * @return BaseOverview
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws MvcException
      */
     protected function createOverview(): BaseOverview
     {
@@ -154,13 +159,23 @@ abstract class CrudController extends BaseController
 
     /**
      * @return BaseDetail
-     * @throws NotFoundException
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
      * @throws BeanException
+     * @throws MvcException
+     * @throws NotFoundException
      */
     public function detailAction()
     {
         $row = new Row();
         $detail = $this->createDetail();
+        if ($this->getControllerRequest()->hasAttribute('context')) {
+            $context = $this->getControllerRequest()->getAttribute('context');
+            $detail->setContext($context);
+        } else {
+            $detail->setContext($this->getPathHelper(true)->getPath());
+        }
         $bean = $this->getModel()->getBean();
         $detail->setBean($bean);
         $column = new Column();
@@ -212,6 +227,10 @@ abstract class CrudController extends BaseController
 
     /**
      * @return BaseDetail
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws MvcException
      */
     protected function createDetail(): BaseDetail
     {
@@ -243,10 +262,11 @@ abstract class CrudController extends BaseController
 
     /**
      * @return BaseEdit
-     * @throws NotFoundException
      * @throws AttributeExistsException
      * @throws AttributeLockException
      * @throws AttributeNotFoundException
+     * @throws MvcException
+     * @throws NotFoundException
      */
     public function editAction()
     {
@@ -281,6 +301,10 @@ abstract class CrudController extends BaseController
 
     /**
      * @return BaseDelete
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws MvcException
      * @throws NotFoundException
      */
     public function deleteAction()

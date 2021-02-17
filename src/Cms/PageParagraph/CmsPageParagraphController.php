@@ -17,17 +17,33 @@ use Pars\Admin\Cms\Paragraph\CmsParagraphOverview;
  */
 class CmsPageParagraphController extends CmsParagraphController
 {
+    /**
+     * @return mixed|void
+     * @throws \Niceshops\Core\Exception\AttributeExistsException
+     * @throws \Niceshops\Core\Exception\AttributeLockException
+     * @throws \Niceshops\Core\Exception\AttributeNotFoundException
+     */
     protected function initModel()
     {
         parent::initModel();
         $this->setPermissions('cmspageparagraph.create', 'cmspageparagraph.edit', 'cmspageparagraph.delete');
     }
 
+    /**
+     * @return bool
+     */
     public function isAuthorized(): bool
     {
         return $this->checkPermission('cmspageparagraph');
     }
 
+    /**
+     * @return mixed|void
+     * @throws \Niceshops\Bean\Type\Base\BeanException
+     * @throws \Niceshops\Core\Exception\AttributeExistsException
+     * @throws \Niceshops\Core\Exception\AttributeLockException
+     * @throws \Niceshops\Core\Exception\AttributeNotFoundException
+     */
     protected function initView()
     {
         parent::initView();
@@ -35,21 +51,15 @@ class CmsPageParagraphController extends CmsParagraphController
         $subNavigation = new ContentNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('cmspage');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
-        if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute('CmsPage_ID')) {
-            $this->getView()->set('CmsPage_ID', (int)$this->getControllerRequest()->getId()->getAttribute('CmsPage_ID'));
+        if (
+            $this->getControllerRequest()->hasId()
+            && $this->getControllerRequest()->getId()->hasAttribute('CmsPage_ID')
+        ) {
+            $this->getView()->set(
+                'CmsPage_ID',
+                (int)$this->getControllerRequest()->getId()->getAttribute('CmsPage_ID')
+            );
         }
-    }
-
-    protected function createOverview(): BaseOverview
-    {
-        $overview = new CmsPageParagraphOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $overview;
-    }
-
-    protected function createDetail(): BaseDetail
-    {
-        $detail = new CmsPageParagraphDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $detail;
     }
 
     protected function createEdit(): BaseEdit
@@ -66,16 +76,9 @@ class CmsPageParagraphController extends CmsParagraphController
         return $edit;
     }
 
-    protected function createDelete(): BaseDelete
-    {
-        $delete = new CmsPageParagraphDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $delete;
-    }
-
     public function create_newAction()
     {
         $edit = new CmsPageParagraphCreateNew($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $edit->setFileOptions($this->getModel()->getFileOptions());
         $edit->setStateOptions($this->getModel()->getCmsParagraphState_Options());
         $edit->setTypeOptions($this->getModel()->getCmsParagraphType_Options());
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());

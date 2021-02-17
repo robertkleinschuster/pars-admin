@@ -25,7 +25,11 @@ interface CrudComponentInterface extends TranslatorAwareInterface, PathHelperAwa
      * @param TranslatorInterface $translator
      * @param UserBean $userBean
      */
-    public function __construct(PathHelper $pathHelper, TranslatorInterface $translator, UserBean $userBean);
+    public function __construct(
+        PathHelper $pathHelper,
+        TranslatorInterface $translator,
+        UserBean $userBean
+    );
 
     /**
      * @return string

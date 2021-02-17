@@ -65,7 +65,6 @@ class CmsPageController extends ArticleController
         $edit->setTypeOptions($this->getModel()->getCmsPageType_Options());
         $edit->setStateOptions($this->getModel()->getCmsPageState_Options());
         $edit->setRedirectOptions($this->getModel()->getCmsPageRedirect_Options());
-        $edit->setFileBeanList($this->getModel()->getFileBeanList());
         $edit->setLayoutOptions($this->getModel()->getCmsPageLayout_Options());
         return $edit;
     }
