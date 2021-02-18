@@ -50,7 +50,7 @@ abstract class ArticleController extends CrudController
             if ($detail instanceof ArticleDetail) {
                 if (!$bean->empty('ArticleTranslation_Host')) {
                     $detail->setPreviewPath(
-                        $bean->get('ArticleTranslation_Host') . '/' .  $this->getUserBean()->getLocale()->getUrl_Code() . "/$code?clearcache=pars"
+                        'https://' . $bean->get('ArticleTranslation_Host') . '/' .  $this->getUserBean()->getLocale()->getUrl_Code() . "/$code?clearcache=pars"
                     );
                 } else {
                     $detail->setPreviewPath(
