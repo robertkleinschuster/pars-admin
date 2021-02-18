@@ -6,6 +6,7 @@ use Niceshops\Core\Exception\AttributeExistsException;
 use Niceshops\Core\Exception\AttributeLockException;
 use Niceshops\Core\Exception\AttributeNotFoundException;
 use Pars\Admin\Base\BaseDetail;
+use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\SystemNavigation;
 
@@ -71,9 +72,9 @@ class UserController extends CrudController
         return $detail;
     }
 
-    public function editAction()
+    protected function createEdit(): BaseEdit
     {
-        $edit = parent::editAction();
+        $edit = parent::createEdit();
         $edit->setStateOptions($this->getModel()->getUserState_Options());
         $edit->setLocaleOptions($this->getModel()->getLocale_Options());
         return $edit;

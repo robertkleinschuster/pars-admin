@@ -1,17 +1,18 @@
 <?php
 
-
 namespace Pars\Admin\Import;
 
-
-use Pars\Admin\Base\BaseDelete;
-use Pars\Admin\Base\BaseDetail;
+use Niceshops\Bean\Type\Base\BeanException;
+use Niceshops\Core\Exception\AttributeExistsException;
+use Niceshops\Core\Exception\AttributeLockException;
+use Niceshops\Core\Exception\AttributeNotFoundException;
 use Pars\Admin\Base\BaseEdit;
-use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\SystemNavigation;
 use Pars\Admin\Import\Tesla\TeslaImportConfigure;
 use Pars\Component\Base\Alert\Alert;
+use Pars\Mvc\Exception\MvcException;
+use Pars\Mvc\Exception\NotFoundException;
 
 class ImportController extends CrudController
 {
@@ -39,62 +40,27 @@ class ImportController extends CrudController
 
 
     /**
-     * @return BaseOverview
-     * @throws \Niceshops\Bean\Type\Base\BeanException
-     * @throws \Niceshops\Core\Exception\AttributeExistsException
-     * @throws \Niceshops\Core\Exception\AttributeLockException
-     * @throws \Niceshops\Core\Exception\AttributeNotFoundException
-     */
-    protected function createOverview(): BaseOverview
-    {
-        return new ImportOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
-
-    /**
-     * @return BaseDetail
-     * @throws \Niceshops\Bean\Type\Base\BeanException
-     * @throws \Niceshops\Core\Exception\AttributeExistsException
-     * @throws \Niceshops\Core\Exception\AttributeLockException
-     * @throws \Niceshops\Core\Exception\AttributeNotFoundException
-     */
-    protected function createDetail(): BaseDetail
-    {
-        return new ImportDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
-
-    /**
      * @return BaseEdit
-     * @throws \Niceshops\Bean\Type\Base\BeanException
-     * @throws \Niceshops\Core\Exception\AttributeExistsException
-     * @throws \Niceshops\Core\Exception\AttributeLockException
-     * @throws \Niceshops\Core\Exception\AttributeNotFoundException
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws MvcException
      */
     protected function createEdit(): BaseEdit
     {
-        $edit = new ImportEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = parent::createEdit();
         $edit->setImportTypeOptions($this->getModel()->getImportTypeOptions());
         $edit->setArticleOptions($this->getModel()->getArticleOptions());
         return $edit;
     }
 
-    /**
-     * @return BaseDelete
-     * @throws \Niceshops\Bean\Type\Base\BeanException
-     * @throws \Niceshops\Core\Exception\AttributeExistsException
-     * @throws \Niceshops\Core\Exception\AttributeLockException
-     * @throws \Niceshops\Core\Exception\AttributeNotFoundException
-     */
-    protected function createDelete(): BaseDelete
-    {
-        return new ImportDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
 
     /**
-     * @throws \Niceshops\Bean\Type\Base\BeanException
-     * @throws \Niceshops\Core\Exception\AttributeExistsException
-     * @throws \Niceshops\Core\Exception\AttributeLockException
-     * @throws \Niceshops\Core\Exception\AttributeNotFoundException
-     * @throws \Pars\Mvc\Exception\NotFoundException
+     * @throws BeanException
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws NotFoundException
      */
     public function configureAction()
     {
@@ -117,7 +83,6 @@ class ImportController extends CrudController
     }
 
     /**
-     * @throws \Pars\Mvc\Exception\NotFoundException
      */
     public function runAction()
     {

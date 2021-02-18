@@ -38,31 +38,10 @@ class FileDirectoryController extends CrudController
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
 
-    protected function createOverview(): BaseOverview
-    {
-        return new FileDirectoryOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
-
-    protected function createDetail(): BaseDetail
-    {
-        return new FileDirectoryDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
-
     public function detailAction()
     {
         $this->pushAction('file', 'index', $this->translate('section.file'));
         return parent::detailAction();
     }
-
-    protected function createEdit(): BaseEdit
-    {
-        return new FileDirectoryEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
-
-    protected function createDelete(): BaseDelete
-    {
-        return new FileDirectoryDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-    }
-
 
 }

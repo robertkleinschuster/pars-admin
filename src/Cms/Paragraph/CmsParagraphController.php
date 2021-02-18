@@ -2,12 +2,14 @@
 
 namespace Pars\Admin\Cms\Paragraph;
 
+use Niceshops\Bean\Type\Base\BeanException;
+use Niceshops\Core\Exception\AttributeExistsException;
+use Niceshops\Core\Exception\AttributeLockException;
+use Niceshops\Core\Exception\AttributeNotFoundException;
 use Pars\Admin\Article\ArticleController;
-use Pars\Admin\Base\BaseDelete;
-use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
-use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
+use Pars\Mvc\Exception\MvcException;
 
 /**
  * Class CmsParagraphController
@@ -27,6 +29,13 @@ class CmsParagraphController extends ArticleController
         return $this->checkPermission('cmsparagraph');
     }
 
+    /**
+     * @return mixed|void
+     * @throws BeanException
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
     protected function initView()
     {
         parent::initView();
@@ -36,14 +45,18 @@ class CmsParagraphController extends ArticleController
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
 
-    public function editAction()
+    /**
+     * @return BaseEdit
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws MvcException
+     */
+    protected function createEdit(): BaseEdit
     {
-        $edit = parent::editAction();
+        $edit = parent::createEdit();
         $edit->setStateOptions($this->getModel()->getCmsParagraphState_Options());
         $edit->setTypeOptions($this->getModel()->getCmsParagraphType_Options());
         return $edit;
     }
-
-
-
 }

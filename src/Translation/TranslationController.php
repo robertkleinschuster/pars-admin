@@ -11,6 +11,7 @@ use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\SystemNavigation;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Span;
+use Pars\Mvc\Exception\MvcException;
 use Pars\Mvc\Exception\NotFoundException;
 
 /**
@@ -56,6 +57,20 @@ class TranslationController extends CrudController
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
 
+    /**
+     * @return BaseEdit
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws MvcException
+     */
+    protected function createEdit(): BaseEdit
+    {
+        $edit = parent::createEdit();
+        $edit->setLocaleOptions($this->getModel()->getLocale_Options());
+        return $edit;
+    }
+
 
     /**
      * @return BaseEdit
@@ -68,10 +83,12 @@ class TranslationController extends CrudController
     public function editAction()
     {
         $edit = parent::editAction();
-        $edit->setLocaleOptions($this->getModel()->getLocale_Options());
         $source = $this->getModel()->getTranslationSource();
         if ($source) {
             $detail = $this->createDetail();
+            $detail->setShowEdit(false);
+            $detail->setShowBack(false);
+            $detail->setShowDelete(false);
             $detail->setBean($source);
             $this->getView()->append($detail);
             $detail = new Detail();

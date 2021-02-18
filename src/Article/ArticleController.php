@@ -68,11 +68,25 @@ abstract class ArticleController extends CrudController
     public function editAction()
     {
         $edit = parent::editAction();
-        $edit->setFileBeanList($this->getModel()->getFileBeanList());
         if ($this->getControllerRequest()->hasEditLocale()) {
             $this->getModel()->loadTranslationDefaults($edit->getBean());
             $edit->setTranslationOnly(true);
         }
+        return $edit;
+    }
+
+
+    /**
+     * @return BaseEdit
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws MvcException
+     */
+    protected function createEdit(): BaseEdit
+    {
+        $edit = parent::createEdit();
+        $edit->setFileBeanList($this->getModel()->getFileBeanList());
         return $edit;
     }
 

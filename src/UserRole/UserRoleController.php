@@ -47,12 +47,6 @@ class UserRoleController extends RoleController
         return $overview;
     }
 
-    protected function createDetail(): BaseDetail
-    {
-        $detail = new UserRoleDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $detail;
-    }
-
 
     protected function createEdit(): BaseEdit
     {
@@ -68,9 +62,4 @@ class UserRoleController extends RoleController
         return $edit;
     }
 
-    protected function createDelete(): BaseDelete
-    {
-        $delete = new UserRoleDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        return $delete;
-    }
 }

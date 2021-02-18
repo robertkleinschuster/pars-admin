@@ -155,29 +155,11 @@ class CmsPageEdit extends ArticleEdit
 
     protected function getRedirectAction(): string
     {
-        if ($this->hasCurrentContext()) {
-            switch ($this->getCurrentContext()) {
-                case self::CONTEXT_DETAIL:
-                    return 'detail';
-                case self::CONTEXT_OVERVIEW:
-                    return 'index';
-            }
-        }
         return 'detail';
     }
 
     protected function getRedirectIdFields(): array
     {
-        if ($this->hasCurrentContext()) {
-            switch ($this->getCurrentContext()) {
-                case self::CONTEXT_OVERVIEW:
-                    return [];
-                case self::CONTEXT_DETAIL:
-                    return [
-                        'CmsPage_ID'
-                    ];
-            }
-        }
         return [
             'CmsPage_ID'
         ];

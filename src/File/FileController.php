@@ -65,11 +65,10 @@ class FileController extends CrudController
      * @throws AttributeLockException
      * @throws AttributeNotFoundException
      * @throws MvcException
-     * @throws NotFoundException
      */
-    public function editAction()
+    protected function createEdit(): BaseEdit
     {
-        $edit = parent::editAction();
+        $edit = parent::createEdit();
         $edit->setTypeOptions($this->getModel()->getFileType_Options());
         $edit->setDirectoryOptions($this->getModel()->getFileDirectory_Options());
         return $edit;

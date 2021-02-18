@@ -2,12 +2,13 @@
 
 namespace Pars\Admin\Cms\Menu;
 
-use Pars\Admin\Base\BaseDetail;
+use Niceshops\Core\Exception\AttributeExistsException;
+use Niceshops\Core\Exception\AttributeLockException;
+use Niceshops\Core\Exception\AttributeNotFoundException;
 use Pars\Admin\Base\BaseEdit;
-use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
 use Pars\Admin\Base\CrudController;
-
+use Pars\Mvc\Exception\MvcException;
 
 /**
  * Class CmsMenuController
@@ -55,7 +56,6 @@ class CmsMenuController extends CrudController
         if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute('CmsMenu_ID')) {
             $id = $this->getControllerRequest()->getId()->getAttribute('CmsMenu_ID');
             $this->getView()->set('CmsMenu_ID_Parent', (int) $id);
-
         }
         $this->pushAction('cmssubmenu', 'index', $this->translate('section.menu'));
         $bean =  $detail->getBean();
@@ -73,9 +73,16 @@ class CmsMenuController extends CrudController
         return $detail;
     }
 
-    public function editAction()
+    /**
+     * @return BaseEdit
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws MvcException
+     */
+    protected function createEdit(): BaseEdit
     {
-        $edit = parent::editAction();
+        $edit = parent::createEdit();
         $edit->setStateOptions($this->getModel()->getCmsMenuState_Options());
         $edit->setTypeOptions($this->getModel()->getCmsMenuType_Options());
         $edit->setPageOptions($this->getModel()->getCmsPage_Options());

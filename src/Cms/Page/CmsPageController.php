@@ -57,18 +57,17 @@ class CmsPageController extends ArticleController
      * @throws AttributeExistsException
      * @throws AttributeLockException
      * @throws AttributeNotFoundException
-     * @throws NotFoundException
+     * @throws MvcException
      */
-    public function editAction()
+    protected function createEdit(): BaseEdit
     {
-        $edit = parent::editAction();
+        $edit = parent::createEdit();
         $edit->setTypeOptions($this->getModel()->getCmsPageType_Options());
         $edit->setStateOptions($this->getModel()->getCmsPageState_Options());
         $edit->setRedirectOptions($this->getModel()->getCmsPageRedirect_Options());
         $edit->setLayoutOptions($this->getModel()->getCmsPageLayout_Options());
         return $edit;
     }
-
 
     /**
      * @return mixed|\Pars\Admin\Article\ArticleDetail|\Pars\Admin\Base\BaseDetail
