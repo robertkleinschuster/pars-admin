@@ -44,7 +44,7 @@ class MainNavigation extends BaseNavigation
         $logo = new Icon('pars-logo');
         $logo->setWidth('100px');
         $logo->addInlineStyle('fill', '#fff');
-        $logo->addInlineStyle('margin-top', '-7px');
+        $logo->addInlineStyle('margin-top', '-3px');
         return $this->setBrand('', $this->getPathHelper()->setController('index')->setAction('index'))->push($logo);
     }
 

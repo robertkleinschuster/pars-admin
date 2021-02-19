@@ -119,11 +119,13 @@ abstract class ArticleDetail extends BaseDetail
         if ($this->isShowEdit()) {
             $button = new EditTextButton();
             $button->setModal(true);
+            $button->setModalTitle($this->translate('edit.title'));
             $button->setPath($this->generateEditTextPath());
             $dropdown = new DropdownEditButton($button);
             foreach ($this->getLocale_List() as $locale) {
                 $button = new Button();
                 $button->setModal(true);
+                $button->setModalTitle($this->translate('edit.title'));
                 $button->setContent($locale->get('Locale_Name'));
                 $button->setPath($this->generateEditTextPath($locale->get('Locale_UrlCode')));
                 $dropdown->getDropdownList()->push($button);

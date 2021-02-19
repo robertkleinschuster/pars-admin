@@ -1,5 +1,7 @@
 <?php
 return [
+    'upload.title' => 'Upload',
+    'create.title' => 'New',
     'setup' => 'Setup',
     'unauthorized.heading' => 'Access denied!',
     'unauthorized.text' => 'You do not have sufficient permission to access this area.',

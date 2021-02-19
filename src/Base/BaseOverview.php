@@ -6,7 +6,10 @@ use Niceshops\Bean\Type\Base\BeanException;
 use Niceshops\Core\Exception\AttributeExistsException;
 use Niceshops\Core\Exception\AttributeLockException;
 use Pars\Component\Base\Form\Hidden;
+use Pars\Component\Base\Overview\DeleteButton;
+use Pars\Component\Base\Overview\EditButton;
 use Pars\Component\Base\Overview\Overview;
+use Pars\Component\Base\Toolbar\CreateButton;
 use Pars\Component\Base\Toolbar\CreateNewButton;
 use Pars\Component\Base\Toolbar\DeleteBulkButton;
 use Pars\Helper\Parameter\ContextParameter;
@@ -61,16 +64,34 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             $this->setDeletePath($this->generateDeletePath());
         }
         if ($this->isShowCreate()) {
-            $this->getToolbar()->setCreatePath($this->generateCreatePath());
+            $this->getToolbar()->unshift(
+                (new CreateButton($this->generateCreatePath()))
+                    ->setModal(true)
+                    ->setModalTitle($this->translate('create.title'))
+            );
         }
         if ($this->isShowCreateNew()) {
-            $this->getToolbar()->push((new CreateNewButton($this->generateCreateNewPath()))->setModal(true));
+            $this->getToolbar()->push(
+                (new CreateNewButton($this->generateCreateNewPath()))
+                    ->setModal(true)
+                    ->setModalTitle($this->translate('create_new.title'))
+            );
         }
         $this->setBulkFieldName(IdListParameter::name());
         $this->setBulkFieldValue(IdListParameter::fromMap($this->getDetailIdFields()));
         $this->initDeleteBulkButton();
         $this->initMovePaths();
         parent::initialize();
+    }
+
+    protected function initEditButton(): EditButton
+    {
+        return parent::initEditButton()->setModalTitle($this->translate('edit.title'));
+    }
+
+    protected function initDeleteButton(): DeleteButton
+    {
+        return parent::initDeleteButton()->setModalTitle($this->translate('delete.title'));
     }
 
 

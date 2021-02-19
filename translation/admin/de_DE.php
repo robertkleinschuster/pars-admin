@@ -1,5 +1,7 @@
 <?php
 return [
+    'upload.title' => 'Upload',
+    'create.title' => 'Neu',
     'setup' => 'Einrichtung',
     'unauthorized.heading' => 'Zugriff verweigert!',
     'unauthorized.text' => 'Sie verfügen nicht über die erforderliche Berechtigung um auf diesen Bereich zuzugriefen.',

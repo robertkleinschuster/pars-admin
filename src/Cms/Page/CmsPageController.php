@@ -130,6 +130,7 @@ class CmsPageController extends ArticleController
         $overview->getToolbar()->push(
             (new UploadButton())
                 ->setModal(true)
+                ->setModalTitle($this->translate('upload.title'))
                 ->setPath(
                     $this->getPathHelper(true)
                         ->setAction('import')
