@@ -99,7 +99,7 @@ trait CrudComponentTrait
     *
     * @return $this
     */
-    public function setNextContext(string $nextContext): self
+    public function setNextContext(string $nextContext)
     {
         $this->nextContext = $nextContext;
         return $this;

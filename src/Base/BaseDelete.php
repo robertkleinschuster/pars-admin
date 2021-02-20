@@ -40,7 +40,7 @@ abstract class BaseDelete extends Delete implements CrudComponentInterface
         );
         $form->addHidden(SubmitParameter::name(), SubmitParameter::delete());
         $form->addCancel($this->translate('delete.cancel'), $this->generateIndexPath());
-        $form->addHidden(RedirectParameter::nameAttr(RedirectParameter::ATTRIBUTE_PATH), $this->generateIndexPath());
+        $form->addHidden(RedirectParameter::nameAttr(RedirectParameter::ATTRIBUTE_PATH), $this->generateRedirectPath());
         if ($this->hasToken()) {
             $form->addHidden('submit_token', $this->getToken());
         }
@@ -56,6 +56,18 @@ abstract class BaseDelete extends Delete implements CrudComponentInterface
         if ($this->hasCurrentContext()) {
             return $this->getCurrentContext();
         }
+        $indexPath = $this->getPathHelper()
+            ->setController($this->getRedirectController())
+            ->setAction($this->getRedirectAction());
+        $indexPath->addParameter(IdParameter::fromMap($this->getRedirectIdFields()));
+        return $indexPath->getPath();
+    }
+
+    /**
+     * @return string
+     */
+    protected function generateRedirectPath(): string
+    {
         $indexPath = $this->getPathHelper()
             ->setController($this->getRedirectController())
             ->setAction($this->getRedirectAction());

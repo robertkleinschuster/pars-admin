@@ -69,7 +69,10 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
     protected function initDeleteButton()
     {
         if ($this->isShowDelete()) {
-            $this->getToolbar()->push(new DeleteButton($this->generateDeletePath()));
+            $this->getToolbar()->push((new DeleteButton($this->generateDeletePath()))
+                ->setModal(true)
+                ->setModalTitle($this->translate('delete.title'))
+            );
         }
     }
 

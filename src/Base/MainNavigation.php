@@ -19,6 +19,9 @@ use Pars\Helper\Parameter\Parameter;
  */
 class MainNavigation extends BaseNavigation
 {
+
+    public ?string $key = 'pars';
+
     /**
      * @throws AttributeExistsException
      * @throws AttributeLockException
@@ -132,7 +135,7 @@ class MainNavigation extends BaseNavigation
                 $this->getPathHelper()
                     ->setController('index')
                     ->setAction('index')
-                    ->addParameter(new Parameter('clearcache', 'pars'))
+                    ->addParameter(new Parameter('clearcache', $this->key ?? 'pars'))
                     ->getPath()
             )
             ->addItem(

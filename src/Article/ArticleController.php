@@ -43,20 +43,8 @@ abstract class ArticleController extends CrudController
             $this->getView()->getLayout()->getComponentListAfter()->push($fileOverview);
         }
         if ($bean->isset('ArticleTranslation_Code')) {
-            $code = $bean->get('ArticleTranslation_Code');
-            if ($code == '/') {
-                $code = '';
-            }
             if ($detail instanceof ArticleDetail) {
-                if (!$bean->empty('ArticleTranslation_Host')) {
-                    $detail->setPreviewPath(
-                        'https://' . $bean->get('ArticleTranslation_Host') . '/' .  $this->getUserBean()->getLocale()->getUrl_Code() . "/$code?clearcache=pars"
-                    );
-                } else {
-                    $detail->setPreviewPath(
-                        $this->getModel()->getConfig('frontend.domain') . '/' .  $this->getUserBean()->getLocale()->getUrl_Code() . "/$code?clearcache=pars"
-                    );
-                }
+                $detail->setPreviewPath($this->getModel()->generatePreviewPath($bean));
             }
         }
         $detail->setLocale_List($this->getModel()->getLocale_List());

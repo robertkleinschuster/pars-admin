@@ -167,7 +167,6 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
      */
     public function getConfig(string $key = null)
     {
-
         if ($this->config === null) {
             $this->initConfig();
         }

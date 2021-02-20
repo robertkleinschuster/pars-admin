@@ -7,6 +7,7 @@ use Niceshops\Core\Exception\AttributeExistsException;
 use Niceshops\Core\Exception\AttributeLockException;
 use Niceshops\Core\Exception\AttributeNotFoundException;
 use Pars\Helper\Parameter\PaginationParameter;
+use Pars\Model\Article\Translation\ArticleTranslationBean;
 use Pars\Model\Authentication\User\UserBean;
 use Pars\Model\Authentication\User\UserBeanFinder;
 
@@ -75,4 +76,33 @@ abstract class CrudModel extends BaseModel
         return isset($this->currentPage);
     }
 
+    /**
+     * @param ArticleTranslationBean|null $bean
+     * @return string
+     * @throws BeanException
+     * @throws \Pars\Mvc\Exception\NotFoundException
+     */
+    public function generatePreviewPath(ArticleTranslationBean $bean = null)
+    {
+        if (empty($bean)) {
+            $bean = $this->getBean();
+        }
+        $code = $bean->get('ArticleTranslation_Code');
+        if ($code == '/') {
+            $code = '';
+        }
+        $key = $this->getConfig('asset.key');
+        if (!$bean->empty('ArticleTranslation_Host')) {
+            return 'https://'
+                . $bean->get('ArticleTranslation_Host')
+                . '/'
+                .  $this->getUserBean()->getLocale()->getUrl_Code()
+                . "/$code?clearcache=$key";
+        } else {
+            return $this->getConfig('frontend.domain')
+                . '/'
+                .  $this->getUserBean()->getLocale()->getUrl_Code()
+                . "/$code?clearcache=$key";
+        }
+    }
 }
