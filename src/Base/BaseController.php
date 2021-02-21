@@ -98,7 +98,12 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $this->getModel()->setBeanConverter($converter);
         $this->getModel()->initialize();
         $this->getModel()->initializeDependencies();
-        $this->getView()->getLayout()->getNavigation()->key = $this->getModel()->getConfig('asset.key');
+        $layout = $this->getView()->getLayout();
+        if ($layout instanceof DashboardLayout) {
+            if ($layout->hasNavigation()) {
+                $layout->getNavigation()->key = $this->getModel()->getConfig('asset.key');
+            }
+        }
         $this->getView()->set('language', $this->getTranslator()->getLocale());
         $this->getView()->set('title', $this->getModel()->getConfig('admin.title'));
         $this->getView()->set('author', $this->getModel()->getConfig('admin.author'));
