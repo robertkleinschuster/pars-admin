@@ -24,6 +24,9 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
     public bool $createBulk = false;
     public bool $showSubmit = true;
 
+    /**
+     *
+     */
     protected function initialize()
     {
         parent::initialize();
@@ -32,6 +35,9 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
         $this->initSubmitButton();
     }
 
+    /**
+     *
+     */
     protected function initToken()
     {
         if ($this->hasToken()) {
@@ -39,6 +45,9 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
         }
     }
 
+    /**
+     *
+     */
     protected function initFieldErrors()
     {
         foreach ($this->getForm()->getFormGroupList() as $formGroup) {
@@ -48,6 +57,10 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
         }
     }
 
+    /**
+     * @throws \Niceshops\Core\Exception\AttributeExistsException
+     * @throws \Niceshops\Core\Exception\AttributeLockException
+     */
     protected function initSubmitButton()
     {
         if ($this->isShowSubmit()) {
@@ -195,24 +208,38 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
         $this->showSubmit = $showSubmit;
     }
 
-
+    /**
+     * @return string
+     */
     abstract protected function getRedirectController(): string;
 
+    /**
+     * @return string
+     */
     protected function getRedirectAction(): string
     {
         return 'detail';
     }
 
+    /**
+     * @return string
+     */
     protected function getCreateRedirectAction(): string
     {
         return 'index';
     }
 
+    /**
+     * @return array
+     */
     protected function getCreateRedirectIdFields(): array
     {
         return [];
     }
 
+    /**
+     * @return array
+     */
     abstract protected function getRedirectIdFields(): array;
 
     /**

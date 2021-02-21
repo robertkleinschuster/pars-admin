@@ -9,6 +9,9 @@ use Pars\Component\Base\Field\Headline;
 
 class ConfigEdit extends BaseEdit
 {
+    /**
+     *
+     */
     protected function initialize()
     {
         $this->push(new Headline('{Config_Code}'));
@@ -27,11 +30,17 @@ class ConfigEdit extends BaseEdit
         parent::initialize();
     }
 
+    /**
+     * @return string
+     */
     protected function getRedirectController(): string
     {
         return 'config';
     }
 
+    /**
+     * @return string[]
+     */
     protected function getRedirectIdFields(): array
     {
         return [

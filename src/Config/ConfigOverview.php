@@ -1,9 +1,10 @@
 <?php
 
-
 namespace Pars\Admin\Config;
 
-
+use Niceshops\Bean\Type\Base\BeanException;
+use Niceshops\Core\Exception\AttributeExistsException;
+use Niceshops\Core\Exception\AttributeLockException;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\ColorAwareInterface;
 use Pars\Component\Base\Field\Icon;
@@ -14,7 +15,11 @@ use Pars\Component\Base\Field\Icon;
  */
 class ConfigOverview extends BaseOverview
 {
-
+    /**
+     * @throws BeanException
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     */
     protected function initialize()
     {
         $this->setSection($this->translate('section.config'));
@@ -32,16 +37,21 @@ class ConfigOverview extends BaseOverview
         parent::initialize();
     }
 
+    /**
+     * @return string
+     */
     protected function getController(): string
     {
         return 'config';
     }
 
+    /**
+     * @return string[]
+     */
     protected function getDetailIdFields(): array
     {
         return [
             'Config_Code'
         ];
     }
-
 }
