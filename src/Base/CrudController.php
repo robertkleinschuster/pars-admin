@@ -141,15 +141,15 @@ abstract class CrudController extends BaseController
             if (
                 ($page - $current->getPage() < $padding && $page > $current->getPage() - $padding)
                 || $page == 1 || $page == $pages
-                || ($current->getPage() < $padding && $page <= $padding*2)
-                || ($current->getPage() > $pages - $padding && $page >= $pages - $padding*2)
+                || ($current->getPage() < $padding && $page <= $padding * 2)
+                || ($current->getPage() > $pages - $padding && $page >= $pages - $padding * 2)
             ) {
                 $item = $pagination->addPage($path->getPath(), $page, $current->getPage() == $page);
-                if (abs($page - $current->getPage()) > $padding/2) {
+                if (abs($page - $current->getPage()) > $padding / 2) {
                     $item->addOption('d-none d-lg-block');
-                } elseif (abs($page - $current->getPage()) > $padding/3) {
+                } elseif (abs($page - $current->getPage()) > $padding / 3) {
                     $item->addOption('d-none d-md-block');
-                } else if (abs($page - $current->getPage()) > $padding/4) {
+                } elseif (abs($page - $current->getPage()) > $padding / 4) {
                     $item->addOption('d-none d-sm-block');
                 }
             } elseif ($page == 2 || $page == $pages - 1) {
