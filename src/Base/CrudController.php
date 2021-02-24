@@ -218,6 +218,10 @@ abstract class CrudController extends BaseController
     protected function getCurrentPagination()
     {
         $sessionKey = $this->getControllerRequest()->getAction() . $this->getControllerRequest()->getController();
+        if ($this->getControllerRequest()->hasId()) {
+            $sessionKey .= $this->getControllerRequest()->getId()->toString();
+        }
+        $sessionKey = md5($sessionKey);
         if ($this->getControllerRequest()->hasPagingation()) {
             $current = $this->getControllerRequest()->getPagination();
             if (!$this->getControllerRequest()->acceptParameter($current)) {

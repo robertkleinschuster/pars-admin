@@ -179,6 +179,10 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function handleNavigationState(string $id, int $index)
     {
+        if ($this->getControllerRequest()->hasId()) {
+            $id .= $this->getControllerRequest()->getId()->toString();
+        }
+        $id = md5($id);
         $this->getSession()->set($id, $index);
     }
 
@@ -188,6 +192,10 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     public function getNavigationState(string $id): int
     {
+        if ($this->getControllerRequest()->hasId()) {
+            $id .= $this->getControllerRequest()->getId()->toString();
+        }
+        $id = md5($id);
         return (int)$this->getSession()->get($id, 1);
     }
 
