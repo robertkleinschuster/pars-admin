@@ -2,8 +2,6 @@
 
 namespace Pars\Admin\Cms\Page;
 
-use Niceshops\Bean\Type\Base\AbstractBaseBean;
-use Niceshops\Bean\Type\Base\AbstractBaseBeanList;
 use Niceshops\Bean\Type\Base\BeanException;
 use Niceshops\Bean\Type\Base\BeanInterface;
 use Niceshops\Core\Exception\AttributeExistsException;

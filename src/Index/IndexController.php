@@ -186,4 +186,20 @@ class IndexController extends BaseController
         $this->getView()->append($group);
     }
 
+    public function tasksAction()
+    {
+        return $this->unauthorized();
+        $config = $this->getModel()->getApplicationConfig();
+        if (isset($config['task'])) {
+            foreach ($config['task'] as $class => $taskConfig) {
+                /**
+                 * @var $task \Pars\Core\Task\Base\AbstractTask
+                 */
+                $task = new $class($taskConfig, $this->getModel()->getDbAdpater());
+                $task->execute();
+                echo 'Task: ' . $class . '<br>';
+            }
+        }
+        exit;
+    }
 }
