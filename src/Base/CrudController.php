@@ -70,6 +70,9 @@ abstract class CrudController extends BaseController
     {
         parent::initModel();
         $this->getModel()->setCurrentPage($this->getCurrentPagination()->getPage());
+        if ($this->getControllerRequest()->hasPagingation()) {
+            $this->getSession()->set('limit', $this->getControllerRequest()->getPagination()->getLimit());
+        }
     }
 
     /**
@@ -120,13 +123,75 @@ abstract class CrudController extends BaseController
         $limit = $this->getDefaultLimit();
         $pages = ceil($count / $limit);
         $current = $this->getCurrentPagination();
+        $padding = 10;
         for ($page = 1; $page <= $pages; $page++) {
+
+            if ($page == 1 && $current->getPage() > 1) {
+                $parameter = new PaginationParameter($current->getPage() - 1, $limit);
+                $parameter->setController($this->getControllerRequest()->getController());
+                $parameter->setAction($this->getControllerRequest()->getAction());
+                $path = $this->getPathHelper(true)->addParameter($parameter);
+                $pagination->addPage($path->getPath(), '<', false);
+            }
+
             $parameter = new PaginationParameter($page, $limit);
             $parameter->setController($this->getControllerRequest()->getController());
             $parameter->setAction($this->getControllerRequest()->getAction());
             $path = $this->getPathHelper(true)->addParameter($parameter);
-            $pagination->addPage($path->getPath(), $page, $current->getPage() == $page);
+            if (
+                ($page - $current->getPage() < $padding && $page > $current->getPage() - $padding)
+                || $page == 1 || $page == $pages
+                || ($current->getPage() < $padding && $page <= $padding*2)
+                || ($current->getPage() > $pages - $padding && $page >= $pages - $padding*2)
+            ) {
+                $item = $pagination->addPage($path->getPath(), $page, $current->getPage() == $page);
+                if (abs($page - $current->getPage()) > $padding/2) {
+                    $item->addOption('d-none d-lg-block');
+                } elseif (abs($page - $current->getPage()) > $padding/3) {
+                    $item->addOption('d-none d-md-block');
+                } else if (abs($page - $current->getPage()) > $padding/4) {
+                    $item->addOption('d-none d-sm-block');
+                }
+            } elseif ($page == 2 || $page == $pages - 1) {
+                $pagination->addPage(null, '..', false);
+            }
+
+            if ($page == $pages && $current->getPage() < $pages) {
+                $parameter = new PaginationParameter($current->getPage() + 1, $limit);
+                $parameter->setController($this->getControllerRequest()->getController());
+                $parameter->setAction($this->getControllerRequest()->getAction());
+                $path = $this->getPathHelper(true)->addParameter($parameter);
+                $pagination->addPage($path->getPath(), '>', false);
+            }
         }
+        $overview->getAfter()->push($pagination);
+
+        $pagination = new Pagination();
+        $parameter = new PaginationParameter($current->getPage(), 10);
+        $parameter->setController($this->getControllerRequest()->getController());
+        $parameter->setAction($this->getControllerRequest()->getAction());
+        $path = $this->getPathHelper(true)->addParameter($parameter);
+        $pagination->addPage($path->getPath(), '10', $this->getDefaultLimit() == 10);
+        $parameter = new PaginationParameter($current->getPage(), 20);
+        $parameter->setController($this->getControllerRequest()->getController());
+        $parameter->setAction($this->getControllerRequest()->getAction());
+        $path = $this->getPathHelper(true)->addParameter($parameter);
+        $pagination->addPage($path->getPath(), '20', $this->getDefaultLimit() == 20);
+        $parameter = new PaginationParameter($current->getPage(), 50);
+        $parameter->setController($this->getControllerRequest()->getController());
+        $parameter->setAction($this->getControllerRequest()->getAction());
+        $path = $this->getPathHelper(true)->addParameter($parameter);
+        $pagination->addPage($path->getPath(), '50', $this->getDefaultLimit() == 50);
+        $parameter = new PaginationParameter($current->getPage(), 100);
+        $parameter->setController($this->getControllerRequest()->getController());
+        $parameter->setAction($this->getControllerRequest()->getAction());
+        $path = $this->getPathHelper(true)->addParameter($parameter);
+        $pagination->addPage($path->getPath(), '100', $this->getDefaultLimit() == 100);
+        $parameter = new PaginationParameter($current->getPage(), 500);
+        $parameter->setController($this->getControllerRequest()->getController());
+        $parameter->setAction($this->getControllerRequest()->getAction());
+        $path = $this->getPathHelper(true)->addParameter($parameter);
+        $pagination->addPage($path->getPath(), '500', $this->getDefaultLimit() == 500);
         $overview->getAfter()->push($pagination);
     }
 
@@ -348,6 +413,6 @@ abstract class CrudController extends BaseController
      */
     protected function getDefaultLimit(): int
     {
-        return $this->getModel()->getConfig('admin.pagination.limit') ?? 10;
+        return $this->getSession()->get('limit') ?? $this->getModel()->getConfig('admin.pagination.limit') ?? 10;
     }
 }
