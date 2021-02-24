@@ -11,6 +11,7 @@ use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Grid\Column;
 use Pars\Component\Base\Grid\Row;
+use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Pagination\Pagination;
 use Pars\Helper\Parameter\PaginationParameter;
 use Pars\Mvc\Exception\MvcException;
@@ -116,8 +117,19 @@ abstract class CrudController extends BaseController
      * @throws AttributeNotFoundException
      * @throws BeanException
      */
-    protected function initPagination($overview)
+    protected function initPagination(Overview $overview)
     {
+        $this->getView()->set('OverviewCount', $this->getModel()->getBeanFinder()->count());
+        $span = new Span($this->translate('overview.count'));
+        $span->addOption('float-right');
+        $span->addOption('border');
+        $span->addOption('p-1');
+        $span->addOption('d-none');
+        $span->addOption('d-sm-block');
+        $span->setContent($span->render($this->getView(), true));
+        $span->clearOptions();
+        $overview->getAfter()->push($span);
+
         $pagination = new Pagination();
         $count = $this->getModel()->getBeanFinder()->count();
         $limit = $this->getDefaultLimit();
@@ -145,12 +157,14 @@ abstract class CrudController extends BaseController
                 || ($current->getPage() > $pages - $padding && $page >= $pages - $padding * 2)
             ) {
                 $item = $pagination->addPage($path->getPath(), $page, $current->getPage() == $page);
-                if (abs($page - $current->getPage()) > $padding / 2) {
-                    $item->addOption('d-none d-lg-block');
-                } elseif (abs($page - $current->getPage()) > $padding / 3) {
-                    $item->addOption('d-none d-md-block');
-                } elseif (abs($page - $current->getPage()) > $padding / 4) {
-                    $item->addOption('d-none d-sm-block');
+                if ($page != 1 && $page != $pages) {
+                    if (abs($page - $current->getPage()) > $padding / 2) {
+                        $item->addOption('d-none d-lg-block');
+                    } elseif (abs($page - $current->getPage()) > $padding / 3) {
+                        $item->addOption('d-none d-md-block');
+                    } elseif (abs($page - $current->getPage()) > $padding / 4) {
+                        $item->addOption('d-none d-sm-block');
+                    }
                 }
             } elseif ($page == 2 || $page == $pages - 1) {
                 $pagination->addPage(null, '..', false);

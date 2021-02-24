@@ -3,6 +3,7 @@ return [
     'upload.title' => 'Upload',
     'create.title' => 'Neu',
     'setup' => 'Einrichtung',
+    'overview.count' => '{OverviewCount} Einträge',
     'unauthorized.heading' => 'Zugriff verweigert!',
     'unauthorized.text' => 'Sie verfügen nicht über die erforderliche Berechtigung um auf diesen Bereich zuzugriefen.',
     'notfound.heading' => 'Nicht gefunden!',
