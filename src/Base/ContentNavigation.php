@@ -14,7 +14,7 @@ class ContentNavigation extends BaseNavigation
         $this->setBreakpoint(Navigation::BREAKPOINT_LARGE);
         $this->addOption('ajax')->addOption('history')->addOption('remote')->setData('component', 'components');
         $this->initCmsPageItem();
-        $this->initCmsParagraphItem();
+        $this->initCmsBlockItem();
         $this->initCmsMenuItem();
         $this->initBrand();
         parent::initialize();
@@ -35,13 +35,13 @@ class ContentNavigation extends BaseNavigation
     /**
      * @return Item
      */
-    protected function initCmsParagraphItem(): Item
+    protected function initCmsBlockItem(): Item
     {
         return $this->addItem(
-            $this->translate('navigation.content.cmsparagraph'),
-            $this->getPathHelper()->setController('cmsparagraph')->setAction('index'),
-            'cmsparagraph'
-        )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'cmsparagraph'))->addOption('cache');
+            $this->translate('navigation.content.cmsblock'),
+            $this->getPathHelper()->setController('cmsblock')->setAction('index'),
+            'cmsblock'
+        )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'cmsblock'))->addOption('cache');
     }
 
     /**

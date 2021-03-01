@@ -88,9 +88,9 @@ class CmsPageController extends ArticleController
             self::SUB_ACTION_MODE_TABBED
         );
         $this->pushAction(
-            'cmspageparagraph',
+            'cmspageblock',
             'index',
-            $this->translate('section.paragraph'),
+            $this->translate('section.block'),
             self::SUB_ACTION_MODE_TABBED
         );
         switch ($detail->getBean()->get('CmsPageType_Code')) {
@@ -194,7 +194,7 @@ class CmsPageController extends ArticleController
             $idParameter = new IdParameter();
             $idParameter->addId('CmsPage_ID', $page->get('CmsPage_ID'));
             $path = $this->getPathHelper(true)->setId($idParameter);
-            $alert->addParagraph($page->get('ArticleTranslation_Name'))->setPath($path);
+            $alert->addBlock($page->get('ArticleTranslation_Name'))->setPath($path);
             $this->getView()->prepend($alert);
         }
     }

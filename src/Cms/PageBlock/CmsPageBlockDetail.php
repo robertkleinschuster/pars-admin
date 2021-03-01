@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Pars\Admin\Cms\PageParagraph;
+namespace Pars\Admin\Cms\PageBlock;
 
 
-use Pars\Admin\Cms\Paragraph\CmsParagraphDetail;
+use Pars\Admin\Cms\Block\CmsBlockDetail;
 
-class CmsPageParagraphDetail extends CmsParagraphDetail
+class CmsPageBlockDetail extends CmsBlockDetail
 {
     protected function initialize()
     {
@@ -17,13 +17,13 @@ class CmsPageParagraphDetail extends CmsParagraphDetail
     {
         return [
             'CmsPage_ID',
-            'CmsParagraph_ID'
+            'CmsBlock_ID'
         ];
     }
 
     protected function getEditController(): string
     {
-        return 'cmsparagraph';
+        return 'cmsblock';
     }
 
     protected function getEditAction(): string

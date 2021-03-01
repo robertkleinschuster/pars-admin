@@ -1,20 +1,20 @@
 <?php
 
 
-namespace Pars\Admin\Cms\Paragraph;
+namespace Pars\Admin\Cms\Block;
 
 
 use Pars\Admin\Article\ArticleOverview;
 use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Field\Span;
 
-class CmsParagraphOverview extends ArticleOverview
+class CmsBlockOverview extends ArticleOverview
 {
     protected function initialize()
     {
-        $this->setSection($this->translate('section.paragraph'));
-        $span = new Badge('{CmsParagraphState_Code}');
-        $span->setFormat(new CmsParagraphStateFieldFormat($this->getTranslator()));
+        $this->setSection($this->translate('section.block'));
+        $span = new Badge('{CmsBlockState_Code}');
+        $span->setFormat(new CmsBlockStateFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {
             $span->setPath($this->getDetailPath());
             $span->addOption(Span::OPTION_DECORATION_NONE);
@@ -23,8 +23,8 @@ class CmsParagraphOverview extends ArticleOverview
 
         parent::initialize();
 
-        $span = new Span('{CmsParagrphType_Code}', $this->translate('cmsparagraphtype.code'));
-        $span->setFormat(new CmsParagraphTypeFieldFormat($this->getTranslator()));
+        $span = new Span('{CmsParagrphType_Code}', $this->translate('cmsblocktype.code'));
+        $span->setFormat(new CmsBlockTypeFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {
             $span->setPath($this->getDetailPath());
             $span->addOption(Span::OPTION_DECORATION_NONE);
@@ -35,13 +35,13 @@ class CmsParagraphOverview extends ArticleOverview
 
     protected function getController(): string
     {
-        return 'cmsparagraph';
+        return 'cmsblock';
     }
 
     protected function getDetailIdFields(): array
     {
         return [
-            'CmsParagraph_ID'
+            'CmsBlock_ID'
         ];
     }
 

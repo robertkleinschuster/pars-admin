@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Pars\Admin\Cms\PageParagraph;
+namespace Pars\Admin\Cms\PageBlock;
 
 
-use Pars\Admin\Cms\Paragraph\CmsParagraphDelete;
+use Pars\Admin\Cms\Block\CmsBlockDelete;
 
-class CmsPageParagraphDelete extends CmsParagraphDelete
+class CmsPageBlockDelete extends CmsBlockDelete
 {
     protected function getRedirectController(): string
     {

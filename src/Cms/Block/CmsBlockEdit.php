@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Pars\Admin\Cms\Paragraph;
+namespace Pars\Admin\Cms\Block;
 
 
 use Pars\Admin\Article\ArticleEdit;
 
-class CmsParagraphEdit extends ArticleEdit
+class CmsBlockEdit extends ArticleEdit
 {
     private ?array $typeOptions = null;
     private ?array $stateOptions = null;
@@ -17,20 +17,20 @@ class CmsParagraphEdit extends ArticleEdit
         if (!$this->isTranslationOnly() && !$this->isTextOnly()) {
             if ($this->hasTypeOptions()) {
                 $this->getForm()->addSelect(
-                    'CmsParagraphType_Code',
+                    'CmsBlockType_Code',
                     $this->getTypeOptions(),
-                    '{CmsParagraphType_Code}',
-                    $this->translate('cmsparagraphtype.code'),
+                    '{CmsBlockType_Code}',
+                    $this->translate('cmsblocktype.code'),
                     2,
                     1
                 );
             }
             if ($this->hasStateOptions()) {
                 $this->getForm()->addSelect(
-                    'CmsParagraphState_Code',
+                    'CmsBlockState_Code',
                     $this->getStateOptions(),
-                    '{CmsParagraphState_Code}',
-                    $this->translate('cmsparagraphstate.code'),
+                    '{CmsBlockState_Code}',
+                    $this->translate('cmsblockstate.code'),
                     2,
                     2
                 );
@@ -41,7 +41,7 @@ class CmsParagraphEdit extends ArticleEdit
 
     protected function getRedirectController(): string
     {
-        return 'cmsparagraph';
+        return 'cmsblock';
     }
 
     protected function getRedirectAction(): string
@@ -52,7 +52,7 @@ class CmsParagraphEdit extends ArticleEdit
     protected function getRedirectIdFields(): array
     {
         return [
-            'CmsParagraph_ID'
+            'CmsBlock_ID'
         ];
     }
 

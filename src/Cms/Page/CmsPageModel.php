@@ -14,9 +14,9 @@ use Pars\Model\Cms\Page\CmsPageBeanProcessor;
 use Pars\Model\Cms\Page\Layout\CmsPageLayoutBeanFinder;
 use Pars\Model\Cms\Page\State\CmsPageStateBeanFinder;
 use Pars\Model\Cms\Page\Type\CmsPageTypeBeanFinder;
-use Pars\Model\Cms\PageParagraph\CmsPageParagraphBeanProcessor;
-use Pars\Model\Cms\Paragraph\CmsParagraphBeanFinder;
-use Pars\Model\Cms\Paragraph\CmsParagraphBeanProcessor;
+use Pars\Model\Cms\PageBlock\CmsPageBlockBeanProcessor;
+use Pars\Model\Cms\Block\CmsBlockBeanFinder;
+use Pars\Model\Cms\Block\CmsBlockBeanProcessor;
 use Pars\Model\Cms\Post\CmsPostBeanFinder;
 use Pars\Model\Cms\Post\CmsPostBeanProcessor;
 
@@ -200,35 +200,35 @@ class CmsPageModel extends ArticleModel
                     $processor->setBeanList($postList);
                     $processor->save();
 
-                    $paragraphList = $page->get('CmsParagraph_BeanList');
-                    foreach ($paragraphList as $paragraph) {
-                        $paragraph->unset('CmsPage_ID');
-                        $paragraph->unset('CmsParagraph_ID');
-                        $paragraph->unset('Article_ID');
-                        $paragraph->unset('File_ID');
-                        $paragraph->unset('Person_ID_Create');
-                        $paragraph->unset('Person_ID_Edit');
-                        $finder = new CmsParagraphBeanFinder($this->getDbAdpater());
+                    $blockList = $page->get('CmsBlock_BeanList');
+                    foreach ($blockList as $block) {
+                        $block->unset('CmsPage_ID');
+                        $block->unset('CmsBlock_ID');
+                        $block->unset('Article_ID');
+                        $block->unset('File_ID');
+                        $block->unset('Person_ID_Create');
+                        $block->unset('Person_ID_Edit');
+                        $finder = new CmsBlockBeanFinder($this->getDbAdpater());
                         $finder->setLocale_Code($locale);
-                        $finder->setArticle_Code($paragraph->get('Article_Code'));
+                        $finder->setArticle_Code($block->get('Article_Code'));
                         if ($finder->count()) {
                             $bean = $finder->getBean();
-                            $paragraph->set('CmsParagraph_ID', $bean->get('CmsParagraph_ID'));
-                            $paragraph->set('Article_ID', $bean->get('Article_ID'));
+                            $block->set('CmsBlock_ID', $bean->get('CmsBlock_ID'));
+                            $block->set('Article_ID', $bean->get('Article_ID'));
                         }
                     }
 
-                    $processor = new CmsParagraphBeanProcessor($this->getDbAdpater());
+                    $processor = new CmsBlockBeanProcessor($this->getDbAdpater());
                     $processor->setTranslator($this->getTranslator());
-                    $processor->setBeanList($paragraphList);
+                    $processor->setBeanList($blockList);
                     $processor->save();
 
-                    foreach ($paragraphList as $paragraph) {
-                        $paragraph->set('CmsPage_ID', $page->get('CmsPage_ID'));
+                    foreach ($blockList as $block) {
+                        $block->set('CmsPage_ID', $page->get('CmsPage_ID'));
                     }
 
-                    $processor = new CmsPageParagraphBeanProcessor($this->getDbAdpater());
-                    $processor->setBeanList($paragraphList);
+                    $processor = new CmsPageBlockBeanProcessor($this->getDbAdpater());
+                    $processor->setBeanList($blockList);
                     $processor->save();
                 }
             }

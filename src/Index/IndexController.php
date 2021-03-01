@@ -61,15 +61,15 @@ class IndexController extends BaseController
         }
 
 
-        if (!$this->getModel()->hasParagraph()) {
+        if (!$this->getModel()->hasBlock()) {
             $heading = new HtmlElement('h5.mr-1.d-inline');
-            $heading->setPath($this->getPathHelper()->setController('cmsparagraph'));
-            $heading->push(new Badge($this->translate('index.no.active.paragraph'), Badge::STYLE_WARNING));
+            $heading->setPath($this->getPathHelper()->setController('cmsblock'));
+            $heading->push(new Badge($this->translate('index.no.active.block'), Badge::STYLE_WARNING));
             $span->push($heading);
         } else {
             $score += 10;
             $heading = new HtmlElement('h5.mr-1.d-inline');
-            $heading->push(new Badge($this->translate('index.active.paragraph'), Badge::STYLE_SUCCESS));
+            $heading->push(new Badge($this->translate('index.active.block'), Badge::STYLE_SUCCESS));
             $span->push($heading);
         }
 
@@ -154,8 +154,8 @@ class IndexController extends BaseController
         $group->push($item);
 
         $item = new Item();
-        $item->setContent($this->translate('index.create.paragraph'));
-        $item->setPath($this->getPathHelper()->setController('cmsparagraph')->setAction('create'));
+        $item->setContent($this->translate('index.create.block'));
+        $item->setPath($this->getPathHelper()->setController('cmsblock')->setAction('create'));
         $group->push($item);
 
         $item = new Item();

@@ -1,36 +1,36 @@
 <?php
 
-namespace Pars\Admin\Cms\PageParagraph;
+namespace Pars\Admin\Cms\PageBlock;
 
 use Niceshops\Bean\Processor\BeanOrderProcessor;
 use Niceshops\Bean\Type\Base\BeanException;
 use Niceshops\Bean\Type\Base\BeanInterface;
-use Pars\Admin\Cms\Paragraph\CmsParagraphModel;
+use Pars\Admin\Cms\Block\CmsBlockModel;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
-use Pars\Model\Cms\PageParagraph\CmsPageParagraphBeanFinder;
-use Pars\Model\Cms\PageParagraph\CmsPageParagraphBeanProcessor;
-use Pars\Model\Cms\Paragraph\CmsParagraphBeanFinder;
-use Pars\Model\Cms\Paragraph\CmsParagraphBeanList;
+use Pars\Model\Cms\PageBlock\CmsPageBlockBeanFinder;
+use Pars\Model\Cms\PageBlock\CmsPageBlockBeanProcessor;
+use Pars\Model\Cms\Block\CmsBlockBeanFinder;
+use Pars\Model\Cms\Block\CmsBlockBeanList;
 use Pars\Mvc\Exception\MvcException;
 
 /**
- * Class CmsPageParagraphModel
- * @package Pars\Admin\Cms\PageParagraph
- * @method CmsPageParagraphBeanFinder getBeanFinder()
- * @method CmsPageParagraphBeanProcessor getBeanProcessor()
+ * Class CmsPageBlockModel
+ * @package Pars\Admin\Cms\PageBlock
+ * @method CmsPageBlockBeanFinder getBeanFinder()
+ * @method CmsPageBlockBeanProcessor getBeanProcessor()
  */
-class CmsPageParagraphModel extends CmsParagraphModel
+class CmsPageBlockModel extends CmsBlockModel
 {
     public function initialize()
     {
-        $this->setBeanFinder(new CmsPageParagraphBeanFinder($this->getDbAdpater()));
-        $this->setBeanProcessor(new CmsPageParagraphBeanProcessor($this->getDbAdpater()));
+        $this->setBeanFinder(new CmsPageBlockBeanFinder($this->getDbAdpater()));
+        $this->setBeanProcessor(new CmsPageBlockBeanProcessor($this->getDbAdpater()));
         $this->getBeanFinder()->setLocale_Code($this->getTranslator()->getLocale());
         $this->setBeanOrderProcessor(new BeanOrderProcessor(
-            new CmsPageParagraphBeanProcessor($this->getDbAdpater()),
-            new CmsPageParagraphBeanFinder($this->getDbAdpater()),
-            'CmsPage_CmsParagraph_Order',
+            new CmsPageBlockBeanProcessor($this->getDbAdpater()),
+            new CmsPageBlockBeanFinder($this->getDbAdpater()),
+            'CmsPage_CmsBlock_Order',
             'CmsPage_ID'
         ));
     }
@@ -39,23 +39,23 @@ class CmsPageParagraphModel extends CmsParagraphModel
      * @return array
      * @throws BeanException
      */
-    public function getParagraph_Options(): array
+    public function getBlock_Options(): array
     {
         $options = [];
-        $finder = new CmsParagraphBeanFinder($this->getDbAdpater());
+        $finder = new CmsBlockBeanFinder($this->getDbAdpater());
         $finder->setLocale_Code($this->getTranslator()->getLocale());
         foreach ($finder->getBeanListDecorator() as $bean) {
-            $options[$bean->get('CmsParagraph_ID')] = $bean->get('ArticleTranslation_Name');
+            $options[$bean->get('CmsBlock_ID')] = $bean->get('ArticleTranslation_Name');
         }
         return $options;
     }
 
     /**
-     * @return CmsParagraphBeanList
+     * @return CmsBlockBeanList
      */
-    public function getParagraphBeanList(): CmsParagraphBeanList
+    public function getBlockBeanList(): CmsBlockBeanList
     {
-        $finder = new CmsParagraphBeanFinder($this->getDbAdpater());
+        $finder = new CmsBlockBeanFinder($this->getDbAdpater());
         $finder->setLocale_Code($this->getTranslator()->getLocale());
         return $finder->getBeanList();
     }
@@ -90,7 +90,7 @@ class CmsPageParagraphModel extends CmsParagraphModel
             $finder->setLocale_Code($this->getTranslator()->getLocale());
             $finder->setCmsPage_ID($data['CmsPage_ID']);
             $page = $finder->getBean();
-            $count = $page->get('CmsParagraph_BeanList')->count() + 1;
+            $count = $page->get('CmsBlock_BeanList')->count() + 1;
             $bean->set('Article_Code', $page->get('Article_Code') . '-' . $count);
             $bean->set('ArticleTranslation_Code', $page->get('ArticleTranslation_Code') . '-' . $count);
             $bean->set('ArticleTranslation_Name', $page->get('ArticleTranslation_Name'));

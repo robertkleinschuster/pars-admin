@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Pars\Admin\Cms\Paragraph;
+namespace Pars\Admin\Cms\Block;
 
 
 use Laminas\I18n\Translator\TranslatorAwareTrait;
@@ -11,7 +11,7 @@ use Pars\Component\Base\StyleAwareInterface;
 use Pars\Mvc\View\FieldFormatInterface;
 use Pars\Mvc\View\FieldInterface;
 
-class CmsParagraphStateFieldFormat implements FieldFormatInterface
+class CmsBlockStateFieldFormat implements FieldFormatInterface
 {
     use TranslatorAwareTrait;
 
@@ -26,7 +26,7 @@ class CmsParagraphStateFieldFormat implements FieldFormatInterface
 
     public function __invoke(FieldInterface $field, string $value, ?BeanInterface $bean = null): string
     {
-        switch ($bean->get('CmsParagraphState_Code')) {
+        switch ($bean->get('CmsBlockState_Code')) {
             case 'active':
                 if ($field instanceof StyleAwareInterface) {
                     $field->setStyle(StyleAwareInterface::STYLE_SUCCESS);
@@ -38,6 +38,6 @@ class CmsParagraphStateFieldFormat implements FieldFormatInterface
                 }
                 break;
         }
-        return $this->getTranslator()->translate('cmsparagraphstate.code.' . $bean->get('CmsParagraphState_Code'), 'admin');
+        return $this->getTranslator()->translate('cmsblockstate.code.' . $bean->get('CmsBlockState_Code'), 'admin');
     }
 }

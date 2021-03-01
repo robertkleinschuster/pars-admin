@@ -1,21 +1,21 @@
 <?php
 
-namespace Pars\Admin\Cms\PageParagraph;
+namespace Pars\Admin\Cms\PageBlock;
 
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
-use Pars\Admin\Cms\Paragraph\CmsParagraphController;
-use Pars\Admin\Cms\Paragraph\CmsParagraphOverview;
+use Pars\Admin\Cms\Block\CmsBlockController;
+use Pars\Admin\Cms\Block\CmsBlockOverview;
 
 /**
- * Class CmsPageParagraphController
- * @package Pars\Admin\Cms\PageParagraph
- * @method CmsPageParagraphModel getModel()
+ * Class CmsPageBlockController
+ * @package Pars\Admin\Cms\PageBlock
+ * @method CmsPageBlockModel getModel()
  */
-class CmsPageParagraphController extends CmsParagraphController
+class CmsPageBlockController extends CmsBlockController
 {
     /**
      * @return mixed|void
@@ -26,7 +26,7 @@ class CmsPageParagraphController extends CmsParagraphController
     protected function initModel()
     {
         parent::initModel();
-        $this->setPermissions('cmspageparagraph.create', 'cmspageparagraph.edit', 'cmspageparagraph.delete');
+        $this->setPermissions('cmspageblock.create', 'cmspageblock.edit', 'cmspageblock.delete');
     }
 
     /**
@@ -34,7 +34,7 @@ class CmsPageParagraphController extends CmsParagraphController
      */
     public function isAuthorized(): bool
     {
-        return $this->checkPermission('cmspageparagraph');
+        return $this->checkPermission('cmspageblock');
     }
 
     /**
@@ -64,24 +64,24 @@ class CmsPageParagraphController extends CmsParagraphController
 
     protected function createEdit(): BaseEdit
     {
-        $edit = new CmsPageParagraphEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $overview = new CmsParagraphOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = new CmsPageBlockEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $overview = new CmsBlockOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $overview->setShowDeleteBulk(false);
         $overview->setShowCreate(false);
         $overview->setShowEdit(false);
         $overview->setShowDetail(false);
         $overview->setShowDelete(false);
-        $overview->setBeanList($this->getModel()->getParagraphBeanList());
+        $overview->setBeanList($this->getModel()->getBlockBeanList());
         $edit->getForm()->push($overview);
         return $edit;
     }
 
     public function create_newAction()
     {
-        $edit = new CmsPageParagraphCreateNew($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = new CmsPageBlockCreateNew($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $this->injectContext($edit);
-        $edit->setStateOptions($this->getModel()->getCmsParagraphState_Options());
-        $edit->setTypeOptions($this->getModel()->getCmsParagraphType_Options());
+        $edit->setStateOptions($this->getModel()->getCmsBlockState_Options());
+        $edit->setTypeOptions($this->getModel()->getCmsBlockType_Options());
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $edit->setBean($this->getModel()->getEmptyBean(array_replace($this->getControllerRequest()->getId()->getAttribute_List(), $this->getPreviousAttributes())));
         $this->getModel()->getBeanConverter()

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Pars\Admin\Cms\Paragraph;
+namespace Pars\Admin\Cms\Block;
 
 
 use Laminas\I18n\Translator\TranslatorAwareTrait;
@@ -10,7 +10,7 @@ use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Mvc\View\FieldFormatInterface;
 use Pars\Mvc\View\FieldInterface;
 
-class CmsParagraphTypeFieldFormat implements FieldFormatInterface
+class CmsBlockTypeFieldFormat implements FieldFormatInterface
 {
     use TranslatorAwareTrait;
 
@@ -25,7 +25,7 @@ class CmsParagraphTypeFieldFormat implements FieldFormatInterface
 
     public function __invoke(FieldInterface $field, string $value, ?BeanInterface $bean = null): string
     {
-        return $this->getTranslator()->translate('cmsparagraphtype.code.' . $bean->get('CmsParagraphType_Code'), 'admin');
+        return $this->getTranslator()->translate('cmsblocktype.code.' . $bean->get('CmsBlockType_Code'), 'admin');
     }
 
 }

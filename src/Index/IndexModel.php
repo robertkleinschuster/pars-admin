@@ -5,7 +5,7 @@ namespace Pars\Admin\Index;
 use Pars\Admin\Base\BaseModel;
 use Pars\Model\Cms\Menu\CmsMenuBeanFinder;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
-use Pars\Model\Cms\Paragraph\CmsParagraphBeanFinder;
+use Pars\Model\Cms\Block\CmsBlockBeanFinder;
 use Pars\Model\Localization\Locale\LocaleBeanFinder;
 
 class IndexModel extends BaseModel
@@ -21,9 +21,9 @@ class IndexModel extends BaseModel
         return (new CmsPageBeanFinder($this->getDbAdpater()))->setCmsPageState_Code('active')->setArticleTranslation_Code('/')->count();
     }
 
-    public function hasParagraph()
+    public function hasBlock()
     {
-        return (new CmsParagraphBeanFinder($this->getDbAdpater()))->setCmsParagraphState_Code('active')->count();
+        return (new CmsBlockBeanFinder($this->getDbAdpater()))->setCmsBlockState_Code('active')->count();
     }
 
     public function hasMenu()

@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Pars\Admin\Cms\PageParagraph;
+namespace Pars\Admin\Cms\PageBlock;
 
 
-use Pars\Admin\Cms\Paragraph\CmsParagraphOverview;
+use Pars\Admin\Cms\Block\CmsBlockOverview;
 use Pars\Helper\Parameter\IdParameter;
 
-class CmsPageParagraphOverview extends CmsParagraphOverview
+class CmsPageBlockOverview extends CmsBlockOverview
 {
     protected function initialize()
     {
@@ -19,7 +19,7 @@ class CmsPageParagraphOverview extends CmsParagraphOverview
 
     protected function getController(): string
     {
-        return 'cmspageparagraph';
+        return 'cmspageblock';
     }
 
 
@@ -34,7 +34,7 @@ class CmsPageParagraphOverview extends CmsParagraphOverview
     {
         return [
             'CmsPage_ID',
-            'CmsParagraph_ID'
+            'CmsBlock_ID'
         ];
     }
 

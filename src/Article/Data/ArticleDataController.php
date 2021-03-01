@@ -53,6 +53,15 @@ class ArticleDataController extends CrudController
                 (int) $this->getControllerRequest()->getId()->getAttribute('CmsPage_ID')
             );
         }
+        if (
+            $this->getControllerRequest()->hasId()
+            && $this->getControllerRequest()->getId()->hasAttribute('CmsBlock_ID')
+        ) {
+            $this->getView()->set(
+                'CmsBlock_ID',
+                (int) $this->getControllerRequest()->getId()->getAttribute('CmsBlock_ID')
+            );
+        }
     }
 
     /**

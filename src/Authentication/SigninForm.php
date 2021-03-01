@@ -52,14 +52,14 @@ class SigninForm extends Form
         parent::initialize();
 
         if ($this->hasSignupPath()) {
-            $paragraph = new Paragraph();
+            $block = new Paragraph();
             $span = new Span($this->translate('login.register.label') . ' ');
-            $paragraph->push($span);
+            $block->push($span);
             $span = new Span($this->translate('login.register.link.label'));
             $span->setColor(Span::COLOR_PRIMARY);
             $span->setPath($this->getSignupPath());
-            $paragraph->push($span);
-            $this->push($paragraph);
+            $block->push($span);
+            $this->push($block);
         }
     }
 

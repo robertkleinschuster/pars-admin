@@ -1,16 +1,16 @@
 <?php
 
 
-namespace Pars\Admin\Cms\Paragraph;
+namespace Pars\Admin\Cms\Block;
 
 
 use Pars\Admin\Article\ArticleDelete;
 
-class CmsParagraphDelete extends ArticleDelete
+class CmsBlockDelete extends ArticleDelete
 {
     protected function getRedirectController(): string
     {
-        return 'cmsparagraph';
+        return 'cmsblock';
     }
 
 }

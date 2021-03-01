@@ -150,7 +150,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 $this->translate('notfound.heading'),
                 $this->translate('notfound.text')
             );
-            $alert->addParagraph($exception->getMessage());
+            $alert->addBlock($exception->getMessage());
             $this->getView()->append($alert);
         } else {
             parent::notfound($exception);
@@ -378,7 +378,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             $alert = new Alert();
             $alert->setHeading($validationHelper->getSummary('PermissionDenied'));
             foreach ($validationHelper->getErrorList('Permission') as $item) {
-                $alert->addParagraph($item);
+                $alert->addBlock($item);
             }
             if ($this->hasView()) {
                 $this->getView()->prepend($alert);
@@ -389,7 +389,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         if (count($validationHelper->getErrorList('General'))) {
             $alert = new Alert();
             foreach ($validationHelper->getErrorList('General') as $item) {
-                $alert->addParagraph($item);
+                $alert->addBlock($item);
             }
             if ($this->hasView()) {
                 $this->getView()->prepend($alert);
@@ -417,7 +417,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 . ' ms'
             );
             foreach ($profiles as $profile) {
-                $alert->addParagraph($profile['sql'] . "<br>{$profile['elapse']} ms");
+                $alert->addBlock($profile['sql'] . "<br>{$profile['elapse']} ms");
             }
             $this->getView()->prepend($alert);
         }
@@ -501,12 +501,12 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         } else {
             $alert->setStyle(Alert::STYLE_DANGER);
         }
-        $alert->addParagraph($throwable->getMessage());
-        $alert->addParagraph("{$throwable->getFile()}:{$throwable->getLine()}");
-        $alert->addParagraph('Trace');
+        $alert->addBlock($throwable->getMessage());
+        $alert->addBlock("{$throwable->getFile()}:{$throwable->getLine()}");
+        $alert->addBlock('Trace');
         $trace = explode(PHP_EOL, $throwable->getTraceAsString());
         $trace = array_slice($trace, 0, 5);
-        $alert->addParagraph(implode('<br>', $trace));
+        $alert->addBlock(implode('<br>', $trace));
         if ($this->hasView()) {
             $this->getView()->append($alert);
         } else {

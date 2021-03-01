@@ -1,13 +1,13 @@
 <?php
 
 
-namespace Pars\Admin\Cms\PageParagraph;
+namespace Pars\Admin\Cms\PageBlock;
 
-use Pars\Admin\Cms\Paragraph\CmsParagraphEdit;
+use Pars\Admin\Cms\Block\CmsBlockEdit;
 
-class CmsPageParagraphCreateNew extends CmsParagraphEdit
+class CmsPageBlockCreateNew extends CmsBlockEdit
 {
-    protected ?array $paragraphOptions = null;
+    protected ?array $blockOptions = null;
 
 
     protected function initFields()
@@ -20,28 +20,28 @@ class CmsPageParagraphCreateNew extends CmsParagraphEdit
     /**
      * @return array
      */
-    public function getParagraphOptions(): array
+    public function getBlockOptions(): array
     {
-        return $this->paragraphOptions;
+        return $this->blockOptions;
     }
 
     /**
-     * @param array $paragraphOptions
+     * @param array $blockOptions
      *
      * @return $this
      */
-    public function setParagraphOptions(array $paragraphOptions): self
+    public function setBlockOptions(array $blockOptions): self
     {
-        $this->paragraphOptions = $paragraphOptions;
+        $this->blockOptions = $blockOptions;
         return $this;
     }
 
     /**
      * @return bool
      */
-    public function hasParagraphOptions(): bool
+    public function hasBlockOptions(): bool
     {
-        return isset($this->paragraphOptions);
+        return isset($this->blockOptions);
     }
 
     protected function getRedirectController(): string
