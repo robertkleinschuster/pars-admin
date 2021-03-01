@@ -61,14 +61,16 @@
       "@clear-config-cache",
       "php bin/dbschema.php",
       "php bin/dbdata.php",
-      "php bin/dbspecial.php"
+      "php bin/dbspecial.php",
+      "php bin/clear-cache.php"
     ],
     "post-install-cmd": [
       "Pars\\Core\\Deployment\\UpdateHandler::postInstall",
       "@clear-config-cache",
       "php bin/dbschema.php",
       "php bin/dbdata.php",
-      "php bin/dbspecial.php"
+      "php bin/dbspecial.php",
+      "php bin/clear-cache.php"
     ],
     "post-package-install": [
       "Pars\\Core\\Deployment\\UpdateHandler::postPackageInstall"
