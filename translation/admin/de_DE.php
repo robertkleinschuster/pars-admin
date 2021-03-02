@@ -342,4 +342,5 @@ return [
     'userpermission.code.userrole.edit' => 'Rollen bearbeiten',
     'userpermission.code.userrole.delete' => 'Rollen löschen',
     'articletranslation.text.hint' => 'Platzhalter: {my-example-translation-code}, {block:my-example-block-code}',
+    'search.placeholder' => 'Suchen...'
 ];

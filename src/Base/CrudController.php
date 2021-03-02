@@ -9,11 +9,13 @@ use Niceshops\Core\Exception\AttributeLockException;
 use Niceshops\Core\Exception\AttributeNotFoundException;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Span;
+use Pars\Component\Base\Form\Form;
 use Pars\Component\Base\Grid\Column;
 use Pars\Component\Base\Grid\Row;
 use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Pagination\Pagination;
 use Pars\Helper\Parameter\PaginationParameter;
+use Pars\Helper\Parameter\SearchParameter;
 use Pars\Mvc\Exception\MvcException;
 use Pars\Mvc\Exception\NotFoundException;
 
@@ -86,6 +88,13 @@ abstract class CrudController extends BaseController
      */
     public function indexAction()
     {
+        $this->getView()->getLayout()->getSubNavigation()->setSearch(
+            SearchParameter::nameAttr('text'),
+            $this->translate('search.placeholder')
+        );
+        if ($this->getControllerRequest()->hasSearch()) {
+            $this->getView()->getLayout()->getSubNavigation()->getSearch()->setValue($this->getControllerRequest()->getSearch()->getText());
+        }
         $overview = $this->createOverview();
         $this->injectContext($overview);
         $overview->setToken($this->generateToken('submit_token'));
