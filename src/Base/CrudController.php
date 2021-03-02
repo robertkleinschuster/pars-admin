@@ -94,6 +94,7 @@ abstract class CrudController extends BaseController
         );
         if ($this->getControllerRequest()->hasSearch()) {
             $this->getView()->getLayout()->getSubNavigation()->getSearch()->setValue($this->getControllerRequest()->getSearch()->getText());
+            $this->getView()->getLayout()->getSubNavigation()->setSearchAction($this->getPathHelper()->getPath());
         }
         $overview = $this->createOverview();
         $this->injectContext($overview);
