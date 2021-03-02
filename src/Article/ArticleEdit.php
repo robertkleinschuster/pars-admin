@@ -99,7 +99,7 @@ abstract class ArticleEdit extends BaseEdit
             '{ArticleTranslation_Text}',
             $this->translate('articletranslation.text'),
             33
-        );
+        )->setHint($this->translate('articletranslation.text.hint'));
         $this->getForm()->addWysiwyg(
             'ArticleTranslation_Footer',
             '{ArticleTranslation_Footer}',
