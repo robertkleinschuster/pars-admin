@@ -48,6 +48,8 @@ class SetupController extends BaseController
         }
         if ($count > 0) {
             $this->getControllerResponse()->setRedirect($this->getRedirectPath()->getPath());
+            header('Location: ' . $this->getRedirectPath()->getPath());
+            exit;
         } else {
             $this->getModel()->addOption(SetupModel::OPTION_CREATE_ALLOWED);
         }
