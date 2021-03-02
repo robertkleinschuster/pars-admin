@@ -123,5 +123,12 @@ abstract class ArticleModel extends CrudModel
         }
     }
 
+    public function getEmptyBean(array $data = []): BeanInterface
+    {
+        $bean = parent::getEmptyBean($data);
+        $bean->set('Article_Data', new DataBean());
+        return $bean;
+    }
+
 
 }
