@@ -7,7 +7,6 @@ namespace Pars\Admin\User;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Component\Base\Field\Badge;
 
-
 /**
  * Class Detail
  * @package Pars\Component\Components\Detail
@@ -28,7 +27,6 @@ class UserDetail extends BaseDetail
         $this->append($state);
 
         parent::initialize();
-
     }
 
     protected function getIndexController(): string
@@ -61,6 +59,4 @@ class UserDetail extends BaseDetail
     {
         return ['Person_ID'];
     }
-
-
 }

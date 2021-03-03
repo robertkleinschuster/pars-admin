@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Block;
-
 
 use Niceshops\Bean\Type\Base\BeanException;
 use Pars\Admin\Article\ArticleDetail;
@@ -51,5 +49,4 @@ class CmsBlockDetail extends ArticleDetail
             'CmsBlock_ID'
         ];
     }
-
 }

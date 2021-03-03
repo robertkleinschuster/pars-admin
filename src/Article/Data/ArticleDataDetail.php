@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Article\Data;
-
 
 use Pars\Admin\Base\BaseDetail;
 
@@ -41,5 +39,4 @@ class ArticleDataDetail extends BaseDetail
     {
         return ['ArticleData_ID'];
     }
-
 }

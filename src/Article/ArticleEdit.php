@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Article;
-
 
 use Niceshops\Bean\Type\Base\BeanException;
 use Pars\Admin\Base\BaseEdit;
@@ -221,5 +219,4 @@ abstract class ArticleEdit extends BaseEdit
     {
         return isset($this->fileBeanList);
     }
-
 }

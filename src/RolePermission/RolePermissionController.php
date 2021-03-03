@@ -9,7 +9,6 @@ use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\SystemNavigation;
 
-
 /**
  * Class RolePermissionController
  * @package Pars\Admin\RolePermission

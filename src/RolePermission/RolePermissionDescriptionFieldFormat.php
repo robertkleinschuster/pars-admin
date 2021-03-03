@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\RolePermission;
-
 
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
@@ -27,5 +25,4 @@ class RolePermissionDescriptionFieldFormat implements FieldFormatInterface
     {
         return $this->getTranslator()->translate('userpermission.code.' . $bean->get('UserPermission_Code'), 'admin');
     }
-
 }

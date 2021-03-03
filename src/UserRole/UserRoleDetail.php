@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\UserRole;
-
 
 use Pars\Admin\Role\RoleDetail;
 
@@ -40,5 +38,4 @@ class UserRoleDetail extends RoleDetail
     {
         return ['UserRole_ID', 'Person_ID'];
     }
-
 }

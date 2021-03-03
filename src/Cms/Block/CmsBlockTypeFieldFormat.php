@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Block;
-
 
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
@@ -27,5 +25,4 @@ class CmsBlockTypeFieldFormat implements FieldFormatInterface
     {
         return $this->getTranslator()->translate('cmsblocktype.code.' . $bean->get('CmsBlockType_Code'), 'admin');
     }
-
 }

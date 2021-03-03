@@ -151,6 +151,4 @@ class SigninForm extends Form
     {
         return isset($this->signupPath);
     }
-
-
 }

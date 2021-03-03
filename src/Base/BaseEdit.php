@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Base;
-
 
 use Niceshops\Core\Mode\ModeAwareInterface;
 use Niceshops\Core\Mode\ModeAwareTrait;
@@ -128,7 +126,6 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
                     RedirectParameter::nameAttr(RedirectParameter::ATTRIBUTE_PATH),
                     $this->generateCreateRedirectPath()
                 );
-
             } else {
                 $this->getForm()->addCancel(
                     $this->translate('edit.cancel'),
@@ -140,9 +137,7 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
                     RedirectParameter::nameAttr(RedirectParameter::ATTRIBUTE_PATH),
                     $this->generateIndexPath()
                 );
-
             }
-
         }
     }
 

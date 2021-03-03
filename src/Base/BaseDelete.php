@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Base;
-
 
 use Niceshops\Core\Exception\AttributeExistsException;
 use Niceshops\Core\Exception\AttributeLockException;

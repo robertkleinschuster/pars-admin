@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Import;
-
 
 use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Mvc\View\FieldFormatInterface;
@@ -14,5 +12,4 @@ class ImportDataFieldFormat implements FieldFormatInterface
     {
         return '<pre>' . json_encode($bean->get('Import_Data')['data'], JSON_PRETTY_PRINT) . '</pre>';
     }
-
 }

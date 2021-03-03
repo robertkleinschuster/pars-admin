@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Config;
-
 
 use Pars\Admin\Base\BaseEdit;
 use Pars\Component\Base\Field\Headline;
@@ -47,5 +45,4 @@ class ConfigEdit extends BaseEdit
             'Config_Code'
         ];
     }
-
 }

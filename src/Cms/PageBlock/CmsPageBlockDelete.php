@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\PageBlock;
-
 
 use Pars\Admin\Cms\Block\CmsBlockDelete;
 
@@ -24,5 +22,4 @@ class CmsPageBlockDelete extends CmsBlockDelete
     {
         return 'detail';
     }
-
 }

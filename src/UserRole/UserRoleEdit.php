@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\UserRole;
-
 
 use Pars\Admin\Role\RoleEdit;
 
@@ -47,6 +45,4 @@ class UserRoleEdit extends RoleEdit
     {
         return ['Person_ID'];
     }
-
-
 }

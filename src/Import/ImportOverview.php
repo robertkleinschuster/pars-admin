@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Import;
-
 
 use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\Field\Badge;
@@ -57,5 +55,4 @@ class ImportOverview extends BaseOverview
     {
         return ['Import_ID'];
     }
-
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Translation;
-
 
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
@@ -34,6 +32,4 @@ class TranslationStateFieldFormat implements FieldFormatInterface
             return $this->getTranslator()->translate('translation.state.complete', 'admin');
         }
     }
-
-
 }

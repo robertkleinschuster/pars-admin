@@ -62,6 +62,4 @@ class CmsPostController extends ArticleController
         $edit->setTypeOptions($this->getModel()->getCmsPostType_Options());
         return $edit;
     }
-
-
 }

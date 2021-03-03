@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\File;
-
 
 use Pars\Admin\Base\BaseDelete;
 
@@ -12,5 +10,4 @@ class FileDelete extends BaseDelete
     {
         return 'file';
     }
-
 }

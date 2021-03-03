@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\File;
-
 
 use Pars\Admin\Base\BaseOverview;
 
@@ -30,5 +28,4 @@ class FileOverview extends BaseOverview
             'File_ID'
         ];
     }
-
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Base;
-
 
 use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Mvc\View\FieldFormatInterface;
@@ -36,5 +34,4 @@ class NotEmptyWarningFieldFormat implements FieldFormatInterface
         }
         return $value;
     }
-
 }

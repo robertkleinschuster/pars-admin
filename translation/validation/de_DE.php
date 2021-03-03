@@ -1,4 +1,5 @@
 <?php
+
 return [
     'userrole.code.empty' => 'Der Code darf nicht leer sein!',
     'userrole.code.unique' => 'Der Code ist bereits vergeben!',

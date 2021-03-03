@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\User;
-
 
 use Pars\Admin\Base\BaseEdit;
 
@@ -13,7 +11,7 @@ class UserLocaleEdit extends BaseEdit
 
     protected function initialize()
     {
-        $this->getForm()->addSelect('Locale_Code', $this->getLocaleOptions(),'{Locale_Code}', $this->translate('user.locale'));
+        $this->getForm()->addSelect('Locale_Code', $this->getLocaleOptions(), '{Locale_Code}', $this->translate('user.locale'));
         parent::initialize();
     }
 
@@ -56,6 +54,4 @@ class UserLocaleEdit extends BaseEdit
     {
         return isset($this->localeOptions);
     }
-
-
 }

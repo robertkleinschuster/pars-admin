@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Article\Data;
-
 
 use Pars\Admin\Base\BaseDelete;
 
@@ -22,6 +20,4 @@ class ArticleDataDelete extends BaseDelete
     {
         return [];
     }
-
-
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Import\Tesla;
-
 
 use Pars\Admin\Base\BaseEdit;
 
@@ -25,5 +23,4 @@ class TeslaImportConfigure extends BaseEdit
     {
         return ['Import_ID'];
     }
-
 }

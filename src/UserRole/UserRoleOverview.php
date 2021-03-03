@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\UserRole;
-
 
 use Pars\Admin\Role\RoleOverview;
 
@@ -43,6 +41,4 @@ class UserRoleOverview extends RoleOverview
             'Person_ID'
         ];
     }
-
-
 }

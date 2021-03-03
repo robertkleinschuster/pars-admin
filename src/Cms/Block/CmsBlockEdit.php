@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Block;
-
 
 use Pars\Admin\Article\ArticleEdit;
 
@@ -38,8 +36,13 @@ class CmsBlockEdit extends ArticleEdit
         }
 
         if ($this->getBean()->get('CmsBlockType_Code') == 'contact') {
-            $this->getForm()->addEmail('Article_Data[contact_email]', '{Article_Data[contact_email]}', $this->translate('article.data.contact_email')
-                , 11, 1)->getInput()->setRequired(true);
+            $this->getForm()->addEmail(
+                'Article_Data[contact_email]',
+                '{Article_Data[contact_email]}',
+                $this->translate('article.data.contact_email'),
+                11,
+                1
+            )->getInput()->setRequired(true);
         }
     }
 
@@ -114,6 +117,4 @@ class CmsBlockEdit extends ArticleEdit
     {
         return isset($this->stateOptions);
     }
-
-
 }

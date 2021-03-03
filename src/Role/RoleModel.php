@@ -28,6 +28,4 @@ class RoleModel extends CrudModel
         $bean->set('UserRole_Active', true);
         return $bean;
     }
-
-
 }

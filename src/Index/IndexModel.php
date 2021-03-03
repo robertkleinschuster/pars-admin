@@ -29,12 +29,10 @@ class IndexModel extends BaseModel
     public function hasMenu()
     {
         return (new CmsMenuBeanFinder($this->getDbAdpater()))->setCmsMenuState_Code('active')->count();
-
     }
 
     public function hasLocale()
     {
         return (new LocaleBeanFinder($this->getDbAdpater()))->setLocale_Active(true)->count() > 1;
     }
-
 }

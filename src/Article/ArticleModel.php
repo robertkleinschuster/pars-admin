@@ -129,6 +129,4 @@ abstract class ArticleModel extends CrudModel
         $bean->set('Article_Data', new DataBean());
         return $bean;
     }
-
-
 }

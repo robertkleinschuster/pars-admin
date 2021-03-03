@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Post;
-
 
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
@@ -40,5 +38,4 @@ class CmsPostStateFieldFormat implements FieldFormatInterface
         }
         return $this->getTranslator()->translate('cmspoststate.code.' . $bean->get('CmsPostState_Code'), 'admin');
     }
-
 }

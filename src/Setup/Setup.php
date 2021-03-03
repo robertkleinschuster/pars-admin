@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Setup;
-
 
 use Pars\Admin\User\UserEdit;
 use Pars\Component\Base\Alert\Alert;
@@ -32,11 +30,11 @@ class Setup extends UserEdit
         $this->getForm()->push($icon);
         $this->getForm()->push(new Headline($this->translate('setup')));
         if ($this->getValidationHelper()->hasError('error')) {
-            $alert = new Alert($this->getValidationHelper()->getSummary('error'),
+            $alert = new Alert(
+                $this->getValidationHelper()->getSummary('error'),
                 $this->getValidationHelper()->getSummary('errorDetails')
             );
             $this->getElementList()->unshift($alert);
         }
     }
-
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Locale;
-
 
 use Pars\Admin\Base\BaseDetail;
 use Pars\Component\Base\Field\Badge;
@@ -43,6 +41,4 @@ class LocaleDetail extends BaseDetail
     {
         return ['Locale_Code'];
     }
-
-
 }

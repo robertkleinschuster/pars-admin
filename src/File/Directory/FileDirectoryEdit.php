@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\File\Directory;
-
 
 use Pars\Admin\Base\BaseEdit;
 
@@ -28,5 +26,4 @@ class FileDirectoryEdit extends BaseEdit
             'FileDirectory_ID'
         ];
     }
-
 }

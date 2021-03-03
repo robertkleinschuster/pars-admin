@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\RolePermission;
-
 
 use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\Field\Span;
@@ -53,6 +51,4 @@ class RolePermissionOverview extends BaseOverview
             'UserRole_ID'
         ];
     }
-
-
 }

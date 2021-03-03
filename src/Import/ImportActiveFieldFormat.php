@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Import;
-
 
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
@@ -13,7 +11,6 @@ use Pars\Mvc\View\FieldInterface;
 
 class ImportActiveFieldFormat implements FieldFormatInterface
 {
-
     use TranslatorAwareTrait;
 
 
@@ -39,5 +36,4 @@ class ImportActiveFieldFormat implements FieldFormatInterface
             return $this->getTranslator()->translate('import.active.false', 'admin');
         }
     }
-
 }

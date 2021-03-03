@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Role;
-
 
 use Pars\Admin\Base\BaseDelete;
 
@@ -27,5 +25,4 @@ class RoleDelete extends BaseDelete
     {
         return [];
     }
-
 }

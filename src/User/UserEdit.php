@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\User;
-
 
 use Pars\Admin\Base\BaseEdit;
 
@@ -101,6 +99,4 @@ class UserEdit extends BaseEdit
     {
         return isset($this->localeOptions);
     }
-
-
 }

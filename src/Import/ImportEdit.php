@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Import;
-
 
 use Pars\Admin\Base\BaseEdit;
 
@@ -84,5 +82,4 @@ class ImportEdit extends BaseEdit
     {
         return ['Import_ID'];
     }
-
 }

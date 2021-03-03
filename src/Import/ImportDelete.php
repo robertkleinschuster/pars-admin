@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Import;
-
 
 use Pars\Admin\Base\BaseDelete;
 
@@ -12,5 +10,4 @@ class ImportDelete extends BaseDelete
     {
         return 'import';
     }
-
 }

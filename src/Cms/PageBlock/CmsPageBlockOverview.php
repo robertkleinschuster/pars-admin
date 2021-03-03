@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\PageBlock;
-
 
 use Pars\Admin\Cms\Block\CmsBlockOverview;
 use Pars\Helper\Parameter\IdParameter;
@@ -54,6 +52,4 @@ class CmsPageBlockOverview extends CmsBlockOverview
             'CmsPage_ID'
         ];
     }
-
-
 }

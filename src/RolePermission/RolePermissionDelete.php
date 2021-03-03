@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\RolePermission;
-
 
 use Pars\Admin\Base\BaseDelete;
 

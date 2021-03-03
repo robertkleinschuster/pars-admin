@@ -2,7 +2,6 @@
 
 namespace Pars\Admin\File\Directory;
 
-
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
@@ -43,5 +42,4 @@ class FileDirectoryController extends CrudController
         $this->pushAction('file', 'index', $this->translate('section.file'));
         return parent::detailAction();
     }
-
 }

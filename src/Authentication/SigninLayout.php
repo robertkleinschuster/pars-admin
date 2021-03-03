@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Authentication;
-
 
 use Pars\Component\Base\BackgroundAwareInterface;
 use Pars\Component\Base\Layout\BaseLayout;

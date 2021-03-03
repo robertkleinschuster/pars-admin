@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Page;
-
 
 use Pars\Admin\Article\ArticleDetail;
 use Pars\Component\Base\Field\Badge;
@@ -43,6 +41,4 @@ class CmsPageDetail extends ArticleDetail
             'CmsPage_ID'
         ];
     }
-
-
 }

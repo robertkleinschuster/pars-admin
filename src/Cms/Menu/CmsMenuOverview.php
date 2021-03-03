@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Menu;
-
 
 use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\Field\Badge;
@@ -70,6 +68,4 @@ class CmsMenuOverview extends BaseOverview
     {
         $this->showType = $showType;
     }
-
-
 }

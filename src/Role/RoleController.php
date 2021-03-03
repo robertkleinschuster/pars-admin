@@ -2,14 +2,12 @@
 
 namespace Pars\Admin\Role;
 
-
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\SystemNavigation;
-
 
 /**
  * Class UserRoleController
@@ -44,5 +42,4 @@ class RoleController extends CrudController
         $this->getView()->set('UserRole_ID', (int)$this->getControllerRequest()->getId()->getAttribute('UserRole_ID'));
         $this->pushAction('rolepermission', 'index', $this->translate('section.permission'));
     }
-
 }

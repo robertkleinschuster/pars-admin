@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Post;
-
 
 use Niceshops\Bean\Type\Base\BeanException;
 use Pars\Admin\Article\ArticleDetail;
@@ -67,6 +65,4 @@ class CmsPostDetail extends ArticleDetail
     {
         return ['CmsPage_ID'];
     }
-
-
 }

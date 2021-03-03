@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Base;
-
 
 use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Model\Authentication\User\UserBean;
@@ -29,5 +27,4 @@ class UserPermissionFieldAccept implements FieldAcceptInterface
     {
         return $this->userBean->hasPermission($this->permission);
     }
-
 }

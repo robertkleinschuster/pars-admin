@@ -10,7 +10,6 @@ use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\SystemNavigation;
 
-
 /**
  * Class UserController
  * @package Pars\Admin\Controller

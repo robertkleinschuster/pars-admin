@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Role;
-
 
 use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\Field\Badge;
@@ -37,5 +35,4 @@ class RoleOverview extends BaseOverview
     {
         return [];
     }
-
 }

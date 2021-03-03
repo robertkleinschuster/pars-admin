@@ -147,7 +147,6 @@ abstract class CrudController extends BaseController
         $current = $this->getCurrentPagination();
         $padding = 10;
         for ($page = 1; $page <= $pages; $page++) {
-
             if ($page == 1 && $current->getPage() > 1) {
                 $parameter = new PaginationParameter($current->getPage() - 1, $limit);
                 $parameter->setController($this->getControllerRequest()->getController());

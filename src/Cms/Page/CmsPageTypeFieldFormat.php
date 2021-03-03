@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Page;
-
 
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
@@ -27,5 +25,4 @@ class CmsPageTypeFieldFormat implements FieldFormatInterface
     {
         return $this->getTranslator()->translate('cmspagetype.code.' . $bean->get('CmsPageType_Code'), 'admin');
     }
-
 }

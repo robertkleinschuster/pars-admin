@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Post;
-
 
 use Pars\Admin\Article\ArticleEdit;
 use Pars\Admin\Base\ValueWarningFieldFormat;
@@ -24,7 +22,6 @@ class CmsPostEdit extends ArticleEdit
                     ->setFormat(new ValueWarningFieldFormat('CmsPostState_Code', 'inactive'));
             }
             $this->getForm()->addDateTime('CmsPost_PublishTimestamp', '{CmsPost_PublishTimestamp}', $this->translate('cmspost.publishtimestamp'), 11, 1);
-
         }
         parent::initialize();
     }
@@ -108,6 +105,4 @@ class CmsPostEdit extends ArticleEdit
     {
         return isset($this->typeOptions);
     }
-
-
 }

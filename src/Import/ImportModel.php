@@ -79,7 +79,8 @@ class ImportModel extends CrudModel
         }
     }
 
-    public function run() {
+    public function run()
+    {
         $bean = $this->getBean();
         switch ($bean->get('ImportType_Code')) {
             case 'tesla':
@@ -98,9 +99,6 @@ class ImportModel extends CrudModel
                         $this->getValidationHelper()->merge($processor->getValidationHelper());
                     }
                 }
-
         }
     }
-
-
 }

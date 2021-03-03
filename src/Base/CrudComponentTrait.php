@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Base;
-
 
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
@@ -112,6 +110,4 @@ trait CrudComponentTrait
     {
         return isset($this->nextContext);
     }
-
-
 }

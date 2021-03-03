@@ -11,7 +11,7 @@ use Pars\Model\Cms\Menu\CmsMenuBeanFinder;
  */
 class CmsSubMenuModel extends CmsMenuModel
 {
-    protected function initFinder() {
-
+    protected function initFinder()
+    {
     }
 }

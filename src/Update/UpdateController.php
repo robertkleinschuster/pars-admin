@@ -54,7 +54,6 @@ class UpdateController extends BaseController
 
     public function indexAction()
     {
-
     }
 
     public function schemaAction()
@@ -84,5 +83,4 @@ class UpdateController extends BaseController
         $update->setToken($this->generateToken('submit_token'));
         $this->getView()->append($update);
     }
-
 }

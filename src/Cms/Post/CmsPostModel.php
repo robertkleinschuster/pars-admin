@@ -48,6 +48,4 @@ class CmsPostModel extends ArticleModel
         $bean->set('CmsPost_PublishTimestamp', new \DateTime());
         return $bean;
     }
-
-
 }

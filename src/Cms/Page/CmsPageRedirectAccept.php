@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Page;
-
 
 use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Mvc\View\FieldAcceptInterface;
@@ -14,5 +12,4 @@ class CmsPageRedirectAccept implements FieldAcceptInterface
     {
         return !$bean->empty('CmsPage_ID_Redirect');
     }
-
 }

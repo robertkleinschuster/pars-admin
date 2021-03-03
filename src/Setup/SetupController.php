@@ -11,7 +11,6 @@ use Pars\Helper\Path\PathHelper;
 use Pars\Model\Authentication\User\UserBean;
 use Pars\Mvc\View\ViewBeanConverter;
 
-
 /**
  * Class SetupController
  * @package Pars\Admin\Setup
@@ -82,5 +81,4 @@ class SetupController extends BaseController
             ->convert($setup->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
         $setup->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
     }
-
 }

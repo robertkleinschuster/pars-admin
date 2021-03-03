@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Page;
-
 
 use Pars\Admin\Base\BaseEdit;
 
@@ -30,6 +28,4 @@ class CmsPageImport extends BaseEdit
     {
         return 'index';
     }
-
-
 }

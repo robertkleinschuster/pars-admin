@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Menu;
-
 
 class CmsSubMenuOverview extends CmsMenuOverview
 {
@@ -48,6 +46,4 @@ class CmsSubMenuOverview extends CmsMenuOverview
     {
         return 'cmsmenu';
     }
-
-
 }

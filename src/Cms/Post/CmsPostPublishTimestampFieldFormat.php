@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Post;
-
 
 use Niceshops\Bean\Converter\ConverterBeanDecorator;
 use Niceshops\Bean\Type\Base\BeanInterface;
@@ -18,5 +16,4 @@ class CmsPostPublishTimestampFieldFormat implements FieldFormatInterface
         }
         return $bean->get('CmsPost_PublishTimestamp')->format('d.m.Y H:i:s');
     }
-
 }

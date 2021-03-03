@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Menu;
 
 class CmsSubMenuEdit extends CmsMenuEdit
@@ -32,6 +31,4 @@ class CmsSubMenuEdit extends CmsMenuEdit
         return ['CmsMenu_ID' => '{CmsMenu_ID_Parent}'
         ];
     }
-
-
 }

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Block;
-
 
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;

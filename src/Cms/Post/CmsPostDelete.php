@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Post;
-
 
 use Pars\Admin\Article\ArticleDelete;
 
@@ -22,6 +20,4 @@ class CmsPostDelete extends ArticleDelete
     {
         return 'detail';
     }
-
-
 }

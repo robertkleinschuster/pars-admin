@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Article\Data;
-
 
 use Pars\Admin\Base\BaseEdit;
 
@@ -32,5 +30,4 @@ class ArticleDataEdit extends BaseEdit
     {
         return ['Article_ID'];
     }
-
 }

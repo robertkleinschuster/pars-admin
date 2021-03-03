@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Locale;
-
 
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
@@ -13,7 +11,6 @@ use Pars\Mvc\View\FieldInterface;
 
 class LocaleActiveFieldFormat implements FieldFormatInterface
 {
-
     use TranslatorAwareTrait;
 
 
@@ -39,5 +36,4 @@ class LocaleActiveFieldFormat implements FieldFormatInterface
             return $this->getTranslator()->translate('locale.active.false', 'admin');
         }
     }
-
 }

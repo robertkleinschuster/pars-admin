@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Import;
-
 
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
@@ -12,7 +10,6 @@ use Pars\Mvc\View\FieldInterface;
 
 class ImportHourFieldFormat implements FieldFormatInterface
 {
-
     use TranslatorAwareTrait;
 
 
@@ -32,6 +29,4 @@ class ImportHourFieldFormat implements FieldFormatInterface
             return $bean->get('Import_Hour');
         }
     }
-
-
 }

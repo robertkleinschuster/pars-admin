@@ -82,6 +82,4 @@ class CmsMenuModel extends CrudModel
         $bean->set('CmsMenuState_Code', 'active');
         return $bean;
     }
-
-
 }

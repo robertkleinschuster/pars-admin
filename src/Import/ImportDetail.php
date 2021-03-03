@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Import;
-
 
 use Pars\Admin\Base\BaseDetail;
 use Pars\Component\Base\Field\Badge;
@@ -48,8 +46,7 @@ class ImportDetail extends BaseDetail
                 ->setController($this->getIndexController())
                 ->setAction('run')
                 ->setId($id)
-                ->addParameter((new RedirectParameter())->setPath($redirect)
-                )->getPath()
+                ->addParameter((new RedirectParameter())->setPath($redirect))->getPath()
         ));
     }
 
@@ -63,5 +60,4 @@ class ImportDetail extends BaseDetail
     {
         return ['Import_ID'];
     }
-
 }

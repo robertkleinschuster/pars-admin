@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Block;
-
 
 use Pars\Admin\Article\ArticleOverview;
 use Pars\Component\Base\Field\Badge;
@@ -44,5 +42,4 @@ class CmsBlockOverview extends ArticleOverview
             'CmsBlock_ID'
         ];
     }
-
 }

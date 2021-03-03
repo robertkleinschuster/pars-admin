@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\UserRole;
-
 
 use Pars\Admin\Role\RoleDelete;
 

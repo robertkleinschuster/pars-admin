@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Locale;
-
 
 use Pars\Admin\Base\BaseEdit;
 
@@ -34,6 +32,4 @@ class LocaleEdit extends BaseEdit
     {
         return ['Locale_Code'];
     }
-
-
 }

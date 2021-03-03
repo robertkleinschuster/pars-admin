@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Menu;
-
 
 use Pars\Admin\Base\BaseEdit;
 
@@ -124,5 +122,4 @@ class CmsMenuEdit extends BaseEdit
     {
         return isset($this->typeOptions);
     }
-
 }

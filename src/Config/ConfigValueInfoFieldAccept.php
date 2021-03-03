@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Config;
-
 
 use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Mvc\View\FieldAcceptInterface;
@@ -14,5 +12,4 @@ class ConfigValueInfoFieldAccept implements FieldAcceptInterface
     {
         return $bean->empty('Config_Value');
     }
-
 }

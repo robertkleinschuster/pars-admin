@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\User;
-
 
 use Pars\Admin\Base\BaseEdit;
 
@@ -29,5 +27,4 @@ class UserPasswordEdit extends BaseEdit
     {
         return ['Person_ID'];
     }
-
 }

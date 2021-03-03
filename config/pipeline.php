@@ -18,6 +18,7 @@ use Psr\Container\ContainerInterface;
 /**
  * Setup middleware pipeline:
  */
+
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
     $app->pipe(\Pars\Core\Image\ImageMiddleware::class);
 

@@ -1,4 +1,5 @@
 <?php
+
 return [
     'mvc' => [
         'error_controller' => 'index',

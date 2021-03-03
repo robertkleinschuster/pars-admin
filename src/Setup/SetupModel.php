@@ -33,7 +33,8 @@ class SetupModel extends \Pars\Admin\Base\BaseModel
         foreach ($schemaUpdater->getUpdateMethodList() as $method) {
             $methods[$method] = true;
         }
-        $result = $schemaUpdater->execute($methods);;
+        $result = $schemaUpdater->execute($methods);
+        ;
         $dataUpdater = new DataUpdater($this->getDbAdpater());
         $methods = [];
         foreach ($dataUpdater->getUpdateMethodList() as $method) {

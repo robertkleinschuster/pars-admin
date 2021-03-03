@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\File\Directory;
-
 
 use Pars\Admin\Base\BaseOverview;
 
@@ -29,5 +27,4 @@ class FileDirectoryOverview extends BaseOverview
             'FileDirectory_ID'
         ];
     }
-
 }

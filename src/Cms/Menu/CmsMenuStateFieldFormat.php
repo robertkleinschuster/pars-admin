@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Menu;
-
 
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
@@ -40,5 +38,4 @@ class CmsMenuStateFieldFormat implements FieldFormatInterface
         }
         return $this->getTranslator()->translate('cmsmenustate.code.' . $bean->get('CmsMenuState_Code'), 'admin');
     }
-
 }

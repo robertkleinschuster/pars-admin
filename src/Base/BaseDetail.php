@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Base;
-
 
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Button;
@@ -71,8 +69,7 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
         if ($this->isShowDelete()) {
             $this->getToolbar()->push((new DeleteButton($this->generateDeletePath()))
                 ->setModal(true)
-                ->setModalTitle($this->translate('delete.title'))
-            );
+                ->setModalTitle($this->translate('delete.title')));
         }
     }
 
@@ -232,6 +229,4 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
     {
         return isset($this->locale_List);
     }
-
-
 }

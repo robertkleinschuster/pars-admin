@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Config;
-
 
 use Pars\Admin\Base\CrudModel;
 use Pars\Model\Config\ConfigBeanFinder;
@@ -15,5 +13,4 @@ class ConfigModel extends CrudModel
         $this->setBeanProcessor(new ConfigBeanProcessor($this->getDbAdpater()));
         $this->setBeanFinder(new ConfigBeanFinder($this->getDbAdpater()));
     }
-
 }

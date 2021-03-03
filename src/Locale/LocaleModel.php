@@ -19,5 +19,4 @@ class LocaleModel extends CrudModel
             'Locale_Order'
         ));
     }
-
 }

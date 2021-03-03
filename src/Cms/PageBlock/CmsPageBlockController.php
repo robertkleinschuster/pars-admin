@@ -91,5 +91,4 @@ class CmsPageBlockController extends CmsBlockController
         $this->getView()->append($edit);
         return $edit;
     }
-
 }

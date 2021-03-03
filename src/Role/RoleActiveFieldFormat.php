@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Role;
-
 
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
@@ -38,5 +36,4 @@ class RoleActiveFieldFormat implements FieldFormatInterface
             return $this->getTranslator()->translate('userrole.active.false', 'admin');
         }
     }
-
 }

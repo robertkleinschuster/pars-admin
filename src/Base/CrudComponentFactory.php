@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Base;
-
 
 use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Laminas\I18n\Translator\TranslatorAwareTrait;
@@ -137,7 +135,6 @@ class CrudComponentFactory implements PathHelperAwareInterface, TranslatorAwareI
     public function createEdit(): BaseEdit
     {
         return $this->create($this->getClass(self::CLASS_EDIT));
-
     }
 
     /**
@@ -147,6 +144,5 @@ class CrudComponentFactory implements PathHelperAwareInterface, TranslatorAwareI
     public function createDetail(): BaseDetail
     {
         return $this->create($this->getClass(self::CLASS_DETAIL));
-
     }
 }

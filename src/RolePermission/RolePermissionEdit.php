@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\RolePermission;
-
 
 use Pars\Admin\Base\BaseEdit;
 use Pars\Model\Authorization\Permission\PermissionBeanList;
@@ -74,6 +72,4 @@ class RolePermissionEdit extends BaseEdit
             'UserRole_ID'
         ];
     }
-
-
 }

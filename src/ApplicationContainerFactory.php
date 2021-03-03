@@ -1,8 +1,8 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Pars\Admin;
-
 
 class ApplicationContainerFactory
 {
@@ -15,7 +15,6 @@ class ApplicationContainerFactory
                 if (isset($config['config_cache_path']) && file_exists($config['config_cache_path'])) {
                     unlink($config['config_cache_path']);
                 }
-
             }
         });
         $dependencies = $config['dependencies'];

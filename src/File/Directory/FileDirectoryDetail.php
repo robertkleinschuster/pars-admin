@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\File\Directory;
-
 
 use Pars\Admin\Base\BaseDetail;
 
@@ -31,5 +29,4 @@ class FileDirectoryDetail extends BaseDetail
             'FileDirectory_ID'
         ];
     }
-
 }

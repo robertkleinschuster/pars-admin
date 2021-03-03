@@ -2,7 +2,6 @@
 
 namespace Pars\Admin\Update;
 
-
 use Pars\Admin\Base\BaseModel;
 use Pars\Core\Database\Updater\DataUpdater;
 use Pars\Core\Database\Updater\SchemaUpdater;

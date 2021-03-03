@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Role;
-
 
 use Pars\Admin\Base\BaseEdit;
 
@@ -35,5 +33,4 @@ class RoleEdit extends BaseEdit
     {
         return ['UserRole_ID'];
     }
-
 }

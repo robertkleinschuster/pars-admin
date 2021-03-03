@@ -48,6 +48,4 @@ class CmsBlockModel extends ArticleModel
         $bean->set('CmsBlockState_Code', 'active');
         return $bean;
     }
-
-
 }

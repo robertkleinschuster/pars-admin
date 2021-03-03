@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Block;
-
 
 use Pars\Admin\Article\ArticleDelete;
 
@@ -12,5 +10,4 @@ class CmsBlockDelete extends ArticleDelete
     {
         return 'cmsblock';
     }
-
 }

@@ -73,5 +73,4 @@ class FileController extends CrudController
         $edit->setDirectoryOptions($this->getModel()->getFileDirectory_Options());
         return $edit;
     }
-
 }

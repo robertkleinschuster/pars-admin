@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Menu;
-
 
 use Pars\Admin\Base\BaseDetail;
 use Pars\Component\Base\Field\Badge;
@@ -23,7 +21,7 @@ class CmsMenuDetail extends BaseDetail
         $span->setLabel($this->translate('cmsmenustate.code'));
         $span->setFormat(new CmsMenuStateFieldFormat($this->getTranslator()));
         $this->append($span);
-        if ($this->isShowType()){
+        if ($this->isShowType()) {
             $span = new Span('{CmsMenuType_Code}', $this->translate('cmsmenutype.code'));
             $span->setFormat(new CmsMenuTypeFieldFormat($this->getTranslator()));
             $this->append($span);
@@ -92,7 +90,4 @@ class CmsMenuDetail extends BaseDetail
     {
         return isset($this->previewPath);
     }
-
-
-
 }

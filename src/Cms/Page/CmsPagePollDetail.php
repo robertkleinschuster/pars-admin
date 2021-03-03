@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Page;
-
 
 use Niceshops\Bean\Type\Base\BeanAwareInterface;
 use Niceshops\Bean\Type\Base\BeanAwareTrait;
@@ -92,8 +90,4 @@ class CmsPagePollDetail extends BaseDetail implements BeanAwareInterface
     {
         $this->resultData = $data;
     }
-
-
-
-
 }

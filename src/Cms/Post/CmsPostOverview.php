@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Post;
-
 
 use Pars\Admin\Article\ArticleOverview;
 use Pars\Component\Base\Field\Badge;
@@ -62,6 +60,4 @@ class CmsPostOverview extends ArticleOverview
     {
         return ['CmsPage_ID'];
     }
-
-
 }

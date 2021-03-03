@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Cms\Page;
-
 
 use Pars\Admin\Article\ArticleEdit;
 use Pars\Admin\Base\NotEmptyWarningFieldFormat;
@@ -34,12 +32,22 @@ class CmsPageEdit extends ArticleEdit
                     ->setFormat(new NotEmptyWarningFieldFormat('CmsPage_ID_Redirect'));
             }
             if ($this->getBean()->get('CmsPageType_Code') == 'poll') {
-                $this->getForm()->addCheckbox('Article_Data[vote_once]', '{Article_Data[vote_once]}', $this->translate('article.data.vote.once')
-                    , 11, 1);
+                $this->getForm()->addCheckbox(
+                    'Article_Data[vote_once]',
+                    '{Article_Data[vote_once]}',
+                    $this->translate('article.data.vote.once'),
+                    11,
+                    1
+                );
             }
             if ($this->getBean()->get('CmsPageType_Code') == 'contact') {
-                $this->getForm()->addEmail('Article_Data[contact_email]', '{Article_Data[contact_email]}', $this->translate('article.data.contact_email')
-                    , 11, 1)->getInput()->setRequired(true);
+                $this->getForm()->addEmail(
+                    'Article_Data[contact_email]',
+                    '{Article_Data[contact_email]}',
+                    $this->translate('article.data.contact_email'),
+                    11,
+                    1
+                )->getInput()->setRequired(true);
             }
         }
     }
@@ -169,6 +177,4 @@ class CmsPageEdit extends ArticleEdit
     {
         return 'cmspage';
     }
-
-
 }

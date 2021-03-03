@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Pars\Admin\Cms\PageBlock;
 
 use Pars\Admin\Cms\Block\CmsBlockEdit;
@@ -73,6 +72,4 @@ class CmsPageBlockCreateNew extends CmsBlockEdit
             'CmsPage_ID'
         ];
     }
-
-
 }

@@ -97,5 +97,4 @@ class CmsPageBlockModel extends CmsBlockModel
         }
         return $bean;
     }
-
 }

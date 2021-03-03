@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\User;
-
 
 use Niceshops\Bean\Type\Base\BeanListAwareTrait;
 use Pars\Admin\Base\BaseOverview;
@@ -41,6 +39,4 @@ class UserOverview extends BaseOverview
     {
         return [];
     }
-
-
 }

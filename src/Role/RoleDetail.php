@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Role;
-
 
 use Pars\Admin\Base\BaseDetail;
 use Pars\Component\Base\Field\Badge;
@@ -52,5 +50,4 @@ class RoleDetail extends BaseDetail
     {
         return ['UserRole_ID'];
     }
-
 }

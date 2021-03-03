@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Update;
-
 
 use Laminas\I18n\Translator\TranslatorInterface;
 use Pars\Admin\Base\BaseEdit;
@@ -52,6 +50,4 @@ class Update extends BaseEdit
     {
         return $this->updater->getCode();
     }
-
-
 }

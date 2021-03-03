@@ -7,7 +7,6 @@ use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 
-
 /**
  * Class CmsMenuController
  * @package Pars\Admin\Cms\Menu

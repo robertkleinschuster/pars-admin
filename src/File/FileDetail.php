@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\File;
-
 
 use Pars\Admin\Base\BaseDetail;
 use Pars\Component\Base\Field\Image;
@@ -73,6 +71,4 @@ class FileDetail extends BaseDetail
     {
         return isset($this->assetDomain);
     }
-
-
 }

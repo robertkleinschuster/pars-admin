@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Translation;
-
 
 use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\BaseEdit;
@@ -77,5 +75,4 @@ class TranslationEdit extends BaseEdit
             'Translation_ID'
         ];
     }
-
 }

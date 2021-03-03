@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Article;
-
 
 use Pars\Admin\Base\BaseOverview;
 
@@ -19,5 +17,4 @@ abstract class ArticleOverview extends BaseOverview
         $this->addField('ArticleTranslation_Code', $this->translate('articletranslation.code'));
         parent::initialize();
     }
-
 }

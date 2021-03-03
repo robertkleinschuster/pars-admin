@@ -36,6 +36,7 @@ use Psr\Container\ContainerInterface;
  *     'contact'
  * );
  */
+
 return static function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
     $app->any(\Pars\Mvc\Handler\MvcHandler::getRoute(), \Pars\Mvc\Handler\MvcHandler::class, 'mvc');
 };

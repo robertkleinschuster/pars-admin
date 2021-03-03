@@ -2,7 +2,6 @@
 
 namespace Pars\Admin\UserRole;
 
-
 use Pars\Admin\Base\BaseDelete;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
@@ -61,5 +60,4 @@ class UserRoleController extends RoleController
         $edit->getForm()->push($overview);
         return $edit;
     }
-
 }

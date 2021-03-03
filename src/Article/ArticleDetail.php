@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Article;
-
 
 use Niceshops\Bean\Type\Base\BeanException;
 use Niceshops\Core\Exception\AttributeExistsException;
@@ -191,6 +189,4 @@ abstract class ArticleDetail extends BaseDetail
     {
         return isset($this->previewPath);
     }
-
-
 }

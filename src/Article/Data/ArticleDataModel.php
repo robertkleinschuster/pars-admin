@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Article\Data;
-
 
 use Pars\Admin\Base\CrudModel;
 use Pars\Model\Article\Data\ArticleDataBeanFinder;
@@ -16,5 +14,4 @@ class ArticleDataModel extends CrudModel
         $this->setBeanFinder(new ArticleDataBeanFinder($this->getDbAdpater()));
         $this->setBeanProcessor(new ArticleDataBeanProcessor($this->getDbAdpater()));
     }
-
 }

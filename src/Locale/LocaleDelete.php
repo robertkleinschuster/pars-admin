@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Locale;
-
 
 use Pars\Admin\Base\BaseDelete;
 
@@ -17,6 +15,4 @@ class LocaleDelete extends BaseDelete
     {
         return 'locale';
     }
-
-
 }

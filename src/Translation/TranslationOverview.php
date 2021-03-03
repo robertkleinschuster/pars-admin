@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Pars\Admin\Translation;
-
 
 use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\Field\Badge;
@@ -34,5 +32,4 @@ class TranslationOverview extends BaseOverview
             'Translation_ID'
         ];
     }
-
 }
