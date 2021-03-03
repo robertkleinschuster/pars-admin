@@ -46,11 +46,11 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     protected function initialize()
     {
         $this->setAttribute('method', 'post');
-        $this->setAttribute('action', $this->generateDeletePath());
+        $this->setAttribute('action', $this->generateBulkAction());
         if ($this->hasToken()) {
             $this->push(new Hidden('submit_token', $this->getToken()));
         }
-        $this->push(new Hidden(RedirectParameter::name(), RedirectParameter::fromPath($this->generateRedirectPath())));
+        $this->push(new Hidden(RedirectParameter::name(), RedirectParameter::fromPath($this->generateRedirectPath(false))));
         if ($this->hasSection()) {
             $this->setName($this->getSection());
         }
@@ -220,6 +220,17 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
         if ($this->hasNextContext()) {
             $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
         }
+        return $path->getPath();
+    }
+
+    /**
+     * @return string
+     */
+    protected function generateBulkAction(): string
+    {
+        $path = $this->getPathHelper()
+            ->setController($this->getController())
+            ->setAction('index');
         return $path->getPath();
     }
 
