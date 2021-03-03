@@ -62,4 +62,19 @@ class CmsPostController extends ArticleController
         $edit->setTypeOptions($this->getModel()->getCmsPostType_Options());
         return $edit;
     }
+
+    /**
+     * @return BaseEdit
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws MvcException
+     */
+    public function createAction()
+    {
+        $edit = parent::createAction();
+        $edit->setBean($this->getModel()->getEmptyBean(array_replace($this->getControllerRequest()->getId()->getAttribute_List(), $this->getPreviousAttributes())));
+        return $edit;
+    }
+
 }
