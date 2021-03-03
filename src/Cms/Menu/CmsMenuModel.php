@@ -26,7 +26,7 @@ class CmsMenuModel extends CrudModel
         $this->getBeanFinder()->setLocale_Code($this->getTranslator()->getLocale());
         $this->setBeanOrderProcessor(new BeanOrderProcessor(
             new CmsMenuBeanProcessor($this->getDbAdpater()),
-            new CmsMenuBeanFinder($this->getDbAdpater()),
+            (new CmsMenuBeanFinder($this->getDbAdpater()))->setLocale_Code($this->getTranslator()->getLocale()),
             'CmsMenu_Order',
             'CmsMenu_ID_Parent'
         ));
