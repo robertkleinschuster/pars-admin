@@ -29,7 +29,7 @@ class CmsPageBlockModel extends CmsBlockModel
         $this->getBeanFinder()->setLocale_Code($this->getTranslator()->getLocale());
         $this->setBeanOrderProcessor(new BeanOrderProcessor(
             new CmsPageBlockBeanProcessor($this->getDbAdpater()),
-            new CmsPageBlockBeanFinder($this->getDbAdpater()),
+            (new CmsPageBlockBeanFinder($this->getDbAdpater()))->setLocale_Code($this->getTranslator()->getLocale()),
             'CmsPage_CmsBlock_Order',
             'CmsPage_ID'
         ));

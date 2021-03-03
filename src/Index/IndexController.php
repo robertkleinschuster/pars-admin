@@ -195,7 +195,7 @@ class IndexController extends BaseController
                 /**
                  * @var $task \Pars\Core\Task\Base\AbstractTask
                  */
-                $task = new $class($taskConfig, $this->getModel()->getDbAdpater());
+                $task = new $class($taskConfig, new \DateTime(), $this->getLogger(), $this->getModel()->getDbAdpater());
                 $task->execute();
                 echo 'Task: ' . $class . '<br>';
             }
