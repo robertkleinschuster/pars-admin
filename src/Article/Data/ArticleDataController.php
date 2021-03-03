@@ -42,7 +42,6 @@ class ArticleDataController extends CrudController
         parent::initView();
         $this->getView()->getLayout()->getNavigation()->setActive('content');
         $subNavigation = new ContentNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $subNavigation->setActive('cmspage');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
         if (
             $this->getControllerRequest()->hasId()
@@ -52,6 +51,7 @@ class ArticleDataController extends CrudController
                 'CmsPage_ID',
                 (int) $this->getControllerRequest()->getId()->getAttribute('CmsPage_ID')
             );
+            $subNavigation->setActive('cmspage');
         }
         if (
             $this->getControllerRequest()->hasId()
@@ -61,6 +61,7 @@ class ArticleDataController extends CrudController
                 'CmsBlock_ID',
                 (int) $this->getControllerRequest()->getId()->getAttribute('CmsBlock_ID')
             );
+            $subNavigation->setActive('cmsblock');
         }
     }
 

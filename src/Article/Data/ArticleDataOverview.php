@@ -7,6 +7,7 @@ use Niceshops\Core\Exception\AttributeExistsException;
 use Niceshops\Core\Exception\AttributeLockException;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Cms\Page\CmsPagePollDetail;
+use Pars\Model\Cms\Block\CmsBlockBean;
 use Pars\Model\Cms\Page\CmsPageBean;
 
 class ArticleDataOverview extends BaseOverview
@@ -26,6 +27,16 @@ class ArticleDataOverview extends BaseOverview
             $parent = $this->get('parent');
             if ($parent instanceof CmsPageBean) {
                 switch ($parent->CmsPageType_Code) {
+                    case 'contact':
+                        $this->initContact();
+                        break;
+                    case 'poll':
+                        $this->initPoll();
+                        break;
+                }
+            }
+            if ($parent instanceof CmsBlockBean) {
+                switch ($parent->CmsBlockType_Code) {
                     case 'contact':
                         $this->initContact();
                         break;
