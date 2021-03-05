@@ -34,6 +34,11 @@ class SystemNavigation extends BaseNavigation
             'translation'
         )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'translation'))->addOption('cache');
         $this->addItem(
+            $this->translate('navigation.system.apikey'),
+            $this->getPathHelper()->setController('apikey')->setAction('index'),
+            'apikey'
+        )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'config'))->addOption('cache');
+        $this->addItem(
             $this->translate('navigation.system.config'),
             $this->getPathHelper()->setController('config')->setAction('index'),
             'config'

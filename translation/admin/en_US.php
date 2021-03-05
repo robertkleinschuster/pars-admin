@@ -97,6 +97,7 @@ return [
     'navigation.system.locale' => 'Languages/Countries',
     'navigation.system.config' => 'Settings',
     'navigation.system.update' => 'Update',
+    'navigation.system.apikey' => 'API Keys',
     'navigation.user' => '{Current_Person_Firstname} {Current_Person_Lastname}',
     'navigation.user.password' => 'Change password',
     'navigation.user.locale' => 'Change language/country',
@@ -271,4 +272,8 @@ return [
     'tesla.username' => 'Tesla username',
     'tesla.password' => 'Tesla password',
     'tesla.authentication.alert' => 'Account already setup.',
+    'apikey.name' => 'Name',
+    'apikey.key' => 'Key',
+    'apikey.host' => 'Host',
+    'apikey.active' => 'Active',
 ];

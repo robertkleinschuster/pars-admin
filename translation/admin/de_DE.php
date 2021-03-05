@@ -98,6 +98,7 @@ return [
     'navigation.system.locale' => 'Sprachen/Länder',
     'navigation.system.config' => 'Einstellungen',
     'navigation.system.update' => 'Update',
+    'navigation.system.apikey' => 'API Keys',
     'navigation.user' => '{Current_Person_Firstname} {Current_Person_Lastname}',
     'navigation.user.password' => 'Passwort ändern',
     'navigation.user.locale' => 'Sprache/Land ändern',
@@ -343,5 +344,9 @@ return [
     'userpermission.code.userrole.edit' => 'Rollen bearbeiten',
     'userpermission.code.userrole.delete' => 'Rollen löschen',
     'articletranslation.text.hint' => 'Platzhalter: {my-example-translation-code}, {block:my-example-block-code}',
-    'search.placeholder' => 'Suchen...'
+    'search.placeholder' => 'Suchen...',
+    'apikey.name' => 'Name',
+    'apikey.key' => 'Key',
+    'apikey.host' => 'Host',
+    'apikey.active' => 'Aktiv',
 ];
