@@ -2,10 +2,12 @@
 
 namespace Pars\Admin\Import;
 
+use Niceshops\Bean\Type\Base\BeanListAwareInterface;
 use Pars\Admin\Base\CrudModel;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
+use Pars\Helper\Validation\ValidationHelperAwareInterface;
 use Pars\Import\Tesla\TeslaImporter;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
 use Pars\Model\Import\ImportBeanFinder;
@@ -93,9 +95,14 @@ class ImportModel extends CrudModel
                     $processor = $this->getBeanProcessor();
                     $beanList = $this->getBeanFinder()->getBeanFactory()->getEmptyBeanList();
                     $beanList->push($importer->getBean());
-                    $processor->setBeanList($beanList);
+                    if ($processor instanceof BeanListAwareInterface) {
+                        $processor->setBeanList($beanList);
+                    }
                     $processor->save();
-                    if ($processor->getValidationHelper()->hasError()) {
+                    if (
+                        $processor instanceof ValidationHelperAwareInterface
+                        && $processor->getValidationHelper()->hasError()
+                    ) {
                         $this->getValidationHelper()->merge($processor->getValidationHelper());
                     }
                 }

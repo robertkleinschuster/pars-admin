@@ -10,6 +10,7 @@ use Pars\Component\Base\Field\Progress;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\ListGroup\Group;
 use Pars\Component\Base\ListGroup\Item;
+use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Article\Data\ArticleDataBeanFinder;
 use Pars\Mvc\View\HtmlElement;
@@ -172,7 +173,8 @@ class IndexController extends BaseController
             $data = $item->get('ArticleData_Data');
             if (isset($data['email'])) {
                 $messages->addField('', empty($data['name']) ? $data['email'] : $data['name'] . ' - ' . $data['email'])->setContent(empty($data['subject']) ? $data['message'] : $data['subject'])->setPath(
-                    $this->getPathHelper()->setController('articledata')->setAction('detail')->setId((new IdParameter())->addId('ArticleData_ID', $item->get('ArticleData_ID')))->getPath()
+                    $this->getPathHelper()->setController('articledata')->setAction('detail')->setId((new IdParameter())->addId('ArticleData_ID', $item->get('ArticleData_ID')))
+                        ->addParameter(ContextParameter::fromPath($this->getPathHelper(true)->getPath()))->getPath()
                 );
             }
         }
