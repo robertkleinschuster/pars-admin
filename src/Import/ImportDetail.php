@@ -2,12 +2,15 @@
 
 namespace Pars\Admin\Import;
 
+use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Toolbar\ConfigureButton;
 use Pars\Component\Base\Toolbar\RunButton;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\RedirectParameter;
+use Pars\Mvc\View\FieldFormatInterface;
+use Pars\Mvc\View\FieldInterface;
 
 class ImportDetail extends BaseDetail
 {
@@ -25,6 +28,25 @@ class ImportDetail extends BaseDetail
         $active->setLabel($this->translate('import.active'));
         $active->setFormat(new ImportActiveFieldFormat($this->getTranslator()));
         $this->append($active);
+        $this->addField('Import_Data[last_update]', $this->translate('import.data.last_update'))->setFormat(
+            new class implements FieldFormatInterface {
+                public function __invoke(FieldInterface $field, string $value, ?BeanInterface $bean = null): string
+                {
+                    if ($bean->isset('Import_Data')) {
+                        $data = $bean->get('Import_Data');
+                        if (isset($data['last_update'])) {
+                            $date = new \DateTime(
+                                $data['last_update']->date,
+                                new \DateTimeZone($data['last_update']->timezone
+                                )
+                            );
+                            return $date->format('d.m.Y H:i:s');
+                        }
+                    }
+                    return '';
+                }
+            }
+        );
         parent::initialize();
 
         $id = (new IdParameter());

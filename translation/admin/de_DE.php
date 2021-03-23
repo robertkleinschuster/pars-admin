@@ -272,6 +272,7 @@ return [
     'import.active' => 'Import Aktiv',
     'import.active.true' => 'Aktiv',
     'import.active.false' => 'Inaktiv',
+    'import.data.last_update' => 'Letztes Update',
     'tesla.username' => 'Tesla Benutzername',
     'tesla.password' => 'Tesla Passwort',
     'tesla.authentication.alert' => 'Es wurde bereits ein Konto Verknüpft.',
