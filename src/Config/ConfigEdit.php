@@ -3,6 +3,7 @@
 namespace Pars\Admin\Config;
 
 use Pars\Admin\Base\BaseEdit;
+use Pars\Admin\Base\BooleanValueFieldAccept;
 use Pars\Component\Base\Field\Headline;
 
 class ConfigEdit extends BaseEdit
@@ -21,9 +22,11 @@ class ConfigEdit extends BaseEdit
             foreach ($this->getBean()->get('Config_Options') as $option) {
                 $options[$option] = $option;
             }
-            $this->getForm()->addSelect('Config_Value', $options, '{Config_Value}', $this->translate('config.value'));
+            $this->getForm()->addSelect('Config_Value', $options, '{Config_Value}', $this->translate('config.value'))
+                ->setAccept(new BooleanValueFieldAccept('Config_Locked', true));
         } else {
-            $this->getForm()->addText('Config_Value', '{Config_Value}', $this->translate('config.value'));
+            $this->getForm()->addText('Config_Value', '{Config_Value}', $this->translate('config.value'))
+                ->setAccept(new BooleanValueFieldAccept('Config_Locked', true));
         }
         parent::initialize();
     }

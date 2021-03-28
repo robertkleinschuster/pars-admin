@@ -3,6 +3,7 @@
 namespace Pars\Admin\Base;
 
 use Pars\Component\Base\Navigation\Navigation;
+use Pars\Helper\Parameter\IdParameter;
 
 class SystemNavigation extends BaseNavigation
 {

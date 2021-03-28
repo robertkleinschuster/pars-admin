@@ -19,6 +19,7 @@ use Pars\Helper\Parameter\MoveParameter;
 use Pars\Helper\Parameter\RedirectParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Helper\Path\PathHelper;
+use Pars\Mvc\View\FieldAcceptInterface;
 
 /**
  * Class BaseOverview

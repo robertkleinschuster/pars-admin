@@ -92,7 +92,7 @@ abstract class CrudController extends BaseController
             SearchParameter::nameAttr('text'),
             $this->translate('search.placeholder')
         );
-        if ($this->getControllerRequest()->hasSearch()) {
+        if ($this->getControllerRequest()->hasSearch() && $this->getControllerRequest()->getSearch()->hasText()) {
             $this->getView()->getLayout()->getSubNavigation()->getSearch()->setValue($this->getControllerRequest()->getSearch()->getText());
             $this->getView()->getLayout()->getSubNavigation()->setSearchAction($this->getPathHelper()->getPath());
         }

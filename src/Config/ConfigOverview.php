@@ -6,6 +6,7 @@ use Niceshops\Bean\Type\Base\BeanException;
 use Niceshops\Core\Exception\AttributeExistsException;
 use Niceshops\Core\Exception\AttributeLockException;
 use Pars\Admin\Base\BaseOverview;
+use Pars\Admin\Base\BooleanValueFieldAccept;
 use Pars\Component\Base\ColorAwareInterface;
 use Pars\Component\Base\Field\Icon;
 
@@ -27,6 +28,7 @@ class ConfigOverview extends BaseOverview
         $this->setShowDeleteBulk(false);
         $this->setShowCreate(false);
         $this->addField('Config_Code', $this->translate('config.code'));
+        $this->addField('ConfigType_Code', $this->translate('configtype.code'));
         $this->addField('Config_Value', $this->translate('config.value'));
 
         $icon = new Icon(Icon::ICON_ALERT_TRIANGLE);
@@ -34,6 +36,11 @@ class ConfigOverview extends BaseOverview
         $icon->setAccept(new ConfigValueInfoFieldAccept());
         $this->append($icon);
 
+        $icon = new Icon(Icon::ICON_LOCK);
+        $icon->addOption(ColorAwareInterface::COLOR_SECONDARY);
+        $icon->setAccept(new BooleanValueFieldAccept('Config_Locked'));
+        $this->append($icon);
+        $this->setShowEditFieldAccept(new BooleanValueFieldAccept('Config_Locked', true));
         parent::initialize();
     }
 

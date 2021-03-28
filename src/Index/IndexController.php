@@ -10,6 +10,7 @@ use Pars\Component\Base\Field\Progress;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\ListGroup\Group;
 use Pars\Component\Base\ListGroup\Item;
+use Pars\Core\Config\ParsConfig;
 use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Article\Data\ArticleDataBeanFinder;
