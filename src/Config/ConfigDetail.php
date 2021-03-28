@@ -40,7 +40,7 @@ class ConfigDetail extends BaseDetail
     protected function getEditIdFields(): array
     {
         return [
-            'Config_Code'
+            'Config_Code', 'ConfigType_Code'
         ];
     }
 }

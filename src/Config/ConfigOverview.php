@@ -58,7 +58,7 @@ class ConfigOverview extends BaseOverview
     protected function getDetailIdFields(): array
     {
         return [
-            'Config_Code'
+            'Config_Code', 'ConfigType_Code'
         ];
     }
 }

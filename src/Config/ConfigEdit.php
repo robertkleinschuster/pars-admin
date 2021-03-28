@@ -45,7 +45,7 @@ class ConfigEdit extends BaseEdit
     protected function getRedirectIdFields(): array
     {
         return [
-            'Config_Code'
+            'Config_Code', 'ConfigType_Code'
         ];
     }
 }
