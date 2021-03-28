@@ -43,7 +43,11 @@ class ConfigController extends CrudController
         parent::initView();
         $this->getView()->getLayout()->getNavigation()->setActive('system');
         $subNavigation = new SystemNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $subNavigation->setActive('config');
+        if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute('ConfigType_Code')) {
+            $subNavigation->setActive( $this->getControllerRequest()->getId()->getAttribute('ConfigType_Code'));
+        } else {
+            $subNavigation->setActive('config');
+        }
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
 
