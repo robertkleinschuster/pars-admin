@@ -351,6 +351,6 @@ return [
     'apikey.host' => 'Host',
     'apikey.active' => 'Aktiv',
     'admin.filter' => 'Filter',
-    'admin.filter.appy' => 'Filter anwenden',
+    'admin.filter.apply' => 'Filter anwenden',
     'configtype.code' => 'Typ'
 ];
