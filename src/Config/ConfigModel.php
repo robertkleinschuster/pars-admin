@@ -27,7 +27,7 @@ class ConfigModel extends CrudModel
     {
         $result = [];
         if ($emptyElement) {
-            $result[] = $this->translate('configtype.code');
+            $result[] = $this->translate('noselection');
         }
         $finder = new ConfigTypeBeanFinder($this->getDbAdpater());
         foreach ($finder->getBeanListDecorator() as $bean) {

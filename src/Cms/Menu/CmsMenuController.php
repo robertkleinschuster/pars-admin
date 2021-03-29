@@ -42,6 +42,20 @@ class CmsMenuController extends CrudController
 
     public function indexAction()
     {
+        $this->addFilter_Select(
+            'CmsMenuType_Code',
+            $this->translate('cmsmenutype.code'),
+            $this->getModel()->getCmsMenuType_Options(true),
+            1,
+            1
+        );
+        $this->addFilter_Select(
+            'CmsMenuState_Code',
+            $this->translate('cmsmenustate.code'),
+            $this->getModel()->getCmsMenuState_Options(true),
+            1,
+            2
+        );
         $overview = parent::indexAction();
         if (count($this->getModel()->getCmsPage_Options()) == 0) {
             $overview->setShowCreate(false);

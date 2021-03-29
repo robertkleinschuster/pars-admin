@@ -10,12 +10,14 @@ use Niceshops\Core\Exception\AttributeNotFoundException;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Edit\Edit;
 use Pars\Component\Base\Field\Span;
+use Pars\Component\Base\Filter\Filter;
 use Pars\Component\Base\Form\Form;
 use Pars\Component\Base\Grid\Column;
 use Pars\Component\Base\Grid\Row;
 use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Pagination\Pagination;
 use Pars\Helper\Parameter\FilterParameter;
+use Pars\Helper\Parameter\NavParameter;
 use Pars\Helper\Parameter\PaginationParameter;
 use Pars\Helper\Parameter\SearchParameter;
 use Pars\Mvc\Exception\MvcException;
@@ -31,9 +33,9 @@ abstract class CrudController extends BaseController
     protected CrudComponentFactory $componentFactory;
 
     /**
-     * @var Edit|null
+     * @var Filter|null
      */
-    protected ?Edit $filter = null;
+    protected ?Filter $filter = null;
 
     /**
      * @return CrudComponentFactory
@@ -95,11 +97,7 @@ abstract class CrudController extends BaseController
      */
     public function indexAction()
     {
-        if ($this->hasFilter()) {
-            $this->getFilter()->setName($this->translate('admin.filter'));
-            $this->getFilter()->getForm()->addSubmit('', $this->translate('admin.filter.apply'), null, null, null, 10);
-            $this->getView()->append($this->getFilter());
-        }
+
         $this->getView()->getLayout()->getSubNavigation()->setSearch(
             SearchParameter::nameAttr('text'),
             $this->translate('search.placeholder')
@@ -112,6 +110,28 @@ abstract class CrudController extends BaseController
         $this->injectContext($overview);
         $overview->setToken($this->generateToken('submit_token'));
         $overview->setBeanList($this->getModel()->getBeanList());
+        if ($this->hasFilter()) {
+            $filterPath = $this->getPathHelper(true);
+            $navParameter = new NavParameter();
+            $id = 'filter' . $this->getControllerRequest()->getController() . $this->getControllerRequest()->getAction();
+            $navParameter->setId($id);
+            if ($this->getNavigationState($id) === 0) {
+                $this->getFilter()->getForm()->addOption('show');
+                $navParameter->setIndex(1);
+            } else {
+                $navParameter->setIndex(0);
+            }
+            $filterPath->addParameter($navParameter);
+            $this->getFilter()->getForm()->setName($this->translate('admin.filter'));
+            $this->getFilter()->getButton()->setPath($filterPath);
+            $this->getFilter()->getForm()->addSubmit('', $this->translate('admin.filter.apply'), null, null, null, 10, 1);
+            $resetPath = $this->getPathHelper(true);
+            $resetPath->getFilter()->clear();
+            $this->getFilter()->getForm()->addReset('', $this->translate('admin.filter.reset'), null, null, null, 10, 2)
+            ->getInput()->setPath($resetPath->getPath());
+            $overview->getToolbar()->push($this->getFilter()->getButton());
+            $this->getView()->append($this->getFilter());
+        }
         $this->getView()->append($overview);
         $this->initPagination($overview);
         return $overview;
@@ -456,22 +476,22 @@ abstract class CrudController extends BaseController
     }
 
     /**
-    * @return Edit
+    * @return Filter
     */
-    public function getFilter(): Edit
+    public function getFilter(): Filter
     {
         if (!$this->hasFilter()) {
-            $this->setFilter(new Edit());
+            $this->setFilter(new Filter());
         }
         return $this->filter;
     }
 
     /**
-    * @param Edit $filter
+    * @param Filter $filter
     *
     * @return $this
     */
-    public function setFilter(Edit $filter): self
+    public function setFilter(Filter $filter): self
     {
         $this->filter = $filter;
         return $this;
@@ -496,18 +516,26 @@ abstract class CrudController extends BaseController
      * @throws AttributeLockException
      * @throws AttributeNotFoundException
      */
-    protected function addFilter_Select(string $field, string $label, array $options, int $row = 1, int $column = 1): self
-    {
+    protected function addFilter_Select(
+        string $field,
+        string $label,
+        array $options,
+        int $row = 1,
+        int $column = 1
+    ): self {
         $idParameter = new FilterParameter();
         $value = '';
-        if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute($field)) {
-            $value = $this->getControllerRequest()->getId()->getAttribute($field);
+        if (
+            $this->getControllerRequest()->hasFilter()
+            && $this->getControllerRequest()->getFilter()->hasAttribute($field)
+        ) {
+            $value = $this->getControllerRequest()->getFilter()->getAttribute($field);
         }
         $this->getFilter()->getForm()->addSelect(
             $idParameter::nameAttr($field),
             $options,
             $value,
-            $this->translate($label),
+            $label,
             $row,
             $column
         );
@@ -528,13 +556,43 @@ abstract class CrudController extends BaseController
     {
         $idParameter = new FilterParameter();
         $value = '';
-        if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute($field)) {
-            $value = $this->getControllerRequest()->getId()->getAttribute($field);
+        if ($this->getControllerRequest()->hasFilter() && $this->getControllerRequest()->getFilter()->hasAttribute($field)) {
+            $value = $this->getControllerRequest()->getFilter()->getAttribute($field);
         }
         $this->getFilter()->getForm()->addText(
             $idParameter::nameAttr($field),
             $value,
-            $this->translate($label),
+            $label,
+            $row,
+            $column
+        );
+        return $this;
+    }
+
+    /**
+     * @param string $field
+     * @param string $label
+     * @param int $row
+     * @param int $column
+     * @return $this
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
+    protected function addFilter_Checkbox(string $field, string $label, int $row = 1, int $column = 1): self
+    {
+        $idParameter = new FilterParameter();
+        $value = '';
+        if (
+            $this->getControllerRequest()->hasFilter()
+            && $this->getControllerRequest()->getFilter()->hasAttribute($field)
+        ) {
+            $value = $this->getControllerRequest()->getFilter()->getAttribute($field);
+        }
+        $this->getFilter()->getForm()->addCheckbox(
+            $idParameter::nameAttr($field),
+            $value,
+            $label,
             $row,
             $column
         );

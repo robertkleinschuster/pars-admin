@@ -50,7 +50,7 @@ class CmsBlockController extends ArticleController
 
     public function initSubcontroller()
     {
-        $this->pushAction('cmssubblock', 'index', $this->translate('section.cmsblock'));
+        $this->pushAction('cmssubblock', 'index', $this->translate('section.block'));
     }
 
     /**
@@ -97,7 +97,20 @@ class CmsBlockController extends ArticleController
 
     public function indexAction()
     {
-        $this->addFilter_Select('CmsBlockType_Code', $this->translate('cmsblocktype.code'), $this->getModel()->getCmsBlockType_Options(true));
+        $this->addFilter_Select(
+            'CmsBlockType_Code',
+            $this->translate('cmsblocktype.code'),
+            $this->getModel()->getCmsBlockType_Options(true),
+            1,
+            1
+        );
+        $this->addFilter_Select(
+            'CmsBlockState_Code',
+            $this->translate('cmsblockstate.code'),
+            $this->getModel()->getCmsBlockState_Options(true),
+            1,
+            2
+        );
         return parent::indexAction();
     }
 

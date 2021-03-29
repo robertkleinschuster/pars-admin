@@ -71,6 +71,36 @@ class TranslationController extends CrudController
         return $edit;
     }
 
+    public function indexAction()
+    {
+        $this->addFilter_Select(
+            'Locale_Code',
+            $this->translate('locale.code'),
+            $this->getModel()->getLocale_Options(true),
+            1,
+            1
+        );
+        $this->addFilter_Select(
+            'Translation_Namespace',
+            $this->translate('translation.namespace'),
+            $this->getModel()->getNamespaceOptions(true),
+            1,
+            2
+        );
+        $this->addFilter_Select(
+            'Translation_State',
+            $this->translate('translation.state'),
+            [
+                '' => $this->translate('noselection'),
+                'true' => $this->translate('translation.state.true'),
+                'false' => $this->translate('translation.state.false'),
+            ],
+            1,
+            3
+        );
+        return parent::indexAction();
+    }
+
 
     /**
      * @return BaseEdit

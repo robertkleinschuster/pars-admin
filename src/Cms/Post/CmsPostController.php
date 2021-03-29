@@ -48,6 +48,26 @@ class CmsPostController extends ArticleController
         }
     }
 
+    public function indexAction()
+    {
+        $this->addFilter_Select(
+            'CmsPostType_Code',
+            $this->translate('cmsposttype.code'),
+            $this->getModel()->getCmsPostType_Options(true),
+            1,
+            1
+        );
+        $this->addFilter_Select(
+            'CmsPostState_Code',
+            $this->translate('cmspoststate.code'),
+            $this->getModel()->getCmsPostState_Options(true),
+            1,
+            2
+        );
+        return parent::indexAction();
+    }
+
+
     /**
      * @return BaseEdit
      * @throws AttributeExistsException

@@ -55,6 +55,26 @@ class UserController extends CrudController
             && $this->getControllerRequest()->getId()->getAttribute('Person_ID') == $this->getUserBean()->Person_ID;
     }
 
+    public function indexAction()
+    {
+        $this->addFilter_Select(
+            'UserState_Code',
+            $this->translate('userstate.code'),
+            $this->getModel()->getUserState_Options(true),
+            1,
+            1
+        );
+        $this->addFilter_Select(
+            'Locale_Code',
+            $this->translate('locale.code'),
+            $this->getModel()->getLocale_Options(true),
+            1,
+            2
+        );
+        return parent::indexAction();
+    }
+
+
     /**
      * @return BaseDetail|void
      * @throws AttributeExistsException

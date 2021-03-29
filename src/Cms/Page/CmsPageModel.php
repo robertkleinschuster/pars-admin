@@ -43,7 +43,7 @@ class CmsPageModel extends ArticleModel
     {
         $options = [];
         if ($emptyElement) {
-            $options[''] = $this->translate('cmspagetype.code');
+            $options[''] = $this->translate('noselection');
         }
         $finder = new CmsPageTypeBeanFinder($this->getDbAdpater());
         $finder->setCmsPageType_Active(true);
@@ -57,7 +57,7 @@ class CmsPageModel extends ArticleModel
     {
         $options = [];
         if ($emptyElement) {
-            $options[''] = $this->translate('cmspagelayout.code');
+            $options[''] = $this->translate('noselection');
         }
         $finder = new CmsPageLayoutBeanFinder($this->getDbAdpater());
         $finder->setCmsPageLayout_Active(true);
@@ -71,7 +71,7 @@ class CmsPageModel extends ArticleModel
     {
         $options = [];
         if ($emptyElement) {
-            $options[''] = $this->translate('cmspagestate.code');
+            $options[''] = $this->translate('noselection');
         }
         $finder = new CmsPageStateBeanFinder($this->getDbAdpater());
         $finder->setCmsPageState_Active(true);

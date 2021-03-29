@@ -53,9 +53,12 @@ class CmsMenuModel extends CrudModel
         return $options;
     }
 
-    public function getCmsMenuState_Options(): array
+    public function getCmsMenuState_Options(bool $emptyElement = false): array
     {
         $options = [];
+        if ($emptyElement) {
+            $options[''] = $this->translate('noselection');
+        }
         $finder = new CmsMenuStateBeanFinder($this->getDbAdpater());
         $finder->setCmsMenuState_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
@@ -64,9 +67,12 @@ class CmsMenuModel extends CrudModel
         return $options;
     }
 
-    public function getCmsMenuType_Options(): array
+    public function getCmsMenuType_Options(bool $emptyElement = false): array
     {
         $options = [];
+        if ($emptyElement) {
+            $options[''] = $this->translate('noselection');
+        }
         $finder = new CmsMenuTypeBeanFinder($this->getDbAdpater());
         $finder->setCmsMenuType_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {

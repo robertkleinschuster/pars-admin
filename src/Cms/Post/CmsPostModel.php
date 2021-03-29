@@ -25,9 +25,12 @@ class CmsPostModel extends ArticleModel
 
 
 
-    public function getCmsPostType_Options(): array
+    public function getCmsPostType_Options(bool $emptyElement = false): array
     {
         $options = [];
+        if ($emptyElement) {
+            $options[''] = $this->translate('noselection');
+        }
         $finder = new CmsPostTypeBeanFinder($this->getDbAdpater());
         $finder->setCmsPostType_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
@@ -36,9 +39,12 @@ class CmsPostModel extends ArticleModel
         return $options;
     }
 
-    public function getCmsPostState_Options(): array
+    public function getCmsPostState_Options(bool $emptyElement = false): array
     {
         $options = [];
+        if ($emptyElement) {
+            $options[''] = $this->translate('noselection');
+        }
         $finder = new CmsPostStateBeanFinder($this->getDbAdpater());
         $finder->setCmsPostState_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {

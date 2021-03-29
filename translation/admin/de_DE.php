@@ -131,7 +131,7 @@ return [
     'translation.text' => 'Text',
     'translation.namespace' => 'Bereich',
     'translation.state.complete' => 'Übersetzt',
-    'translation.state.missing' => 'Nicht Übersetzt',
+    'translation.state.missing' => 'Nicht übersetzt',
     'translation.edit.placeholder' => 'Platzhalter',
     'locale.code' => 'Land/Sprach Code',
     'locale.urlcode' => 'URL-Code',
@@ -236,7 +236,7 @@ return [
     'cmsposttype.code.default' => 'Standard',
     'cmspost.publishtimestamp' => 'Veröffentlichungszeitpunkt',
     'cmspoststate.code' => 'Beitrags Status',
-    'cmspoststate.code.active' => 'Aktive',
+    'cmspoststate.code.active' => 'Aktiv',
     'cmspoststate.code.inactive' => 'Inaktiv',
     'file.name' => 'Anzeigename',
     'file.code' => 'Dateiname',
@@ -356,5 +356,9 @@ return [
     'apikey.active' => 'Aktiv',
     'admin.filter' => 'Filter',
     'admin.filter.apply' => 'Filter anwenden',
-    'configtype.code' => 'Typ'
+    'admin.filter.reset' => 'Filter zurücksetzen',
+    'configtype.code' => 'Typ',
+    'translation.state' => 'Status',
+    'translation.state.true' => 'Übersetzt',
+    'translation.state.false' => 'Nicht übersetzt',
 ];

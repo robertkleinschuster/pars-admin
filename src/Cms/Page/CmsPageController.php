@@ -132,16 +132,16 @@ class CmsPageController extends ArticleController
             $this->getModel()->getCmsPageType_Options(true)
         );
         $this->addFilter_Select(
-            'CmsPageState_Code',
-            $this->translate('cmspagestate.code'),
-            $this->getModel()->getCmsPageState_Options(true),
+            'CmsPageLayout_Code',
+            $this->translate('cmspagelayout.code'),
+            $this->getModel()->getCmsPageLayout_Options(true),
             1,
             2
         );
         $this->addFilter_Select(
-            'CmsPageLayout_Code',
-            $this->translate('cmspagelayout.code'),
-            $this->getModel()->getCmsPageLayout_Options(true),
+            'CmsPageState_Code',
+            $this->translate('cmspagestate.code'),
+            $this->getModel()->getCmsPageState_Options(true),
             1,
             3
         );

@@ -45,7 +45,7 @@ class CmsBlockModel extends ArticleModel
     {
         $options = [];
         if ($emptyElement) {
-            $options[''] = $this->translate('cmsblocktype.code');
+            $options[''] = $this->translate('noselection');
         }
         $finder = new CmsBlockTypeBeanFinder($this->getDbAdpater());
         $finder->setCmsBlockType_Active(true);
@@ -55,9 +55,12 @@ class CmsBlockModel extends ArticleModel
         return $options;
     }
 
-    public function getCmsBlockState_Options(): array
+    public function getCmsBlockState_Options(bool $emptyElement = false): array
     {
         $options = [];
+        if ($emptyElement) {
+            $options[''] = $this->translate('noselection');
+        }
         $finder = new CmsBlockStateBeanFinder($this->getDbAdpater());
         $finder->setCmsBlockState_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
