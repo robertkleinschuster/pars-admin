@@ -198,6 +198,7 @@ return [
     'cmsblocktype.code.default' => 'Standard',
     'cmsblocktype.code.contact' => 'Kontakt',
     'cmsblocktype.code.poll' => 'Abstimmung',
+    'cmsblocktype.code.tiles' => 'Kacheln',
     'site.toolbar.frontend' => 'Öffnen',
     'cmspage.id' => 'Seite',
     'cmspage.import' => 'Import Datei',

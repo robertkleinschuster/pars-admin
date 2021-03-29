@@ -43,6 +43,14 @@ class CmsBlockController extends ArticleController
         $subNavigation = new ContentNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('cmsblock');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
+        if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute('CmsBlock_ID_Parent')) {
+            $this->getView()->set('CmsBlock_ID_Parent', (int)$this->getControllerRequest()->getId()->getAttribute('CmsBlock_ID_Parent'));
+        }
+    }
+
+    public function initSubcontroller()
+    {
+        $this->pushAction('cmssubblock', 'index', $this->translate('section.cmsblock'));
     }
 
     /**
@@ -57,6 +65,14 @@ class CmsBlockController extends ArticleController
     public function detailAction()
     {
         $this->getView()->set('CmsBlock_ID', (int)$this->getControllerRequest()->getId()->getAttribute('CmsBlock_ID'));
+        if (
+            $this->getControllerRequest()->hasId()
+            && $this->getControllerRequest()->getId()->hasAttribute('CmsBlock_ID')
+        ) {
+            $id = $this->getControllerRequest()->getId()->getAttribute('CmsBlock_ID');
+            $this->getView()->set('CmsBlock_ID_Parent', (int) $id);
+        }
+        $this->initSubcontroller();
         $detail = parent::detailAction();
         switch ($detail->getBean()->get('CmsBlockType_Code')) {
             case 'contact':

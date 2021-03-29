@@ -56,6 +56,7 @@ class CmsPageBlockModel extends CmsBlockModel
     public function getBlockBeanList(): CmsBlockBeanList
     {
         $finder = new CmsBlockBeanFinder($this->getDbAdpater());
+        $finder->setCmsBlock_ID_Parent(null);
         $finder->setLocale_Code($this->getTranslator()->getLocale());
         return $finder->getBeanList();
     }

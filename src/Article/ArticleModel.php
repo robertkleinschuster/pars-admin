@@ -13,6 +13,11 @@ use Pars\Model\File\FileBeanList;
 use Pars\Model\Localization\Locale\LocaleBeanFinder;
 use Pars\Model\Localization\Locale\LocaleBeanList;
 
+/**
+ * Class ArticleModel
+ * @package Pars\Admin\Article
+ *
+ */
 abstract class ArticleModel extends CrudModel
 {
 
