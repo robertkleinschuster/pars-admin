@@ -61,27 +61,14 @@ class ConfigController extends CrudController
 
     public function indexAction()
     {
-        $filter = new Edit();
-        $filter->setName($this->translate('admin.filter'));
-        $idParameter = new FilterParameter();
-        $value = '';
-        if ($this->getControllerRequest()->hasId()
-            && $this->getControllerRequest()->getId()->hasAttribute('ConfigType_Code')
-        ) {
-            $value = $this->getControllerRequest()->getId()->getAttribute('ConfigType_Code');
-        }
-        $filter->getForm()->addSelect(
-            $idParameter::nameAttr('ConfigType_Code'),
-            $this->getModel()->getConfigType_Options(true),
-            $value,
+        $this->addFilter_Select(
+            'ConfigType_Code',
             $this->translate('configtype.code'),
-            1,
-            1
+            $this->getModel()->getConfigType_Options(true)
         );
-        $filter->getForm()->addSubmit('', $this->translate('admin.filter.apply'));
-        $this->getView()->append($filter);
         return parent::indexAction();
     }
+
 
 
 }

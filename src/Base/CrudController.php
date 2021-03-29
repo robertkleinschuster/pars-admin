@@ -8,12 +8,14 @@ use Niceshops\Core\Exception\AttributeExistsException;
 use Niceshops\Core\Exception\AttributeLockException;
 use Niceshops\Core\Exception\AttributeNotFoundException;
 use Pars\Component\Base\Detail\Detail;
+use Pars\Component\Base\Edit\Edit;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Form\Form;
 use Pars\Component\Base\Grid\Column;
 use Pars\Component\Base\Grid\Row;
 use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Pagination\Pagination;
+use Pars\Helper\Parameter\FilterParameter;
 use Pars\Helper\Parameter\PaginationParameter;
 use Pars\Helper\Parameter\SearchParameter;
 use Pars\Mvc\Exception\MvcException;
@@ -27,6 +29,11 @@ use Pars\Mvc\Exception\NotFoundException;
 abstract class CrudController extends BaseController
 {
     protected CrudComponentFactory $componentFactory;
+
+    /**
+     * @var Edit|null
+     */
+    protected ?Edit $filter = null;
 
     /**
      * @return CrudComponentFactory
@@ -88,6 +95,11 @@ abstract class CrudController extends BaseController
      */
     public function indexAction()
     {
+        if ($this->hasFilter()) {
+            $this->getFilter()->setName($this->translate('admin.filter'));
+            $this->getFilter()->getForm()->addSubmit('', $this->translate('admin.filter.apply'), null, null, null, 10);
+            $this->getView()->append($this->getFilter());
+        }
         $this->getView()->getLayout()->getSubNavigation()->setSearch(
             SearchParameter::nameAttr('text'),
             $this->translate('search.placeholder')
@@ -442,4 +454,91 @@ abstract class CrudController extends BaseController
     {
         return $this->getSession()->get('limit') ?? $this->getModel()->getConfig('admin.pagination.limit') ?? 10;
     }
+
+    /**
+    * @return Edit
+    */
+    public function getFilter(): Edit
+    {
+        if (!$this->hasFilter()) {
+            $this->setFilter(new Edit());
+        }
+        return $this->filter;
+    }
+
+    /**
+    * @param Edit $filter
+    *
+    * @return $this
+    */
+    public function setFilter(Edit $filter): self
+    {
+        $this->filter = $filter;
+        return $this;
+    }
+
+    /**
+    * @return bool
+    */
+    public function hasFilter(): bool
+    {
+        return isset($this->filter);
+    }
+
+    /**
+     * @param string $field
+     * @param string $label
+     * @param array $options
+     * @param int $row
+     * @param int $column
+     * @return $this
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
+    protected function addFilter_Select(string $field, string $label, array $options, int $row = 1, int $column = 1): self
+    {
+        $idParameter = new FilterParameter();
+        $value = '';
+        if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute($field)) {
+            $value = $this->getControllerRequest()->getId()->getAttribute($field);
+        }
+        $this->getFilter()->getForm()->addSelect(
+            $idParameter::nameAttr($field),
+            $options,
+            $value,
+            $this->translate($label),
+            $row,
+            $column
+        );
+        return $this;
+    }
+
+    /**
+     * @param string $field
+     * @param string $label
+     * @param int $row
+     * @param int $column
+     * @return $this
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
+    protected function addFilter_Text(string $field, string $label, int $row = 1, int $column = 1): self
+    {
+        $idParameter = new FilterParameter();
+        $value = '';
+        if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute($field)) {
+            $value = $this->getControllerRequest()->getId()->getAttribute($field);
+        }
+        $this->getFilter()->getForm()->addText(
+            $idParameter::nameAttr($field),
+            $value,
+            $this->translate($label),
+            $row,
+            $column
+        );
+        return $this;
+    }
+
 }

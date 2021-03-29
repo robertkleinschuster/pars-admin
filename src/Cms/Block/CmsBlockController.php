@@ -95,6 +95,12 @@ class CmsBlockController extends ArticleController
         return $detail;
     }
 
+    public function indexAction()
+    {
+        $this->addFilter_Select('CmsBlockType_Code', $this->translate('cmsblocktype.code'), $this->getModel()->getCmsBlockType_Options(true));
+        return parent::indexAction();
+    }
+
 
     /**
      * @return BaseEdit

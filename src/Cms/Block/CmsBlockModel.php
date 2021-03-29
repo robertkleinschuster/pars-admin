@@ -41,9 +41,12 @@ class CmsBlockModel extends ArticleModel
     }
 
 
-    public function getCmsBlockType_Options(): array
+    public function getCmsBlockType_Options(bool $emptyElement = false): array
     {
         $options = [];
+        if ($emptyElement) {
+            $options[''] = $this->translate('cmsblocktype.code');
+        }
         $finder = new CmsBlockTypeBeanFinder($this->getDbAdpater());
         $finder->setCmsBlockType_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {

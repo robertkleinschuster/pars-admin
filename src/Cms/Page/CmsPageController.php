@@ -126,6 +126,25 @@ class CmsPageController extends ArticleController
 
     public function indexAction()
     {
+        $this->addFilter_Select(
+            'CmsPageType_Code',
+            $this->translate('cmspagetype.code'),
+            $this->getModel()->getCmsPageType_Options(true)
+        );
+        $this->addFilter_Select(
+            'CmsPageState_Code',
+            $this->translate('cmspagestate.code'),
+            $this->getModel()->getCmsPageState_Options(true),
+            1,
+            2
+        );
+        $this->addFilter_Select(
+            'CmsPageLayout_Code',
+            $this->translate('cmspagelayout.code'),
+            $this->getModel()->getCmsPageLayout_Options(true),
+            1,
+            3
+        );
         $overview = parent::indexAction();
         $overview->getToolbar()->push(
             (new UploadButton())
