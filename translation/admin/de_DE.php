@@ -234,7 +234,7 @@ return [
     'cmspagestate.code.inactive' => 'Inaktiv',
     'cmsposttype.code' => 'Beitrags Typ',
     'cmsposttype.code.default' => 'Standard',
-    'cmspost.publishtimestamp' => 'Veröffentlichungszeitpunkt',
+    'cmspost.publishtimestamp' => 'Veröffentlichung',
     'cmspoststate.code' => 'Beitrags Status',
     'cmspoststate.code.active' => 'Aktiv',
     'cmspoststate.code.inactive' => 'Inaktiv',
@@ -361,4 +361,5 @@ return [
     'translation.state' => 'Status',
     'translation.state.true' => 'Übersetzt',
     'translation.state.false' => 'Nicht übersetzt',
+    'cmspost.published' => 'Nur unveröffentlichte Beiträge anzeigen',
 ];

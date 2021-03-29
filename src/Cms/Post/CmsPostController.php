@@ -64,6 +64,12 @@ class CmsPostController extends ArticleController
             1,
             2
         );
+        $this->addFilter_Checkbox(
+            'CmsPost_Published',
+            $this->translate('cmspost.published'),
+            2,
+            1
+        );
         return parent::indexAction();
     }
 
