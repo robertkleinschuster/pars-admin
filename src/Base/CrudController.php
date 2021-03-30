@@ -97,7 +97,6 @@ abstract class CrudController extends BaseController
      */
     public function indexAction()
     {
-
         $this->getView()->getLayout()->getSubNavigation()->setSearch(
             SearchParameter::nameAttr('text'),
             $this->translate('search.placeholder')
@@ -110,10 +109,20 @@ abstract class CrudController extends BaseController
         $this->injectContext($overview);
         $overview->setToken($this->generateToken('submit_token'));
         $overview->setBeanList($this->getModel()->getBeanList());
+        $this->initFilter($overview);
+        $this->getView()->append($overview);
+        $this->initPagination($overview, $this->getModel()->getBeanFinder()->count());
+        return $overview;
+    }
+
+    protected function initFilter(Overview $overview)
+    {
         if ($this->hasFilter()) {
             $filterPath = $this->getPathHelper(true);
             $navParameter = new NavParameter();
-            $id = 'filter' . $this->getControllerRequest()->getController() . $this->getControllerRequest()->getAction();
+            $id = 'filter'
+                . $this->getControllerRequest()->getController()
+                . $this->getControllerRequest()->getAction();
             $navParameter->setId($id);
             if ($this->getNavigationState($id) === 0) {
                 $this->getFilter()->getForm()->addOption('show');
@@ -124,17 +133,30 @@ abstract class CrudController extends BaseController
             $filterPath->addParameter($navParameter);
             $this->getFilter()->getForm()->setName($this->translate('admin.filter'));
             $this->getFilter()->getButton()->setPath($filterPath);
-            $this->getFilter()->getForm()->addSubmit('', $this->translate('admin.filter.apply'), null, null, null, 10, 1);
+            $this->getFilter()->getForm()->addSubmit(
+                '',
+                $this->translate('admin.filter.apply'),
+                null,
+                null,
+                null,
+                10,
+                1
+            );
             $resetPath = $this->getPathHelper(true);
             $resetPath->getFilter()->clear();
-            $this->getFilter()->getForm()->addReset('', $this->translate('admin.filter.reset'), null, null, null, 10, 2)
-            ->getInput()->setPath($resetPath->getPath());
+            $resetPath->getSearch()->clear();
+            $this->getFilter()->getForm()->addReset(
+                '',
+                $this->translate('admin.filter.reset'),
+                null,
+                null,
+                null,
+                10,
+                2
+            )->getInput()->setPath($resetPath->getPath());
             $overview->getToolbar()->push($this->getFilter()->getButton());
             $this->getView()->append($this->getFilter());
         }
-        $this->getView()->append($overview);
-        $this->initPagination($overview);
-        return $overview;
     }
 
     /**
@@ -159,9 +181,9 @@ abstract class CrudController extends BaseController
      * @throws AttributeNotFoundException
      * @throws BeanException
      */
-    protected function initPagination(Overview $overview)
+    protected function initPagination(Overview $overview, int $count)
     {
-        $this->getView()->set('OverviewCount', $this->getModel()->getBeanFinder()->count());
+        $this->getView()->set('OverviewCount', $count);
         $span = new Span($this->translate('overview.count'));
         $span->addOption('float-right');
         $span->addOption('border');
@@ -173,7 +195,6 @@ abstract class CrudController extends BaseController
         $overview->getAfter()->push($span);
 
         $pagination = new Pagination();
-        $count = $this->getModel()->getBeanFinder()->count();
         $limit = $this->getDefaultLimit();
         $pages = ceil($count / $limit);
         $current = $this->getCurrentPagination();
@@ -293,7 +314,7 @@ abstract class CrudController extends BaseController
      */
     protected function createOverview(): BaseOverview
     {
-        return $this->getComponentFactory()->createOverview();
+        return $this->getComponentFactory()->createOverview()->setPathHelperCurrent($this->getPathHelper(true));
     }
 
     /**
@@ -523,7 +544,7 @@ abstract class CrudController extends BaseController
         int $row = 1,
         int $column = 1
     ): self {
-        $idParameter = new FilterParameter();
+        $parameter = new FilterParameter();
         $value = '';
         if (
             $this->getControllerRequest()->hasFilter()
@@ -532,7 +553,7 @@ abstract class CrudController extends BaseController
             $value = $this->getControllerRequest()->getFilter()->getAttribute($field);
         }
         $this->getFilter()->getForm()->addSelect(
-            $idParameter::nameAttr($field),
+            $parameter::nameAttr($field),
             $options,
             $value,
             $label,
@@ -552,15 +573,15 @@ abstract class CrudController extends BaseController
      * @throws AttributeLockException
      * @throws AttributeNotFoundException
      */
-    protected function addFilter_Text(string $field, string $label, int $row = 1, int $column = 1): self
+    protected function addFilter_Search(string $label, int $row = 1, int $column = 1): self
     {
-        $idParameter = new FilterParameter();
+        $parameter = new SearchParameter();
         $value = '';
-        if ($this->getControllerRequest()->hasFilter() && $this->getControllerRequest()->getFilter()->hasAttribute($field)) {
-            $value = $this->getControllerRequest()->getFilter()->getAttribute($field);
+        if ($this->getControllerRequest()->hasSearch() && $this->getControllerRequest()->getSearch()->hasText()) {
+            $value = $this->getControllerRequest()->getSearch()->getText();
         }
         $this->getFilter()->getForm()->addText(
-            $idParameter::nameAttr($field),
+            $parameter::getFormKeyText(),
             $value,
             $label,
             $row,
@@ -581,7 +602,7 @@ abstract class CrudController extends BaseController
      */
     protected function addFilter_Checkbox(string $field, string $label, int $row = 1, int $column = 1): self
     {
-        $idParameter = new FilterParameter();
+        $parameter = new FilterParameter();
         $value = '';
         if (
             $this->getControllerRequest()->hasFilter()
@@ -590,7 +611,7 @@ abstract class CrudController extends BaseController
             $value = $this->getControllerRequest()->getFilter()->getAttribute($field);
         }
         $this->getFilter()->getForm()->addCheckbox(
-            $idParameter::nameAttr($field),
+            $parameter::nameAttr($field),
             $value,
             $label,
             $row,

@@ -9,6 +9,7 @@ use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\BooleanValueFieldAccept;
 use Pars\Component\Base\ColorAwareInterface;
 use Pars\Component\Base\Field\Icon;
+use Pars\Helper\Parameter\OrderParameter;
 
 /**
  * Class ConfigOverview
@@ -27,10 +28,7 @@ class ConfigOverview extends BaseOverview
         $this->setShowDelete(false);
         $this->setShowDeleteBulk(false);
         $this->setShowCreate(false);
-        $this->addField('Config_Code', $this->translate('config.code'));
-        $this->addField('ConfigType_Code', $this->translate('configtype.code'));
-        $this->addField('Config_Value', $this->translate('config.value'));
-
+        $this->setShowOrder(true);
         $icon = new Icon(Icon::ICON_ALERT_TRIANGLE);
         $icon->addOption(ColorAwareInterface::COLOR_DANGER);
         $icon->setAccept(new ConfigValueInfoFieldAccept());
@@ -41,6 +39,10 @@ class ConfigOverview extends BaseOverview
         $icon->setAccept(new BooleanValueFieldAccept('Config_Locked'));
         $this->append($icon);
         $this->setShowEditFieldAccept(new BooleanValueFieldAccept('Config_Locked', true));
+
+        $this->addFieldOrderable('Config_Code', $this->translate('config.code'));
+        $this->addFieldOrderable('ConfigType_Code', $this->translate('configtype.code'));
+        $this->addFieldOrderable('Config_Value', $this->translate('config.value'));
         parent::initialize();
     }
 

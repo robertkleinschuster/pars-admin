@@ -6,7 +6,9 @@ use Niceshops\Bean\Processor\BeanOrderProcessor;
 use Niceshops\Bean\Type\Base\BeanException;
 use Niceshops\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Cms\Block\CmsBlockModel;
+use Pars\Helper\Parameter\FilterParameter;
 use Pars\Helper\Parameter\IdParameter;
+use Pars\Helper\Parameter\SearchParameter;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
 use Pars\Model\Cms\PageBlock\CmsPageBlockBeanFinder;
 use Pars\Model\Cms\PageBlock\CmsPageBlockBeanProcessor;
@@ -50,15 +52,18 @@ class CmsPageBlockModel extends CmsBlockModel
         return $options;
     }
 
-    /**
-     * @return CmsBlockBeanList
-     */
-    public function getBlockBeanList(): CmsBlockBeanList
+    public function getBlockBeanFinder(?FilterParameter $filterParameter = null, ?SearchParameter $searchParameter = null)
     {
         $finder = new CmsBlockBeanFinder($this->getDbAdpater());
         $finder->setCmsBlock_ID_Parent(null);
         $finder->setLocale_Code($this->getTranslator()->getLocale());
-        return $finder->getBeanList();
+        if ($filterParameter) {
+            $finder->filter($filterParameter->getAttributes());
+        }
+        if ($searchParameter && $searchParameter->hasText()) {
+            $finder->search($searchParameter->getText());
+        }
+        return $finder;
     }
 
     /**

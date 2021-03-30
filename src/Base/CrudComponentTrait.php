@@ -23,6 +23,8 @@ trait CrudComponentTrait
     private UserBean $userBean;
     protected ?string $currentContext = null;
     protected ?string $nextContext = null;
+    protected ?PathHelper $pathHelperCurrent = null;
+
     /**
      * MainNavigation constructor.
      * @param PathHelper $pathHelper
@@ -110,4 +112,32 @@ trait CrudComponentTrait
     {
         return isset($this->nextContext);
     }
+
+    /**
+    * @return PathHelper
+    */
+    public function getPathHelperCurrent(): PathHelper
+    {
+        return $this->pathHelperCurrent;
+    }
+
+    /**
+    * @param PathHelper $pathHelperCurrent
+    *
+    * @return $this
+    */
+    public function setPathHelperCurrent(PathHelper $pathHelperCurrent): self
+    {
+        $this->pathHelperCurrent = $pathHelperCurrent;
+        return $this;
+    }
+
+    /**
+    * @return bool
+    */
+    public function hasPathHelperCurrent(): bool
+    {
+        return isset($this->pathHelperCurrent);
+    }
+
 }

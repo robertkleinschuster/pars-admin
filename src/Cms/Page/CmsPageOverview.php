@@ -11,6 +11,7 @@ class CmsPageOverview extends ArticleOverview
 {
     protected function initialize()
     {
+        $this->setShowOrder(true);
         $this->setSection($this->translate('section.page'));
         $span = new Badge('{CmsPageState_Code}');
         $span->setFormat(new CmsPageStateFieldFormat($this->getTranslator()));
@@ -25,20 +26,18 @@ class CmsPageOverview extends ArticleOverview
         $this->append($icon);
 
         parent::initialize();
-        $span = new Span('{CmsPageType_Code}', $this->translate('cmspagetype.code'));
+        $span = $this->addFieldOrderable('CmsPageType_Code', $this->translate('cmspagetype.code'));
         $span->setFormat(new CmsPageTypeFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {
             $span->setPath($this->getDetailPath());
             $span->addOption(Span::OPTION_DECORATION_NONE);
         }
-        $this->append($span);
-        $span = new Span('{CmsPageLayout_Code}', $this->translate('cmspagelayout.code'));
+        $span = $this->addFieldOrderable('CmsPageLayout_Code', $this->translate('cmspagelayout.code'));
         $span->setFormat(new CmsPageLayoutFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {
             $span->setPath($this->getDetailPath());
             $span->addOption(Span::OPTION_DECORATION_NONE);
         }
-        $this->append($span);
     }
 
     protected function getController(): string

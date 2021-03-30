@@ -26,7 +26,7 @@ class CmsBlockDetail extends ArticleDetail
         $span->setLabel($this->translate('cmsblockstate.code'));
         $span->setFormat(new CmsBlockStateFieldFormat($this->getTranslator()));
         $this->append($span, 2, 1);
-        $span = new Span('{CmsParagrphType_Code}', $this->translate('cmsblocktype.code'));
+        $span = new Span('{CmsBlockType_Code}', $this->translate('cmsblocktype.code'));
         $span->setFormat(new CmsBlockTypeFieldFormat($this->getTranslator()));
         $this->append($span, 2, 2);
         parent::initFields();

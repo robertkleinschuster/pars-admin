@@ -16,10 +16,11 @@ use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\MoveParameter;
+use Pars\Helper\Parameter\OrderParameter;
 use Pars\Helper\Parameter\RedirectParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Helper\Path\PathHelper;
-use Pars\Mvc\View\FieldAcceptInterface;
+use Pars\Mvc\View\FieldInterface;
 
 /**
  * Class BaseOverview
@@ -37,6 +38,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     public bool $showCreate = true;
     public bool $showCreateNew = false;
     public bool $showMove = false;
+    public bool $showOrder = false;
     public ?string $token = null;
 
     /**
@@ -467,5 +469,64 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     public function setShowCreateNew(bool $showCreateNew): void
     {
         $this->showCreateNew = $showCreateNew;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isShowOrder(): bool
+    {
+        return $this->showOrder;
+    }
+
+    /**
+     * @param bool $showOrder
+     * @return BaseOverview
+     */
+    public function setShowOrder(bool $showOrder): BaseOverview
+    {
+        $this->showOrder = $showOrder;
+        return $this;
+    }
+
+
+
+    /**
+     * @param string $name
+     * @param string $label
+     * @return \Pars\Component\Base\Field\Span
+     */
+    public function addFieldOrderable(string $name, string $label, FieldInterface $field = null)
+    {
+        static $orgiginalOrder = null;
+
+        if ($field === null) {
+            $field = $this->addFieldSpan($name, $label);
+        }
+        if ($this->hasPathHelperCurrent() && $this->isShowOrder()) {
+            $path = clone $this->getPathHelperCurrent();
+            $order = clone $path->getOrder();
+            if ($orgiginalOrder === null) {
+                $orgiginalOrder = clone $order;
+            }
+            if (
+                $orgiginalOrder->hasMode()
+                && $orgiginalOrder->getMode() == OrderParameter::MODE_ASC
+            ) {
+                $order->setMode(OrderParameter::MODE_DESC);
+                if ($orgiginalOrder->hasField() && $orgiginalOrder->getField() == $name) {
+                    $field->setLabel($field->getLabel() . ' &uarr;');
+                }
+            } else {
+                $order->setMode(OrderParameter::MODE_ASC);
+                if ($orgiginalOrder->hasField() && $orgiginalOrder->getField() == $name) {
+                    $field->setLabel($field->getLabel() . ' &darr;');
+                }
+            }
+            $order->setField($name);
+            $path->addParameter($order);
+            $field->setLabelPath($path->getPath());
+        }
+        return $field;
     }
 }

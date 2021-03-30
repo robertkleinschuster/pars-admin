@@ -362,4 +362,5 @@ return [
     'translation.state.true' => 'Übersetzt',
     'translation.state.false' => 'Nicht übersetzt',
     'cmspost.published' => 'Nur unveröffentlichte Beiträge anzeigen',
+    'search' => 'Suchen',
 ];
