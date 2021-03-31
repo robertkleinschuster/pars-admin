@@ -363,4 +363,6 @@ return [
     'translation.state.false' => 'Nicht übersetzt',
     'cmspost.published' => 'Nur unveröffentlichte Beiträge anzeigen',
     'search' => 'Suchen',
+    'showdetails' => 'Details',
+    'showmetainfo' => 'Bearbeiter-Info',
 ];

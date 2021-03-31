@@ -9,13 +9,6 @@ use Pars\Component\Base\Field\Span;
 
 class CmsBlockDetail extends ArticleDetail
 {
-    /**
-     *
-     */
-    protected function initSection()
-    {
-        $this->setSection($this->translate('section.block'));
-    }
 
     /**
      * @throws BeanException

@@ -15,7 +15,7 @@ class CmsMenuDetail extends BaseDetail
 
     protected function initialize()
     {
-        $this->setSection($this->translate('section.menu'));
+        $this->setSection('{ArticleTranslation_Name}');
 
         $span = new Badge('{CmsMenuState_Code}');
         $span->setLabel($this->translate('cmsmenustate.code'));
@@ -27,7 +27,6 @@ class CmsMenuDetail extends BaseDetail
             $this->append($span);
         }
 
-        $this->setHeading('{ArticleTranslation_Name}');
         $this->addField('Article_Code', $this->translate('article.code'));
         $this->addField('ArticleTranslation_Code', $this->translate('articletranslation.code'));
         parent::initialize();

@@ -9,6 +9,7 @@ use Niceshops\Core\Exception\AttributeLockException;
 use Niceshops\Core\Exception\AttributeNotFoundException;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Edit\Edit;
+use Pars\Component\Base\Field\Button;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Filter\Filter;
 use Pars\Component\Base\Form\Form;
@@ -16,6 +17,8 @@ use Pars\Component\Base\Grid\Column;
 use Pars\Component\Base\Grid\Row;
 use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Pagination\Pagination;
+use Pars\Component\Base\Toolbar\MoreButton;
+use Pars\Component\Base\Toolbar\ToolbarButton;
 use Pars\Helper\Parameter\FilterParameter;
 use Pars\Helper\Parameter\NavParameter;
 use Pars\Helper\Parameter\PaginationParameter;
@@ -36,6 +39,8 @@ abstract class CrudController extends BaseController
      * @var Filter|null
      */
     protected ?Filter $filter = null;
+
+    protected bool $expandCollapse = true;
 
     /**
      * @return CrudComponentFactory
@@ -115,6 +120,59 @@ abstract class CrudController extends BaseController
         return $overview;
     }
 
+    /**
+     * @param Detail $detail
+     * @param string $id
+     * @param string|null $label
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
+    protected function initCollapsable(Detail $detail, string $id = '', ?string $label = null)
+    {
+        $path = $this->getPathHelper(true);
+        $navParameter = new NavParameter();
+        $id = 'collapse' . $id
+            . $this->getControllerRequest()->getController()
+            . $this->getControllerRequest()->getAction();
+        $navParameter->setId($id);
+        $button = new MoreButton();
+        if ($this->getNavigationState($id) === 0) {
+            if (!$this->expandCollapse) {
+                $detail->getJumbotron()->addOption('show');
+                $button->setShow(true);
+            } else {
+                $button->setShow(false);
+            }
+            $navParameter->setIndex(1);
+        } else {
+            if ($this->expandCollapse) {
+                $detail->getJumbotron()->addOption('show');
+                $button->setShow(true);
+            } else {
+                $button->setShow(false);
+            }
+            $navParameter->setIndex(0);
+        }
+        $path->addParameter($navParameter);
+        $detail->getJumbotron()->addOption('collapse');
+        if ($label) {
+            $button->setContent($label);
+        } else {
+            $button->setContent($this->translate('showdetails'));
+        }
+        $button->setPath($path->getPath());
+        $button->setData('toggle', 'collapse');
+        $button->setData('target', '#' . $detail->getJumbotron()->generateId());
+        $detail->getSubToolbar()->push($button);
+    }
+
+    /**
+     * @param Overview $overview
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
     protected function initFilter(Overview $overview)
     {
         if ($this->hasFilter()) {
@@ -328,20 +386,14 @@ abstract class CrudController extends BaseController
      */
     public function detailAction()
     {
-        $row = new Row();
         $detail = $this->createDetail();
+        $this->initCollapsable($detail, 'detail');
         $this->injectContext($detail);
         $bean = $this->getModel()->getBean();
         $detail->setBean($bean);
-        $column = new Column();
-        $column->setBreakpoint(Column::BREAKPOINT_EXTRA_LARGE);
         $this->getView()->append($detail);
-        $row->push($column);
         $metaInfo = $this->initMetaInfo($bean);
-        $column = new Column();
-        $column->setBreakpoint(Column::BREAKPOINT_EXTRA_LARGE);
-        $column->push($metaInfo);
-        $row->push($column);
+        $this->initCollapsable($metaInfo, 'metainfo', $this->translate('showmetainfo'));
         $this->getView()->append($metaInfo);
         return $detail;
     }

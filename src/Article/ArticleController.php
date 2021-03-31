@@ -31,11 +31,13 @@ abstract class ArticleController extends CrudController
 
     public function detailAction()
     {
+        $this->expandCollapse = false;
         $detail = parent::detailAction();
         $bean = $detail->getBean();
         if (!$bean->empty('File_BeanList') && !$bean->get('File_BeanList')->isEmpty()) {
             $fileOverview = new FileDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
             $this->injectContext($fileOverview);
+            $this->initCollapsable($fileOverview);
             $fileOverview->setShowDelete(false);
             $fileOverview->setShowEdit(true);
             $fileOverview->setShowBack(false);

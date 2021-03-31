@@ -28,11 +28,10 @@ abstract class ArticleDetail extends BaseDetail
     protected function initialize()
     {
         $this->initSection();
-        $this->initHeading();
         $this->initFields();
         $this->initDataFields();
-        $this->initEditTextButton();
         parent::initialize();
+        $this->initEditTextButton();
         $this->initPreviewButton();
     }
 
@@ -41,16 +40,9 @@ abstract class ArticleDetail extends BaseDetail
      */
     protected function initSection()
     {
-        $this->setSection($this->translate('section.article'));
+        $this->setSection('{ArticleTranslation_Name}');
     }
 
-    /**
-     *
-     */
-    protected function initHeading()
-    {
-        $this->setHeading('{ArticleTranslation_Name}');
-    }
 
     /**
      * @throws BeanException
@@ -59,14 +51,14 @@ abstract class ArticleDetail extends BaseDetail
     {
         $this->addField('Article_Code', $this->translate('article.code'), 1, 1);
         $this->addField('ArticleTranslation_Code', $this->translate('articletranslation.code'), 1, 2);
-        $this->addField('ArticleTranslation_Title', $this->translate('articletranslation.title'), 5, 1);
-        $this->addField('ArticleTranslation_Keywords', $this->translate('articletranslation.keywords'), 5, 2);
-        $this->addField('ArticleTranslation_Heading', $this->translate('articletranslation.heading'), 7, 1);
-        $this->addField('ArticleTranslation_SubHeading', $this->translate('articletranslation.subheading'), 7, 2);
-        $this->addField('ArticleTranslation_Path', $this->translate('articletranslation.path'), 8, 1);
-        $this->addField('ArticleTranslation_Host', $this->translate('articletranslation.host'), 0, 1);
-        $this->addField('ArticleTranslation_Teaser', $this->translate('articletranslation.teaser'), 8, 2);
-        $this->addField('ArticleTranslation_Footer', $this->translate('articletranslation.footer'), 9, 1);
+        $this->addField('ArticleTranslation_Host', $this->translate('articletranslation.host'), 1, 3);
+        $this->addField('ArticleTranslation_Title', $this->translate('articletranslation.title'), 2, 1);
+        $this->addField('ArticleTranslation_Heading', $this->translate('articletranslation.heading'), 2, 2);
+        $this->addField('ArticleTranslation_SubHeading', $this->translate('articletranslation.subheading'), 2, 3);
+        $this->addField('ArticleTranslation_Keywords', $this->translate('articletranslation.keywords'), 3, 1);
+        $this->addField('ArticleTranslation_Footer', $this->translate('articletranslation.footer'), 3, 3);
+        $this->addField('ArticleTranslation_Path', $this->translate('articletranslation.path'), 4, 1);
+        $this->addField('ArticleTranslation_Teaser', $this->translate('articletranslation.teaser'), 3, 2);
         $this->addField('ArticleTranslation_Text', $this->translate('articletranslation.text'), 10, 1);
     }
 
@@ -128,7 +120,7 @@ abstract class ArticleDetail extends BaseDetail
                 $button->setPath($this->generateEditTextPath($locale->get('Locale_UrlCode')));
                 $dropdown->getDropdownList()->push($button);
             }
-            $this->getSubToolbar()->push($dropdown);
+            $this->getToolbar()->push($dropdown);
         }
     }
 

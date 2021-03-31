@@ -112,15 +112,6 @@ class CmsPageController extends ArticleController
                 break;
         }
         $this->initRedirectInfo($detail->getBean());
-        $detail->getSubToolbar()->push(
-            (new DownloadButton())
-                ->addOption('noajax')
-                ->setPath(
-                    $this->getPathHelper(true)
-                        ->setAction('export')
-                        ->getPath()
-                )
-        );
         return $detail;
     }
 
