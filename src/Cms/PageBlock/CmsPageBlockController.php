@@ -115,6 +115,7 @@ class CmsPageBlockController extends CmsBlockController
         $this->injectContext($edit);
         $edit->setStateOptions($this->getModel()->getCmsBlockState_Options());
         $edit->setTypeOptions($this->getModel()->getCmsBlockType_Options());
+        $edit->setFileBeanList($this->getModel()->getFileBeanList());
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $edit->setBean($this->getModel()->getEmptyBean(array_replace($this->getControllerRequest()->getId()->getAttribute_List(), $this->getPreviousAttributes())));
         $this->getModel()->getBeanConverter()
