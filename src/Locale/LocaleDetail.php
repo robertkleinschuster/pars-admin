@@ -14,6 +14,7 @@ class LocaleDetail extends BaseDetail
         $this->setHeading('{Locale_Name}');
         $this->addField('Locale_Code', $this->translate('locale.code'));
         $this->addField('Locale_UrlCode', $this->translate('locale.urlcode'));
+        $this->addField('Locale_Domain', $this->translate('locale.domain'));
         $active = new Badge('{Locale_Active}');
         $active->setLabel($this->translate('locale.active'));
         $active->setFormat(new LocaleActiveFieldFormat($this->getTranslator()));

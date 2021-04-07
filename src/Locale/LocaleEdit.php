@@ -14,6 +14,7 @@ class LocaleEdit extends BaseEdit
             $this->getForm()->addHidden('Locale_Code_New', 'true');
         }
         $this->getForm()->addText('Locale_UrlCode', '{Locale_UrlCode}', $this->translate('locale.urlcode'));
+        $this->getForm()->addText('Locale_Domain', '{Locale_Domain}', $this->translate('locale.domain'));
         $this->getForm()->addCheckbox('Locale_Active', '{Locale_Active}', $this->translate('locale.active'));
         parent::initialize();
     }

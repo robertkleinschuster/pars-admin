@@ -466,7 +466,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                     $this->getControllerResponse()->getInjector()->addHtml(
                         $layout->getSubNavigation()->render($bean, true),
                         '#subnavigation',
-                        'replace'
+                        ControllerResponseInjector::MODE_REPLACE
                     );
                 }
                 $layout->getNavigation()->setId('navigation');
@@ -474,7 +474,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                     $this->getControllerResponse()->getInjector()->addHtml(
                         $layout->getNavigation()->render($bean, true),
                         '#navigation',
-                        'replace'
+                        ControllerResponseInjector::MODE_REPLACE
                     );
                 }
             }
