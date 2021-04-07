@@ -58,5 +58,8 @@
     "classmap-authoritative": true
   },
   "scripts": {
+    "post-update-cmd": [
+      "php bin/dbschema.php"
+    ]
   }
 }
