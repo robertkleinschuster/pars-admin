@@ -17,7 +17,7 @@ abstract class ArticleEdit extends BaseEdit
     public bool $textOnly = false;
     public bool $translationOnly = false;
     public ?FileBeanList $fileBeanList = null;
-
+    public ?array $domain_List = null;
     /**
      * @throws BeanException
      */
@@ -119,13 +119,26 @@ abstract class ArticleEdit extends BaseEdit
                 $this->translate('articletranslation.code'),
                 2
             )->setHint($this->translate('articletranslation.code.hint'));
-            $this->getForm()->addText(
-                'ArticleTranslation_Host',
-                '{ArticleTranslation_Host}',
-                $this->translate('articletranslation.host'),
-                2,
-                2
-            )->setHint($this->translate('articletranslation.host.hint'));
+            if ($this->hasDomain_List()) {
+                $options = array_combine($this->getDomain_List(), $this->getDomain_List());
+                $this->getForm()->addSelect(
+                    'ArticleTranslation_Host',
+                    $options,
+                    '{ArticleTranslation_Host}',
+                    $this->translate('articletranslation.host'),
+                    2,
+                    2
+                )->setHint($this->translate('articletranslation.host.hint'));
+            } else {
+                $this->getForm()->addText(
+                    'ArticleTranslation_Host',
+                    '{ArticleTranslation_Host}',
+                    $this->translate('articletranslation.host'),
+                    2,
+                    2
+                )->setHint($this->translate('articletranslation.host.hint'));
+            }
+
             $this->getForm()->addCheckbox(
                 'ArticleTranslation_Active',
                 '{ArticleTranslation_Active}',
@@ -219,4 +232,33 @@ abstract class ArticleEdit extends BaseEdit
     {
         return isset($this->fileBeanList);
     }
+
+
+    /**
+    * @return array
+    */
+    public function getDomain_List(): array
+    {
+        return $this->domain_List;
+    }
+
+    /**
+    * @param array $domain_List
+    *
+    * @return $this
+    */
+    public function setDomain_List(?array $domain_List): self
+    {
+        $this->domain_List = $domain_List;
+        return $this;
+    }
+
+    /**
+    * @return bool
+    */
+    public function hasDomain_List(): bool
+    {
+        return isset($this->domain_List);
+    }
+
 }

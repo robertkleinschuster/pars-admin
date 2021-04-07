@@ -64,6 +64,7 @@ abstract class ArticleController extends CrudController
     public function editAction()
     {
         $edit = parent::editAction();
+        $edit->setDomain_List($this->getModel()->getDomain_List());
         if ($this->getControllerRequest()->hasEditLocale()) {
             $this->getModel()->loadTranslationDefaults($edit->getBean());
             $edit->setTranslationOnly(true);

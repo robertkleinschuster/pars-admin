@@ -176,4 +176,21 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
         }
         return $this->config->get($key);
     }
+
+    /**
+     * @return array|null
+     */
+    public function getDomain_List(): ?array
+    {
+        $domains = $this->getConfig('domains');
+        if ($domains) {
+            $domains = explode(',', $domains);
+            $domains = array_map('trim', $domains);
+            if (count($domains)) {
+                array_unshift($domains, '');
+                return $domains;
+            }
+        }
+        return null;
+    }
 }
