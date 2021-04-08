@@ -58,8 +58,9 @@
     "classmap-authoritative": true
   },
   "scripts": {
-    "post-update-cmd": [
-      "php bin/dbschema.php"
-    ]
+    "cs-check": "phpcs",
+    "cs-fix": "phpcbf",
+    "test": "phpunit --colors=always",
+    "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
   }
 }
