@@ -9,3 +9,4 @@ php /usr/lib64/plesk-9.0/composer.phar install --no-dev --no-interaction &>deplo
 logger -f deploy.log
 cd ..
 cp -rf pars-admin/* . | logger
+rm -rf $name
