@@ -3,17 +3,24 @@
 namespace Pars\Admin\Base;
 
 use DateTime;
-use Niceshops\Bean\Type\Base\BeanException;
-use Niceshops\Core\Exception\AttributeExistsException;
-use Niceshops\Core\Exception\AttributeLockException;
-use Niceshops\Core\Exception\AttributeNotFoundException;
+use Pars\Bean\Type\Base\BeanException;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
+use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Component\Base\Detail\Detail;
+use Pars\Component\Base\Edit\Edit;
+use Pars\Component\Base\Field\Button;
 use Pars\Component\Base\Field\Span;
+use Pars\Component\Base\Filter\Filter;
 use Pars\Component\Base\Form\Form;
 use Pars\Component\Base\Grid\Column;
 use Pars\Component\Base\Grid\Row;
 use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Pagination\Pagination;
+use Pars\Component\Base\Toolbar\MoreButton;
+use Pars\Component\Base\Toolbar\ToolbarButton;
+use Pars\Helper\Parameter\FilterParameter;
+use Pars\Helper\Parameter\NavParameter;
 use Pars\Helper\Parameter\PaginationParameter;
 use Pars\Helper\Parameter\SearchParameter;
 use Pars\Mvc\Exception\MvcException;
@@ -27,6 +34,13 @@ use Pars\Mvc\Exception\NotFoundException;
 abstract class CrudController extends BaseController
 {
     protected CrudComponentFactory $componentFactory;
+
+    /**
+     * @var Filter|null
+     */
+    protected ?Filter $filter = null;
+
+    protected bool $expandCollapse = true;
 
     /**
      * @return CrudComponentFactory
@@ -92,7 +106,7 @@ abstract class CrudController extends BaseController
             SearchParameter::nameAttr('text'),
             $this->translate('search.placeholder')
         );
-        if ($this->getControllerRequest()->hasSearch()) {
+        if ($this->getControllerRequest()->hasSearch() && $this->getControllerRequest()->getSearch()->hasText()) {
             $this->getView()->getLayout()->getSubNavigation()->getSearch()->setValue($this->getControllerRequest()->getSearch()->getText());
             $this->getView()->getLayout()->getSubNavigation()->setSearchAction($this->getPathHelper()->getPath());
         }
@@ -100,9 +114,107 @@ abstract class CrudController extends BaseController
         $this->injectContext($overview);
         $overview->setToken($this->generateToken('submit_token'));
         $overview->setBeanList($this->getModel()->getBeanList());
+        $this->initFilter($overview);
         $this->getView()->append($overview);
-        $this->initPagination($overview);
+        $this->initPagination($overview, $this->getModel()->getBeanFinder()->count());
         return $overview;
+    }
+
+    /**
+     * @param Detail $detail
+     * @param string $id
+     * @param string|null $label
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
+    protected function initCollapsable(Detail $detail, string $id = '', ?string $label = null)
+    {
+        $path = $this->getPathHelper(true);
+        $navParameter = new NavParameter();
+        $id = 'collapse' . $id
+            . $this->getControllerRequest()->getController()
+            . $this->getControllerRequest()->getAction();
+        $navParameter->setId($id);
+        $button = new MoreButton();
+        if ($this->getNavigationState($id) === 0) {
+            if (!$this->expandCollapse) {
+                $detail->getJumbotron()->addOption('show');
+                $button->setShow(true);
+            } else {
+                $button->setShow(false);
+            }
+            $navParameter->setIndex(1);
+        } else {
+            if ($this->expandCollapse) {
+                $detail->getJumbotron()->addOption('show');
+                $button->setShow(true);
+            } else {
+                $button->setShow(false);
+            }
+            $navParameter->setIndex(0);
+        }
+        $path->addParameter($navParameter);
+        $detail->getJumbotron()->addOption('collapse');
+        if ($label) {
+            $button->setContent($label);
+        } else {
+            $button->setContent($this->translate('showdetails'));
+        }
+        $button->setPath($path->getPath());
+        $button->setData('toggle', 'collapse');
+        $button->setData('target', '#' . $detail->getJumbotron()->generateId());
+        $detail->getSubToolbar()->push($button);
+    }
+
+    /**
+     * @param Overview $overview
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
+    protected function initFilter(Overview $overview)
+    {
+        if ($this->hasFilter()) {
+            $filterPath = $this->getPathHelper(true);
+            $navParameter = new NavParameter();
+            $id = 'filter'
+                . $this->getControllerRequest()->getController()
+                . $this->getControllerRequest()->getAction();
+            $navParameter->setId($id);
+            if ($this->getNavigationState($id) === 0) {
+                $this->getFilter()->getForm()->addOption('show');
+                $navParameter->setIndex(1);
+            } else {
+                $navParameter->setIndex(0);
+            }
+            $filterPath->addParameter($navParameter);
+            $this->getFilter()->getForm()->setName($this->translate('admin.filter'));
+            $this->getFilter()->getButton()->setPath($filterPath);
+            $this->getFilter()->getForm()->addSubmit(
+                '',
+                $this->translate('admin.filter.apply'),
+                null,
+                null,
+                null,
+                10,
+                1
+            );
+            $resetPath = $this->getPathHelper(true);
+            $resetPath->getFilter()->clear();
+            $resetPath->getSearch()->clear();
+            $this->getFilter()->getForm()->addReset(
+                '',
+                $this->translate('admin.filter.reset'),
+                null,
+                null,
+                null,
+                10,
+                2
+            )->getInput()->setPath($resetPath->getPath());
+            $overview->getToolbar()->push($this->getFilter()->getButton());
+            $this->getView()->append($this->getFilter());
+        }
     }
 
     /**
@@ -127,9 +239,9 @@ abstract class CrudController extends BaseController
      * @throws AttributeNotFoundException
      * @throws BeanException
      */
-    protected function initPagination(Overview $overview)
+    protected function initPagination(Overview $overview, int $count)
     {
-        $this->getView()->set('OverviewCount', $this->getModel()->getBeanFinder()->count());
+        $this->getView()->set('OverviewCount', $count);
         $span = new Span($this->translate('overview.count'));
         $span->addOption('float-right');
         $span->addOption('border');
@@ -141,7 +253,6 @@ abstract class CrudController extends BaseController
         $overview->getAfter()->push($span);
 
         $pagination = new Pagination();
-        $count = $this->getModel()->getBeanFinder()->count();
         $limit = $this->getDefaultLimit();
         $pages = ceil($count / $limit);
         $current = $this->getCurrentPagination();
@@ -261,7 +372,7 @@ abstract class CrudController extends BaseController
      */
     protected function createOverview(): BaseOverview
     {
-        return $this->getComponentFactory()->createOverview();
+        return $this->getComponentFactory()->createOverview()->setPathHelperCurrent($this->getPathHelper(true));
     }
 
     /**
@@ -275,20 +386,14 @@ abstract class CrudController extends BaseController
      */
     public function detailAction()
     {
-        $row = new Row();
         $detail = $this->createDetail();
+        $this->initCollapsable($detail, 'detail');
         $this->injectContext($detail);
         $bean = $this->getModel()->getBean();
         $detail->setBean($bean);
-        $column = new Column();
-        $column->setBreakpoint(Column::BREAKPOINT_EXTRA_LARGE);
         $this->getView()->append($detail);
-        $row->push($column);
         $metaInfo = $this->initMetaInfo($bean);
-        $column = new Column();
-        $column->setBreakpoint(Column::BREAKPOINT_EXTRA_LARGE);
-        $column->push($metaInfo);
-        $row->push($column);
+        $this->initCollapsable($metaInfo, 'metainfo', $this->translate('showmetainfo'));
         $this->getView()->append($metaInfo);
         return $detail;
     }
@@ -442,4 +547,129 @@ abstract class CrudController extends BaseController
     {
         return $this->getSession()->get('limit') ?? $this->getModel()->getConfig('admin.pagination.limit') ?? 10;
     }
+
+    /**
+    * @return Filter
+    */
+    public function getFilter(): Filter
+    {
+        if (!$this->hasFilter()) {
+            $this->setFilter(new Filter());
+        }
+        return $this->filter;
+    }
+
+    /**
+    * @param Filter $filter
+    *
+    * @return $this
+    */
+    public function setFilter(Filter $filter): self
+    {
+        $this->filter = $filter;
+        return $this;
+    }
+
+    /**
+    * @return bool
+    */
+    public function hasFilter(): bool
+    {
+        return isset($this->filter);
+    }
+
+    /**
+     * @param string $field
+     * @param string $label
+     * @param array $options
+     * @param int $row
+     * @param int $column
+     * @return $this
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
+    protected function addFilter_Select(
+        string $field,
+        string $label,
+        array $options,
+        int $row = 1,
+        int $column = 1
+    ): self {
+        $parameter = new FilterParameter();
+        $value = '';
+        if (
+            $this->getControllerRequest()->hasFilter()
+            && $this->getControllerRequest()->getFilter()->hasAttribute($field)
+        ) {
+            $value = $this->getControllerRequest()->getFilter()->getAttribute($field);
+        }
+        $this->getFilter()->getForm()->addSelect(
+            $parameter::nameAttr($field),
+            $options,
+            $value,
+            $label,
+            $row,
+            $column
+        );
+        return $this;
+    }
+
+    /**
+     * @param string $field
+     * @param string $label
+     * @param int $row
+     * @param int $column
+     * @return $this
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
+    protected function addFilter_Search(string $label, int $row = 1, int $column = 1): self
+    {
+        $parameter = new SearchParameter();
+        $value = '';
+        if ($this->getControllerRequest()->hasSearch() && $this->getControllerRequest()->getSearch()->hasText()) {
+            $value = $this->getControllerRequest()->getSearch()->getText();
+        }
+        $this->getFilter()->getForm()->addText(
+            $parameter::getFormKeyText(),
+            $value,
+            $label,
+            $row,
+            $column
+        );
+        return $this;
+    }
+
+    /**
+     * @param string $field
+     * @param string $label
+     * @param int $row
+     * @param int $column
+     * @return $this
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
+    protected function addFilter_Checkbox(string $field, string $label, int $row = 1, int $column = 1): self
+    {
+        $parameter = new FilterParameter();
+        $value = '';
+        if (
+            $this->getControllerRequest()->hasFilter()
+            && $this->getControllerRequest()->getFilter()->hasAttribute($field)
+        ) {
+            $value = $this->getControllerRequest()->getFilter()->getAttribute($field);
+        }
+        $this->getFilter()->getForm()->addCheckbox(
+            $parameter::nameAttr($field),
+            $value,
+            $label,
+            $row,
+            $column
+        );
+        return $this;
+    }
+
 }

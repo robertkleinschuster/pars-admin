@@ -2,9 +2,9 @@
 
 namespace Pars\Admin\Cms\Page;
 
-use Niceshops\Bean\Type\Base\BeanAwareInterface;
-use Niceshops\Bean\Type\Base\BeanAwareTrait;
-use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Bean\Type\Base\BeanAwareInterface;
+use Pars\Bean\Type\Base\BeanAwareTrait;
+use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Model\Cms\Block\CmsBlockBeanFinder;
 use Pars\Model\Cms\Block\CmsBlockBeanProcessor;
 use Pars\Mvc\Controller\ControllerRequest;

@@ -31,9 +31,12 @@ class UserModel extends CrudModel
     /**
      * @return array
      */
-    public function getUserState_Options(): array
+    public function getUserState_Options(bool $emptyElement = false): array
     {
         $options = [];
+        if ($emptyElement) {
+            $options[''] = $this->translate('noselection');
+        }
         $finder = new UserStateBeanFinder($this->getDbAdpater());
 
         foreach ($finder->getBeanListDecorator() as $bean) {
@@ -45,9 +48,12 @@ class UserModel extends CrudModel
     /**
      * @return array
      */
-    public function getLocale_Options(): array
+    public function getLocale_Options(bool $emptyElement = false): array
     {
         $options = [];
+        if ($emptyElement) {
+            $options[''] = $this->translate('noselection');
+        }
         $finder = new LocaleBeanFinder($this->getDbAdpater());
         $finder->setLocale_Active(true);
 

@@ -45,7 +45,7 @@ class UpdateModel extends BaseModel
      * @param SubmitParameter $submitParameter
      * @param IdParameter $idParameter
      * @param array $attribute_List
-     * @throws \Niceshops\Core\Exception\AttributeNotFoundException
+     * @throws \Pars\Pattern\Exception\AttributeNotFoundException
      */
     public function handleSubmit(SubmitParameter $submitParameter, IdParameter $idParameter, IdListParameter $idListParameter, array $attribute_List)
     {

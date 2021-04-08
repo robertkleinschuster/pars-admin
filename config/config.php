@@ -41,12 +41,13 @@ $aggregator = new ConfigAggregator([
     \Mezzio\Router\ConfigProvider::class,
     \Laminas\Diactoros\ConfigProvider::class,
 
+
     // Default App module config
-    \Pars\Component\ConfigProvider::class,
-    \Pars\Mvc\ConfigProvider::class,
-    \Pars\Model\ConfigProvider::class,
     \Pars\Core\ConfigProvider::class,
     \Pars\Helper\ConfigProvider::class,
+    \Pars\Mvc\ConfigProvider::class,
+    \Pars\Component\ConfigProvider::class,
+    \Pars\Model\ConfigProvider::class,
     \Pars\Admin\ConfigProvider::class,
     // Load application config in a pre-defined order in such a way that local settings
     // overwrite global settings. (Loaded as first to last):

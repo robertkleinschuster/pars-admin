@@ -10,14 +10,14 @@ class TranslationOverview extends BaseOverview
     protected function initialize()
     {
         $this->setSection($this->translate('section.translation'));
-
+        $this->setShowOrder(true);
         $badge = new Badge();
         $badge->setFormat(new TranslationStateFieldFormat($this->getTranslator()));
         $this->append($badge);
-        $this->addField('Translation_Code', $this->translate('translation.code'));
-        $this->addField('Translation_Text', $this->translate('translation.text'));
-        $this->addField('Locale_Name', $this->translate('locale.name'));
-        $this->addField('Translation_Namespace', $this->translate('translation.namespace'));
+        $this->addFieldOrderable('Translation_Code', $this->translate('translation.code'));
+        $this->addFieldOrderable('Translation_Text', $this->translate('translation.text'));
+        $this->addFieldOrderable('Locale_Name', $this->translate('locale.name'));
+        $this->addFieldOrderable('Translation_Namespace', $this->translate('translation.namespace'));
         parent::initialize();
     }
 

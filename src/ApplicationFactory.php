@@ -6,6 +6,7 @@ use Laminas\HttpHandlerRunner\RequestHandlerRunner;
 use Mezzio\Application;
 use Mezzio\MiddlewareFactory;
 use Mezzio\Router\RouteCollector;
+use Pars\Core\Deployment\UpdateHandler;
 use Psr\Container\ContainerInterface;
 
 class ApplicationFactory extends \Mezzio\Container\ApplicationFactory

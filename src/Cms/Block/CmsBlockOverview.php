@@ -21,13 +21,12 @@ class CmsBlockOverview extends ArticleOverview
 
         parent::initialize();
 
-        $span = new Span('{CmsParagrphType_Code}', $this->translate('cmsblocktype.code'));
+        $span = $this->addFieldOrderable('CmsBlockType_Code', $this->translate('cmsblocktype.code'));
         $span->setFormat(new CmsBlockTypeFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {
             $span->setPath($this->getDetailPath());
             $span->addOption(Span::OPTION_DECORATION_NONE);
         }
-        $this->append($span);
     }
 
 

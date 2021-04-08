@@ -2,9 +2,9 @@
 
 namespace Pars\Admin\Article;
 
-use Niceshops\Core\Exception\AttributeExistsException;
-use Niceshops\Core\Exception\AttributeLockException;
-use Niceshops\Core\Exception\AttributeNotFoundException;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
+use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\File\FileDetail;
@@ -31,11 +31,13 @@ abstract class ArticleController extends CrudController
 
     public function detailAction()
     {
+        $this->expandCollapse = false;
         $detail = parent::detailAction();
         $bean = $detail->getBean();
         if (!$bean->empty('File_BeanList') && !$bean->get('File_BeanList')->isEmpty()) {
             $fileOverview = new FileDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
             $this->injectContext($fileOverview);
+            $this->initCollapsable($fileOverview);
             $fileOverview->setShowDelete(false);
             $fileOverview->setShowEdit(true);
             $fileOverview->setShowBack(false);
@@ -62,6 +64,7 @@ abstract class ArticleController extends CrudController
     public function editAction()
     {
         $edit = parent::editAction();
+        $edit->setDomain_List($this->getModel()->getDomain_List());
         if ($this->getControllerRequest()->hasEditLocale()) {
             $this->getModel()->loadTranslationDefaults($edit->getBean());
             $edit->setTranslationOnly(true);

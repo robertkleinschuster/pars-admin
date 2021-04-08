@@ -2,13 +2,21 @@
 
 namespace Pars\Admin\Config;
 
-use Niceshops\Bean\Type\Base\BeanException;
-use Niceshops\Core\Exception\AttributeExistsException;
-use Niceshops\Core\Exception\AttributeLockException;
-use Niceshops\Core\Exception\AttributeNotFoundException;
+use Pars\Bean\Type\Base\BeanException;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
+use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\SystemNavigation;
+use Pars\Component\Base\Edit\Edit;
+use Pars\Component\Base\Field\Headline;
+use Pars\Helper\Parameter\FilterParameter;
 
+/**
+ * Class ConfigController
+ * @package Pars\Admin\Config
+ * @method ConfigModel getModel()
+ */
 class ConfigController extends CrudController
 {
     /**
@@ -35,7 +43,11 @@ class ConfigController extends CrudController
         parent::initView();
         $this->getView()->getLayout()->getNavigation()->setActive('system');
         $subNavigation = new SystemNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $subNavigation->setActive('config');
+        if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute('ConfigType_Code')) {
+            $subNavigation->setActive( $this->getControllerRequest()->getId()->getAttribute('ConfigType_Code'));
+        } else {
+            $subNavigation->setActive('config');
+        }
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
 
@@ -46,4 +58,17 @@ class ConfigController extends CrudController
     {
         return $this->checkPermission('user');
     }
+
+    public function indexAction()
+    {
+        $this->addFilter_Select(
+            'ConfigType_Code',
+            $this->translate('configtype.code'),
+            $this->getModel()->getConfigType_Options(true)
+        );
+        return parent::indexAction();
+    }
+
+
+
 }

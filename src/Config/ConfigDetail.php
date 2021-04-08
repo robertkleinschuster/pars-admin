@@ -2,8 +2,9 @@
 
 namespace Pars\Admin\Config;
 
-use Niceshops\Bean\Type\Base\BeanException;
+use Pars\Bean\Type\Base\BeanException;
 use Pars\Admin\Base\BaseDetail;
+use Pars\Admin\Base\BooleanValueFieldAccept;
 
 /**
  * Class ConfigDetail
@@ -20,18 +21,26 @@ class ConfigDetail extends BaseDetail
         $this->setShowDelete(false);
         $this->setHeading('{Config_Code}');
         $this->addField('Config_Value', $this->translate('config.value'));
+        $this->addField('ConfigType_Code', $this->translate('configtype.code'));
+        $this->setShowEditFieldAccept(new BooleanValueFieldAccept('Config_Locked', true));
         parent::initialize();
     }
 
+    /**
+     * @return string
+     */
     protected function getIndexController(): string
     {
         return 'config';
     }
 
+    /**
+     * @return string[]
+     */
     protected function getEditIdFields(): array
     {
         return [
-            'Config_Code'
+            'Config_Code', 'ConfigType_Code'
         ];
     }
 }

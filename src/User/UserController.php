@@ -2,9 +2,9 @@
 
 namespace Pars\Admin\User;
 
-use Niceshops\Core\Exception\AttributeExistsException;
-use Niceshops\Core\Exception\AttributeLockException;
-use Niceshops\Core\Exception\AttributeNotFoundException;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
+use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\CrudController;
@@ -54,6 +54,26 @@ class UserController extends CrudController
         return $this->getControllerRequest()->hasId()
             && $this->getControllerRequest()->getId()->getAttribute('Person_ID') == $this->getUserBean()->Person_ID;
     }
+
+    public function indexAction()
+    {
+        $this->addFilter_Select(
+            'UserState_Code',
+            $this->translate('userstate.code'),
+            $this->getModel()->getUserState_Options(true),
+            1,
+            1
+        );
+        $this->addFilter_Select(
+            'Locale_Code',
+            $this->translate('locale.code'),
+            $this->getModel()->getLocale_Options(true),
+            1,
+            2
+        );
+        return parent::indexAction();
+    }
+
 
     /**
      * @return BaseDetail|void

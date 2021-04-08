@@ -30,4 +30,13 @@ class LocaleController extends CrudController
         $subNavigation->setActive('locale');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
+
+    public function editAction()
+    {
+        $edit = parent::editAction();
+        $edit->setDomain_List($this->getModel()->getDomain_List());
+        return $edit;
+    }
+
+
 }

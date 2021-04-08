@@ -2,8 +2,8 @@
 
 namespace Pars\Admin\Base;
 
-use Niceshops\Core\Exception\AttributeExistsException;
-use Niceshops\Core\Exception\AttributeLockException;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
 use Pars\Component\Base\Delete\Delete;
 use Pars\Component\Base\Form\Form;
 use Pars\Component\Base\Form\Submit;

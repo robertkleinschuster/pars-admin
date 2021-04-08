@@ -8,10 +8,11 @@ use Laminas\Db\Adapter\AdapterAwareTrait;
 use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Laminas\I18n\Translator\TranslatorAwareTrait;
-use Niceshops\Bean\Processor\DefaultMetaFieldHandler;
-use Niceshops\Bean\Processor\TimestampMetaFieldHandler;
-use Niceshops\Bean\Type\Base\BeanException;
-use Niceshops\Core\Exception\AttributeNotFoundException;
+use Pars\Bean\Processor\DefaultMetaFieldHandler;
+use Pars\Bean\Processor\TimestampMetaFieldHandler;
+use Pars\Bean\Type\Base\BeanException;
+use Pars\Pattern\Exception\AttributeNotFoundException;
+use Pars\Core\Config\ParsConfig;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
@@ -34,9 +35,9 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
     private ?UserBean $userBean = null;
 
     /**
-     * @var array|null
+     * @var ParsConfig|null
      */
-    private ?array $config = null;
+    private ?ParsConfig $config = null;
 
     public function initializeDependencies()
     {
@@ -168,13 +169,27 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
     public function getConfig(string $key = null)
     {
         if ($this->config === null) {
-            $this->initConfig();
+            $this->config = new ParsConfig($this->getDbAdpater(), 'admin');
         }
         if ($key == null) {
-            return $this->config;
+            return $this->config->toArray();
         }
-        if (isset($this->config[$key])) {
-            return $this->config[$key];
+        return $this->config->get($key);
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getDomain_List(): ?array
+    {
+        $domains = $this->getConfig('domains');
+        if ($domains) {
+            $domains = explode(',', $domains);
+            $domains = array_map('trim', $domains);
+            if (count($domains)) {
+                array_unshift($domains, '');
+                return $domains;
+            }
         }
         return null;
     }

@@ -22,6 +22,7 @@
     "pars/pars-import": "dev-master"
   },
   "require-dev": {
+    "phpunit/phpunit": "^9.5"
   },
   "autoload": {
     "psr-4": {
@@ -58,5 +59,9 @@
     "classmap-authoritative": true
   },
   "scripts": {
+    "cs-check": "phpcs",
+    "cs-fix": "phpcbf",
+    "test": "phpunit --colors=always",
+    "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
   }
 }

@@ -12,15 +12,15 @@ use Mezzio\Flash\FlashMessageMiddleware;
 use Mezzio\Flash\FlashMessagesInterface;
 use Mezzio\Session\LazySession;
 use Mezzio\Session\SessionMiddleware;
-use Niceshops\Bean\Converter\BeanConverterAwareInterface;
-use Niceshops\Bean\Type\Base\BeanException;
-use Niceshops\Core\Attribute\AttributeAwareInterface;
-use Niceshops\Core\Attribute\AttributeAwareTrait;
-use Niceshops\Core\Exception\AttributeExistsException;
-use Niceshops\Core\Exception\AttributeLockException;
-use Niceshops\Core\Exception\AttributeNotFoundException;
-use Niceshops\Core\Option\OptionAwareInterface;
-use Niceshops\Core\Option\OptionAwareTrait;
+use Pars\Bean\Converter\BeanConverterAwareInterface;
+use Pars\Bean\Type\Base\BeanException;
+use Pars\Pattern\Attribute\AttributeAwareInterface;
+use Pars\Pattern\Attribute\AttributeAwareTrait;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
+use Pars\Pattern\Exception\AttributeNotFoundException;
+use Pars\Pattern\Option\OptionAwareInterface;
+use Pars\Pattern\Option\OptionAwareTrait;
 use Pars\Component\Base\Alert\Alert;
 use Pars\Component\Base\Layout\DashboardLayout;
 use Pars\Component\Base\View\BaseView;
@@ -466,7 +466,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                     $this->getControllerResponse()->getInjector()->addHtml(
                         $layout->getSubNavigation()->render($bean, true),
                         '#subnavigation',
-                        'replace'
+                        ControllerResponseInjector::MODE_REPLACE
                     );
                 }
                 $layout->getNavigation()->setId('navigation');
@@ -474,7 +474,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                     $this->getControllerResponse()->getInjector()->addHtml(
                         $layout->getNavigation()->render($bean, true),
                         '#navigation',
-                        'replace'
+                        ControllerResponseInjector::MODE_REPLACE
                     );
                 }
             }

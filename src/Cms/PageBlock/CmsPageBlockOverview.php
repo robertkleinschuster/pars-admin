@@ -12,6 +12,7 @@ class CmsPageBlockOverview extends CmsBlockOverview
         $this->setShowEdit(false);
         $this->setShowMove(true);
         $this->setShowCreateNew(true);
+        $this->setShowOrder(false);
         parent::initialize();
     }
 

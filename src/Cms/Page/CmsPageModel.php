@@ -3,7 +3,7 @@
 namespace Pars\Admin\Cms\Page;
 
 use Laminas\Diactoros\UploadedFile;
-use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Article\ArticleModel;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
@@ -39,9 +39,12 @@ class CmsPageModel extends ArticleModel
         $this->getBeanFinder()->setLocale_Code($this->getTranslator()->getLocale());
     }
 
-    public function getCmsPageType_Options(): array
+    public function getCmsPageType_Options(bool $emptyElement = false): array
     {
         $options = [];
+        if ($emptyElement) {
+            $options[''] = $this->translate('noselection');
+        }
         $finder = new CmsPageTypeBeanFinder($this->getDbAdpater());
         $finder->setCmsPageType_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
@@ -50,9 +53,12 @@ class CmsPageModel extends ArticleModel
         return $options;
     }
 
-    public function getCmsPageLayout_Options(): array
+    public function getCmsPageLayout_Options(bool $emptyElement = false): array
     {
         $options = [];
+        if ($emptyElement) {
+            $options[''] = $this->translate('noselection');
+        }
         $finder = new CmsPageLayoutBeanFinder($this->getDbAdpater());
         $finder->setCmsPageLayout_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
@@ -61,9 +67,12 @@ class CmsPageModel extends ArticleModel
         return $options;
     }
 
-    public function getCmsPageState_Options(): array
+    public function getCmsPageState_Options(bool $emptyElement = false): array
     {
         $options = [];
+        if ($emptyElement) {
+            $options[''] = $this->translate('noselection');
+        }
         $finder = new CmsPageStateBeanFinder($this->getDbAdpater());
         $finder->setCmsPageState_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {

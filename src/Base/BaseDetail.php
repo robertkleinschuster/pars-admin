@@ -47,6 +47,9 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
             $button = new EditButton($this->generateEditPath());
             $button->setModal(true);
             $button->setModalTitle($this->translate('edit.title'));
+            if ($this->hasShowEditFieldAccept()) {
+                $button->setAccept($this->getShowEditFieldAccept());
+            }
             if ($this->hasLocale_List()) {
                 $dropdown = new DropdownEditButton($button);
                 foreach ($this->getLocale_List() as $locale) {

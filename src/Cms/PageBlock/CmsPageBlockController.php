@@ -2,10 +2,7 @@
 
 namespace Pars\Admin\Cms\PageBlock;
 
-use Pars\Admin\Base\BaseDelete;
-use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
-use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
 use Pars\Admin\Cms\Block\CmsBlockController;
 use Pars\Admin\Cms\Block\CmsBlockOverview;
@@ -19,9 +16,9 @@ class CmsPageBlockController extends CmsBlockController
 {
     /**
      * @return mixed|void
-     * @throws \Niceshops\Core\Exception\AttributeExistsException
-     * @throws \Niceshops\Core\Exception\AttributeLockException
-     * @throws \Niceshops\Core\Exception\AttributeNotFoundException
+     * @throws \Pars\Pattern\Exception\AttributeExistsException
+     * @throws \Pars\Pattern\Exception\AttributeLockException
+     * @throws \Pars\Pattern\Exception\AttributeNotFoundException
      */
     protected function initModel()
     {
@@ -39,10 +36,10 @@ class CmsPageBlockController extends CmsBlockController
 
     /**
      * @return mixed|void
-     * @throws \Niceshops\Bean\Type\Base\BeanException
-     * @throws \Niceshops\Core\Exception\AttributeExistsException
-     * @throws \Niceshops\Core\Exception\AttributeLockException
-     * @throws \Niceshops\Core\Exception\AttributeNotFoundException
+     * @throws \Pars\Bean\Type\Base\BeanException
+     * @throws \Pars\Pattern\Exception\AttributeExistsException
+     * @throws \Pars\Pattern\Exception\AttributeLockException
+     * @throws \Pars\Pattern\Exception\AttributeNotFoundException
      */
     protected function initView()
     {
@@ -64,6 +61,21 @@ class CmsPageBlockController extends CmsBlockController
 
     protected function createEdit(): BaseEdit
     {
+        $this->addFilter_Select(
+            'CmsBlockType_Code',
+            $this->translate('cmsblocktype.code'),
+            $this->getModel()->getCmsBlockType_Options(true),
+            2,
+            1
+        );
+        $this->addFilter_Select(
+            'CmsBlockState_Code',
+            $this->translate('cmsblockstate.code'),
+            $this->getModel()->getCmsBlockState_Options(true),
+            2,
+            2
+        );
+        $this->addFilter_Search($this->translate('search'), 1);
         $edit = new CmsPageBlockEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $overview = new CmsBlockOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $overview->setShowDeleteBulk(false);
@@ -71,7 +83,28 @@ class CmsPageBlockController extends CmsBlockController
         $overview->setShowEdit(false);
         $overview->setShowDetail(false);
         $overview->setShowDelete(false);
-        $overview->setBeanList($this->getModel()->getBlockBeanList());
+        if ($this->getControllerRequest()->hasFilter() && $this->getControllerRequest()->hasSearch()) {
+            $finder = $this->getModel()->getBlockBeanFinder(
+                $this->getControllerRequest()->getFilter(),
+                $this->getControllerRequest()->getSearch()
+            );
+        } elseif ($this->getControllerRequest()->hasFilter()) {
+            $finder = $this->getModel()->getBlockBeanFinder($this->getControllerRequest()->getFilter());
+        } elseif ($this->getControllerRequest()->hasSearch()) {
+            $finder = $this->getModel()->getBlockBeanFinder(null, $this->getControllerRequest()->getSearch());
+        } else {
+            $finder = $this->getModel()->getBlockBeanFinder();
+        }
+        $paginationParameter = $this->getCurrentPagination();
+        $limit = $paginationParameter->getLimit();
+        $page = $paginationParameter->getPage();
+        if ($limit > 0 && $page > 0) {
+            $finder->limit($limit, $limit * ($page - 1));
+        }
+
+        $overview->setBeanList($finder->getBeanList());
+        $this->initFilter($overview);
+        $this->initPagination($overview, $finder->count());
         $edit->getForm()->push($overview);
         return $edit;
     }
@@ -82,6 +115,7 @@ class CmsPageBlockController extends CmsBlockController
         $this->injectContext($edit);
         $edit->setStateOptions($this->getModel()->getCmsBlockState_Options());
         $edit->setTypeOptions($this->getModel()->getCmsBlockType_Options());
+        $edit->setFileBeanList($this->getModel()->getFileBeanList());
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $edit->setBean($this->getModel()->getEmptyBean(array_replace($this->getControllerRequest()->getId()->getAttribute_List(), $this->getPreviousAttributes())));
         $this->getModel()->getBeanConverter()

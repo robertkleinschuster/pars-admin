@@ -2,10 +2,10 @@
 
 namespace Pars\Admin\Cms\Block;
 
-use Niceshops\Bean\Type\Base\BeanException;
-use Niceshops\Core\Exception\AttributeExistsException;
-use Niceshops\Core\Exception\AttributeLockException;
-use Niceshops\Core\Exception\AttributeNotFoundException;
+use Pars\Bean\Type\Base\BeanException;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
+use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Admin\Article\ArticleController;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\ContentNavigation;
@@ -43,6 +43,14 @@ class CmsBlockController extends ArticleController
         $subNavigation = new ContentNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('cmsblock');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
+        if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute('CmsBlock_ID_Parent')) {
+            $this->getView()->set('CmsBlock_ID_Parent', (int)$this->getControllerRequest()->getId()->getAttribute('CmsBlock_ID_Parent'));
+        }
+    }
+
+    public function initSubcontroller()
+    {
+        $this->pushAction('cmssubblock', 'index', $this->translate('section.block'));
     }
 
     /**
@@ -57,6 +65,14 @@ class CmsBlockController extends ArticleController
     public function detailAction()
     {
         $this->getView()->set('CmsBlock_ID', (int)$this->getControllerRequest()->getId()->getAttribute('CmsBlock_ID'));
+        if (
+            $this->getControllerRequest()->hasId()
+            && $this->getControllerRequest()->getId()->hasAttribute('CmsBlock_ID')
+        ) {
+            $id = $this->getControllerRequest()->getId()->getAttribute('CmsBlock_ID');
+            $this->getView()->set('CmsBlock_ID_Parent', (int) $id);
+        }
+        $this->initSubcontroller();
         $detail = parent::detailAction();
         switch ($detail->getBean()->get('CmsBlockType_Code')) {
             case 'contact':
@@ -77,6 +93,25 @@ class CmsBlockController extends ArticleController
                 break;
         }
         return $detail;
+    }
+
+    public function indexAction()
+    {
+        $this->addFilter_Select(
+            'CmsBlockType_Code',
+            $this->translate('cmsblocktype.code'),
+            $this->getModel()->getCmsBlockType_Options(true),
+            1,
+            1
+        );
+        $this->addFilter_Select(
+            'CmsBlockState_Code',
+            $this->translate('cmsblockstate.code'),
+            $this->getModel()->getCmsBlockState_Options(true),
+            1,
+            2
+        );
+        return parent::indexAction();
     }
 
 

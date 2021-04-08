@@ -39,6 +39,7 @@ class FileDirectoryController extends CrudController
 
     public function detailAction()
     {
+        $this->expandCollapse = false;
         $this->pushAction('file', 'index', $this->translate('section.file'));
         return parent::detailAction();
     }

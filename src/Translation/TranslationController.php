@@ -2,10 +2,10 @@
 
 namespace Pars\Admin\Translation;
 
-use Niceshops\Bean\Type\Base\BeanException;
-use Niceshops\Core\Exception\AttributeExistsException;
-use Niceshops\Core\Exception\AttributeLockException;
-use Niceshops\Core\Exception\AttributeNotFoundException;
+use Pars\Bean\Type\Base\BeanException;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
+use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\SystemNavigation;
@@ -69,6 +69,36 @@ class TranslationController extends CrudController
         $edit = parent::createEdit();
         $edit->setLocaleOptions($this->getModel()->getLocale_Options());
         return $edit;
+    }
+
+    public function indexAction()
+    {
+        $this->addFilter_Select(
+            'Locale_Code',
+            $this->translate('locale.code'),
+            $this->getModel()->getLocale_Options(true),
+            1,
+            1
+        );
+        $this->addFilter_Select(
+            'Translation_Namespace',
+            $this->translate('translation.namespace'),
+            $this->getModel()->getNamespaceOptions(true),
+            1,
+            2
+        );
+        $this->addFilter_Select(
+            'Translation_State',
+            $this->translate('translation.state'),
+            [
+                '' => $this->translate('noselection'),
+                'true' => $this->translate('translation.state.true'),
+                'false' => $this->translate('translation.state.false'),
+            ],
+            1,
+            3
+        );
+        return parent::indexAction();
     }
 
 

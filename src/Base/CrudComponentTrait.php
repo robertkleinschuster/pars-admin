@@ -4,9 +4,9 @@ namespace Pars\Admin\Base;
 
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
-use Niceshops\Bean\Type\Base\BeanException;
-use Niceshops\Core\Exception\AttributeExistsException;
-use Niceshops\Core\Exception\AttributeLockException;
+use Pars\Bean\Type\Base\BeanException;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
 use Pars\Helper\Path\PathHelper;
 use Pars\Helper\Path\PathHelperAwareTrait;
 use Pars\Model\Authentication\User\UserBean;
@@ -23,6 +23,8 @@ trait CrudComponentTrait
     private UserBean $userBean;
     protected ?string $currentContext = null;
     protected ?string $nextContext = null;
+    protected ?PathHelper $pathHelperCurrent = null;
+
     /**
      * MainNavigation constructor.
      * @param PathHelper $pathHelper
@@ -110,4 +112,32 @@ trait CrudComponentTrait
     {
         return isset($this->nextContext);
     }
+
+    /**
+    * @return PathHelper
+    */
+    public function getPathHelperCurrent(): PathHelper
+    {
+        return $this->pathHelperCurrent;
+    }
+
+    /**
+    * @param PathHelper $pathHelperCurrent
+    *
+    * @return $this
+    */
+    public function setPathHelperCurrent(PathHelper $pathHelperCurrent): self
+    {
+        $this->pathHelperCurrent = $pathHelperCurrent;
+        return $this;
+    }
+
+    /**
+    * @return bool
+    */
+    public function hasPathHelperCurrent(): bool
+    {
+        return isset($this->pathHelperCurrent);
+    }
+
 }

@@ -2,8 +2,8 @@
 
 namespace Pars\Admin\Cms\Menu;
 
-use Niceshops\Bean\Processor\BeanOrderProcessor;
-use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Bean\Processor\BeanOrderProcessor;
+use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\CrudModel;
 use Pars\Model\Cms\Menu\CmsMenuBeanFinder;
 use Pars\Model\Cms\Menu\CmsMenuBeanProcessor;
@@ -53,9 +53,12 @@ class CmsMenuModel extends CrudModel
         return $options;
     }
 
-    public function getCmsMenuState_Options(): array
+    public function getCmsMenuState_Options(bool $emptyElement = false): array
     {
         $options = [];
+        if ($emptyElement) {
+            $options[''] = $this->translate('noselection');
+        }
         $finder = new CmsMenuStateBeanFinder($this->getDbAdpater());
         $finder->setCmsMenuState_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
@@ -64,9 +67,12 @@ class CmsMenuModel extends CrudModel
         return $options;
     }
 
-    public function getCmsMenuType_Options(): array
+    public function getCmsMenuType_Options(bool $emptyElement = false): array
     {
         $options = [];
+        if ($emptyElement) {
+            $options[''] = $this->translate('noselection');
+        }
         $finder = new CmsMenuTypeBeanFinder($this->getDbAdpater());
         $finder->setCmsMenuType_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {

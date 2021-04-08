@@ -2,8 +2,12 @@
 
 namespace Pars\Admin\Cms\Post;
 
-use Niceshops\Bean\Type\Base\BeanInterface;
+use Laminas\Db\Sql\Where;
+use Pars\Bean\Finder\BeanFinderInterface;
+use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Article\ArticleModel;
+use Pars\Core\Database\DatabaseBeanConverter;
+use Pars\Helper\Parameter\FilterParameter;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
 use Pars\Model\Cms\Post\CmsPostBeanFinder;
 use Pars\Model\Cms\Post\CmsPostBeanProcessor;
@@ -25,9 +29,12 @@ class CmsPostModel extends ArticleModel
 
 
 
-    public function getCmsPostType_Options(): array
+    public function getCmsPostType_Options(bool $emptyElement = false): array
     {
         $options = [];
+        if ($emptyElement) {
+            $options[''] = $this->translate('noselection');
+        }
         $finder = new CmsPostTypeBeanFinder($this->getDbAdpater());
         $finder->setCmsPostType_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
@@ -36,9 +43,12 @@ class CmsPostModel extends ArticleModel
         return $options;
     }
 
-    public function getCmsPostState_Options(): array
+    public function getCmsPostState_Options(bool $emptyElement = false): array
     {
         $options = [];
+        if ($emptyElement) {
+            $options[''] = $this->translate('noselection');
+        }
         $finder = new CmsPostStateBeanFinder($this->getDbAdpater());
         $finder->setCmsPostState_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
@@ -73,4 +83,18 @@ class CmsPostModel extends ArticleModel
         }
         return $bean;
     }
+
+    public function handleFilter(FilterParameter $filterParameter)
+    {
+        parent::handleFilter($filterParameter);
+        if ($filterParameter->hasAttribute('CmsPost_Published')
+        && $filterParameter->getAttribute('CmsPost_Published') == 'true') {
+            $where = new Where();
+            $where->greaterThan('CmsPost_PublishTimestamp', (new \DateTime())->format(DatabaseBeanConverter::DATE_FORMAT), Where::TYPE_IDENTIFIER, Where::TYPE_VALUE);
+            $this->getBeanFinder()->getBeanLoader()->filterValue($where);
+            $this->getBeanFinder()->filter(['CmsPostState_Code' => 'inactive'], BeanFinderInterface::FILTER_MODE_OR);
+        }
+    }
+
+
 }

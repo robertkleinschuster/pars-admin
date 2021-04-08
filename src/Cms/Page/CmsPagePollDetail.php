@@ -2,8 +2,8 @@
 
 namespace Pars\Admin\Cms\Page;
 
-use Niceshops\Bean\Type\Base\BeanAwareInterface;
-use Niceshops\Bean\Type\Base\BeanAwareTrait;
+use Pars\Bean\Type\Base\BeanAwareInterface;
+use Pars\Bean\Type\Base\BeanAwareTrait;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Component\Base\Field\Progress;
 use Pars\Component\Base\Field\Span;

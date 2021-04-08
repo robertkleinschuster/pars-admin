@@ -3,6 +3,8 @@
 namespace Pars\Admin\Base;
 
 use Pars\Component\Base\Navigation\Navigation;
+use Pars\Helper\Parameter\FilterParameter;
+use Pars\Helper\Parameter\IdParameter;
 
 class SystemNavigation extends BaseNavigation
 {
@@ -43,6 +45,17 @@ class SystemNavigation extends BaseNavigation
             $this->getPathHelper()->setController('config')->setAction('index'),
             'config'
         )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'config'))->addOption('cache');
+        $this->addItem(
+            $this->translate('navigation.system.style'),
+            $this->getPathHelper()->setController('config')->setAction('index')->addParameter((new FilterParameter())->addId('ConfigType_Code', 'style')),
+            'style'
+        )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'config'))->addOption('cache');
+        $this->addItem(
+            $this->translate('navigation.system.frontend'),
+            $this->getPathHelper()->setController('config')->setAction('index')->addParameter((new FilterParameter())->addId('ConfigType_Code', 'frontend')),
+            'frontend'
+        )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'config'))->addOption('cache');
+
         $this->addItem(
             $this->translate('navigation.system.import'),
             $this->getPathHelper()->setController('import')->setAction('index'),

@@ -10,9 +10,11 @@ use Pars\Component\Base\Field\Progress;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\ListGroup\Group;
 use Pars\Component\Base\ListGroup\Item;
+use Pars\Core\Config\ParsConfig;
 use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Article\Data\ArticleDataBeanFinder;
+use Pars\Model\Config\ConfigBeanFinder;
 use Pars\Mvc\View\HtmlElement;
 
 /**
@@ -99,14 +101,16 @@ class IndexController extends BaseController
             $span->push($heading);
         }
 
+        $configFinder = new ConfigBeanFinder($this->getModel()->getDbAdpater());
+        $config = $configFinder->getBeanList()->column('Config_Value', 'Config_Code');
 
-        if ($this->getModel()->getConfig()) {
-            $count = count($this->getModel()->getConfig());
+        if ($config) {
+            $count = count($config);
             $factor = 40;
             if ($count > 0) {
                 $factor = $factor / $count;
             }
-            foreach ($this->getModel()->getConfig() as $key => $value) {
+            foreach ($config as $key => $value) {
                 if (empty($value)) {
                     $heading = new HtmlElement('h5.mr-1.d-inline');
                     $heading->push(new Badge($this->translate('index.config.empty') . ': ' . $key, Badge::STYLE_DANGER));

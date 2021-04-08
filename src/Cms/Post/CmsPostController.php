@@ -2,10 +2,10 @@
 
 namespace Pars\Admin\Cms\Post;
 
-use Niceshops\Bean\Type\Base\BeanException;
-use Niceshops\Core\Exception\AttributeExistsException;
-use Niceshops\Core\Exception\AttributeLockException;
-use Niceshops\Core\Exception\AttributeNotFoundException;
+use Pars\Bean\Type\Base\BeanException;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
+use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Admin\Article\ArticleController;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\ContentNavigation;
@@ -47,6 +47,32 @@ class CmsPostController extends ArticleController
             $this->getView()->set('CmsPage_ID', (int) $this->getControllerRequest()->getId()->getAttribute('CmsPage_ID'));
         }
     }
+
+    public function indexAction()
+    {
+        $this->addFilter_Select(
+            'CmsPostType_Code',
+            $this->translate('cmsposttype.code'),
+            $this->getModel()->getCmsPostType_Options(true),
+            1,
+            1
+        );
+        $this->addFilter_Select(
+            'CmsPostState_Code',
+            $this->translate('cmspoststate.code'),
+            $this->getModel()->getCmsPostState_Options(true),
+            1,
+            2
+        );
+        $this->addFilter_Checkbox(
+            'CmsPost_Published',
+            $this->translate('cmspost.published'),
+            2,
+            1
+        );
+        return parent::indexAction();
+    }
+
 
     /**
      * @return BaseEdit
