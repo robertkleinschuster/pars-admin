@@ -16,9 +16,9 @@ class CmsPageBlockController extends CmsBlockController
 {
     /**
      * @return mixed|void
-     * @throws \Niceshops\Core\Exception\AttributeExistsException
-     * @throws \Niceshops\Core\Exception\AttributeLockException
-     * @throws \Niceshops\Core\Exception\AttributeNotFoundException
+     * @throws \Pars\Pattern\Exception\AttributeExistsException
+     * @throws \Pars\Pattern\Exception\AttributeLockException
+     * @throws \Pars\Pattern\Exception\AttributeNotFoundException
      */
     protected function initModel()
     {
@@ -36,10 +36,10 @@ class CmsPageBlockController extends CmsBlockController
 
     /**
      * @return mixed|void
-     * @throws \Niceshops\Bean\Type\Base\BeanException
-     * @throws \Niceshops\Core\Exception\AttributeExistsException
-     * @throws \Niceshops\Core\Exception\AttributeLockException
-     * @throws \Niceshops\Core\Exception\AttributeNotFoundException
+     * @throws \Pars\Bean\Type\Base\BeanException
+     * @throws \Pars\Pattern\Exception\AttributeExistsException
+     * @throws \Pars\Pattern\Exception\AttributeLockException
+     * @throws \Pars\Pattern\Exception\AttributeNotFoundException
      */
     protected function initView()
     {

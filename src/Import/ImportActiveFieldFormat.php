@@ -4,7 +4,7 @@ namespace Pars\Admin\Import;
 
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
-use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Component\Base\StyleAwareInterface;
 use Pars\Mvc\View\FieldFormatInterface;
 use Pars\Mvc\View\FieldInterface;

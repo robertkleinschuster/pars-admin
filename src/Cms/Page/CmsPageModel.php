@@ -3,7 +3,7 @@
 namespace Pars\Admin\Cms\Page;
 
 use Laminas\Diactoros\UploadedFile;
-use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Article\ArticleModel;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;

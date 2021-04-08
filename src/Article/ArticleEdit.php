@@ -2,7 +2,7 @@
 
 namespace Pars\Admin\Article;
 
-use Niceshops\Bean\Type\Base\BeanException;
+use Pars\Bean\Type\Base\BeanException;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Component\Base\Field\Paragraph;
 use Pars\Component\Base\Form\FileSelect;

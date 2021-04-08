@@ -2,9 +2,9 @@
 
 namespace Pars\Admin\Article;
 
-use Niceshops\Bean\Type\Base\BeanException;
-use Niceshops\Core\Exception\AttributeExistsException;
-use Niceshops\Core\Exception\AttributeLockException;
+use Pars\Bean\Type\Base\BeanException;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Component\Base\Field\Button;
 use Pars\Component\Base\Field\Icon;

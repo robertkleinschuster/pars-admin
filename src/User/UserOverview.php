@@ -2,7 +2,7 @@
 
 namespace Pars\Admin\User;
 
-use Niceshops\Bean\Type\Base\BeanListAwareTrait;
+use Pars\Bean\Type\Base\BeanListAwareTrait;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\Field\Badge;
 

@@ -2,7 +2,7 @@
 
 namespace Pars\Admin\Translation;
 
-use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\BaseDetail;
 
 class TranslationDetail extends BaseDetail

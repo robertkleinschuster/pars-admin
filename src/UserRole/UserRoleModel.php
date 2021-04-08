@@ -3,7 +3,7 @@
 namespace Pars\Admin\UserRole;
 
 use Exception;
-use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Role\RoleModel;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Authorization\Role\RoleBean;

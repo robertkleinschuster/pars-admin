@@ -2,9 +2,9 @@
 
 namespace Pars\Admin\Base;
 
-use Niceshops\Bean\Type\Base\BeanException;
-use Niceshops\Core\Exception\AttributeExistsException;
-use Niceshops\Core\Exception\AttributeLockException;
+use Pars\Bean\Type\Base\BeanException;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
 use Pars\Component\Base\Form\Hidden;
 use Pars\Component\Base\Overview\DeleteButton;
 use Pars\Component\Base\Overview\EditButton;

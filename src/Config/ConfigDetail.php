@@ -2,7 +2,7 @@
 
 namespace Pars\Admin\Config;
 
-use Niceshops\Bean\Type\Base\BeanException;
+use Pars\Bean\Type\Base\BeanException;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BooleanValueFieldAccept;
 

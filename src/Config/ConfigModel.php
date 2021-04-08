@@ -21,7 +21,7 @@ class ConfigModel extends CrudModel
 
     /**
      * @return array
-     * @throws \Niceshops\Bean\Type\Base\BeanException
+     * @throws \Pars\Bean\Type\Base\BeanException
      */
     public function getConfigType_Options(bool $emptyElement = false): array
     {

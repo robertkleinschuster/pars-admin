@@ -2,7 +2,7 @@
 
 namespace Pars\Admin\Cms\Post;
 
-use Niceshops\Bean\Type\Base\BeanException;
+use Pars\Bean\Type\Base\BeanException;
 use Pars\Admin\Article\ArticleDetail;
 use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Field\Span;

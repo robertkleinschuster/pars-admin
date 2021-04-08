@@ -4,8 +4,8 @@ namespace Pars\Admin\Translation;
 
 use Laminas\Db\Sql\Predicate\Predicate;
 use Laminas\Db\Sql\Where;
-use Niceshops\Bean\Type\Base\BeanException;
-use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Bean\Type\Base\BeanException;
+use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\CrudModel;
 use Pars\Helper\Parameter\FilterParameter;
 use Pars\Model\Localization\Locale\LocaleBeanFinder;
@@ -80,7 +80,7 @@ class TranslationModel extends CrudModel
     /**
      * @param FilterParameter $filterParameter
      * @return mixed|void
-     * @throws \Niceshops\Core\Exception\AttributeNotFoundException
+     * @throws \Pars\Pattern\Exception\AttributeNotFoundException
      */
     public function handleFilter(FilterParameter $filterParameter)
     {

@@ -2,8 +2,8 @@
 
 namespace Pars\Admin\Cms\Post;
 
-use Niceshops\Bean\Converter\ConverterBeanDecorator;
-use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Bean\Converter\ConverterBeanDecorator;
+use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Component\Base\Field\Span;
 use Pars\Mvc\View\FieldFormatInterface;
 use Pars\Mvc\View\FieldInterface;

@@ -2,10 +2,10 @@
 
 namespace Pars\Admin\Config;
 
-use Niceshops\Bean\Type\Base\BeanException;
-use Niceshops\Core\Exception\AttributeExistsException;
-use Niceshops\Core\Exception\AttributeLockException;
-use Niceshops\Core\Exception\AttributeNotFoundException;
+use Pars\Bean\Type\Base\BeanException;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
+use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Admin\Base\CrudController;
 use Pars\Admin\Base\SystemNavigation;
 use Pars\Component\Base\Edit\Edit;

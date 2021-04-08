@@ -2,9 +2,9 @@
 
 namespace Pars\Admin\Cms\PageBlock;
 
-use Niceshops\Bean\Processor\BeanOrderProcessor;
-use Niceshops\Bean\Type\Base\BeanException;
-use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Bean\Processor\BeanOrderProcessor;
+use Pars\Bean\Type\Base\BeanException;
+use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Cms\Block\CmsBlockModel;
 use Pars\Helper\Parameter\FilterParameter;
 use Pars\Helper\Parameter\IdParameter;

@@ -2,8 +2,8 @@
 
 namespace Pars\Admin\Base;
 
-use Niceshops\Core\Mode\ModeAwareInterface;
-use Niceshops\Core\Mode\ModeAwareTrait;
+use Pars\Pattern\Mode\ModeAwareInterface;
+use Pars\Pattern\Mode\ModeAwareTrait;
 use Pars\Component\Base\Edit\Edit;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\RedirectParameter;
@@ -56,8 +56,8 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
     }
 
     /**
-     * @throws \Niceshops\Core\Exception\AttributeExistsException
-     * @throws \Niceshops\Core\Exception\AttributeLockException
+     * @throws \Pars\Pattern\Exception\AttributeExistsException
+     * @throws \Pars\Pattern\Exception\AttributeLockException
      */
     protected function initSubmitButton()
     {

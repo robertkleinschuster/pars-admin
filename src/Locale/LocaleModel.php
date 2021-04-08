@@ -2,7 +2,7 @@
 
 namespace Pars\Admin\Locale;
 
-use Niceshops\Bean\Processor\BeanOrderProcessor;
+use Pars\Bean\Processor\BeanOrderProcessor;
 use Pars\Admin\Base\CrudModel;
 use Pars\Model\Localization\Locale\LocaleBeanFinder;
 use Pars\Model\Localization\Locale\LocaleBeanProcessor;

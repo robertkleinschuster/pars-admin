@@ -2,8 +2,8 @@
 
 namespace Pars\Admin\Cms\Menu;
 
-use Niceshops\Bean\Processor\BeanOrderProcessor;
-use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Bean\Processor\BeanOrderProcessor;
+use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\CrudModel;
 use Pars\Model\Cms\Menu\CmsMenuBeanFinder;
 use Pars\Model\Cms\Menu\CmsMenuBeanProcessor;

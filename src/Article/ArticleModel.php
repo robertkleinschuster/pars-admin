@@ -2,8 +2,8 @@
 
 namespace Pars\Admin\Article;
 
-use Niceshops\Bean\Type\Base\BeanException;
-use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Bean\Type\Base\BeanException;
+use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\CrudModel;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Article\DataBean;

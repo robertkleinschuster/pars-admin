@@ -2,7 +2,7 @@
 
 namespace Pars\Admin\Cms\Block;
 
-use Niceshops\Bean\Processor\BeanOrderProcessor;
+use Pars\Bean\Processor\BeanOrderProcessor;
 use Pars\Model\Cms\Block\CmsBlockBeanFinder;
 use Pars\Model\Cms\Block\CmsBlockBeanProcessor;
 

@@ -2,7 +2,7 @@
 
 namespace Pars\Admin\Import;
 
-use Niceshops\Bean\Type\Base\BeanListAwareInterface;
+use Pars\Bean\Type\Base\BeanListAwareInterface;
 use Pars\Admin\Base\CrudModel;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
@@ -29,7 +29,7 @@ class ImportModel extends CrudModel
 
     /**
      * @return array
-     * @throws \Niceshops\Bean\Type\Base\BeanException
+     * @throws \Pars\Bean\Type\Base\BeanException
      */
     public function getImportTypeOptions(): array
     {

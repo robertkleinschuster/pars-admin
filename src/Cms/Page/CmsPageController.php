@@ -2,11 +2,11 @@
 
 namespace Pars\Admin\Cms\Page;
 
-use Niceshops\Bean\Type\Base\BeanException;
-use Niceshops\Bean\Type\Base\BeanInterface;
-use Niceshops\Core\Exception\AttributeExistsException;
-use Niceshops\Core\Exception\AttributeLockException;
-use Niceshops\Core\Exception\AttributeNotFoundException;
+use Pars\Bean\Type\Base\BeanException;
+use Pars\Bean\Type\Base\BeanInterface;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
+use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Admin\Article\ArticleController;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\ContentNavigation;

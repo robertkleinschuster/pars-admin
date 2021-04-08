@@ -2,7 +2,7 @@
 
 namespace Pars\Admin\Import;
 
-use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Mvc\View\FieldFormatInterface;
 use Pars\Mvc\View\FieldInterface;
 

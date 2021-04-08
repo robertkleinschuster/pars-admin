@@ -2,10 +2,10 @@
 
 namespace Pars\Admin\Cms\Block;
 
-use Niceshops\Bean\Finder\BeanFinderInterface;
-use Niceshops\Bean\Processor\BeanProcessorInterface;
-use Niceshops\Bean\Type\Base\BeanInterface;
-use Niceshops\Bean\Type\Base\BeanListInterface;
+use Pars\Bean\Finder\BeanFinderInterface;
+use Pars\Bean\Processor\BeanProcessorInterface;
+use Pars\Bean\Type\Base\BeanInterface;
+use Pars\Bean\Type\Base\BeanListInterface;
 use Pars\Admin\Article\ArticleModel;
 use Pars\Model\Cms\Block\CmsBlockBean;
 use Pars\Model\Cms\Block\CmsBlockBeanFinder;

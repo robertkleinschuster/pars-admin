@@ -2,7 +2,7 @@
 
 namespace Pars\Admin\Import;
 
-use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Toolbar\ConfigureButton;

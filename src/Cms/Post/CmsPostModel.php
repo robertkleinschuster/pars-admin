@@ -3,8 +3,8 @@
 namespace Pars\Admin\Cms\Post;
 
 use Laminas\Db\Sql\Where;
-use Niceshops\Bean\Finder\BeanFinderInterface;
-use Niceshops\Bean\Type\Base\BeanInterface;
+use Pars\Bean\Finder\BeanFinderInterface;
+use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Article\ArticleModel;
 use Pars\Core\Database\DatabaseBeanConverter;
 use Pars\Helper\Parameter\FilterParameter;
