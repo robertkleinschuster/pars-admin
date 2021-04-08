@@ -25,7 +25,7 @@ class ConfigOverview extends BaseOverview
     protected function initialize()
     {
         $this->setSection($this->translate('section.config'));
-        $this->setShowDelete(true);
+        $this->setShowDelete(false);
         $this->setShowDeleteBulk(false);
         $this->setShowCreate(false);
         $this->setShowOrder(true);
