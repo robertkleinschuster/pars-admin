@@ -19,7 +19,9 @@
     "pars/pars-components": "dev-master",
     "pars/pars-helpers": "dev-master",
     "pars/pars-models": "dev-master",
-    "pars/pars-import": "dev-master"
+    "pars/pars-import": "dev-master",
+    "pars/pars-beans": "dev-master",
+    "pars/pars-patterns": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": "^9.5"
