@@ -1,7 +1,7 @@
 # pars-admin
 
-[![Build Status](https://travis-ci.com/pars/pars-admin.svg?branch=master)](https://travis-ci.com/pars/pars-admin)
-[![Coverage Status](https://coveralls.io/repos/github/pars/pars-admin/badge.svg?branch=master)](https://coveralls.io/github/pars/pars-admin?branch=master)
+[![Build Status](https://travis-ci.com/pars-framework/pars-admin.svg?branch=master)](https://travis-ci.com/pars-framework/pars-admin)
+[![Coverage Status](https://coveralls.io/repos/github/pars-framework/pars-admin/badge.svg?branch=master)](https://coveralls.io/github/pars-framework/pars-admin?branch=master)
 
 This library provides …
 
