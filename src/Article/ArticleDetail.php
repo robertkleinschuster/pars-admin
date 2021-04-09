@@ -67,7 +67,7 @@ abstract class ArticleDetail extends BaseDetail
      */
     protected function initDataFields()
     {
-        if (!$this->getBean()->empty('Article_Data')) {
+        if ($this->hasBean() && !$this->getBean()->empty('Article_Data')) {
             $data = $this->getBean()->get('Article_Data');
             if ($data instanceof DataBean) {
                 foreach ($data as $key => $value) {
@@ -112,13 +112,15 @@ abstract class ArticleDetail extends BaseDetail
             $button->setModalTitle($this->translate('edit.title'));
             $button->setPath($this->generateEditTextPath());
             $dropdown = new DropdownEditButton($button);
-            foreach ($this->getLocale_List() as $locale) {
-                $button = new Button();
-                $button->setModal(true);
-                $button->setModalTitle($this->translate('edit.title'));
-                $button->setContent($locale->get('Locale_Name'));
-                $button->setPath($this->generateEditTextPath($locale->get('Locale_UrlCode')));
-                $dropdown->getDropdownList()->push($button);
+            if ($this->hasLocale_List()) {
+                foreach ($this->getLocale_List() as $locale) {
+                    $button = new Button();
+                    $button->setModal(true);
+                    $button->setModalTitle($this->translate('edit.title'));
+                    $button->setContent($locale->get('Locale_Name'));
+                    $button->setPath($this->generateEditTextPath($locale->get('Locale_UrlCode')));
+                    $dropdown->getDropdownList()->push($button);
+                }
             }
             $this->getToolbar()->push($dropdown);
         }
@@ -137,8 +139,9 @@ abstract class ArticleDetail extends BaseDetail
             ->setAction('edit_text')
             ->setId(IdParameter::fromMap($this->getEditIdFields()));
         if ($this->hasNextContext()) {
-            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
-        }        if ($locale_UrlCode) {
+            $path->addParameter($this->getNextContext());
+        }
+        if ($locale_UrlCode) {
             $path->addParameter(new EditLocaleParameter($locale_UrlCode));
         }
         return $path->getPath();

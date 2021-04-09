@@ -4,19 +4,19 @@ namespace Pars\Admin\Base;
 
 use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Laminas\I18n\Translator\TranslatorInterface;
+use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Path\PathHelper;
 use Pars\Helper\Path\PathHelperAwareInterface;
 use Pars\Model\Authentication\User\UserBean;
+use Pars\Mvc\View\ComponentInterface;
+use Pars\Mvc\View\HtmlInterface;
 
 /**
  * Interface CrudComponentInterface
  * @package Pars\Admin\Base
  */
-interface CrudComponentInterface extends TranslatorAwareInterface, PathHelperAwareInterface
+interface CrudComponentInterface extends HtmlInterface, ComponentInterface, TranslatorAwareInterface, PathHelperAwareInterface
 {
-    public const CONTEXT_OVERVIEW = 'overview';
-    public const CONTEXT_DETAIL = 'detail';
-
     /**
      * CrudComponentInterface constructor.
      * @param PathHelper $pathHelper
@@ -30,16 +30,16 @@ interface CrudComponentInterface extends TranslatorAwareInterface, PathHelperAwa
     );
 
     /**
-     * @return string
+     * @return ContextParameter
      */
-    public function getCurrentContext(): string;
+    public function getCurrentContext(): ContextParameter;
 
     /**
-     * @param string $context
+     * @param ContextParameter $context
      *
      * @return $this
      */
-    public function setCurrentContext(string $context);
+    public function setCurrentContext(ContextParameter $context);
 
     /**
      * @return bool
@@ -47,16 +47,16 @@ interface CrudComponentInterface extends TranslatorAwareInterface, PathHelperAwa
     public function hasCurrentContext(): bool;
 
     /**
-     * @return string
+     * @return ContextParameter
      */
-    public function getNextContext(): string;
+    public function getNextContext(): ContextParameter;
 
     /**
-     * @param string $nextContext
+     * @param ContextParameter $nextContext
      *
      * @return $this
      */
-    public function setNextContext(string $nextContext);
+    public function setNextContext(ContextParameter $nextContext);
 
     /**
      * @return bool

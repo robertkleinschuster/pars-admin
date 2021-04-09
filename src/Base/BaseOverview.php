@@ -108,7 +108,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             ->setAction('detail')
             ->setId(IdParameter::fromMap($this->getDetailIdFields()));
         if ($this->hasNextContext()) {
-            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
+            $path->addParameter($this->getNextContext());
         }
         return $path->getPath();
     }
@@ -123,7 +123,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             ->setAction('create')
             ->setId(IdParameter::fromMap($this->getCreateIdFields()));
         if ($this->hasNextContext()) {
-            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
+            $path->addParameter($this->getNextContext());
         }
         return $path->getPath();
     }
@@ -138,7 +138,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             ->setAction('create_new')
             ->setId(IdParameter::fromMap($this->getCreateIdFields()));
         if ($this->hasNextContext()) {
-            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
+            $path->addParameter($this->getNextContext());
         }
         return $path->getPath();
     }
@@ -189,9 +189,9 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             ->setAction($this->getRedirectAction())
             ->setId(IdParameter::fromMap($this->getRedirectIdFields()));
         if ($this->hasNextContext() && $context) {
-            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
+            $path->addParameter($this->getNextContext());
         } elseif ($this->hasCurrentContext()) {
-            $path->addParameter(ContextParameter::fromPath($this->getCurrentContext()));
+            $path->addParameter($this->getCurrentContext());
         }
         return $path;
     }
@@ -206,7 +206,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             ->setAction('edit')
             ->setId(IdParameter::fromMap($this->getDetailIdFields()));
         if ($this->hasNextContext()) {
-            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
+            $path->addParameter($this->getNextContext());
         }
         return $path->getPath();
     }
@@ -221,7 +221,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             ->setAction('delete')
             ->setId(IdParameter::fromMap($this->getDetailIdFields()));
         if ($this->hasNextContext()) {
-            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
+            $path->addParameter($this->getNextContext());
         }
         return $path->getPath();
     }

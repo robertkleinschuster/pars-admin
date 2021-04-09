@@ -3,28 +3,29 @@
 namespace Pars\Admin\Base;
 
 use DateTime;
+use Laminas\Diactoros\Uri;
 use Pars\Bean\Type\Base\BeanException;
-use Pars\Pattern\Exception\AttributeExistsException;
-use Pars\Pattern\Exception\AttributeLockException;
-use Pars\Pattern\Exception\AttributeNotFoundException;
+use Pars\Component\Base\Breadcrumb\Breadcrumb;
 use Pars\Component\Base\Detail\Detail;
-use Pars\Component\Base\Edit\Edit;
-use Pars\Component\Base\Field\Button;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Filter\Filter;
-use Pars\Component\Base\Form\Form;
-use Pars\Component\Base\Grid\Column;
-use Pars\Component\Base\Grid\Row;
+use Pars\Component\Base\Layout\DashboardLayout;
 use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Pagination\Pagination;
 use Pars\Component\Base\Toolbar\MoreButton;
-use Pars\Component\Base\Toolbar\ToolbarButton;
+use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\FilterParameter;
 use Pars\Helper\Parameter\NavParameter;
 use Pars\Helper\Parameter\PaginationParameter;
+use Pars\Helper\Parameter\Parameter;
 use Pars\Helper\Parameter\SearchParameter;
 use Pars\Mvc\Exception\MvcException;
 use Pars\Mvc\Exception\NotFoundException;
+use Pars\Mvc\View\HtmlElement;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
+use Pars\Pattern\Exception\AttributeNotFoundException;
+use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html;
 
 /**
  * Class CrudController
@@ -225,12 +226,40 @@ abstract class CrudController extends BaseController
      */
     protected function injectContext(CrudComponentInterface $component)
     {
-        $component->setNextContext($this->getPathHelper(true)->getPath());
+        $context = new ContextParameter();
+        $context->setPath($this->getPathHelper(true)->getPath());
+        $compClone = clone $component;
+        $compClone->render();
+        if (!$this->hasParent() && $compClone->hasName()) {
+            $context->setTitle($compClone->getName());
+        }
+        $component->setNextContext($context);
         if ($this->getControllerRequest()->hasContext()) {
             $context = $this->getControllerRequest()->getContext();
-            $component->setCurrentContext($context->getPath());
+            $component->setCurrentContext($context);
+        }
+        $breadcrumb = new Breadcrumb();
+        $breadcrumb->addOption('modal-hidden');
+        if ($component->hasCurrentContext() && $component->getCurrentContext()->hasPath()) {
+            $contextList = $context->resolveContextFromPath();
+            foreach ($contextList as $contextItem) {
+                if ($contextItem->hasTitle()) {
+                    $breadcrumb->addItem($contextItem->getTitle(), $contextItem->getPath());
+                } else {
+                    $breadcrumb->addItem('<<', $contextItem->getPath());
+                }
+            }
+        }
+        if ($component->getNextContext()->hasTitle()) {
+            $breadcrumb->addItem($component->getNextContext()->getTitle(), $component->getNextContext()->getPath());
+        }
+        if (!$this->hasParent() && $breadcrumb->getItemList()->count() > 1
+        && $this->getView()->getLayout()->getComponentList()->isEmpty()
+        ) {
+            $component->unshift($breadcrumb);
         }
     }
+
 
     /**
      * @param $overview
@@ -549,8 +578,8 @@ abstract class CrudController extends BaseController
     }
 
     /**
-    * @return Filter
-    */
+     * @return Filter
+     */
     public function getFilter(): Filter
     {
         if (!$this->hasFilter()) {
@@ -560,10 +589,10 @@ abstract class CrudController extends BaseController
     }
 
     /**
-    * @param Filter $filter
-    *
-    * @return $this
-    */
+     * @param Filter $filter
+     *
+     * @return $this
+     */
     public function setFilter(Filter $filter): self
     {
         $this->filter = $filter;
@@ -571,8 +600,8 @@ abstract class CrudController extends BaseController
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasFilter(): bool
     {
         return isset($this->filter);
@@ -595,7 +624,8 @@ abstract class CrudController extends BaseController
         array $options,
         int $row = 1,
         int $column = 1
-    ): self {
+    ): self
+    {
         $parameter = new FilterParameter();
         $value = '';
         if (

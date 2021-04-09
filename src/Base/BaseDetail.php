@@ -86,7 +86,7 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
             ->setAction($this->getEditAction())
             ->setId(IdParameter::fromMap($this->getEditIdFields()));
         if ($this->hasNextContext()) {
-            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
+            $path->addParameter($this->getNextContext());
         }
         if ($locale_UrlCode) {
             $path->addParameter(new EditLocaleParameter($locale_UrlCode));
@@ -104,7 +104,7 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
             ->setAction('delete')
             ->setId(IdParameter::fromMap($this->getEditIdFields()));
         if ($this->hasNextContext()) {
-            $path->addParameter(ContextParameter::fromPath($this->getNextContext()));
+            $path->addParameter($this->getNextContext());
         }
         return $path->getPath();
     }
@@ -115,7 +115,7 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
     protected function generateIndexPath(): string
     {
         if ($this->hasCurrentContext()) {
-            return $this->getCurrentContext();
+            return $this->getCurrentContext()->getPath();
         }
         $indexPath = $this->getPathHelper()
             ->setController($this->getIndexController())

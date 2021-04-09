@@ -5,6 +5,7 @@ namespace Pars\Admin\Base;
 use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
 use Pars\Bean\Type\Base\BeanException;
+use Pars\Helper\Parameter\ContextParameter;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
 use Pars\Helper\Path\PathHelper;
@@ -21,8 +22,8 @@ trait CrudComponentTrait
     use PathHelperAwareTrait;
 
     private UserBean $userBean;
-    protected ?string $currentContext = null;
-    protected ?string $nextContext = null;
+    protected ?ContextParameter $currentContext = null;
+    protected ?ContextParameter $nextContext = null;
     protected ?PathHelper $pathHelperCurrent = null;
 
     /**
@@ -60,19 +61,19 @@ trait CrudComponentTrait
     }
 
     /**
-    * @return string
+    * @return ContextParameter
     */
-    public function getCurrentContext(): string
+    public function getCurrentContext(): ContextParameter
     {
         return $this->currentContext;
     }
 
     /**
-    * @param string $currentContext
+    * @param ContextParameter $currentContext
     *
     * @return $this
     */
-    public function setCurrentContext(string $currentContext)
+    public function setCurrentContext(ContextParameter $currentContext)
     {
         $this->currentContext = $currentContext;
         return $this;
@@ -87,19 +88,19 @@ trait CrudComponentTrait
     }
 
     /**
-    * @return string
+    * @return ContextParameter
     */
-    public function getNextContext(): string
+    public function getNextContext(): ContextParameter
     {
         return $this->nextContext;
     }
 
     /**
-    * @param string $nextContext
+    * @param ContextParameter $nextContext
     *
     * @return $this
     */
-    public function setNextContext(string $nextContext)
+    public function setNextContext(ContextParameter $nextContext)
     {
         $this->nextContext = $nextContext;
         return $this;

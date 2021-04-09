@@ -28,6 +28,7 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
     protected function initialize()
     {
         parent::initialize();
+        $this->setName($this->translate('edit.title'));
         $this->initToken();
         $this->initFieldErrors();
         $this->initSubmitButton();
@@ -147,7 +148,7 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
     protected function generateIndexPath(): string
     {
         if ($this->hasCurrentContext()) {
-            return $this->getCurrentContext();
+            return $this->getCurrentContext()->getPath();
         }
         $indexPath = $this->getPathHelper()
             ->setController($this->getRedirectController())
@@ -162,7 +163,7 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
     protected function generateCreateRedirectPath(): string
     {
         if ($this->hasCurrentContext()) {
-            return $this->getCurrentContext();
+            return $this->getCurrentContext()->getPath();
         }
         $indexPath = $this->getPathHelper()
             ->setController($this->getRedirectController())
