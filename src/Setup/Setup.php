@@ -12,6 +12,7 @@ class Setup extends UserEdit
 {
     protected function initialize()
     {
+        $this->setShowTitle(false);
         parent::initialize();
         $this->getForm()->setBackground(Form::BACKGROUND_LIGHT);
         $this->getForm()->setRounded(Form::ROUNDED_NONE);

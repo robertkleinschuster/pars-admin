@@ -21,6 +21,7 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
     public bool $create = false;
     public bool $createBulk = false;
     public bool $showSubmit = true;
+    public bool $showTitle = true;
 
     /**
      *
@@ -28,11 +29,33 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
     protected function initialize()
     {
         parent::initialize();
-        $this->setName($this->translate('edit.title'));
+        if ($this->isShowTitle()) {
+            $this->setName($this->translate('edit.title'));
+        }
         $this->initToken();
         $this->initFieldErrors();
         $this->initSubmitButton();
     }
+
+    /**
+     * @return bool
+     */
+    public function isShowTitle(): bool
+    {
+        return $this->showTitle;
+    }
+
+    /**
+     * @param bool $showTitle
+     * @return BaseEdit
+     */
+    public function setShowTitle(bool $showTitle): BaseEdit
+    {
+        $this->showTitle = $showTitle;
+        return $this;
+    }
+
+
 
     /**
      *

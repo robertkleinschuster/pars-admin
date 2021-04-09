@@ -9,7 +9,7 @@ class TranslationDetail extends BaseDetail
 {
     protected function initialize()
     {
-        $this->setSection($this->translate('section.translation'));
+        $this->setSection('{Translation_Code}');
 
         $this->addField('Translation_Code', $this->translate('translation.code'));
         $this->addField('Translation_Text', $this->translate('translation.text'));

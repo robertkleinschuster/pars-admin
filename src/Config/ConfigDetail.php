@@ -17,7 +17,7 @@ class ConfigDetail extends BaseDetail
      */
     protected function initialize()
     {
-        $this->setSection($this->translate('section.config'));
+        $this->setSection('{Config_Code}');
         $this->setShowDelete(false);
         $this->setHeading('{Config_Code}');
         $this->addField('Config_Value', $this->translate('config.value'));

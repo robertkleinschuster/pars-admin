@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'index.title' => 'Start',
     'upload.title' => 'Upload',
     'create.title' => 'Neu',
     'setup' => 'Einrichtung',
@@ -31,6 +32,7 @@ return [
     'section.locale' => 'Sparchen/Länder',
     'section.translation' => 'Übersetzungen',
     'section.config' => 'Einstellungen',
+    'section.apikey' => 'API Keys',
     'section.data' => 'Daten',
     'section.data.contact' => 'Kontaktanfragen',
     'section.data.poll' => 'Abstimmungen',

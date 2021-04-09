@@ -9,7 +9,7 @@ class RoleDetail extends BaseDetail
 {
     protected function initialize()
     {
-        $this->setSection($this->translate('section.role'));
+        $this->setSection('{UserRole_Name}');
 
         $this->setHeading('{UserRole_Name}');
         $this->addField('UserRole_Code', $this->translate('userrole.code'));

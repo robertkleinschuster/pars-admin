@@ -10,6 +10,7 @@ class ApiKeyDetail extends BaseDetail
 {
     protected function initialize()
     {
+        $this->setName('{ApiKey_Name}');
         $this->addField('ApiKey_Name', $this->translate('apikey.name'));
         $this->addField('ApiKey_Key', $this->translate('apikey.key'));
         $this->addField('ApiKey_Host', $this->translate('apikey.host'));

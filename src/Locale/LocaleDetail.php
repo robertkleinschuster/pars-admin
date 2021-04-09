@@ -9,7 +9,7 @@ class LocaleDetail extends BaseDetail
 {
     protected function initialize()
     {
-        $this->setSection($this->translate('section.locale'));
+        $this->setSection('{Locale_Name}');
         $this->setShowDelete(false);
         $this->setHeading('{Locale_Name}');
         $this->addField('Locale_Code', $this->translate('locale.code'));

@@ -10,6 +10,7 @@ use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Filter\Filter;
 use Pars\Component\Base\Layout\DashboardLayout;
+use Pars\Component\Base\Navigation\Item;
 use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Pagination\Pagination;
 use Pars\Component\Base\Toolbar\MoreButton;
@@ -239,6 +240,24 @@ abstract class CrudController extends BaseController
             $component->setCurrentContext($context);
         }
         $breadcrumb = new Breadcrumb();
+        $breadcrumb->addItem(
+            $this->translate('index.title'),
+            $this->getPathHelper()->setController('index')->setAction('index')->getPath()
+        );
+        $layout = $this->getView()->getLayout();
+        if ($layout instanceof DashboardLayout) {
+            $navItem = $layout->getNavigation()->getElementById($layout->getNavigation()->getActive());
+            if ($navItem) {
+                $span = $navItem->getElementsByTagName('span');
+                if ($span->count() && $navItem instanceof Item) {
+                    $breadcrumb->addItem(
+                        $span->first()->getContent(),
+                        $navItem->getLink()->getPath()
+                    );
+                }
+            }
+        }
+
         $breadcrumb->addOption('modal-hidden');
         if ($component->hasCurrentContext() && $component->getCurrentContext()->hasPath()) {
             $contextList = $context->resolveContextFromPath();
@@ -253,7 +272,7 @@ abstract class CrudController extends BaseController
         if ($component->getNextContext()->hasTitle()) {
             $breadcrumb->addItem($component->getNextContext()->getTitle(), $component->getNextContext()->getPath());
         }
-        if (!$this->hasParent() && $breadcrumb->getItemList()->count() > 1
+        if (!$this->hasParent() && $breadcrumb->getItemList()->count() >= 1
         && $this->getView()->getLayout()->getComponentList()->isEmpty()
         ) {
             $component->unshift($breadcrumb);
