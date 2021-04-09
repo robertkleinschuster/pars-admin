@@ -21,7 +21,7 @@ class TranslationDetail extends BaseDetail
 
     protected function beforeRender(BeanInterface $bean = null)
     {
-        if (!$bean->empty('Translation_Text')) {
+        if ($bean && !$bean->empty('Translation_Text')) {
             $text = $bean->get('Translation_Text');
             $text = str_replace('{', '[', $text);
             $text = str_replace('}', ']', $text);

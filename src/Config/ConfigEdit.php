@@ -16,7 +16,7 @@ class ConfigEdit extends BaseEdit
         $this->push(new Headline('{Config_Code}'));
         $this->getForm()->addText('Config_Description', '{Config_Description}', $this->translate('config.description'))
             ->getInput()->setDisabled(true);
-        if (!$this->getBean()->empty('Config_Options') && count($this->getBean()->get('Config_Options'))) {
+        if ($this->hasBean() && !$this->getBean()->empty('Config_Options') && count($this->getBean()->get('Config_Options'))) {
             $options = [];
             $options[] = null;
             foreach ($this->getBean()->get('Config_Options') as $option) {

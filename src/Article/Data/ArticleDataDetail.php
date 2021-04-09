@@ -10,10 +10,12 @@ class ArticleDataDetail extends BaseDetail
     {
         $this->setShowEdit(false);
         $this->addField('ArticleData_Timestamp', $this->translate('articledata.timestamp'));
-        $data = $this->getBean()->get('ArticleData_Data');
-        foreach ($data as $key => $value) {
-            if (!is_array($value)) {
-                $this->addField("ArticleData_Data[$key]", $this->translate('articledata.data.' . $key));
+        if ($this->hasBean()) {
+            $data = $this->getBean()->get('ArticleData_Data');
+            foreach ($data as $key => $value) {
+                if (!is_array($value)) {
+                    $this->addField("ArticleData_Data[$key]", $this->translate('articledata.data.' . $key));
+                }
             }
         }
         parent::initialize();

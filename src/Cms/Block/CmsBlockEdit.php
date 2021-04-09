@@ -35,7 +35,7 @@ class CmsBlockEdit extends ArticleEdit
             }
         }
 
-        if ($this->getBean()->get('CmsBlockType_Code') == 'contact') {
+        if ($this->hasBean() && $this->getBean()->get('CmsBlockType_Code') == 'contact') {
             $this->getForm()->addEmail(
                 'Article_Data[contact_email]',
                 '{Article_Data[contact_email]}',
