@@ -43,6 +43,7 @@ abstract class ArticleDetail extends BaseDetail
      */
     protected function initFields()
     {
+        parent::initFields();
         $this->addField('Article_Code', $this->translate('article.code'), 1, 1);
         $this->addField('ArticleTranslation_Code', $this->translate('articletranslation.code'), 1, 2);
         $this->addField('ArticleTranslation_Host', $this->translate('articletranslation.host'), 1, 3);
