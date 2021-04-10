@@ -89,9 +89,8 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
         }
     }
 
-    protected function initFieldsBefore()
+    protected function handleFields()
     {
-        parent::initFieldsBefore();
         if ($this->isShowDetail()) {
             $this->setDetailPath($this->generateDetailPath());
         }
@@ -101,7 +100,8 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
         if ($this->isShowDelete()) {
             $this->setDeletePath($this->generateDeletePath());
         }
-        $this->initMovePaths();
+        $this->handleMovePaths();
+        parent::handleFields();
     }
 
 
@@ -181,7 +181,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
      * @throws AttributeExistsException
      * @throws AttributeLockException
      */
-    protected function initMovePaths()
+    protected function handleMovePaths()
     {
         if ($this->isShowMove()) {
             $path = $this->getPathHelper()

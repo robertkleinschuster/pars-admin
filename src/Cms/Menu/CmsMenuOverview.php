@@ -15,9 +15,11 @@ class CmsMenuOverview extends BaseOverview
         $this->setName($this->translate('section.menu'));
     }
 
+
     protected function initFields()
     {
         parent::initFields();
+        $this->setShowMove(true);
         $span = new Badge('{CmsMenuState_Code}');
         $span->setFormat(new CmsMenuStateFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {
@@ -38,7 +40,6 @@ class CmsMenuOverview extends BaseOverview
         $this->addField('ArticleTranslation_Name', $this->translate('articletranslation.name'));
         $this->addField('Article_Code', $this->translate('article.code'));
         $this->addField('ArticleTranslation_Code', $this->translate('articletranslation.code'));
-        $this->setShowMove(true);
     }
 
 
