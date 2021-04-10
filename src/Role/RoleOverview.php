@@ -7,9 +7,14 @@ use Pars\Component\Base\Field\Badge;
 
 class RoleOverview extends BaseOverview
 {
+    protected function initName()
+    {
+        $this->setName($this->translate('section.role'));
+    }
+
+
     protected function initialize()
     {
-        $this->setSection($this->translate('section.role'));
 
         $this->addField('UserRole_Name', $this->translate('userrole.name'));
         $this->addField('UserRole_Code', $this->translate('userrole.code'));

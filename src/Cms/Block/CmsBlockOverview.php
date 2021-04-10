@@ -8,9 +8,14 @@ use Pars\Component\Base\Field\Span;
 
 class CmsBlockOverview extends ArticleOverview
 {
+    protected function initName()
+    {
+        $this->setName($this->translate('section.block'));
+    }
+
+
     protected function initialize()
     {
-        $this->setSection($this->translate('section.block'));
         $span = new Badge('{CmsBlockState_Code}');
         $span->setFormat(new CmsBlockStateFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {

@@ -8,14 +8,16 @@ use Pars\Component\Base\Field\Span;
 
 class CmsMenuOverview extends BaseOverview
 {
-
-
     protected bool $showType = true;
 
-    protected function initialize()
+    protected function initName()
     {
-        $this->setSection($this->translate('section.menu'));
+        $this->setName($this->translate('section.menu'));
+    }
 
+    protected function initFields()
+    {
+        parent::initFields();
         $span = new Badge('{CmsMenuState_Code}');
         $span->setFormat(new CmsMenuStateFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {
@@ -37,7 +39,6 @@ class CmsMenuOverview extends BaseOverview
         $this->addField('Article_Code', $this->translate('article.code'));
         $this->addField('ArticleTranslation_Code', $this->translate('articletranslation.code'));
         $this->setShowMove(true);
-        parent::initialize();
     }
 
 

@@ -17,6 +17,12 @@ use Pars\Helper\Parameter\OrderParameter;
  */
 class ConfigOverview extends BaseOverview
 {
+    protected function initName()
+    {
+        $this->setName($this->translate('section.config'));
+    }
+
+
     /**
      * @throws BeanException
      * @throws AttributeExistsException
@@ -24,7 +30,6 @@ class ConfigOverview extends BaseOverview
      */
     protected function initialize()
     {
-        $this->setSection($this->translate('section.config'));
         $this->setShowDelete(false);
         $this->setShowDeleteBulk(false);
         $this->setShowCreate(false);

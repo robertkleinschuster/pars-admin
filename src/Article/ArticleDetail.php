@@ -27,20 +27,14 @@ abstract class ArticleDetail extends BaseDetail
      */
     protected function initialize()
     {
-        $this->initSection();
-        $this->initFields();
-        $this->initDataFields();
         parent::initialize();
         $this->initEditTextButton();
         $this->initPreviewButton();
     }
 
-    /**
-     *
-     */
-    protected function initSection()
+    protected function initName()
     {
-        $this->setSection('{ArticleTranslation_Name}');
+        $this->setName('{ArticleTranslation_Name}');
     }
 
 
@@ -65,7 +59,7 @@ abstract class ArticleDetail extends BaseDetail
     /**
      * @throws BeanException
      */
-    protected function initDataFields()
+    protected function initFieldsAfter()
     {
         if ($this->hasBean() && !$this->getBean()->empty('Article_Data')) {
             $data = $this->getBean()->get('Article_Data');

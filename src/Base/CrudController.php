@@ -229,10 +229,8 @@ abstract class CrudController extends BaseController
     {
         $context = new ContextParameter();
         $context->setPath($this->getPathHelper(true)->getPath());
-        $compClone = clone $component;
-        $compClone->render();
-        if (!$this->hasParent() && $compClone->hasName()) {
-            $context->setTitle($compClone->getName());
+        if (!$this->hasParent() && $component->hasName()) {
+            $context->setTitle($component->getName());
         }
         $component->setNextContext($context);
         if ($this->getControllerRequest()->hasContext()) {

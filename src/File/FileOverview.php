@@ -6,14 +6,16 @@ use Pars\Admin\Base\BaseOverview;
 
 class FileOverview extends BaseOverview
 {
-    protected function initialize()
+    protected function initName()
     {
-        $this->setSection($this->translate('section.file'));
+        $this->setName($this->translate('section.file'));
+    }
 
+    protected function initFields()
+    {
         $this->addField('File_Name', $this->translate('file.name'));
         $this->addField('FileType_Name', $this->translate('filetype.name'));
         $this->addField('File_Code', $this->translate('file.code'));
-        parent::initialize();
     }
 
 

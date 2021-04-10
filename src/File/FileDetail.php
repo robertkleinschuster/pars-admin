@@ -9,13 +9,18 @@ class FileDetail extends BaseDetail
 {
     protected ?string $assetDomain = null;
 
+    protected function initName()
+    {
+        $this->setName('{File_Name}');
+    }
+
+
     protected function initialize()
     {
         $path = "/u/{FileDirectory_Code}/{File_Code}.{FileType_Code}";
         if ($this->hasAssetDomain()) {
             $path = $this->getAssetDomain() . $path;
         }
-        $this->setSection('{File_Name}');
         $this->addField('File_Name', $this->translate('file.name'));
         $image = new Image($path);
         $image->addInlineStyle('max-height', '200px');

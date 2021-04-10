@@ -14,9 +14,14 @@ use Pars\Mvc\View\FieldInterface;
 
 class ImportDetail extends BaseDetail
 {
+    protected function initName()
+    {
+        $this->setName('{Import_Name}');
+    }
+
+
     protected function initialize()
     {
-        $this->setSection('{Import_Name}');
         $this->addField('Import_Name', $this->translate('import.name'));
         $this->addField('Import_Day', $this->translate('import.day'))
             ->setFormat(new ImportDayFieldFormat($this->getTranslator()));

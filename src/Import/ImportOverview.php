@@ -12,7 +12,12 @@ use Pars\Helper\Parameter\RedirectParameter;
 
 class ImportOverview extends BaseOverview
 {
-    protected function initialize()
+    protected function initName()
+    {
+        $this->setName($this->translate('section.import'));
+    }
+
+    protected function initFields()
     {
         $id = (new IdParameter());
         foreach ($this->getDetailIdFields() as $idField) {
@@ -25,12 +30,10 @@ class ImportOverview extends BaseOverview
             ->setId($id)->addParameter((new RedirectParameter())->setPath(
                 $redirect
             ))->getPath()));
-        $this->setSection($this->translate('section.import'));
         $this->addField('Import_Name', $this->translate('import.name'));
         $active = new Badge('{Import_Active}');
         $active->setFormat(new ImportActiveFieldFormat($this->getTranslator()));
         $this->append($active);
-        parent::initialize();
         $span = new Span();
         $span->setLabel($this->translate('import.day'));
         $span->setFormat(new ImportDayFieldFormat($this->getTranslator()));

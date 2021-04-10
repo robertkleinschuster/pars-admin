@@ -13,10 +13,14 @@ use Pars\Component\Base\Field\Badge;
  */
 class UserDetail extends BaseDetail
 {
+    protected function initName()
+    {
+        $this->setName('{Person_Firstname} {Person_Lastname}');
+    }
+
 
     protected function initialize()
     {
-        $this->setSection('{Person_Firstname} {Person_Lastname}');
         $this->setHeading('{Person_Firstname} {Person_Lastname}');
         $this->addField('User_Username', $this->translate('user.username'));
         $this->addField('User_Displayname', $this->translate('user.displayname'));

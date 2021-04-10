@@ -8,6 +8,12 @@ use Pars\Component\Base\Field\Span;
 
 class CmsPostOverview extends ArticleOverview
 {
+    protected function initName()
+    {
+        $this->setName($this->translate('section.post'));
+    }
+
+
     protected function initialize()
     {
         $span = new Badge('{CmsPostState_Code}');
@@ -21,7 +27,6 @@ class CmsPostOverview extends ArticleOverview
         $span->setFormat(new CmsPostPublishTimestampFieldFormat());
         $this->append($span);
         parent::initialize();
-        $this->setSection($this->translate('section.post'));
         $span = new Span('{CmsPostType_Code}', $this->translate('cmsposttype.code'));
         $span->setFormat(new CmsPostTypeFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {

@@ -12,12 +12,17 @@ use Pars\Admin\Base\BooleanValueFieldAccept;
  */
 class ConfigDetail extends BaseDetail
 {
+    protected function initName()
+    {
+        $this->setName('{Config_Code}');
+    }
+
+
     /**
      * @throws BeanException
      */
     protected function initialize()
     {
-        $this->setSection('{Config_Code}');
         $this->setShowDelete(false);
         $this->setHeading('{Config_Code}');
         $this->addField('Config_Value', $this->translate('config.value'));

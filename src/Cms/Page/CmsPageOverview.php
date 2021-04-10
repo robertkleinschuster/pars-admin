@@ -10,10 +10,15 @@ use Pars\Component\Base\Toolbar\DownloadButton;
 
 class CmsPageOverview extends ArticleOverview
 {
+    protected function initName()
+    {
+        $this->setName($this->translate('section.page'));
+    }
+
+
     protected function initialize()
     {
         $this->setShowOrder(true);
-        $this->setSection($this->translate('section.page'));
         $span = new Badge('{CmsPageState_Code}');
         $span->setFormat(new CmsPageStateFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {

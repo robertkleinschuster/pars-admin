@@ -13,9 +13,14 @@ class CmsMenuDetail extends BaseDetail
 
     protected bool $showType = true;
 
+    protected function initName()
+    {
+        $this->setName('{ArticleTranslation_Name}');
+    }
+
+
     protected function initialize()
     {
-        $this->setSection('{ArticleTranslation_Name}');
 
         $span = new Badge('{CmsMenuState_Code}');
         $span->setLabel($this->translate('cmsmenustate.code'));

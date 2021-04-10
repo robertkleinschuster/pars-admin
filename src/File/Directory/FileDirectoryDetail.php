@@ -6,9 +6,14 @@ use Pars\Admin\Base\BaseDetail;
 
 class FileDirectoryDetail extends BaseDetail
 {
+    protected function initName()
+    {
+        $this->setName('{FileDirectory_Name}');
+    }
+
+
     protected function initialize()
     {
-        $this->setSection('{FileDirectory_Name}');
 
         $this->setHeading('{FileDirectory_Name}');
         $this->addField('FileDirectory_Code', $this->translate('filedirectory.code'));

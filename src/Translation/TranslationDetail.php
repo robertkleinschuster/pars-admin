@@ -7,9 +7,14 @@ use Pars\Admin\Base\BaseDetail;
 
 class TranslationDetail extends BaseDetail
 {
+    protected function initName()
+    {
+        $this->setName('{Translation_Code}');
+    }
+
+
     protected function initialize()
     {
-        $this->setSection('{Translation_Code}');
 
         $this->addField('Translation_Code', $this->translate('translation.code'));
         $this->addField('Translation_Text', $this->translate('translation.text'));

@@ -40,10 +40,10 @@ trait CrudComponentTrait
         TranslatorInterface $translator,
         UserBean $userBean
     ) {
-        parent::__construct();
         $this->setPathHelper($pathHelper);
         $this->setTranslator($translator);
         $this->userBean = $userBean;
+        parent::__construct();
     }
 
     /**

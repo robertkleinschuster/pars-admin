@@ -3,8 +3,6 @@
 namespace Pars\Admin\Base;
 
 use Pars\Bean\Type\Base\BeanException;
-use Pars\Pattern\Exception\AttributeExistsException;
-use Pars\Pattern\Exception\AttributeLockException;
 use Pars\Component\Base\Form\Hidden;
 use Pars\Component\Base\Overview\DeleteButton;
 use Pars\Component\Base\Overview\EditButton;
@@ -12,7 +10,6 @@ use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Toolbar\CreateButton;
 use Pars\Component\Base\Toolbar\CreateNewButton;
 use Pars\Component\Base\Toolbar\DeleteBulkButton;
-use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\MoveParameter;
@@ -21,6 +18,8 @@ use Pars\Helper\Parameter\RedirectParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Helper\Path\PathHelper;
 use Pars\Mvc\View\FieldInterface;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
 
 /**
  * Class BaseOverview
@@ -41,22 +40,58 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     public bool $showOrder = false;
     public ?string $token = null;
 
-    /**
-     * @throws AttributeExistsException
-     * @throws AttributeLockException
-     * @throws BeanException
-     */
-    protected function initialize()
+
+    protected function initAdditionalBefore()
+    {
+        parent::initAdditionalBefore();
+        $this->initFormFields();
+        $this->initCreateButton();
+        $this->initCreateNewButton();
+        $this->initDeleteBulkButton();
+    }
+
+    protected function initFormFields()
     {
         $this->setAttribute('method', 'post');
         $this->setAttribute('action', $this->generateBulkAction());
         if ($this->hasToken()) {
             $this->push(new Hidden('submit_token', $this->getToken()));
         }
-        $this->push(new Hidden(RedirectParameter::name(), RedirectParameter::fromPath($this->generateRedirectPath(false))));
-        if ($this->hasSection()) {
-            $this->setName($this->getSection());
+        $redirect = new Hidden(
+            RedirectParameter::name(),
+            RedirectParameter::fromPath($this->generateRedirectPath(false))
+        );
+        $this->push($redirect);
+        $this->setBulkFieldName(IdListParameter::name());
+        $this->setBulkFieldValue(IdListParameter::fromMap($this->getDetailIdFields()));
+    }
+
+
+    protected function initCreateNewButton()
+    {
+        if ($this->isShowCreateNew()) {
+            $this->getToolbar()->push(
+                (new CreateNewButton($this->generateCreateNewPath()))
+                    ->setModal(true)
+                    ->setModalTitle($this->translate('create_new.title'))
+            );
         }
+    }
+
+    protected function initCreateButton()
+    {
+        if ($this->isShowCreate()) {
+            $this->getToolbar()->unshift(
+                (new CreateButton($this->generateCreatePath()))
+                    ->setModal(true)
+                    ->setModalTitle($this->translate('create.title'))
+            );
+        }
+    }
+
+    protected function initFieldsBefore()
+    {
+        parent::initFieldsBefore();
         if ($this->isShowDetail()) {
             $this->setDetailPath($this->generateDetailPath());
         }
@@ -66,35 +101,18 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
         if ($this->isShowDelete()) {
             $this->setDeletePath($this->generateDeletePath());
         }
-        if ($this->isShowCreate()) {
-            $this->getToolbar()->unshift(
-                (new CreateButton($this->generateCreatePath()))
-                    ->setModal(true)
-                    ->setModalTitle($this->translate('create.title'))
-            );
-        }
-        if ($this->isShowCreateNew()) {
-            $this->getToolbar()->push(
-                (new CreateNewButton($this->generateCreateNewPath()))
-                    ->setModal(true)
-                    ->setModalTitle($this->translate('create_new.title'))
-            );
-        }
-        $this->setBulkFieldName(IdListParameter::name());
-        $this->setBulkFieldValue(IdListParameter::fromMap($this->getDetailIdFields()));
-        $this->initDeleteBulkButton();
         $this->initMovePaths();
-        parent::initialize();
     }
 
-    protected function initEditButton(): EditButton
+
+    protected function handleEditButton(): EditButton
     {
-        return parent::initEditButton()->setModalTitle($this->translate('edit.title'));
+        return parent::handleEditButton()->setModalTitle($this->translate('edit.title'));
     }
 
-    protected function initDeleteButton(): DeleteButton
+    protected function handleDeleteButton(): DeleteButton
     {
-        return parent::initDeleteButton()->setModalTitle($this->translate('delete.title'));
+        return parent::handleDeleteButton()->setModalTitle($this->translate('delete.title'));
     }
 
 
@@ -280,33 +298,6 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     }
 
     /**
-     * @return string
-     */
-    public function getSection(): string
-    {
-        return $this->getName();
-    }
-
-    /**
-     * @param string $section
-     *
-     * @return $this
-     */
-    public function setSection(string $section): self
-    {
-        return $this->setName($section);
-    }
-
-    /**
-     * @return bool
-     */
-    public function hasSection(): bool
-    {
-        return $this->hasName();
-    }
-
-
-    /**
      * @return bool
      */
     public function isShowCreate(): bool
@@ -488,7 +479,6 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
         $this->showOrder = $showOrder;
         return $this;
     }
-
 
 
     /**

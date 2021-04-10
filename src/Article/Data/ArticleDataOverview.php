@@ -12,6 +12,12 @@ use Pars\Model\Cms\Page\CmsPageBean;
 
 class ArticleDataOverview extends BaseOverview
 {
+    protected function initName()
+    {
+        $this->setName($this->translate('section.data'));
+    }
+
+
     protected function initialize()
     {
         $this->setShowCreate(false);
@@ -21,7 +27,6 @@ class ArticleDataOverview extends BaseOverview
         $this->setShowDeleteBulk(true);
         $this->setShowEditBulk(false);
         $this->setShowMove(false);
-        $this->setSection($this->translate('section.data'));
         $this->addField('ArticleData_Timestamp', $this->translate('articledata.timestamp'));
         if ($this->exists('parent')) {
             $parent = $this->get('parent');
@@ -56,7 +61,7 @@ class ArticleDataOverview extends BaseOverview
      */
     protected function initPoll()
     {
-        $this->setSection($this->translate('section.data.poll'));
+        $this->setName($this->translate('section.data.poll'));
         $this->addField('ArticleData_Data[name]', $this->translate('articledata.data.name'));
         $this->addField('ArticleData_Data[option]', $this->translate('articledata.data.option'));
         $data = [];
@@ -81,7 +86,7 @@ class ArticleDataOverview extends BaseOverview
      */
     public function initContact()
     {
-        $this->setSection($this->translate('section.data.contact'));
+        $this->setName($this->translate('section.data.contact'));
         $this->addField('ArticleData_Data[name]', $this->translate('articledata.data.name'));
         $this->addField('ArticleData_Data[email]', $this->translate('articledata.data.email'));
     }

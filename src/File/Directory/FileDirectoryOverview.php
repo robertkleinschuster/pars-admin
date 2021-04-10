@@ -6,9 +6,14 @@ use Pars\Admin\Base\BaseOverview;
 
 class FileDirectoryOverview extends BaseOverview
 {
+    protected function initName()
+    {
+        $this->setName($this->translate('section.filedirectory'));
+    }
+
+
     protected function initialize()
     {
-        $this->setSection($this->translate('section.filedirectory'));
 
         $this->addField('FileDirectory_Code', $this->translate('filedirectory.code'));
         $this->addField('FileDirectory_Name', $this->translate('filedirectory.name'));

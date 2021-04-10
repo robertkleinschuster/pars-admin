@@ -7,9 +7,13 @@ use Pars\Component\Base\Field\Badge;
 
 class LocaleDetail extends BaseDetail
 {
+    protected function initName()
+    {
+        $this->setName('{Locale_Name}');
+    }
+
     protected function initialize()
     {
-        $this->setSection('{Locale_Name}');
         $this->setShowDelete(false);
         $this->setHeading('{Locale_Name}');
         $this->addField('Locale_Code', $this->translate('locale.code'));

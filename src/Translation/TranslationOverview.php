@@ -7,9 +7,14 @@ use Pars\Component\Base\Field\Badge;
 
 class TranslationOverview extends BaseOverview
 {
+    protected function initName()
+    {
+        $this->setName($this->translate('section.translation'));
+    }
+
+
     protected function initialize()
     {
-        $this->setSection($this->translate('section.translation'));
         $this->setShowOrder(true);
         $badge = new Badge();
         $badge->setFormat(new TranslationStateFieldFormat($this->getTranslator()));

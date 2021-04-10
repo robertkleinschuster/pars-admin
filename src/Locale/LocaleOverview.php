@@ -9,9 +9,13 @@ use Pars\Mvc\View\HtmlElement;
 
 class LocaleOverview extends BaseOverview
 {
+    protected function initName()
+    {
+        $this->setName($this->translate('section.locale'));
+    }
+
     protected function initialize()
     {
-        $this->setSection($this->translate('section.locale'));
         $this->setShowDelete(false);
         $active = new Badge('{Locale_Active}');
         $active->setFormat(new LocaleActiveFieldFormat($this->getTranslator()));
