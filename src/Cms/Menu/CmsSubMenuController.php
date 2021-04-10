@@ -21,6 +21,11 @@ class CmsSubMenuController extends CmsMenuController
         return parent::indexAction();
     }
 
+    protected function initSubcontroller()
+    {
+
+    }
+
 
     protected function createOverview(): BaseOverview
     {

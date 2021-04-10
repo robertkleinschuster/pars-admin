@@ -11,6 +11,7 @@ use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Pars\Bean\Processor\DefaultMetaFieldHandler;
 use Pars\Bean\Processor\TimestampMetaFieldHandler;
 use Pars\Bean\Type\Base\BeanException;
+use Pars\Core\Cache\ParsCache;
 use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Core\Config\ParsConfig;
 use Pars\Helper\Parameter\IdListParameter;
@@ -22,6 +23,7 @@ use Pars\Mvc\Exception\NotFoundException;
 use Pars\Mvc\Model\AbstractModel;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
+use Psr\Log\LoggerInterface;
 
 abstract class BaseModel extends AbstractModel implements AdapterAwareInterface, TranslatorAwareInterface, LoggerAwareInterface
 {
@@ -59,6 +61,34 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
         }
     }
 
+    /**
+     * @return LoggerInterface
+     */
+    public function getLogger(): LoggerInterface
+    {
+        return $this->logger;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasLogger(): bool
+    {
+        return isset($this->logger);
+    }
+
+    /**
+     * @param string $code
+     * @return ParsCache
+     */
+    public function getCache(string $code)
+    {
+        $cache = new ParsCache($code);
+        if ($this->hasLogger()) {
+            $cache->setLogger($this->getLogger());
+        }
+        return $cache;
+    }
 
     /**
      * @return Adapter

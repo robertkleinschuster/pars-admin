@@ -5,6 +5,7 @@ namespace Pars\Admin\Cms\Page;
 use Laminas\Diactoros\UploadedFile;
 use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Article\ArticleModel;
+use Pars\Core\Cache\ParsCache;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
@@ -83,14 +84,22 @@ class CmsPageModel extends ArticleModel
 
     public function getCmsPageRedirect_Options(): array
     {
-        $options = [];
-        $finder = new CmsPageBeanFinder($this->getDbAdpater());
-        $finder->setLocale_Code($this->getTranslator()->getLocale());
-        $finder->setCmsPageState_Code('active');
-        $options[null] = $this->translate('noselection');
-        foreach ($finder->getBeanListDecorator() as $bean) {
-            if ($this->getBeanFinder()->count() != 1 || $bean->get('CmsPage_ID') != $this->getBean()->get('CmsPage_ID')) {
-                $options[$bean->get('CmsPage_ID')] = $bean->get('ArticleTranslation_Name');
+        static $options = [];
+        if (count($options) == 0) {
+            $cache = $this->getCache(__METHOD__);
+            if (!$cache->has('options')) {
+                $finder = new CmsPageBeanFinder($this->getDbAdpater(), false);
+                $finder->setLocale_Code($this->getTranslator()->getLocale());
+                $finder->setCmsPageState_Code('active');
+                $options[null] = $this->translate('noselection');
+                foreach ($finder->getBeanListDecorator() as $bean) {
+                    if ($this->getBeanFinder()->count() != 1 || $bean->get('CmsPage_ID') != $this->getBean()->get('CmsPage_ID')) {
+                        $options[$bean->get('CmsPage_ID')] = $bean->get('ArticleTranslation_Name');
+                    }
+                }
+                $cache->set('options', $options, 300);
+            } else {
+                $options = $cache->get('options');
             }
         }
         return $options;

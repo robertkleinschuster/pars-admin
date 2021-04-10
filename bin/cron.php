@@ -16,10 +16,8 @@ require 'vendor/autoload.php';
      */
     $logger = $container->get('Logger');
     $adapter = $container->get(\Laminas\Db\Adapter\AdapterInterface::class);
-    $timezone = (new \Pars\Model\Config\ConfigBeanFinder($adapter))
-        ->setConfig_Code('admin.timezone')
-        ->getBean()
-        ->get('Config_Value');
+    $config = new \Pars\Core\Config\ParsConfig($adapter);
+    $timezone = $config->get('admin.timezone');
     $now = new DateTime('now', new DateTimeZone($timezone));
     $config = $container->get('config');
     if (isset($config['task'])) {

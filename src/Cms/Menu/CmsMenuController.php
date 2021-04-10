@@ -2,13 +2,13 @@
 
 namespace Pars\Admin\Cms\Menu;
 
-use Pars\Pattern\Exception\AttributeExistsException;
-use Pars\Pattern\Exception\AttributeLockException;
-use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\ContentNavigation;
 use Pars\Admin\Base\CrudController;
 use Pars\Mvc\Exception\MvcException;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
+use Pars\Pattern\Exception\AttributeNotFoundException;
 
 /**
  * Class CmsMenuController
@@ -66,21 +66,26 @@ class CmsMenuController extends CrudController
     public function detailAction()
     {
         $detail = parent::detailAction();
-        $bean =  $detail->getBean();
+        $bean = $detail->getBean();
         if (
             $this->getControllerRequest()->hasId()
             && $this->getControllerRequest()->getId()->hasAttribute('CmsMenu_ID')
         ) {
             $id = $this->getControllerRequest()->getId()->getAttribute('CmsMenu_ID');
-            $this->getView()->set('CmsMenu_ID_Parent', (int) $id);
+            $this->getView()->set('CmsMenu_ID_Parent', (int)$id);
         }
-        $this->pushAction('cmssubmenu', 'index', $this->translate('section.menu'));
+        $this->initSubcontroller();
         if ($bean->isset('ArticleTranslation_Code')) {
             if ($detail instanceof CmsMenuDetail) {
                 $detail->setPreviewPath($this->getModel()->generatePreviewPath($bean));
             }
         }
         return $detail;
+    }
+
+    protected function initSubcontroller()
+    {
+        $this->pushAction('cmssubmenu', 'index', $this->translate('section.menu'));
     }
 
     /**

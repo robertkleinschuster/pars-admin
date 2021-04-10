@@ -14,6 +14,10 @@ use Mezzio\Session\LazySession;
 use Mezzio\Session\SessionMiddleware;
 use Pars\Bean\Converter\BeanConverterAwareInterface;
 use Pars\Bean\Type\Base\BeanException;
+use Pars\Component\Base\Detail\Detail;
+use Pars\Component\Base\Toolbar\MoreButton;
+use Pars\Helper\Parameter\NavParameter;
+use Pars\Mvc\View\ComponentGroup;
 use Pars\Pattern\Attribute\AttributeAwareInterface;
 use Pars\Pattern\Attribute\AttributeAwareTrait;
 use Pars\Pattern\Exception\AttributeExistsException;
@@ -53,6 +57,8 @@ abstract class BaseController extends AbstractController implements AttributeAwa
 
     public const FLASH_PREVIOUS_ATTRIBUTES = 'previousAttributes';
     public const FLASH_VALIDATION_ERROR = 'validationErrorMap';
+
+    protected bool $expandCollapse = true;
 
     /**
      * @return mixed|void
@@ -406,6 +412,11 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $profiler = $this->getModel()->getDbAdpater()->getProfiler();
         if ($profiler instanceof ProfilerInterface) {
             $profiles = $profiler->getProfiles();
+            $group = new Detail();
+            $expandPrev = $this->expandCollapse;
+            $this->expandCollapse = false;
+            $this->initCollapsable($group, 'debug', $this->translate('showdebug'));
+            $this->expandCollapse = $expandPrev;
             $alert = new Alert();
             $alert->setHeading('Debug');
             $alert->setStyle(Alert::STYLE_WARNING);
@@ -417,10 +428,58 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 . ' ms'
             );
             foreach ($profiles as $profile) {
-                $alert->addBlock($profile['sql'] . "<br>{$profile['elapse']} ms");
+                $alert->addBlock( $profile['trace'].  $profile['sql'] . "<br>{$profile['elapse']} ms");
             }
-            $this->getView()->prepend($alert);
+            $group->getJumbotron()->setContent($alert->render());
+            $this->getView()->prepend($group);
         }
+    }
+
+    /**
+     * @param Detail $detail
+     * @param string $id
+     * @param string|null $label
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
+    protected function initCollapsable(Detail $detail, string $id = '', ?string $label = null)
+    {
+        $path = $this->getPathHelper(true);
+        $navParameter = new NavParameter();
+        $id = 'collapse' . $id
+            . $this->getControllerRequest()->getController()
+            . $this->getControllerRequest()->getAction();
+        $navParameter->setId($id);
+        $button = new MoreButton();
+        if ($this->getNavigationState($id) === 0) {
+            if (!$this->expandCollapse) {
+                $detail->getJumbotron()->addOption('show');
+                $button->setShow(true);
+            } else {
+                $button->setShow(false);
+            }
+            $navParameter->setIndex(1);
+        } else {
+            if ($this->expandCollapse) {
+                $detail->getJumbotron()->addOption('show');
+                $button->setShow(true);
+            } else {
+                $button->setShow(false);
+            }
+            $navParameter->setIndex(0);
+        }
+        $path->addParameter($navParameter);
+        $detail->getJumbotron()->addOption('collapse');
+        if ($label) {
+            $button->setContent($label);
+        } else {
+            $button->setContent($this->translate('showdetails'));
+        }
+        $button->setPath($path->getPath());
+        $button->setData('toggle', 'collapse');
+        $button->setData('target', '#' . $detail->getJumbotron()->generateId());
+        $detail->getSubToolbar()->push($button);
     }
 
     /**
@@ -505,7 +564,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $alert->addBlock("{$throwable->getFile()}:{$throwable->getLine()}");
         $alert->addBlock('Trace');
         $trace = explode(PHP_EOL, $throwable->getTraceAsString());
-        $trace = array_slice($trace, 0, 5);
+        $trace = array_slice($trace, 0, 15);
         $alert->addBlock(implode('<br>', $trace));
         if ($this->hasView()) {
             $this->getView()->append($alert);

@@ -36,6 +36,9 @@ return [
     'translator' => [
         'cache' => null,
     ],
+    'db' => [
+        'profiler' => new \Pars\Core\Database\Profiler()
+    ],
     'assets' => [
         'development' => true,
     ],

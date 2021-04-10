@@ -366,5 +366,6 @@ return [
     'cmspost.published' => 'Nur unveröffentlichte Beiträge anzeigen',
     'search' => 'Suchen',
     'showdetails' => 'Details',
+    'showdebug' => 'Debug-Info',
     'showmetainfo' => 'Bearbeiter-Info',
 ];

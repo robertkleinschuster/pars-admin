@@ -42,7 +42,6 @@ abstract class CrudController extends BaseController
      */
     protected ?Filter $filter = null;
 
-    protected bool $expandCollapse = true;
 
     /**
      * @return CrudComponentFactory
@@ -122,52 +121,7 @@ abstract class CrudController extends BaseController
         return $overview;
     }
 
-    /**
-     * @param Detail $detail
-     * @param string $id
-     * @param string|null $label
-     * @throws AttributeExistsException
-     * @throws AttributeLockException
-     * @throws AttributeNotFoundException
-     */
-    protected function initCollapsable(Detail $detail, string $id = '', ?string $label = null)
-    {
-        $path = $this->getPathHelper(true);
-        $navParameter = new NavParameter();
-        $id = 'collapse' . $id
-            . $this->getControllerRequest()->getController()
-            . $this->getControllerRequest()->getAction();
-        $navParameter->setId($id);
-        $button = new MoreButton();
-        if ($this->getNavigationState($id) === 0) {
-            if (!$this->expandCollapse) {
-                $detail->getJumbotron()->addOption('show');
-                $button->setShow(true);
-            } else {
-                $button->setShow(false);
-            }
-            $navParameter->setIndex(1);
-        } else {
-            if ($this->expandCollapse) {
-                $detail->getJumbotron()->addOption('show');
-                $button->setShow(true);
-            } else {
-                $button->setShow(false);
-            }
-            $navParameter->setIndex(0);
-        }
-        $path->addParameter($navParameter);
-        $detail->getJumbotron()->addOption('collapse');
-        if ($label) {
-            $button->setContent($label);
-        } else {
-            $button->setContent($this->translate('showdetails'));
-        }
-        $button->setPath($path->getPath());
-        $button->setData('toggle', 'collapse');
-        $button->setData('target', '#' . $detail->getJumbotron()->generateId());
-        $detail->getSubToolbar()->push($button);
-    }
+
 
     /**
      * @param Overview $overview
