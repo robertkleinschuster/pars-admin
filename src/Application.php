@@ -2,7 +2,9 @@
 
 namespace Pars\Admin;
 
-class Application extends \Mezzio\Application
+use Pars\Core\Application\AbstractApplication;
+
+class Application extends AbstractApplication
 {
 
 }
