@@ -11,7 +11,7 @@ const PARS_ADMIN_VERSION = 'dev';
 // To enable or disable caching, set the `ConfigAggregator::ENABLE_CACHE` boolean in
 // `config/autoload/local.php`.
 $cacheConfig = [
-    'config_cache_path' => implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'data' , 'cache', 'config', 'config.php']),
+    'config_cache_path' => realpath(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'data' , 'cache', 'config', 'config.php'])),
 ];
 
 $aggregator = new ConfigAggregator([
