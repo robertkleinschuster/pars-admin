@@ -3,6 +3,7 @@
 namespace Pars\Admin;
 
 use Laminas\ServiceManager\ServiceManager;
+use Pars\Core\Deployment\CacheClearer;
 
 class ApplicationContainer extends ServiceManager
 {
@@ -18,4 +19,19 @@ class ApplicationContainer extends ServiceManager
         }
         return self::$instance;
     }
+
+    public function get($name)
+    {
+        try {
+            return parent::get($name);
+        } catch (\Exception $exception) {
+            $config = [];
+            if ($this->has('config')) {
+                $config = $this->get('config');
+            }
+            CacheClearer::clearConfigCache($config);
+            throw $exception;
+        }
+    }
+
 }
