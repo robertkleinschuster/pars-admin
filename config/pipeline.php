@@ -20,6 +20,8 @@ use Psr\Container\ContainerInterface;
  */
 
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
+    $app->pipe(\Pars\Core\Logging\LoggingMiddleware::class);
+
     $app->pipe(\Pars\Core\Image\ImageMiddleware::class);
 
     // The error handler should be the first (most outer) middleware to catch
@@ -27,7 +29,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->pipe(ErrorHandler::class);
     $app->pipe(ServerUrlMiddleware::class);
     $app->pipe(\Pars\Core\Deployment\DeploymentMiddleware::class);
-    $app->pipe(\Pars\Core\Logging\LoggingMiddleware::class);
 
     // Pipe more middleware here that you want to execute on every request:
     // - bootstrapping
