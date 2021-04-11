@@ -2,8 +2,6 @@
 
 namespace Pars\Admin\Setup;
 
-use Pars\Core\Database\Updater\DataUpdater;
-use Pars\Core\Database\Updater\SchemaUpdater;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Authorization\Permission\PermissionBeanFinder;
 use Pars\Model\Authorization\Role\RoleBeanFinder;
@@ -12,6 +10,8 @@ use Pars\Model\Authorization\RolePermission\RolePermissionBeanFinder;
 use Pars\Model\Authorization\RolePermission\RolePermissionBeanProcessor;
 use Pars\Model\Authorization\UserRole\UserRoleBeanFinder;
 use Pars\Model\Authorization\UserRole\UserRoleBeanProcessor;
+use Pars\Model\Updater\Database\DataDatabaseUpdater;
+use Pars\Model\Updater\Database\SchemaDatabaseUpdater;
 
 /**
  * Class SetupModel
@@ -27,15 +27,14 @@ class SetupModel extends \Pars\Admin\Base\BaseModel
 
     protected function create(IdParameter $idParameter, array &$attributes): void
     {
-
-        $schemaUpdater = new SchemaUpdater($this->getDbAdpater());
+        $schemaUpdater = new SchemaDatabaseUpdater($this->getDbAdpater());
         $methods = [];
         foreach ($schemaUpdater->getUpdateMethodList() as $method) {
             $methods[$method] = true;
         }
         $result = $schemaUpdater->execute($methods);
         ;
-        $dataUpdater = new DataUpdater($this->getDbAdpater());
+        $dataUpdater = new DataDatabaseUpdater($this->getDbAdpater());
         $methods = [];
         foreach ($dataUpdater->getUpdateMethodList() as $method) {
             $methods[$method] = true;

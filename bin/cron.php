@@ -16,7 +16,7 @@ require 'vendor/autoload.php';
      */
     $logger = $container->get('Logger');
     $adapter = $container->get(\Laminas\Db\Adapter\AdapterInterface::class);
-    $config = new \Pars\Core\Config\ParsConfig($adapter);
+    $config = $container->get(\Pars\Core\Config\ParsConfig::class);
     $timezone = $config->get('admin.timezone');
     $now = new DateTime('now', new DateTimeZone($timezone));
     $config = $container->get('config');

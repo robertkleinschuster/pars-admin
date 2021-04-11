@@ -16,6 +16,8 @@ use Pars\Bean\Converter\BeanConverterAwareInterface;
 use Pars\Bean\Type\Base\BeanException;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Toolbar\MoreButton;
+use Pars\Core\Config\ParsConfig;
+use Pars\Core\Translation\ParsTranslator;
 use Pars\Helper\Parameter\NavParameter;
 use Pars\Mvc\View\ComponentGroup;
 use Pars\Pattern\Attribute\AttributeAwareInterface;
@@ -94,6 +96,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $this->getModel()->setUserBean($this->getUserBean());
         $this->getModel()->setTranslator($this->getTranslator());
         $this->getModel()->setLogger($this->getLogger());
+        $this->getModel()->setConfig($this->getConfig());
         $view = $this->getView();
         if ($view instanceof BeanConverterAwareInterface && $view->hasBeanConverter()) {
             $converter = $view->getBeanConverter();
@@ -287,6 +290,13 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         return $this->getControllerRequest()->getServerRequest()->getAttribute(LoggingMiddleware::LOGGER_ATTRIBUTE);
     }
 
+    /**
+     * @return ParsConfig
+     */
+    public function getConfig(): ?ParsConfig
+    {
+        return $this->getControllerRequest()->getServerRequest()->getAttribute(ParsConfig::class);
+    }
 
     /**
      * @param string $code

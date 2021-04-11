@@ -3,12 +3,12 @@
 namespace Pars\Admin\Update;
 
 use Pars\Admin\Base\BaseModel;
-use Pars\Core\Database\Updater\DataUpdater;
-use Pars\Core\Database\Updater\SchemaUpdater;
-use Pars\Core\Database\Updater\SpecialUpdater;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
+use Pars\Model\Updater\Database\DataDatabaseUpdater;
+use Pars\Model\Updater\Database\SchemaDatabaseUpdater;
+use Pars\Model\Updater\Database\SpecialDatabaseUpdater;
 
 class UpdateModel extends BaseModel
 {
@@ -20,19 +20,19 @@ class UpdateModel extends BaseModel
 
     public function getSchemaUpdater()
     {
-        return new SchemaUpdater($this->getDbAdpater());
+        return new SchemaDatabaseUpdater($this->getDbAdpater());
     }
 
 
 
     public function getDataUpdater()
     {
-        return new DataUpdater($this->getDbAdpater());
+        return new DataDatabaseUpdater($this->getDbAdpater());
     }
 
     public function getSpecialUpdater()
     {
-        return new SpecialUpdater($this->getDbAdpater());
+        return new SpecialDatabaseUpdater($this->getDbAdpater());
     }
 
     public function getConfig(string $key = null)
@@ -52,7 +52,7 @@ class UpdateModel extends BaseModel
         switch ($submitParameter->getMode()) {
             case 'schema':
                 if ($this->hasOption(self::OPTION_SCHEMA_ALLOWED)) {
-                    $schemaUpdater = new SchemaUpdater($this->getDbAdpater());
+                    $schemaUpdater = new SchemaDatabaseUpdater($this->getDbAdpater());
                     $schemaUpdater->execute($attribute_List);
                     $this->getValidationHelper()->addErrorFieldMap($schemaUpdater->getValidationHelper()->getErrorFieldMap());
                 } else {
@@ -61,7 +61,7 @@ class UpdateModel extends BaseModel
                 break;
             case 'data':
                 if ($this->hasOption(self::OPTION_DATA_ALLOWED)) {
-                    $schemaUpdater = new DataUpdater($this->getDbAdpater());
+                    $schemaUpdater = new DataDatabaseUpdater($this->getDbAdpater());
                     $schemaUpdater->execute($attribute_List);
                     $this->getValidationHelper()->addErrorFieldMap($schemaUpdater->getValidationHelper()->getErrorFieldMap());
                 } else {
@@ -70,7 +70,7 @@ class UpdateModel extends BaseModel
                 break;
             case 'special':
                 if ($this->hasOption(self::OPTION_SPECIAL_ALLOWED)) {
-                    $schemaUpdater = new SpecialUpdater($this->getDbAdpater());
+                    $schemaUpdater = new SpecialDatabaseUpdater($this->getDbAdpater());
                     $schemaUpdater->execute($attribute_List);
                     $this->getValidationHelper()->addErrorFieldMap($schemaUpdater->getValidationHelper()->getErrorFieldMap());
                 } else {

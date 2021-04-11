@@ -2,6 +2,7 @@
 
 return [
     'translator' => [
+        'namespace' => \Pars\Core\Translation\ParsTranslator::NAMESPACE_ADMIN,
         'locale' => ['de_AT', 'en_US'],
         'translation_file_patterns' => [
             [

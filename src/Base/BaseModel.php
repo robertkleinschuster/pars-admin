@@ -41,6 +41,16 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
      */
     private ?ParsConfig $config = null;
 
+    /**
+     * @param ParsConfig|null $config
+     * @return BaseModel
+     */
+    public function setConfig(?ParsConfig $config): BaseModel
+    {
+        $this->config = $config;
+        return $this;
+    }
+
     public function initializeDependencies()
     {
         parent::initializeDependencies();
@@ -180,26 +190,13 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
     }
 
     /**
-     *
-     */
-    public function initConfig()
-    {
-        try {
-            $finder = new ConfigBeanFinder($this->getDbAdpater());
-            $this->config = $finder->getBeanList()->column('Config_Value', 'Config_Code');
-        } catch (InvalidQueryException $exception) {
-            $this->logger->error('DB Error initializing config.', ['exception' => $exception]);
-        }
-    }
-
-    /**
      * @param string|null $key
      * @return mixed
      */
     public function getConfig(string $key = null)
     {
         if ($this->config === null) {
-            $this->config = new ParsConfig($this->getDbAdpater(), 'admin');
+            return null;
         }
         if ($key == null) {
             return $this->config->toArray();
