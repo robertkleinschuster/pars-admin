@@ -24,6 +24,10 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Class BaseModel
+ * @package Pars\Admin\Base
+ */
 abstract class BaseModel extends AbstractModel implements
     LoggerAwareInterface,
     ParsDatabaseAdapterAwareInterface,

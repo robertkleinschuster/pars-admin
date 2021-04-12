@@ -31,7 +31,6 @@ use Pars\Component\Base\Layout\DashboardLayout;
 use Pars\Component\Base\View\BaseView;
 use Pars\Core\Database\DatabaseMiddleware;
 use Pars\Core\Logging\LoggingMiddleware;
-use Pars\Core\Translation\TranslatorMiddleware;
 use Pars\Helper\Validation\ValidationHelper;
 use Pars\Model\Authentication\User\UserBean;
 use Pars\Mvc\Controller\AbstractController;
