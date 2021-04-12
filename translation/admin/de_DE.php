@@ -137,6 +137,7 @@ return [
     'translation.edit.placeholder' => 'Platzhalter',
     'locale.code' => 'Land/Sprach Code',
     'locale.urlcode' => 'URL-Code',
+    'locale.domain' => 'Domain',
     'locale.name' => 'Land/Sprach Bezeichnung',
     'locale.active' => 'Land/Sprache Aktiv',
     'locale.active.true' => 'Aktiv',
