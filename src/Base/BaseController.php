@@ -4,7 +4,6 @@ namespace Pars\Admin\Base;
 
 use Laminas\Db\Adapter\AdapterInterface;
 use Laminas\Db\Adapter\Profiler\ProfilerInterface;
-use Laminas\I18n\Translator\TranslatorInterface;
 use Mezzio\Authentication\UserInterface;
 use Mezzio\Csrf\CsrfGuardInterface;
 use Mezzio\Csrf\CsrfMiddleware;
@@ -17,9 +16,9 @@ use Pars\Bean\Type\Base\BeanException;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Toolbar\MoreButton;
 use Pars\Core\Config\ParsConfig;
+use Pars\Core\Database\ParsDatabaseAdapter;
 use Pars\Core\Translation\ParsTranslator;
 use Pars\Helper\Parameter\NavParameter;
-use Pars\Mvc\View\ComponentGroup;
 use Pars\Pattern\Attribute\AttributeAwareInterface;
 use Pars\Pattern\Attribute\AttributeAwareTrait;
 use Pars\Pattern\Exception\AttributeExistsException;
@@ -90,8 +89,8 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function initModel()
     {
-        $this->getModel()->setDbAdapter(
-            $this->getControllerRequest()->getServerRequest()->getAttribute(DatabaseMiddleware::ADAPTER_ATTRIBUTE)
+        $this->getModel()->setDatabaseAdapter(
+            $this->getMiddlewareAttribute(ParsDatabaseAdapter::class)
         );
         $this->getModel()->setUserBean($this->getUserBean());
         $this->getModel()->setTranslator($this->getTranslator());
@@ -113,7 +112,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 $layout->getNavigation()->key = $this->getModel()->getConfig('asset.key');
             }
         }
-        $this->getView()->set('language', $this->getTranslator()->getLocale());
+        $this->getView()->set('language', $this->getTranslator()->getLocale()->getLocale_Code());
         $this->getView()->set('title', $this->getModel()->getConfig('admin.title'));
         $this->getView()->set('author', $this->getModel()->getConfig('admin.author'));
         $this->getView()->set('favicon', $this->getModel()->getConfig('admin.favicon'));
@@ -241,13 +240,11 @@ abstract class BaseController extends AbstractController implements AttributeAwa
     }
 
     /**
-     * @return TranslatorInterface
+     * @return ParsTranslator
      */
-    protected function getTranslator(): TranslatorInterface
+    protected function getTranslator(): ParsTranslator
     {
-        return $this->getControllerRequest()
-            ->getServerRequest()
-            ->getAttribute(TranslatorMiddleware::TRANSLATOR_ATTRIBUTE);
+        return $this->getMiddlewareAttribute(ParsTranslator::class);
     }
 
     /**
@@ -255,7 +252,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function getGuard(): CsrfGuardInterface
     {
-        return $this->getControllerRequest()->getServerRequest()->getAttribute(CsrfMiddleware::GUARD_ATTRIBUTE);
+        return $this->getMiddlewareAttribute(CsrfMiddleware::GUARD_ATTRIBUTE);
     }
 
     /**
@@ -263,7 +260,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     public function getFlashMessanger(): FlashMessagesInterface
     {
-        return $this->getControllerRequest()->getServerRequest()->getAttribute(FlashMessageMiddleware::FLASH_ATTRIBUTE);
+        return $this->getMiddlewareAttribute(FlashMessageMiddleware::FLASH_ATTRIBUTE);
     }
 
     /**
@@ -271,7 +268,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function getSession(): LazySession
     {
-        return $this->getControllerRequest()->getServerRequest()->getAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
+        return $this->getMiddlewareAttribute(SessionMiddleware::SESSION_ATTRIBUTE);
     }
 
     /**
@@ -279,7 +276,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function getUserBean(): UserBean
     {
-        return $this->getControllerRequest()->getServerRequest()->getAttribute(UserInterface::class) ?? new UserBean();
+        return $this->getMiddlewareAttribute(UserInterface::class) ?? new UserBean();
     }
 
     /**
@@ -287,7 +284,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     public function getLogger(): LoggerInterface
     {
-        return $this->getControllerRequest()->getServerRequest()->getAttribute(LoggingMiddleware::LOGGER_ATTRIBUTE);
+        return $this->getMiddlewareAttribute(LoggingMiddleware::LOGGER_ATTRIBUTE);
     }
 
     /**
@@ -295,7 +292,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     public function getConfig(): ?ParsConfig
     {
-        return $this->getControllerRequest()->getServerRequest()->getAttribute(ParsConfig::class);
+        return $this->getMiddlewareAttribute(ParsConfig::class);
     }
 
     /**
@@ -304,7 +301,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function translate(string $code)
     {
-        return $this->getTranslator()->translate($code, 'admin');
+        return $this->getTranslator()->translate($code);
     }
 
 

@@ -6,14 +6,16 @@ use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
 use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Component\Base\StyleAwareInterface;
+use Pars\Core\Translation\ParsTranslator;
+use Pars\Core\Translation\ParsTranslatorAwareTrait;
 use Pars\Mvc\View\FieldFormatInterface;
 use Pars\Mvc\View\FieldInterface;
 
 class TranslationStateFieldFormat implements FieldFormatInterface
 {
-    use TranslatorAwareTrait;
+    use ParsTranslatorAwareTrait;
 
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(ParsTranslator $translator)
     {
         $this->setTranslator($translator);
     }
@@ -24,12 +26,12 @@ class TranslationStateFieldFormat implements FieldFormatInterface
             if ($field instanceof StyleAwareInterface) {
                 $field->setStyle(StyleAwareInterface::STYLE_WARNING);
             }
-            return $this->getTranslator()->translate('translation.state.missing', 'admin');
+            return $this->getTranslator()->translate('translation.state.missing');
         } else {
             if ($field instanceof StyleAwareInterface) {
                 $field->setStyle(StyleAwareInterface::STYLE_SUCCESS);
             }
-            return $this->getTranslator()->translate('translation.state.complete', 'admin');
+            return $this->getTranslator()->translate('translation.state.complete');
         }
     }
 }

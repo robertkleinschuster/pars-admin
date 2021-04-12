@@ -5,7 +5,7 @@ namespace Pars\Admin\File;
 use Pars\Admin\Base\BaseDetail;
 use Pars\Component\Base\Field\Image;
 
-class FileDetail extends BaseDetail
+class  FileDetail extends BaseDetail
 {
     protected ?string $assetDomain = null;
 

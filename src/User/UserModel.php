@@ -55,7 +55,7 @@ class UserModel extends CrudModel
             $options[''] = $this->translate('noselection');
         }
         $finder = new LocaleBeanFinder($this->getDbAdpater());
-        $finder->setLocale_Active(true);
+        $finder->filterLocale_Active(true);
 
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('Locale_Code')] = $bean->get('Locale_Name');

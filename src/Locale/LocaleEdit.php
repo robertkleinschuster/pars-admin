@@ -11,8 +11,9 @@ class LocaleEdit extends BaseEdit
      */
     public ?array $domain_List = null;
 
-    protected function initialize()
+    protected function initFields()
     {
+        parent::initFields();
         $this->getForm()->addText('Locale_Name', '{Locale_Name}', $this->translate('locale.name'));
         if ($this->isCreate()) {
             $this->getForm()->addText('Locale_Code', '{Locale_Code}', $this->translate('locale.code'));
@@ -31,8 +32,8 @@ class LocaleEdit extends BaseEdit
             $this->getForm()->addText('Locale_Domain', '{Locale_Domain}', $this->translate('locale.domain'));
         }
         $this->getForm()->addCheckbox('Locale_Active', '{Locale_Active}', $this->translate('locale.active'));
-        parent::initialize();
     }
+
 
     /**
     * @return array

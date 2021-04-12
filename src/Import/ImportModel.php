@@ -45,7 +45,7 @@ class ImportModel extends CrudModel
     public function getArticleOptions(): array
     {
         $finder = new CmsPageBeanFinder($this->getDbAdpater());
-        $finder->setLocale_Code($this->getTranslator()->getLocale());
+        $finder->filterLocale_Code($this->getTranslator()->getLocale());
         $options = [];
         foreach ($finder->getBeanListDecorator() as $item) {
             $options[$item->get('Article_ID')] = $item->get('ArticleTranslation_Name');

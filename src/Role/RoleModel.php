@@ -18,8 +18,8 @@ class RoleModel extends CrudModel
 
     public function initialize()
     {
-        $this->setBeanFinder(new RoleBeanFinder($this->adapter));
-        $this->setBeanProcessor(new RoleBeanProcessor($this->adapter));
+        $this->setBeanFinder(new RoleBeanFinder($this->getDbAdpater()));
+        $this->setBeanProcessor(new RoleBeanProcessor($this->getDbAdpater()));
     }
 
     public function getEmptyBean(array $data = []): BeanInterface

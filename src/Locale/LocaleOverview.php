@@ -14,8 +14,11 @@ class LocaleOverview extends BaseOverview
         $this->setName($this->translate('section.locale'));
     }
 
-    protected function initialize()
+
+    protected function initFields()
     {
+        parent::initFields();
+
         $this->setShowDelete(false);
         $active = new Badge('{Locale_Active}');
         $active->setFormat(new LocaleActiveFieldFormat($this->getTranslator()));
@@ -24,9 +27,8 @@ class LocaleOverview extends BaseOverview
         $this->addField('Locale_Code', $this->translate('locale.code'));
         $this->addField('Locale_Domain', $this->translate('locale.domain'));
         $this->setShowMove(true);
-
-        parent::initialize();
     }
+
 
     protected function getController(): string
     {

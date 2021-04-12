@@ -33,7 +33,7 @@ class TranslationModel extends CrudModel
             $options[''] = $this->translate('noselection');
         }
         $finder = new LocaleBeanFinder($this->getDbAdpater());
-        $finder->setLocale_Active(true);
+        $finder->filterLocale_Active(true);
         return array_merge($options, $finder->getBeanList()->getSelectOptions());
     }
 
@@ -60,9 +60,9 @@ class TranslationModel extends CrudModel
             $bean = $this->getBean();
             $locale = $this->getConfig('locale.default');
             $finder = new TranslationBeanFinder($this->getDbAdpater());
-            $finder->setLocale_Code($locale);
-            $finder->setTranslation_Code($bean->get('Translation_Code'));
-            $finder->setTranslation_Namespace($bean->get('Translation_Namespace'));
+            $finder->filterLocale_Code($locale);
+            $finder->filterTranslation_Code($bean->get('Translation_Code'));
+            $finder->filterTranslation_Namespace($bean->get('Translation_Namespace'));
             if ($finder->count() == 1) {
                 return $finder->getBean();
             } else {

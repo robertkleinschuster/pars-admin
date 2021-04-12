@@ -37,7 +37,7 @@ class CmsPageModel extends ArticleModel
     {
         $this->setBeanFinder(new CmsPageBeanFinder($this->getDbAdpater()));
         $this->setBeanProcessor(new CmsPageBeanProcessor($this->getDbAdpater()));
-        $this->getBeanFinder()->setLocale_Code($this->getTranslator()->getLocale());
+        $this->getBeanFinder()->filterLocale_Code($this->getTranslator()->getLocale());
     }
 
     public function getCmsPageType_Options(bool $emptyElement = false): array
@@ -89,7 +89,7 @@ class CmsPageModel extends ArticleModel
             $cache = $this->getCache(__METHOD__);
             if (!$cache->has('options')) {
                 $finder = new CmsPageBeanFinder($this->getDbAdpater(), false);
-                $finder->setLocale_Code($this->getTranslator()->getLocale());
+                $finder->filterLocale_Code($this->getTranslator()->getLocale());
                 $finder->setCmsPageState_Code('active');
                 $options[null] = $this->translate('noselection');
                 foreach ($finder->getBeanListDecorator() as $bean) {
@@ -153,7 +153,7 @@ class CmsPageModel extends ArticleModel
         $data = [];
         foreach ($this->getLocale_List() as $locale) {
             $finder = new CmsPageBeanFinder($this->getDbAdpater());
-            $finder->setLocale_Code($locale->get('Locale_Code'));
+            $finder->filterLocale_Code($locale->get('Locale_Code'));
             $finder->setCmsPage_ID($this->getBean()->get('CmsPage_ID'));
             foreach ($finder->getBeanListDecorator() as $bean) {
                 $data[$locale->get('Locale_Code')] = $bean;
@@ -178,7 +178,7 @@ class CmsPageModel extends ArticleModel
                 $page->unset('Person_ID_Create');
                 $page->unset('Person_ID_Edit');
                 $pageFinder = new CmsPageBeanFinder($this->getDbAdpater());
-                $pageFinder->setLocale_Code($locale);
+                $pageFinder->filterLocale_Code($locale);
                 $pageFinder->setArticle_Code($page->get('Article_Code'));
                 if ($pageFinder->count()) {
                     $bean = $pageFinder->getBean();
@@ -204,7 +204,7 @@ class CmsPageModel extends ArticleModel
                         $post->unset('Person_ID_Edit');
                         $post->set('CmsPage_ID', $page->get('CmsPage_ID'));
                         $finder = new CmsPostBeanFinder($this->getDbAdpater());
-                        $finder->setLocale_Code($locale);
+                        $finder->filterLocale_Code($locale);
                         $finder->setArticle_Code($post->get('Article_Code'));
                         if ($finder->count()) {
                             $bean = $finder->getBean();
@@ -226,7 +226,7 @@ class CmsPageModel extends ArticleModel
                         $block->unset('Person_ID_Create');
                         $block->unset('Person_ID_Edit');
                         $finder = new CmsBlockBeanFinder($this->getDbAdpater());
-                        $finder->setLocale_Code($locale);
+                        $finder->filterLocale_Code($locale);
                         $finder->setArticle_Code($block->get('Article_Code'));
                         if ($finder->count()) {
                             $bean = $finder->getBean();

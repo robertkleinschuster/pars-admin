@@ -72,7 +72,7 @@ abstract class ArticleModel extends CrudModel
     public function getLocale_List(): LocaleBeanList
     {
         $finder = new LocaleBeanFinder($this->getDbAdpater());
-        $finder->setLocale_Active(true);
+        $finder->filterLocale_Active(true);
         return $finder->getBeanList();
     }
 
@@ -84,7 +84,7 @@ abstract class ArticleModel extends CrudModel
     {
         $default = (new ArticleTranslationBeanFinder($this->getDbAdpater()))
             ->setArticle_ID($bean->Article_ID)
-            ->setLocale_Code($this->getConfig('locale.default'))
+            ->filterLocale_Code($this->getConfig('locale.default'))
             ->limit(1, 0)->getBean();
 
         if ($bean->empty('ArticleTranslation_Code') && $default->isset('ArticleTranslation_Code')) {

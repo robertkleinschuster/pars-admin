@@ -2,22 +2,22 @@
 
 namespace Pars\Admin\Role;
 
-use Laminas\I18n\Translator\TranslatorAwareTrait;
-use Laminas\I18n\Translator\TranslatorInterface;
 use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Component\Base\StyleAwareInterface;
+use Pars\Core\Translation\ParsTranslator;
+use Pars\Core\Translation\ParsTranslatorAwareTrait;
 use Pars\Mvc\View\FieldFormatInterface;
 use Pars\Mvc\View\FieldInterface;
 
 class RoleActiveFieldFormat implements FieldFormatInterface
 {
-    use TranslatorAwareTrait;
+    use ParsTranslatorAwareTrait;
 
 
     /**
      * UserStateFieldFormat constructor.
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(ParsTranslator $translator)
     {
         $this->setTranslator($translator);
     }
@@ -28,12 +28,12 @@ class RoleActiveFieldFormat implements FieldFormatInterface
             if ($field instanceof StyleAwareInterface) {
                 $field->setStyle(StyleAwareInterface::STYLE_SUCCESS);
             }
-            return $this->getTranslator()->translate('userrole.active.true', 'admin');
+            return $this->getTranslator()->translate('userrole.active.true');
         } else {
             if ($field instanceof StyleAwareInterface) {
                 $field->setStyle(StyleAwareInterface::STYLE_SECONDARY);
             }
-            return $this->getTranslator()->translate('userrole.active.false', 'admin');
+            return $this->getTranslator()->translate('userrole.active.false');
         }
     }
 }

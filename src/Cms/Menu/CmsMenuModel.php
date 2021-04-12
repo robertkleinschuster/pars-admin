@@ -23,10 +23,10 @@ class CmsMenuModel extends CrudModel
     {
         $this->setBeanFinder(new CmsMenuBeanFinder($this->getDbAdpater()));
         $this->setBeanProcessor(new CmsMenuBeanProcessor($this->getDbAdpater()));
-        $this->getBeanFinder()->setLocale_Code($this->getTranslator()->getLocale());
+        $this->getBeanFinder()->filterLocale_Code($this->getTranslator()->getLocale());
         $this->setBeanOrderProcessor(new BeanOrderProcessor(
             new CmsMenuBeanProcessor($this->getDbAdpater()),
-            (new CmsMenuBeanFinder($this->getDbAdpater()))->setLocale_Code($this->getTranslator()->getLocale()),
+            (new CmsMenuBeanFinder($this->getDbAdpater()))->filterLocale_Code($this->getTranslator()->getLocale()),
             'CmsMenu_Order',
             'CmsMenu_ID_Parent'
         ));
@@ -46,7 +46,7 @@ class CmsMenuModel extends CrudModel
     {
         $options = [];
         $finder = new CmsPageBeanFinder($this->getDbAdpater());
-        $finder->setLocale_Code($this->getTranslator()->getLocale());
+        $finder->filterLocale_Code($this->getTranslator()->getLocale());
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('CmsPage_ID')] = $bean->get('ArticleTranslation_Name') ?? '';
         }

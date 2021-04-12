@@ -6,18 +6,20 @@ use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Laminas\I18n\Translator\TranslatorInterface;
 use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Component\Base\StyleAwareInterface;
+use Pars\Core\Translation\ParsTranslator;
+use Pars\Core\Translation\ParsTranslatorAwareTrait;
 use Pars\Mvc\View\FieldFormatInterface;
 use Pars\Mvc\View\FieldInterface;
 
 class CmsBlockStateFieldFormat implements FieldFormatInterface
 {
-    use TranslatorAwareTrait;
+    use ParsTranslatorAwareTrait;
 
 
     /**
      * CmsPageTypeFieldFormat constructor.
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(ParsTranslator $translator)
     {
         $this->setTranslator($translator);
     }
@@ -36,6 +38,6 @@ class CmsBlockStateFieldFormat implements FieldFormatInterface
                 }
                 break;
         }
-        return $this->getTranslator()->translate('cmsblockstate.code.' . $bean->get('CmsBlockState_Code'), 'admin');
+        return $this->getTranslator()->translate('cmsblockstate.code.' . $bean->get('CmsBlockState_Code'));
     }
 }

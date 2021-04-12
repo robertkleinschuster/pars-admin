@@ -3,32 +3,34 @@
 namespace Pars\Admin\Base;
 
 use Laminas\Db\Adapter\Adapter;
-use Laminas\Db\Adapter\AdapterAwareInterface;
-use Laminas\Db\Adapter\AdapterAwareTrait;
-use Laminas\Db\Adapter\Exception\InvalidQueryException;
 use Laminas\I18n\Translator\TranslatorAwareInterface;
-use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Pars\Bean\Processor\DefaultMetaFieldHandler;
 use Pars\Bean\Processor\TimestampMetaFieldHandler;
 use Pars\Bean\Type\Base\BeanException;
 use Pars\Core\Cache\ParsCache;
+use Pars\Core\Database\ParsDatabaseAdapterAwareInterface;
+use Pars\Core\Database\ParsDatabaseAdapterAwareTrait;
+use Pars\Core\Translation\ParsTranslatorAwareInterface;
+use Pars\Core\Translation\ParsTranslatorAwareTrait;
 use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Core\Config\ParsConfig;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Model\Authentication\User\UserBean;
-use Pars\Model\Config\ConfigBeanFinder;
 use Pars\Mvc\Exception\NotFoundException;
 use Pars\Mvc\Model\AbstractModel;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\LoggerInterface;
 
-abstract class BaseModel extends AbstractModel implements AdapterAwareInterface, TranslatorAwareInterface, LoggerAwareInterface
+abstract class BaseModel extends AbstractModel implements
+    LoggerAwareInterface,
+    ParsDatabaseAdapterAwareInterface,
+    ParsTranslatorAwareInterface
 {
-    use AdapterAwareTrait;
-    use TranslatorAwareTrait;
+    use ParsDatabaseAdapterAwareTrait;
+    use ParsTranslatorAwareTrait;
     use LoggerAwareTrait;
 
     /**
@@ -66,6 +68,9 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
                 new DefaultMetaFieldHandler('Person_ID_Create', $this->getUserBean()->Person_ID)
             );
             if ($processor instanceof TranslatorAwareInterface && $this->hasTranslator()) {
+                $processor->setTranslator($this->getTranslator()->getTranslator());
+            }
+            if ($processor instanceof ParsTranslatorAwareInterface && $this->hasTranslator()) {
                 $processor->setTranslator($this->getTranslator());
             }
         }
@@ -105,7 +110,7 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
      */
     public function getDbAdpater(): Adapter
     {
-        return $this->adapter;
+        return $this->getDatabaseAdapter()->getDbAdapter();
     }
 
     /**
@@ -178,15 +183,6 @@ abstract class BaseModel extends AbstractModel implements AdapterAwareInterface,
                 break;
         }
         parent::handleSubmit($submitParameter, $idParameter, $idListParameter, $attribute_List);
-    }
-
-    /**
-     * @param string $code
-     * @return string
-     */
-    public function translate(string $code): string
-    {
-        return $this->getTranslator()->translate($code, 'admin');
     }
 
     /**

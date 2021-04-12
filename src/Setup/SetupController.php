@@ -35,7 +35,7 @@ class SetupController extends BaseController
     {
         $this->getModel()->setBeanConverter(new ViewBeanConverter());
         $this->getModel()
-            ->setDbAdapter($this->getControllerRequest()->getServerRequest()->getAttribute(DatabaseMiddleware::ADAPTER_ATTRIBUTE));
+            ->setDbAdapter($this->getMiddlewareAttribute(DatabaseMiddleware::ADAPTER_ATTRIBUTE));
         $this->getModel()->initialize();
         $this->getModel()->setTranslator($this->getTranslator());
         $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->getModel()->getDbAdpater());

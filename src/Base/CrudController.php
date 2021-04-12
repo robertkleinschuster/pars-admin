@@ -3,7 +3,6 @@
 namespace Pars\Admin\Base;
 
 use DateTime;
-use Laminas\Diactoros\Uri;
 use Pars\Bean\Type\Base\BeanException;
 use Pars\Component\Base\Breadcrumb\Breadcrumb;
 use Pars\Component\Base\Detail\Detail;
@@ -13,20 +12,16 @@ use Pars\Component\Base\Layout\DashboardLayout;
 use Pars\Component\Base\Navigation\Item;
 use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Pagination\Pagination;
-use Pars\Component\Base\Toolbar\MoreButton;
 use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\FilterParameter;
 use Pars\Helper\Parameter\NavParameter;
 use Pars\Helper\Parameter\PaginationParameter;
-use Pars\Helper\Parameter\Parameter;
 use Pars\Helper\Parameter\SearchParameter;
 use Pars\Mvc\Exception\MvcException;
 use Pars\Mvc\Exception\NotFoundException;
-use Pars\Mvc\View\HtmlElement;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
 use Pars\Pattern\Exception\AttributeNotFoundException;
-use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Html;
 
 /**
  * Class CrudController

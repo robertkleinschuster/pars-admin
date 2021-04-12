@@ -2,8 +2,8 @@
 
 namespace Pars\Admin\Base;
 
-use Laminas\I18n\Translator\TranslatorAwareInterface;
-use Laminas\I18n\Translator\TranslatorInterface;
+use Pars\Core\Translation\ParsTranslator;
+use Pars\Core\Translation\ParsTranslatorAwareInterface;
 use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Path\PathHelper;
 use Pars\Helper\Path\PathHelperAwareInterface;
@@ -15,17 +15,17 @@ use Pars\Mvc\View\HtmlInterface;
  * Interface CrudComponentInterface
  * @package Pars\Admin\Base
  */
-interface CrudComponentInterface extends HtmlInterface, ComponentInterface, TranslatorAwareInterface, PathHelperAwareInterface
+interface CrudComponentInterface extends HtmlInterface, ComponentInterface, PathHelperAwareInterface, ParsTranslatorAwareInterface
 {
     /**
      * CrudComponentInterface constructor.
      * @param PathHelper $pathHelper
-     * @param TranslatorInterface $translator
+     * @param ParsTranslator $translator
      * @param UserBean $userBean
      */
     public function __construct(
         PathHelper $pathHelper,
-        TranslatorInterface $translator,
+        ParsTranslator $translator,
         UserBean $userBean
     );
 

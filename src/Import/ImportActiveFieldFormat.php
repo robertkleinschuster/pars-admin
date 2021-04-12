@@ -2,22 +2,25 @@
 
 namespace Pars\Admin\Import;
 
-use Laminas\I18n\Translator\TranslatorAwareTrait;
-use Laminas\I18n\Translator\TranslatorInterface;
 use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Component\Base\StyleAwareInterface;
+use Pars\Core\Translation\ParsTranslator;
+use Pars\Core\Translation\ParsTranslatorAwareTrait;
 use Pars\Mvc\View\FieldFormatInterface;
 use Pars\Mvc\View\FieldInterface;
 
+/**
+ * Class ImportActiveFieldFormat
+ * @package Pars\Admin\Import
+ */
 class ImportActiveFieldFormat implements FieldFormatInterface
 {
-    use TranslatorAwareTrait;
-
+    use ParsTranslatorAwareTrait;
 
     /**
      * UserStateFieldFormat constructor.
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(ParsTranslator $translator)
     {
         $this->setTranslator($translator);
     }
@@ -28,12 +31,12 @@ class ImportActiveFieldFormat implements FieldFormatInterface
             if ($field instanceof StyleAwareInterface) {
                 $field->setStyle(StyleAwareInterface::STYLE_SUCCESS);
             }
-            return $this->getTranslator()->translate('import.active.true', 'admin');
+            return $this->getTranslator()->translate('import.active.true');
         } else {
             if ($field instanceof StyleAwareInterface) {
                 $field->setStyle(StyleAwareInterface::STYLE_SECONDARY);
             }
-            return $this->getTranslator()->translate('import.active.false', 'admin');
+            return $this->getTranslator()->translate('import.active.false');
         }
     }
 }

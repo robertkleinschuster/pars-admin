@@ -2,22 +2,22 @@
 
 namespace Pars\Admin\User;
 
-use Laminas\I18n\Translator\TranslatorAwareTrait;
-use Laminas\I18n\Translator\TranslatorInterface;
 use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Component\Base\StyleAwareInterface;
+use Pars\Core\Translation\ParsTranslator;
+use Pars\Core\Translation\ParsTranslatorAwareTrait;
 use Pars\Mvc\View\FieldFormatInterface;
 use Pars\Mvc\View\FieldInterface;
 
 class UserStateFieldFormat implements FieldFormatInterface
 {
-    use TranslatorAwareTrait;
+    use ParsTranslatorAwareTrait;
 
 
     /**
      * UserStateFieldFormat constructor.
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(ParsTranslator $translator)
     {
         $this->setTranslator($translator);
     }
@@ -30,17 +30,17 @@ class UserStateFieldFormat implements FieldFormatInterface
                     if ($field instanceof StyleAwareInterface) {
                         $field->setStyle(StyleAwareInterface::STYLE_SUCCESS);
                     }
-                    return $this->getTranslator()->translate('userstate.code.active', 'admin');
+                    return $this->getTranslator()->translate('userstate.code.active');
                 case 'inactive':
                     if ($field instanceof StyleAwareInterface) {
                         $field->setStyle(StyleAwareInterface::STYLE_SECONDARY);
                     }
-                    return $this->getTranslator()->translate('userstate.code.inactive', 'admin');
+                    return $this->getTranslator()->translate('userstate.code.inactive');
                 case 'locked':
                     if ($field instanceof StyleAwareInterface) {
                         $field->setStyle(StyleAwareInterface::STYLE_DANGER);
                     }
-                    return $this->getTranslator()->translate('userstate.code.locked', 'admin');
+                    return $this->getTranslator()->translate('userstate.code.locked');
             }
         }
         return $value;

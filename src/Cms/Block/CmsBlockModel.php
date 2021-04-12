@@ -28,7 +28,7 @@ class CmsBlockModel extends ArticleModel
     {
         $this->setBeanFinder(new CmsBlockBeanFinder($this->getDbAdpater()));
         $this->setBeanProcessor(new CmsBlockBeanProcessor($this->getDbAdpater()));
-        $this->getBeanFinder()->setLocale_Code($this->getTranslator()->getLocale());
+        $this->getBeanFinder()->filterLocale_Code($this->getTranslator()->getLocale());
         $this->initFinder();
     }
 

@@ -2,9 +2,9 @@
 
 namespace Pars\Admin\Base;
 
-use Laminas\I18n\Translator\TranslatorAwareTrait;
-use Laminas\I18n\Translator\TranslatorInterface;
 use Pars\Bean\Type\Base\BeanException;
+use Pars\Core\Translation\ParsTranslator;
+use Pars\Core\Translation\ParsTranslatorAwareTrait;
 use Pars\Helper\Parameter\ContextParameter;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
@@ -18,7 +18,7 @@ use Pars\Model\Authentication\User\UserBean;
  */
 trait CrudComponentTrait
 {
-    use TranslatorAwareTrait;
+    use ParsTranslatorAwareTrait;
     use PathHelperAwareTrait;
 
     private UserBean $userBean;
@@ -29,7 +29,7 @@ trait CrudComponentTrait
     /**
      * MainNavigation constructor.
      * @param PathHelper $pathHelper
-     * @param TranslatorInterface $translator
+     * @param ParsTranslator $translator
      * @param UserBean $userBean
      * @throws BeanException
      * @throws AttributeExistsException
@@ -37,7 +37,7 @@ trait CrudComponentTrait
      */
     public function __construct(
         PathHelper $pathHelper,
-        TranslatorInterface $translator,
+        ParsTranslator $translator,
         UserBean $userBean
     ) {
         $this->setPathHelper($pathHelper);
@@ -54,11 +54,6 @@ trait CrudComponentTrait
         return $this->userBean;
     }
 
-
-    protected function translate(string $code)
-    {
-        return $this->getTranslator()->translate($code, 'admin');
-    }
 
     /**
     * @return ContextParameter

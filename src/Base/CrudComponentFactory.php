@@ -2,9 +2,9 @@
 
 namespace Pars\Admin\Base;
 
-use Laminas\I18n\Translator\TranslatorAwareInterface;
-use Laminas\I18n\Translator\TranslatorAwareTrait;
-use Laminas\I18n\Translator\TranslatorInterface;
+use Pars\Core\Translation\ParsTranslator;
+use Pars\Core\Translation\ParsTranslatorAwareInterface;
+use Pars\Core\Translation\ParsTranslatorAwareTrait;
 use Pars\Helper\Path\PathHelper;
 use Pars\Helper\Path\PathHelperAwareInterface;
 use Pars\Helper\Path\PathHelperAwareTrait;
@@ -12,7 +12,7 @@ use Pars\Model\Authentication\User\UserBean;
 use Pars\Mvc\Exception\MvcException;
 use Pars\Mvc\View\AbstractComponent;
 
-class CrudComponentFactory implements PathHelperAwareInterface, TranslatorAwareInterface
+class CrudComponentFactory implements PathHelperAwareInterface, ParsTranslatorAwareInterface
 {
     protected const CLASS_EDIT = 'edit';
     protected const CLASS_DETAIL = 'detail';
@@ -20,7 +20,7 @@ class CrudComponentFactory implements PathHelperAwareInterface, TranslatorAwareI
     protected const CLASS_OVERVIEW = 'overview';
 
     use PathHelperAwareTrait;
-    use TranslatorAwareTrait;
+    use ParsTranslatorAwareTrait;
 
     protected UserBean $userBean;
     protected string $controller;
@@ -31,13 +31,13 @@ class CrudComponentFactory implements PathHelperAwareInterface, TranslatorAwareI
      * CrudComponentFactory constructor.
      * @param UserBean $userBean
      * @param PathHelper $pathHelper
-     * @param TranslatorInterface $translator
+     * @param ParsTranslator $translator
      */
-    public function __construct(UserBean $userBean, PathHelper $pathHelper, TranslatorInterface $translator)
+    public function __construct(UserBean $userBean, PathHelper $pathHelper, ParsTranslator $translator)
     {
         $this->userBean = $userBean;
-        $this->pathHelper = $pathHelper;
-        $this->translator = $translator;
+        $this->setPathHelper($pathHelper);
+        $this->setTranslator($translator);
     }
 
     /**

@@ -24,7 +24,7 @@ class CmsPostModel extends ArticleModel
     {
         $this->setBeanFinder(new CmsPostBeanFinder($this->getDbAdpater()));
         $this->setBeanProcessor(new CmsPostBeanProcessor($this->getDbAdpater()));
-        $this->getBeanFinder()->setLocale_Code($this->getTranslator()->getLocale());
+        $this->getBeanFinder()->filterLocale_Code($this->getTranslator()->getLocale());
     }
 
 
@@ -63,7 +63,7 @@ class CmsPostModel extends ArticleModel
         $bean->set('CmsPost_PublishTimestamp', new \DateTime());
         if (isset($data['CmsPage_ID'])) {
             $finder = new CmsPageBeanFinder($this->getDbAdpater());
-            $finder->setLocale_Code($this->getTranslator()->getLocale());
+            $finder->filterLocale_Code($this->getTranslator()->getLocale());
             $finder->setCmsPage_ID($data['CmsPage_ID']);
             $page = $finder->getBean();
             $count = $page->get('CmsBlock_BeanList')->count() + 1;

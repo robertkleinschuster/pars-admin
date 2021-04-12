@@ -33,6 +33,6 @@ class IndexModel extends BaseModel
 
     public function hasLocale()
     {
-        return (new LocaleBeanFinder($this->getDbAdpater()))->setLocale_Active(true)->count() > 1;
+        return (new LocaleBeanFinder($this->getDbAdpater()))->filterLocale_Active(true)->count() > 1;
     }
 }

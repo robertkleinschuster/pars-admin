@@ -5,6 +5,7 @@ namespace Pars\Admin\Update;
 use Laminas\I18n\Translator\TranslatorInterface;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Core\Database\Updater\AbstractDatabaseUpdater;
+use Pars\Core\Translation\ParsTranslator;
 use Pars\Helper\Parameter\RedirectParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Helper\Path\PathHelper;
@@ -14,7 +15,7 @@ class Update extends BaseEdit
 {
 
 
-    public function __construct(PathHelper $pathHelper, TranslatorInterface $translator, UserBean $userBean, AbstractDatabaseUpdater $updater = null)
+    public function __construct(PathHelper $pathHelper, ParsTranslator $translator, UserBean $userBean, AbstractDatabaseUpdater $updater = null)
     {
         parent::__construct($pathHelper, $translator, $userBean);
         $this->updater = $updater;

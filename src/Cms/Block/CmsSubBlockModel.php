@@ -15,7 +15,7 @@ class CmsSubBlockModel extends CmsBlockModel
     {
         $this->setBeanOrderProcessor(new BeanOrderProcessor(
             new CmsBlockBeanProcessor($this->getDbAdpater()),
-            (new CmsBlockBeanFinder($this->getDbAdpater()))->setLocale_Code($this->getTranslator()->getLocale()),
+            (new CmsBlockBeanFinder($this->getDbAdpater()))->filterLocale_Code($this->getTranslator()->getLocale()),
             'CmsBlock_Order',
             'CmsBlock_ID_Parent'
         ));

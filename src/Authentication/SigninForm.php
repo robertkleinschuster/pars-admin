@@ -2,16 +2,16 @@
 
 namespace Pars\Admin\Authentication;
 
-use Laminas\I18n\Translator\TranslatorAwareTrait;
 use Pars\Component\Base\Alert\Alert;
 use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Field\Paragraph;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Form\Form;
+use Pars\Core\Translation\ParsTranslatorAwareTrait;
 
 class SigninForm extends Form
 {
-    use TranslatorAwareTrait;
+    use ParsTranslatorAwareTrait;
 
     public ?string $token = null;
     public ?string $error = null;
@@ -61,14 +61,6 @@ class SigninForm extends Form
             $block->push($span);
             $this->push($block);
         }
-    }
-
-    protected function translate(string $code)
-    {
-        if ($this->hasTranslator()) {
-            return $this->getTranslator()->translate($code, 'admin');
-        }
-        return $code;
     }
 
     /**

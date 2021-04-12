@@ -28,10 +28,10 @@ class CmsPageBlockModel extends CmsBlockModel
     {
         $this->setBeanFinder(new CmsPageBlockBeanFinder($this->getDbAdpater()));
         $this->setBeanProcessor(new CmsPageBlockBeanProcessor($this->getDbAdpater()));
-        $this->getBeanFinder()->setLocale_Code($this->getTranslator()->getLocale());
+        $this->getBeanFinder()->filterLocale_Code($this->getTranslator()->getLocale());
         $this->setBeanOrderProcessor(new BeanOrderProcessor(
             new CmsPageBlockBeanProcessor($this->getDbAdpater()),
-            (new CmsPageBlockBeanFinder($this->getDbAdpater()))->setLocale_Code($this->getTranslator()->getLocale()),
+            (new CmsPageBlockBeanFinder($this->getDbAdpater()))->filterLocale_Code($this->getTranslator()->getLocale()),
             'CmsPage_CmsBlock_Order',
             'CmsPage_ID'
         ));
@@ -45,7 +45,7 @@ class CmsPageBlockModel extends CmsBlockModel
     {
         $options = [];
         $finder = new CmsBlockBeanFinder($this->getDbAdpater());
-        $finder->setLocale_Code($this->getTranslator()->getLocale());
+        $finder->filterLocale_Code($this->getTranslator()->getLocale());
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('CmsBlock_ID')] = $bean->get('ArticleTranslation_Name');
         }
@@ -56,7 +56,7 @@ class CmsPageBlockModel extends CmsBlockModel
     {
         $finder = new CmsBlockBeanFinder($this->getDbAdpater());
         $finder->setCmsBlock_ID_Parent(null);
-        $finder->setLocale_Code($this->getTranslator()->getLocale());
+        $finder->filterLocale_Code($this->getTranslator()->getLocale());
         if ($filterParameter) {
             $finder->filter($filterParameter->getAttributes());
         }
@@ -93,7 +93,7 @@ class CmsPageBlockModel extends CmsBlockModel
         $bean = parent::getEmptyBean($data);
         if (isset($data['CmsPage_ID'])) {
             $finder = new CmsPageBeanFinder($this->getDbAdpater());
-            $finder->setLocale_Code($this->getTranslator()->getLocale());
+            $finder->filterLocale_Code($this->getTranslator()->getLocale());
             $finder->setCmsPage_ID($data['CmsPage_ID']);
             $page = $finder->getBean();
             $count = $page->get('CmsBlock_BeanList')->count() + 1;
