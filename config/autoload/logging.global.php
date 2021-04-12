@@ -37,6 +37,9 @@ return [
                 'requestid' => [
                     'name' => Laminas\Log\Processor\RequestId::class,
                 ],
+                'backtrace' => [
+                    'name' => Laminas\Log\Processor\Backtrace::class,
+                ],
             ],
         ],
     ],
