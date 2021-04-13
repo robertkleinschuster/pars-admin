@@ -14,8 +14,7 @@ require 'vendor/autoload.php';
     /**
      * @var $logger \Psr\Log\LoggerInterface
      */
-    $logger = $container->get('Logger');
-    $adapter = $container->get(\Laminas\Db\Adapter\AdapterInterface::class);
+    $logger = $container->get(\Psr\Log\LoggerInterface::class);
     $config = $container->get(\Pars\Core\Config\ParsConfig::class);
     $timezone = $config->get('admin.timezone');
     $now = new DateTime('now', new DateTimeZone($timezone));
@@ -24,7 +23,7 @@ require 'vendor/autoload.php';
         foreach ($config['task'] as $class => $taskConfig) {
             if (is_array($taskConfig)) {
                 try {
-                    $task = new $class($taskConfig, $now, $logger, $adapter);
+                    $task = new $class($taskConfig, $now, $container);
                     if ($task->isAllowed()) {
                         $logger->info('Task execute: ' . $class);
                         $task->execute();

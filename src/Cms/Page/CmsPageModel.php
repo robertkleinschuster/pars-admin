@@ -118,7 +118,7 @@ class CmsPageModel extends ArticleModel
     {
         $finder = new CmsPostBeanFinder($this->getDbAdpater());
         $finder->setCmsPage_ID($idParameter->getAttribute('CmsPage_ID'));
-        $processor = new CmsPostBeanProcessor($this->adapter);
+        $processor = new CmsPostBeanProcessor($this->getDbAdpater());
         $processor->setBeanList($finder->getBeanList());
         $processor->delete();
         parent::delete($idParameter);
@@ -128,7 +128,7 @@ class CmsPageModel extends ArticleModel
     {
         $finder = new CmsPostBeanFinder($this->getDbAdpater());
         $finder->filter($idListParameter->getAttribute_List());
-        $processor = new CmsPostBeanProcessor($this->adapter);
+        $processor = new CmsPostBeanProcessor($this->getDbAdpater());
         $processor->setBeanList($finder->getBeanList());
         $processor->delete();
         parent::delete_bulk($idListParameter, $attributes);

@@ -19,6 +19,7 @@ use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Article\Data\ArticleDataBeanFinder;
 use Pars\Model\Config\ConfigBeanFinder;
 use Pars\Mvc\View\DefaultComponent;
+use Pars\Model\Localization\Locale\LocaleBean;
 use Pars\Mvc\View\HtmlElement;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
@@ -209,22 +210,5 @@ class IndexController extends BaseController
         }
 
         $this->getView()->append($group);
-    }
-
-    public function tasksAction()
-    {
-        return $this->unauthorized();
-        $config = $this->getModel()->getApplicationConfig();
-        if (isset($config['task'])) {
-            foreach ($config['task'] as $class => $taskConfig) {
-                /**
-                 * @var $task AbstractTask
-                 */
-                $task = new $class($taskConfig, new DateTime(), $this->getLogger(), $this->getModel()->getDbAdpater());
-                $task->execute();
-                echo 'Task: ' . $class . '<br>';
-            }
-        }
-        exit;
     }
 }

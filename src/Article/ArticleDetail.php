@@ -3,6 +3,7 @@
 namespace Pars\Admin\Article;
 
 use Pars\Bean\Type\Base\BeanException;
+use Pars\Helper\String\StringHelper;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
 use Pars\Admin\Base\BaseDetail;
