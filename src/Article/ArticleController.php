@@ -31,7 +31,7 @@ abstract class ArticleController extends CrudController
 
     public function detailAction()
     {
-        $this->expandCollapse = false;
+        #$this->expandCollapse = false;
         $detail = parent::detailAction();
         $bean = $detail->getBean();
         if (!$bean->empty('File_BeanList') && !$bean->get('File_BeanList')->isEmpty()) {
