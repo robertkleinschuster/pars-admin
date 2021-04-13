@@ -47,6 +47,7 @@ return [
     'user.create' => 'Ersteller',
     'user.edit' => 'Bearbeiter',
     'index.headline' => 'Hallo {Current_Person_Firstname}!',
+    'index.collapse.detail' => 'Fehlende Einstellungen',
     'index.alert.headline.incomplete' => 'Einrichtung unvollständig!',
     'index.alert.headline.complete' => 'Einrichtung vollständig!',
     'index.no.active.page' => 'Keine aktiven Seiten',

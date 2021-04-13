@@ -2,20 +2,27 @@
 
 namespace Pars\Admin\Index;
 
+use DateTime;
 use Pars\Admin\Base\BaseController;
+use Pars\Bean\Type\Base\BeanException;
 use Pars\Component\Base\Alert\Alert;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Badge;
+use Pars\Component\Base\Field\Headline;
 use Pars\Component\Base\Field\Progress;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\ListGroup\Group;
 use Pars\Component\Base\ListGroup\Item;
-use Pars\Core\Config\ParsConfig;
+use Pars\Core\Task\Base\AbstractTask;
 use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Article\Data\ArticleDataBeanFinder;
 use Pars\Model\Config\ConfigBeanFinder;
+use Pars\Mvc\View\DefaultComponent;
 use Pars\Mvc\View\HtmlElement;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
+use Pars\Pattern\Exception\AttributeNotFoundException;
 
 /**
  * Class IndexController
@@ -24,10 +31,24 @@ use Pars\Mvc\View\HtmlElement;
  */
 class IndexController extends BaseController
 {
+    /**
+     * @throws AttributeLockException
+     * @throws AttributeExistsException
+     * @throws AttributeNotFoundException
+     * @throws BeanException
+     */
     public function indexAction()
     {
+        $headline = new DefaultComponent();
+        $headline->push(new Headline($this->translate('index.headline')));
+        $this->getView()->append($headline);
+
         $detail = new Detail();
-        $detail->setHeading($this->translate('index.headline'));
+
+        $collapsable = $this->initCollapsable("detail", true, $detail)
+            ->setTitle($this->translate("index.collapse.detail"));
+        $this->getView()->append($collapsable);
+
         $alert = new Alert();
         $alert->setHeading($this->translate('index.alert.headline.incomplete'));
         $alert->setStyle(Alert::STYLE_WARNING);
@@ -183,8 +204,6 @@ class IndexController extends BaseController
             }
         }
 
-        $this->getView()->append($detail);
-
         if ($messages->getJumbotron()->getFieldList()->count()) {
             $this->getView()->append($messages);
         }
@@ -199,9 +218,9 @@ class IndexController extends BaseController
         if (isset($config['task'])) {
             foreach ($config['task'] as $class => $taskConfig) {
                 /**
-                 * @var $task \Pars\Core\Task\Base\AbstractTask
+                 * @var $task AbstractTask
                  */
-                $task = new $class($taskConfig, new \DateTime(), $this->getLogger(), $this->getModel()->getDbAdpater());
+                $task = new $class($taskConfig, new DateTime(), $this->getLogger(), $this->getModel()->getDbAdpater());
                 $task->execute();
                 echo 'Task: ' . $class . '<br>';
             }

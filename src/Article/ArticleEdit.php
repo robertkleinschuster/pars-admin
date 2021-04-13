@@ -23,7 +23,6 @@ abstract class ArticleEdit extends BaseEdit
      */
     protected function initialize()
     {
-        $this->initFields();
         parent::initialize();
         $this->push(new Paragraph($this->translate('article.block.hint')));
     }

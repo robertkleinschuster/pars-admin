@@ -37,12 +37,13 @@ abstract class ArticleController extends CrudController
         if (!$bean->empty('File_BeanList') && !$bean->get('File_BeanList')->isEmpty()) {
             $fileOverview = new FileDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
             $this->injectContext($fileOverview);
-            $this->initCollapsable($fileOverview);
+            $collapsable = $this->initCollapsable("detail", $this->expandCollapse, $fileOverview)
+                ->setTitle($this->translate("showdetails"));
             $fileOverview->setShowDelete(false);
             $fileOverview->setShowEdit(true);
             $fileOverview->setShowBack(false);
             $fileOverview->setBean($bean->get('File_BeanList')->first());
-            $this->getView()->getLayout()->getComponentListAfter()->push($fileOverview);
+            $this->getView()->getLayout()->getComponentListAfter()->push($collapsable);
         }
         if ($bean->isset('ArticleTranslation_Code')) {
             if ($detail instanceof ArticleDetail) {

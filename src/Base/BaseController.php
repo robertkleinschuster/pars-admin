@@ -13,12 +13,16 @@ use Mezzio\Session\LazySession;
 use Mezzio\Session\SessionMiddleware;
 use Pars\Bean\Converter\BeanConverterAwareInterface;
 use Pars\Bean\Type\Base\BeanException;
+use Pars\Component\Base\Collapsable\Collapsable;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Toolbar\MoreButton;
 use Pars\Core\Config\ParsConfig;
 use Pars\Core\Database\ParsDatabaseAdapter;
 use Pars\Core\Translation\ParsTranslator;
+use Pars\Helper\Parameter\CollapseParameter;
 use Pars\Helper\Parameter\NavParameter;
+use Pars\Mvc\View\ComponentInterface;
+use Pars\Mvc\View\HtmlElement;
 use Pars\Pattern\Attribute\AttributeAwareInterface;
 use Pars\Pattern\Attribute\AttributeAwareTrait;
 use Pars\Pattern\Exception\AttributeExistsException;
@@ -195,6 +199,20 @@ abstract class BaseController extends AbstractController implements AttributeAwa
 
     /**
      * @param string $id
+     * @param bool $expanded
+     * @return mixed|void
+     */
+    protected function handleCollapsableState(string $id, bool $expanded)
+    {
+        if ($this->getControllerRequest()->hasId()) {
+            $id .= $this->getControllerRequest()->getId()->toString();
+        }
+        $id = md5($id);
+        $this->getSession()->set($id, $expanded);
+    }
+
+    /**
+     * @param string $id
      * @return mixed
      */
     public function getNavigationState(string $id): int
@@ -204,6 +222,23 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         }
         $id = md5($id);
         return (int)$this->getSession()->get($id, 1);
+    }
+
+    /**
+     * @param string $id
+     * @return mixed
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     */
+    public function getCollapsableState(string $id): ?bool
+    {
+        if ($this->getControllerRequest()->hasId()) {
+            $id .= $this->getControllerRequest()->getId()->toString();
+        }
+        $id = md5($id);
+        $state = $this->getSession()->get($id, null);
+        return isset($state) ? (bool)$state : null;
     }
 
     /**
@@ -419,10 +454,8 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         if ($profiler instanceof ProfilerInterface) {
             $profiles = $profiler->getProfiles();
             $group = new Detail();
-            $expandPrev = $this->expandCollapse;
-            $this->expandCollapse = false;
-            $this->initCollapsable($group, 'debug', $this->translate('showdebug'));
-            $this->expandCollapse = $expandPrev;
+            $collapsable = $this->initCollapsable( 'debug', false, $group)
+                ->setTitle( $this->translate('showdebug'));
             $alert = new Alert();
             $alert->setHeading('Debug');
             $alert->setStyle(Alert::STYLE_WARNING);
@@ -437,55 +470,46 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 $alert->addBlock( $profile['trace'].  $profile['sql'] . "<br>{$profile['elapse']} ms");
             }
             $group->getJumbotron()->setContent($alert->render());
-            $this->getView()->prepend($group);
+            $this->getView()->prepend($collapsable);
         }
     }
 
     /**
-     * @param Detail $detail
      * @param string $id
-     * @param string|null $label
+     * @param bool $expanded
+     * @param ComponentInterface ...$component
+     * @return Collapsable
      * @throws AttributeExistsException
      * @throws AttributeLockException
      * @throws AttributeNotFoundException
      */
-    protected function initCollapsable(Detail $detail, string $id = '', ?string $label = null)
+    protected function initCollapsable(string $id, bool $expanded, ComponentInterface ...$component): Collapsable
     {
-        $path = $this->getPathHelper(true);
-        $navParameter = new NavParameter();
         $id = 'collapse' . $id
             . $this->getControllerRequest()->getController()
             . $this->getControllerRequest()->getAction();
-        $navParameter->setId($id);
-        $button = new MoreButton();
-        if ($this->getNavigationState($id) === 0) {
-            if (!$this->expandCollapse) {
-                $detail->getJumbotron()->addOption('show');
-                $button->setShow(true);
-            } else {
-                $button->setShow(false);
-            }
-            $navParameter->setIndex(1);
+
+        $collapsable = new Collapsable();
+        $collapsable->pushComponent(...$component);
+
+        $path = $this->getPathHelper(true);
+        $collapseParameter = new CollapseParameter();
+        $collapseParameter->setId($id);
+        $path->addParameter($collapseParameter);
+
+        $collapsableState = $this->getCollapsableState($id);
+
+        if($collapsableState === null) {
+            $collapsable->setExpanded($expanded);
+            $collapseParameter->setExpanded(!$expanded);
         } else {
-            if ($this->expandCollapse) {
-                $detail->getJumbotron()->addOption('show');
-                $button->setShow(true);
-            } else {
-                $button->setShow(false);
-            }
-            $navParameter->setIndex(0);
+            $collapsable->setExpanded($collapsableState);
+            $collapseParameter->setExpanded(!$collapsableState);
         }
-        $path->addParameter($navParameter);
-        $detail->getJumbotron()->addOption('collapse');
-        if ($label) {
-            $button->setContent($label);
-        } else {
-            $button->setContent($this->translate('showdetails'));
-        }
-        $button->setPath($path->getPath());
-        $button->setData('toggle', 'collapse');
-        $button->setData('target', '#' . $detail->getJumbotron()->generateId());
-        $detail->getSubToolbar()->push($button);
+
+        $collapsable->getButton()->setPath($path->getPath());
+
+        return $collapsable;
     }
 
     /**

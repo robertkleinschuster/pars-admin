@@ -7,7 +7,6 @@ use Pars\Admin\Base\BaseDetail;
 use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Toolbar\ConfigureButton;
 use Pars\Component\Base\Toolbar\RunButton;
-use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\RedirectParameter;
 use Pars\Mvc\View\FieldFormatInterface;
 use Pars\Mvc\View\FieldInterface;
@@ -19,9 +18,42 @@ class ImportDetail extends BaseDetail
         $this->setName('{Import_Name}');
     }
 
-
     protected function initialize()
     {
+        parent::initialize();
+        $this->initConfigureButton();
+        $this->initRunButton();
+    }
+
+    protected function initConfigureButton()
+    {
+        $editPathHelper = clone $this->generateEditPathHelper();
+        $this->getToolbar()->push(new ConfigureButton(
+            $editPathHelper
+                ->setController($this->getIndexController())
+                ->setAction('configure')
+                ->getPath()
+        ));
+    }
+
+    protected function initRunButton()
+    {
+        $editPathHelper = clone $this->generateEditPathHelper();
+        $redirect = $editPathHelper->setController($this->getIndexController())
+            ->setAction('detail')->getPath();
+
+        $this->getToolbar()->push(new RunButton(
+            $editPathHelper
+                ->setController($this->getIndexController())
+                ->setAction('run')
+                ->addParameter((new RedirectParameter())
+                    ->setPath($redirect))->getPath()
+        ));
+    }
+
+    protected function initFields()
+    {
+        parent::initFields();
         $this->addField('Import_Name', $this->translate('import.name'));
         $this->addField('Import_Day', $this->translate('import.day'))
             ->setFormat(new ImportDayFieldFormat($this->getTranslator()));
@@ -29,6 +61,7 @@ class ImportDetail extends BaseDetail
             ->setFormat(new ImportHourFieldFormat($this->getTranslator()));
         $this->addField('Import_Minute', $this->translate('import.minute'))
             ->setFormat(new ImportMinuteFieldFormat($this->getTranslator()));
+
         $active = new Badge('{Import_Active}');
         $active->setLabel($this->translate('import.active'));
         $active->setFormat(new ImportActiveFieldFormat($this->getTranslator()));
@@ -52,31 +85,7 @@ class ImportDetail extends BaseDetail
                 }
             }
         );
-        parent::initialize();
-
-        $id = (new IdParameter());
-        foreach ($this->getEditIdFields() as $idField) {
-            $id->addId($idField);
-        }
-
-        $redirect = $this->getPathHelper()->setController($this->getIndexController())->setAction('detail')->setId($id)->getPath();
-
-        $this->getToolbar()->push(new ConfigureButton(
-            $this->getPathHelper()
-                ->setController($this->getIndexController())
-                ->setAction('configure')
-                ->setId($id)
-                ->getPath()
-        ));
-        $this->getToolbar()->push(new RunButton(
-            $this->getPathHelper()
-                ->setController($this->getIndexController())
-                ->setAction('run')
-                ->setId($id)
-                ->addParameter((new RedirectParameter())->setPath($redirect))->getPath()
-        ));
     }
-
 
     protected function getIndexController(): string
     {

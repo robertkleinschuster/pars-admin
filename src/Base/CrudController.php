@@ -117,7 +117,6 @@ abstract class CrudController extends BaseController
     }
 
 
-
     /**
      * @param Overview $overview
      * @throws AttributeExistsException
@@ -220,7 +219,7 @@ abstract class CrudController extends BaseController
             $breadcrumb->addItem($component->getNextContext()->getTitle(), $component->getNextContext()->getPath());
         }
         if (!$this->hasParent() && $breadcrumb->getItemList()->count() >= 1
-        && $this->getView()->getLayout()->getComponentList()->isEmpty()
+            && $this->getView()->getLayout()->getComponentList()->isEmpty()
         ) {
             $component->unshift($breadcrumb);
         }
@@ -382,14 +381,17 @@ abstract class CrudController extends BaseController
     public function detailAction()
     {
         $detail = $this->createDetail();
-        $this->initCollapsable($detail, 'detail');
+        $collapsable = $this->initCollapsable('detail', $this->expandCollapse, $detail)
+            ->setTitle($this->translate("showdetails"));
         $this->injectContext($detail);
         $bean = $this->getModel()->getBean();
         $detail->setBean($bean);
-        $this->getView()->append($detail);
+        $this->getView()->append($collapsable);
+
         $metaInfo = $this->initMetaInfo($bean);
-        $this->initCollapsable($metaInfo, 'metainfo', $this->translate('showmetainfo'));
-        $this->getView()->append($metaInfo);
+        $collapsable = $this->initCollapsable('metainfo', false, $metaInfo)
+            ->setTitle($this->translate('showmetainfo'));
+        $this->getView()->append($collapsable);
         return $detail;
     }
 

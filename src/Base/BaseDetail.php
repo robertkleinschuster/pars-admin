@@ -8,10 +8,9 @@ use Pars\Component\Base\Toolbar\BackButton;
 use Pars\Component\Base\Toolbar\DeleteButton;
 use Pars\Component\Base\Toolbar\DropdownEditButton;
 use Pars\Component\Base\Toolbar\EditButton;
-use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\EditLocaleParameter;
 use Pars\Helper\Parameter\IdParameter;
-use Pars\Helper\Parameter\Parameter;
+use Pars\Helper\Path\PathHelper;
 use Pars\Model\Localization\Locale\LocaleBeanList;
 
 abstract class BaseDetail extends Detail implements CrudComponentInterface
@@ -81,6 +80,14 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
      */
     protected function generateEditPath(string $locale_UrlCode = null): string
     {
+        return $this->generateEditPathHelper($locale_UrlCode)->getPath();
+    }
+
+    /**
+     * @return PathHelper
+     */
+    protected function generateEditPathHelper(string $locale_UrlCode = null): PathHelper
+    {
         $path = $this->getPathHelper()
             ->setController($this->getEditController())
             ->setAction($this->getEditAction())
@@ -91,8 +98,10 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
         if ($locale_UrlCode) {
             $path->addParameter(new EditLocaleParameter($locale_UrlCode));
         }
-        return $path->getPath();
+        return $path;
     }
+
+
 
     /**
      * @return string
