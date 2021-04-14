@@ -61,6 +61,13 @@ class SystemNavigation extends BaseNavigation
             $this->getPathHelper()->setController('import')->setAction('index'),
             'import'
         )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'import'))->addOption('cache');
+
+        $this->addItem(
+            $this->translate('navigation.system.tasklog'),
+            $this->getPathHelper()->setController('tasklog')->setAction('index'),
+            'tasklog'
+        )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'tasklog'));
+
         $this->addItem(
             $this->translate('navigation.system.update'),
             $this->getPathHelper()->setController('update')->setAction('index'),

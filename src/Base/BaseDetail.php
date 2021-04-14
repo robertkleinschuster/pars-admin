@@ -24,10 +24,15 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
 
     protected function initialize()
     {
+        parent::initialize();
+    }
+
+    protected function handleAdditionalBefore()
+    {
         $this->initBackButton();
         $this->initEditButton();
         $this->initDeleteButton();
-        parent::initialize();
+        parent::handleAdditionalBefore();
     }
 
 

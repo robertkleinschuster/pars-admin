@@ -27,6 +27,7 @@ return [
             'import' => \Pars\Admin\Import\ImportController::class,
             'articledata' => \Pars\Admin\Article\Data\ArticleDataController::class,
             'apikey' => \Pars\Admin\Authentication\ApiKey\ApiKeyController::class,
+            'tasklog' => \Pars\Admin\Task\Log\TaskLogController::class,
         ],
         'models' => [
             'setup' => \Pars\Admin\Setup\SetupModel::class,
@@ -51,7 +52,8 @@ return [
             'config' => \Pars\Admin\Config\ConfigModel::class,
             'import' => \Pars\Admin\Import\ImportModel::class,
             'articledata' => \Pars\Admin\Article\Data\ArticleDataModel::class,
-            'apikey' => \Pars\Admin\Authentication\ApiKey\ApiKeyModel::class
+            'apikey' => \Pars\Admin\Authentication\ApiKey\ApiKeyModel::class,
+            'tasklog' => \Pars\Admin\Task\Log\TaskLogModel::class,
         ],
 
     ],

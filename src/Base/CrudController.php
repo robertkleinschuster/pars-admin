@@ -192,14 +192,16 @@ abstract class CrudController extends BaseController
         );
         $layout = $this->getView()->getLayout();
         if ($layout instanceof DashboardLayout) {
-            $navItem = $layout->getNavigation()->getElementById($layout->getNavigation()->getActive());
-            if ($navItem) {
-                $span = $navItem->getElementsByTagName('span');
-                if ($span->count() && $navItem instanceof Item) {
-                    $breadcrumb->addItem(
-                        $span->first()->getContent(),
-                        $navItem->getLink()->getPath()
-                    );
+            if ($layout->getNavigation()->hasActive()) {
+                $navItem = $layout->getNavigation()->getElementById($layout->getNavigation()->getActive());
+                if ($navItem) {
+                    $span = $navItem->getElementsByTagName('span');
+                    if ($span->count() && $navItem instanceof Item) {
+                        $breadcrumb->addItem(
+                            $span->first()->getContent(),
+                            $navItem->getLink()->getPath()
+                        );
+                    }
                 }
             }
         }

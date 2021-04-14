@@ -62,8 +62,11 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             RedirectParameter::fromPath($this->generateRedirectPath(false))
         );
         $this->push($redirect);
-        $this->setBulkFieldName(IdListParameter::name());
-        $this->setBulkFieldValue(IdListParameter::fromMap($this->getDetailIdFields()));
+        if ($this->isShowDeleteBulk()) {
+            $this->setBulkFieldName(IdListParameter::name());
+            $this->setBulkFieldValue(IdListParameter::fromMap($this->getDetailIdFields()));
+        }
+
     }
 
 

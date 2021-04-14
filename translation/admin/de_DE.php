@@ -372,4 +372,8 @@ return [
     'showdetails' => 'Details',
     'showdebug' => 'Debug-Info',
     'showmetainfo' => 'Bearbeiter-Info',
+    'navigation.system.tasklog' => 'Log',
+    'section.tasklog' => 'Log',
+    'tasklog.message' => 'Info',
+    'tasklog.text' => 'Text',
 ];
