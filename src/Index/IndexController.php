@@ -46,8 +46,9 @@ class IndexController extends BaseController
 
         $detail = new Detail();
 
-        $collapsable = $this->initCollapsable("detail", true, $detail)
-            ->setTitle($this->translate("index.collapse.detail"));
+        $collapsable = $this->createCollapsable("detail", true);
+        $collapsable->setTitle($this->translate("index.collapse.detail"));
+        $collapsable->pushComponent($detail);
         $this->getView()->append($collapsable);
 
         $alert = new Alert();

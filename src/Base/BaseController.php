@@ -454,8 +454,9 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         if ($profiler instanceof ProfilerInterface) {
             $profiles = $profiler->getProfiles();
             $group = new Detail();
-            $collapsable = $this->initCollapsable( 'debug', false, $group)
-                ->setTitle( $this->translate('showdebug'));
+            $collapsable = $this->createCollapsable( 'debug', false);
+            $collapsable->setTitle($this->translate('showdebug'));
+            $collapsable->pushComponent($group);
             $alert = new Alert();
             $alert->setHeading('Debug');
             $alert->setStyle(Alert::STYLE_WARNING);
@@ -483,14 +484,12 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      * @throws AttributeLockException
      * @throws AttributeNotFoundException
      */
-    protected function initCollapsable(string $id, bool $expanded, ComponentInterface ...$component): Collapsable
+    protected function createCollapsable(string $id, bool $expanded): Collapsable
     {
+        $collapsable = new Collapsable();
         $id = 'collapse' . $id
             . $this->getControllerRequest()->getController()
             . $this->getControllerRequest()->getAction();
-
-        $collapsable = new Collapsable();
-        $collapsable->pushComponent(...$component);
 
         $path = $this->getPathHelper(true);
         $collapseParameter = new CollapseParameter();
