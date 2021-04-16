@@ -23,6 +23,7 @@ use Pars\Helper\Parameter\CollapseParameter;
 use Pars\Helper\Parameter\NavParameter;
 use Pars\Mvc\View\ComponentInterface;
 use Pars\Mvc\View\HtmlElement;
+use Pars\Mvc\View\HtmlElementEvent;
 use Pars\Pattern\Attribute\AttributeAwareInterface;
 use Pars\Pattern\Attribute\AttributeAwareTrait;
 use Pars\Pattern\Exception\AttributeExistsException;
@@ -80,6 +81,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $navigation = new MainNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
         $layout->setNavigation($navigation);
         $this->getView()->setLayout($layout);
+        $this->getView()->set('baseUrl', $this->getPathHelper()->getBaseUrl());
         $this->getView()->set('Current_Person_ID', $this->getUserBean()->Person_ID);
         $this->getView()->set('Current_User_Username', $this->getUserBean()->User_Username);
         $this->getView()->set('Current_User_Displayname', $this->getUserBean()->User_Displayname);

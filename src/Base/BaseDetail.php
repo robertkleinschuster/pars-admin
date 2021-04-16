@@ -12,6 +12,7 @@ use Pars\Helper\Parameter\EditLocaleParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Path\PathHelper;
 use Pars\Model\Localization\Locale\LocaleBeanList;
+use Pars\Mvc\View\HtmlElementEvent;
 
 abstract class BaseDetail extends Detail implements CrudComponentInterface
 {
@@ -41,6 +42,7 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
         if ($this->isShowBack()) {
             $button = new BackButton();
             $button->setPath($this->generateIndexPath());
+            $button->setEvent(HtmlElementEvent::createLink($this->generateIndexPath()));
             $this->getToolbar()->push($button);
         }
     }
@@ -49,6 +51,7 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
     {
         if ($this->isShowEdit()) {
             $button = new EditButton($this->generateEditPath());
+            $button->setEvent(HtmlElementEvent::createModal($this->generateEditPath()));
             $button->setModal(true);
             $button->setModalTitle($this->translate('edit.title'));
             if ($this->hasShowEditFieldAccept()) {
