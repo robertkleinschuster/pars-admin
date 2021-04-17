@@ -12,7 +12,6 @@ use Pars\Admin\Article\ArticleController;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\ContentNavigation;
 use Pars\Component\Base\Alert\Alert;
-use Pars\Component\Base\Toolbar\DownloadButton;
 use Pars\Component\Base\Toolbar\UploadButton;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
