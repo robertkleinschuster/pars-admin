@@ -93,7 +93,6 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $this->getView()->set('Current_Person_Firstname', $this->getUserBean()->Person_Firstname);
         $this->getView()->set('Current_Person_Lastname', $this->getUserBean()->Person_Lastname);
         $this->getView()->getLayout()->setPersistence(new SessionViewStatePersistence($this->getSession()));
-
         $entryPoints = new EntrypointLookup($_SERVER['DOCUMENT_ROOT'] . '/build/entrypoints.json');
         $jsFiles = [];
         $cssFiles = [];
