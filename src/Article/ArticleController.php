@@ -35,7 +35,7 @@ abstract class ArticleController extends CrudController
         $detail = parent::detailAction();
         $bean = $detail->getBean();
         if (!$bean->empty('File_BeanList') && !$bean->get('File_BeanList')->isEmpty()) {
-            $fileOverview = new FileDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+            $fileOverview = new FileDetail($this->getTranslator(), $this->getUserBean());
             $this->injectContext($fileOverview);
             $collapsable = $this->createCollapsable("detail", $this->expandCollapse);
             $collapsable->setTitle($this->translate("showdetails"));

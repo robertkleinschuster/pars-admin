@@ -40,7 +40,7 @@ class CmsBlockController extends ArticleController
     {
         parent::initView();
         $this->getView()->getLayout()->getNavigation()->setActive('content');
-        $subNavigation = new ContentNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation = new ContentNavigation($this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('cmsblock');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
         if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute('CmsBlock_ID_Parent')) {

@@ -50,7 +50,6 @@ abstract class CrudController extends BaseController
         if (!isset($this->componentFactory)) {
             $this->componentFactory = new CrudComponentFactory(
                 $this->getUserBean(),
-                $this->getPathHelper(),
                 $this->getTranslator()
             );
         }
@@ -193,6 +192,7 @@ abstract class CrudController extends BaseController
         );
         $layout = $this->getView()->getLayout();
         if ($layout instanceof DashboardLayout) {
+            $layout->getNavigation()->setPathHelper($this->getPathHelper());
             if ($layout->getNavigation()->hasActive()) {
                 $navItem = $layout->getNavigation()->getElementById($layout->getNavigation()->getActive());
                 if ($navItem) {

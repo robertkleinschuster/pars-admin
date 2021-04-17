@@ -12,14 +12,13 @@ use Pars\Model\Authentication\User\UserBean;
 use Pars\Mvc\Exception\MvcException;
 use Pars\Mvc\View\AbstractComponent;
 
-class CrudComponentFactory implements PathHelperAwareInterface, ParsTranslatorAwareInterface
+class CrudComponentFactory implements ParsTranslatorAwareInterface
 {
     protected const CLASS_EDIT = 'edit';
     protected const CLASS_DETAIL = 'detail';
     protected const CLASS_DELETE = 'delete';
     protected const CLASS_OVERVIEW = 'overview';
 
-    use PathHelperAwareTrait;
     use ParsTranslatorAwareTrait;
 
     protected UserBean $userBean;
@@ -30,13 +29,11 @@ class CrudComponentFactory implements PathHelperAwareInterface, ParsTranslatorAw
     /**
      * CrudComponentFactory constructor.
      * @param UserBean $userBean
-     * @param PathHelper $pathHelper
      * @param ParsTranslator $translator
      */
-    public function __construct(UserBean $userBean, PathHelper $pathHelper, ParsTranslator $translator)
+    public function __construct(UserBean $userBean, ParsTranslator $translator)
     {
         $this->userBean = $userBean;
-        $this->setPathHelper($pathHelper);
         $this->setTranslator($translator);
     }
 
@@ -107,7 +104,7 @@ class CrudComponentFactory implements PathHelperAwareInterface, ParsTranslatorAw
      */
     public function create(string $class)
     {
-        return new $class($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        return new $class($this->getTranslator(), $this->getUserBean());
     }
 
     /**

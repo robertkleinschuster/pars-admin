@@ -38,7 +38,7 @@ class UpdateController extends BaseController
     {
         parent::initView();
         $this->getView()->getLayout()->getNavigation()->setActive('system');
-        $subNavigation = new SystemNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation = new SystemNavigation($this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('update');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
         $updateNavigation = new Navigation();

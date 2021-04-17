@@ -31,7 +31,7 @@ class RoleController extends CrudController
     {
         parent::initView();
         $this->getView()->getLayout()->getNavigation()->setActive('system');
-        $subNavigation = new SystemNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation = new SystemNavigation($this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('role');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }

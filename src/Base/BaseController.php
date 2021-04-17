@@ -83,9 +83,9 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $this->setView($view);
         $view->setBeanConverter(new ViewBeanConverter());
         $layout = new DashboardLayout();
-        $navigation = new MainNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $layout->setNavigation($navigation);
+        $navigation = new MainNavigation($this->getTranslator(), $this->getUserBean());
         $this->getView()->setLayout($layout);
+        $layout->setNavigation($navigation);
         $this->getView()->set('baseUrl', $this->getPathHelper()->getBaseUrl());
         $this->getView()->set('Current_Person_ID', $this->getUserBean()->Person_ID);
         $this->getView()->set('Current_User_Username', $this->getUserBean()->User_Username);
@@ -107,7 +107,6 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         }
         $this->getView()->setJavascript($jsFiles);
         $this->getView()->setStylesheets($cssFiles);
-        $this->getView()->setPathHelper($this->getPathHelper());
     }
 
     /**

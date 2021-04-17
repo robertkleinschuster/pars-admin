@@ -45,7 +45,7 @@ class CmsPageBlockController extends CmsBlockController
     {
         parent::initView();
         $this->getView()->getLayout()->getNavigation()->setActive('content');
-        $subNavigation = new ContentNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation = new ContentNavigation($this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('cmspage');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
         if (

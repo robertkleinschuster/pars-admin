@@ -54,7 +54,7 @@ class FileController extends CrudController
     {
         parent::initView();
         $this->getView()->getLayout()->getNavigation()->setActive('media');
-        $subNavigation = new MediaNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation = new MediaNavigation($this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('file');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
