@@ -10,6 +10,7 @@ use Mezzio\Csrf\CsrfMiddleware;
 use Mezzio\Flash\FlashMessageMiddleware;
 use Mezzio\Flash\FlashMessagesInterface;
 use Mezzio\Session\LazySession;
+use Mezzio\Session\Session;
 use Mezzio\Session\SessionMiddleware;
 use Pars\Bean\Converter\BeanConverterAwareInterface;
 use Pars\Bean\Type\Base\BeanException;
@@ -18,12 +19,15 @@ use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Toolbar\MoreButton;
 use Pars\Core\Config\ParsConfig;
 use Pars\Core\Database\ParsDatabaseAdapter;
+use Pars\Core\Session\SessionViewStatePersistence;
 use Pars\Core\Translation\ParsTranslator;
 use Pars\Helper\Parameter\CollapseParameter;
 use Pars\Helper\Parameter\NavParameter;
 use Pars\Mvc\View\ComponentInterface;
 use Pars\Mvc\View\HtmlElement;
-use Pars\Mvc\View\HtmlElementEvent;
+use Pars\Mvc\View\Event\ViewEvent;
+use Pars\Mvc\View\State\ViewState;
+use Pars\Mvc\View\State\ViewStatePersistenceInterface;
 use Pars\Pattern\Attribute\AttributeAwareInterface;
 use Pars\Pattern\Attribute\AttributeAwareTrait;
 use Pars\Pattern\Exception\AttributeExistsException;
@@ -87,6 +91,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $this->getView()->set('Current_User_Displayname', $this->getUserBean()->User_Displayname);
         $this->getView()->set('Current_Person_Firstname', $this->getUserBean()->Person_Firstname);
         $this->getView()->set('Current_Person_Lastname', $this->getUserBean()->Person_Lastname);
+        $this->getView()->getLayout()->setPersistence(new SessionViewStatePersistence($this->getSession()));
     }
 
     /**
@@ -456,7 +461,9 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         if ($profiler instanceof ProfilerInterface) {
             $profiles = $profiler->getProfiles();
             $group = new Detail();
-            $collapsable = $this->createCollapsable( 'debug', false);
+            $collapsable = new Collapsable();
+            $collapsable->setId('debug-collapsable');
+            $collapsable->getButton()->setPath($this->getPathHelper(true));
             $collapsable->setTitle($this->translate('showdebug'));
             $collapsable->pushComponent($group);
             $alert = new Alert();
