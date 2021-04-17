@@ -44,7 +44,7 @@ class AuthenticationController extends BaseController
         $signin = new SigninForm();
         $signin->setToken($this->generateToken('login_token'));
         $signin->setTranslator($this->getTranslator());
-        $this->getView()->append($signin);
+        $this->getView()->pushComponent($signin);
         $login_error = $this->getFlashMessanger()->getFlash('login_error');
         if ($login_error == 'credentials') {
             $signin->setError($this->translate('login.error.credentials'));

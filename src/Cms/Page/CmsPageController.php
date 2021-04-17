@@ -4,6 +4,7 @@ namespace Pars\Admin\Cms\Page;
 
 use Pars\Bean\Type\Base\BeanException;
 use Pars\Bean\Type\Base\BeanInterface;
+use Pars\Mvc\Controller\ControllerSubAction;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
 use Pars\Pattern\Exception\AttributeNotFoundException;
@@ -81,6 +82,12 @@ class CmsPageController extends ArticleController
     {
         $this->getView()->set('CmsPage_ID', (int)$this->getControllerRequest()->getId()->getAttribute('CmsPage_ID'));
         $detail = parent::detailAction();
+        $childRequest = clone $this->getControllerRequest();
+        $childRequest->setController('cmsblock');
+        $childRequest->setAction('index');
+        $this->getSubActionContainer()->add(
+            new ControllerSubAction($childRequest, 'cmsblock')
+        );
         $this->pushAction(
             'cmspost',
             'index',
@@ -181,7 +188,7 @@ class CmsPageController extends ArticleController
         $this->getModel()->getBeanConverter()
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
         $edit->setToken($this->generateToken('submit_token'));
-        $this->getView()->append($edit);
+        $this->getView()->pushComponent($edit);
         return $edit;
     }
 
@@ -205,7 +212,7 @@ class CmsPageController extends ArticleController
             $idParameter->addId('CmsPage_ID', $page->get('CmsPage_ID'));
             $path = $this->getPathHelper(true)->setId($idParameter);
             $alert->addBlock($page->get('ArticleTranslation_Name'))->setPath($path);
-            $this->getView()->prepend($alert);
+            $this->getView()->unshiftComponent($alert);
         }
     }
 }

@@ -22,7 +22,7 @@ use Pars\Model\Config\ConfigBeanFinder;
 use Pars\Mvc\View\DefaultComponent;
 use Pars\Model\Localization\Locale\LocaleBean;
 use Pars\Mvc\View\Event\ViewEvent;
-use Pars\Mvc\View\HtmlElement;
+use Pars\Mvc\View\ViewElement;
 use Pars\Mvc\View\State\ViewState;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
@@ -45,7 +45,7 @@ class IndexController extends BaseController
     {
         $headline = new DefaultComponent();
         $headline->push(new Headline($this->translate('index.headline')));
-        $this->getView()->append($headline);
+        $this->getView()->pushComponent($headline);
 
         $detail = new Detail();
 
@@ -55,7 +55,7 @@ class IndexController extends BaseController
             $this->translate("index.collapse.detail")
         );
         $collapsable->pushComponent($detail);
-        $this->getView()->append($collapsable);
+        $this->getView()->pushComponent($collapsable);
 
         $alert = new Alert();
         $alert->setHeading($this->translate('index.alert.headline.incomplete'));
@@ -69,63 +69,63 @@ class IndexController extends BaseController
 
 
         if (!$this->getModel()->hasStartpage()) {
-            $heading = new HtmlElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.mr-1.d-inline');
             $heading->setPath($this->getPathHelper()->setController('cmspage'));
             $heading->push(new Badge($this->translate('index.no.active.startpage'), Badge::STYLE_DANGER));
             $span->push($heading);
         } else {
             $score += 20;
-            $heading = new HtmlElement('h5.mr-1.d-inline.mb-1');
+            $heading = new ViewElement('h5.mr-1.d-inline.mb-1');
             $heading->push(new Badge($this->translate('index.active.startpage'), Badge::STYLE_SUCCESS));
             $span->push($heading);
         }
 
         if (!$this->getModel()->hasPage()) {
-            $heading = new HtmlElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.mr-1.d-inline');
             $heading->setPath($this->getPathHelper()->setController('cmspage'));
             $heading->push(new Badge($this->translate('index.no.active.page'), Badge::STYLE_DANGER));
             $span->push($heading);
         } else {
             $score += 10;
-            $heading = new HtmlElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.mr-1.d-inline');
             $heading->push(new Badge($this->translate('index.active.page'), Badge::STYLE_SUCCESS));
             $span->push($heading);
         }
 
 
         if (!$this->getModel()->hasBlock()) {
-            $heading = new HtmlElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.mr-1.d-inline');
             $heading->setPath($this->getPathHelper()->setController('cmsblock'));
             $heading->push(new Badge($this->translate('index.no.active.block'), Badge::STYLE_WARNING));
             $span->push($heading);
         } else {
             $score += 10;
-            $heading = new HtmlElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.mr-1.d-inline');
             $heading->push(new Badge($this->translate('index.active.block'), Badge::STYLE_SUCCESS));
             $span->push($heading);
         }
 
         if (!$this->getModel()->hasMenu()) {
-            $heading = new HtmlElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.mr-1.d-inline');
             $heading->setPath($this->getPathHelper()->setController('cmsmenu'));
 
             $heading->push(new Badge($this->translate('index.no.active.menu'), Badge::STYLE_WARNING));
             $span->push($heading);
         } else {
             $score += 10;
-            $heading = new HtmlElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.mr-1.d-inline');
             $heading->push(new Badge($this->translate('index.active.menu'), Badge::STYLE_SUCCESS));
             $span->push($heading);
         }
 
         if (!$this->getModel()->hasLocale()) {
-            $heading = new HtmlElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.mr-1.d-inline');
             $heading->setPath($this->getPathHelper()->setController('locale'));
             $heading->push(new Badge($this->translate('index.no.additional.locale'), Badge::STYLE_WARNING));
             $span->push($heading);
         } else {
             $score += 10;
-            $heading = new HtmlElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.mr-1.d-inline');
             $heading->push(new Badge($this->translate('index.additional.locale'), Badge::STYLE_SUCCESS));
             $span->push($heading);
         }
@@ -141,13 +141,13 @@ class IndexController extends BaseController
             }
             foreach ($config as $key => $value) {
                 if (empty($value)) {
-                    $heading = new HtmlElement('h5.mr-1.d-inline');
+                    $heading = new ViewElement('h5.mr-1.d-inline');
                     $heading->push(new Badge($this->translate('index.config.empty') . ': ' . $key, Badge::STYLE_DANGER));
                     $heading->setPath($this->getPathHelper()->setController('config'));
                     $span->push($heading);
                 } else {
                     $score += $factor;
-                    $heading = new HtmlElement('h5.mr-1.d-inline');
+                    $heading = new ViewElement('h5.mr-1.d-inline');
                     $heading->push(new Badge($this->translate('index.config.ok') . ': ' . $key, Badge::STYLE_SUCCESS));
                     $span->push($heading);
                 }
@@ -165,7 +165,7 @@ class IndexController extends BaseController
         } elseif ($score >= 99) {
             $span->getElementList()->clear();
             $progress->setStyle(Progress::STYLE_SUCCESS);
-            $heading = new HtmlElement('h5.mt-3');
+            $heading = new ViewElement('h5.mt-3');
             $heading->push(new Badge($this->translate('index.success'), Badge::STYLE_SUCCESS));
             #  $span->push($heading);
             $alert->setHeading($this->translate('index.alert.headline.complete'));
@@ -213,9 +213,9 @@ class IndexController extends BaseController
         }
 
         if ($messages->getJumbotron()->getFieldList()->count()) {
-            $this->getView()->append($messages);
+            $this->getView()->pushComponent($messages);
         }
 
-        $this->getView()->append($group);
+        $this->getView()->pushComponent($group);
     }
 }

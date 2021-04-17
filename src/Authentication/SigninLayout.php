@@ -4,11 +4,11 @@ namespace Pars\Admin\Authentication;
 
 use Pars\Component\Base\BackgroundAwareInterface;
 use Pars\Component\Base\Layout\BaseLayout;
-use Pars\Mvc\View\HtmlElement;
+use Pars\Mvc\View\ViewElement;
 
 class SigninLayout extends BaseLayout
 {
-    protected function main(HtmlElement $main)
+    protected function main(ViewElement $main)
     {
         parent::main($main);
         $main->addInlineStyle('min-height', 'calc(100% - 56px)');
@@ -20,7 +20,7 @@ class SigninLayout extends BaseLayout
         $main->addOption(BackgroundAwareInterface::BACKGROUND_DARK);
     }
 
-    protected function components(HtmlElement $components)
+    protected function components(ViewElement $components)
     {
         parent::components($components);
         $components->addOption('w-100');

@@ -122,7 +122,7 @@ class CmsPageBlockController extends CmsBlockController
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
         $edit->setToken($this->generateToken('submit_token'));
         $edit->setCreate(true);
-        $this->getView()->append($edit);
+        $this->getView()->pushComponent($edit);
         return $edit;
     }
 }

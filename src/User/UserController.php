@@ -107,7 +107,7 @@ class UserController extends CrudController
         $this->getModel()->getBeanConverter()
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
         $edit->setToken($this->generateToken('submit_token'));
-        $this->getView()->append($edit);
+        $this->getView()->pushComponent($edit);
     }
 
     public function localeAction()
@@ -119,6 +119,6 @@ class UserController extends CrudController
         $this->getModel()->getBeanConverter()
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
         $edit->setToken($this->generateToken('submit_token'));
-        $this->getView()->append($edit);
+        $this->getView()->pushComponent($edit);
     }
 }

@@ -24,7 +24,7 @@ use Pars\Core\Translation\ParsTranslator;
 use Pars\Helper\Parameter\CollapseParameter;
 use Pars\Helper\Parameter\NavParameter;
 use Pars\Mvc\View\ComponentInterface;
-use Pars\Mvc\View\HtmlElement;
+use Pars\Mvc\View\ViewElement;
 use Pars\Mvc\View\Event\ViewEvent;
 use Pars\Mvc\View\State\ViewState;
 use Pars\Mvc\View\State\ViewStatePersistenceInterface;
@@ -47,6 +47,7 @@ use Pars\Mvc\Controller\ControllerResponse;
 use Pars\Mvc\Controller\ControllerResponseInjector;
 use Pars\Mvc\View\ViewBeanConverter;
 use Psr\Log\LoggerInterface;
+use Symfony\WebpackEncoreBundle\Asset\EntrypointLookup;
 use Throwable;
 
 /**
@@ -92,6 +93,21 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $this->getView()->set('Current_Person_Firstname', $this->getUserBean()->Person_Firstname);
         $this->getView()->set('Current_Person_Lastname', $this->getUserBean()->Person_Lastname);
         $this->getView()->getLayout()->setPersistence(new SessionViewStatePersistence($this->getSession()));
+
+        $entryPoints = new EntrypointLookup($_SERVER['DOCUMENT_ROOT'] . '/build/entrypoints.json');
+        $jsFiles = [];
+        $cssFiles = [];
+        $config = $this->getContainer()->get('config');
+        $bundlesConfig = $config['bundles'];
+        if (isset($bundlesConfig['entrypoints']) && is_array($bundlesConfig['entrypoints'])) {
+            foreach ($bundlesConfig['entrypoints'] as $entrypoint) {
+                $jsFiles = array_merge($jsFiles, $entryPoints->getJavaScriptFiles($entrypoint));
+                $cssFiles = array_merge($cssFiles, $entryPoints->getCssFiles($entrypoint));
+            }
+        }
+        $this->getView()->setJavascript($jsFiles);
+        $this->getView()->setStylesheets($cssFiles);
+        $this->getView()->setPathHelper($this->getPathHelper());
     }
 
     /**
@@ -148,7 +164,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     public function unauthorized()
     {
-        $this->getView()->append(
+        $this->getView()->pushComponent(
             new Alert(
                 $this->translate('unauthorized.heading'),
                 $this->translate('unauthorized.text')
@@ -169,7 +185,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 $this->translate('notfound.text')
             );
             $alert->addBlock($exception->getMessage());
-            $this->getView()->append($alert);
+            $this->getView()->pushComponent($alert);
         } else {
             parent::notfound($exception);
         }
@@ -435,7 +451,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 $alert->addBlock($item);
             }
             if ($this->hasView()) {
-                $this->getView()->prepend($alert);
+                $this->getView()->unshiftComponent($alert);
             }
             $this->getControllerResponse()->setStatusCode(ControllerResponse::STATUS_PERMISSION_DENIED);
         }
@@ -446,7 +462,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 $alert->addBlock($item);
             }
             if ($this->hasView()) {
-                $this->getView()->prepend($alert);
+                $this->getView()->unshiftComponent($alert);
             }
             $this->getControllerResponse()->setStatusCode(ControllerResponse::STATUS_PERMISSION_DENIED);
         }
@@ -461,8 +477,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         if ($profiler instanceof ProfilerInterface) {
             $profiles = $profiler->getProfiles();
             $group = new Detail();
-            $collapsable = new Collapsable();
-            $collapsable->setId('debug-collapsable');
+            $collapsable = $this->createCollapsable('debug', false);
             $collapsable->getButton()->setPath($this->getPathHelper(true));
             $collapsable->setTitle($this->translate('showdebug'));
             $collapsable->pushComponent($group);
@@ -480,7 +495,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 $alert->addBlock( $profile['trace'].  $profile['sql'] . "<br>{$profile['elapse']} ms");
             }
             $group->getJumbotron()->setContent($alert->render());
-            $this->getView()->prepend($collapsable);
+            $this->getView()->unshiftComponent($collapsable);
         }
     }
 
@@ -586,7 +601,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $trace = array_slice($trace, 0, 15);
         $alert->addBlock(implode('<br>', $trace));
         if ($this->hasView()) {
-            $this->getView()->append($alert);
+            $this->getView()->pushComponent($alert);
         } else {
             $this->getControllerResponse()->setBody($throwable->getMessage());
             $this->getControllerResponse()->removeOption(ControllerResponse::OPTION_RENDER_RESPONSE);

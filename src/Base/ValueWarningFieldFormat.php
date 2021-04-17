@@ -5,7 +5,7 @@ namespace Pars\Admin\Base;
 use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Mvc\View\FieldFormatInterface;
 use Pars\Mvc\View\FieldInterface;
-use Pars\Mvc\View\HtmlElement;
+use Pars\Mvc\View\ViewElement;
 
 class ValueWarningFieldFormat implements FieldFormatInterface
 {
@@ -28,7 +28,7 @@ class ValueWarningFieldFormat implements FieldFormatInterface
     public function __invoke(FieldInterface $field, string $value, ?BeanInterface $bean = null): string
     {
         if (!$bean->empty($this->field) && $bean->get($this->field) == $this->value) {
-            if ($field instanceof HtmlElement) {
+            if ($field instanceof ViewElement) {
                 $field->addOption('border');
                 $field->addOption('text-danger');
                 $field->addOption('bg-light');

@@ -7,6 +7,7 @@ use Pars\Admin\Authentication\SigninLayout;
 use Pars\Admin\Base\BaseController;
 use Pars\Component\Base\View\BaseView;
 use Pars\Core\Database\DatabaseMiddleware;
+use Pars\Core\Database\ParsDatabaseAdapter;
 use Pars\Helper\Path\PathHelper;
 use Pars\Model\Authentication\User\UserBean;
 use Pars\Mvc\View\ViewBeanConverter;
@@ -34,8 +35,7 @@ class SetupController extends BaseController
     protected function initModel()
     {
         $this->getModel()->setBeanConverter(new ViewBeanConverter());
-        $this->getModel()
-            ->setDbAdapter($this->getMiddlewareAttribute(DatabaseMiddleware::ADAPTER_ATTRIBUTE));
+        $this->getModel()->setDatabaseAdapter($this->getMiddlewareAttribute(ParsDatabaseAdapter::class));
         $this->getModel()->initialize();
         $this->getModel()->setTranslator($this->getTranslator());
         $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->getModel()->getDbAdpater());
@@ -72,7 +72,7 @@ class SetupController extends BaseController
     {
         $setup = new Setup($this->getPathHelper(), $this->getTranslator(), new UserBean());
         $setup->setCreate(true);
-        $this->getView()->append($setup);
+        $this->getView()->pushComponent($setup);
         $setup->setBean($this->getModel()->getEmptyBean());
         $setup->getBean()->set('Locale_Code', 'de_AT');
         $setup->getBean()->set('UserState_Code', 'active');

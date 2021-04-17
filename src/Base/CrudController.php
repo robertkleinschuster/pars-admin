@@ -112,7 +112,7 @@ abstract class CrudController extends BaseController
         $overview->setToken($this->generateToken('submit_token'));
         $overview->setBeanList($this->getModel()->getBeanList());
         $this->initFilter($overview);
-        $this->getView()->append($overview);
+        $this->getView()->pushComponent($overview);
         $this->initPagination($overview, $this->getModel()->getBeanFinder()->count());
         return $overview;
     }
@@ -164,7 +164,7 @@ abstract class CrudController extends BaseController
                 2
             )->getInput()->setPath($resetPath->getPath());
             $overview->getToolbar()->push($this->getFilter()->getButton());
-            $this->getView()->append($this->getFilter());
+            $this->getView()->pushComponent($this->getFilter());
         }
     }
 
@@ -390,13 +390,13 @@ abstract class CrudController extends BaseController
         $this->injectContext($detail);
         $bean = $this->getModel()->getBean();
         $detail->setBean($bean);
-        $this->getView()->append($detail);
+        $this->getView()->pushComponent($detail);
 
         $metaInfo = $this->initMetaInfo($bean);
         $collapsable = $this->createCollapsable('metainfo', false);
         $collapsable->setTitle($this->translate('showmetainfo'));
         $collapsable->pushComponent($metaInfo);
-        $this->getView()->append($collapsable);
+        $this->getView()->pushComponent($collapsable);
         return $detail;
     }
 
@@ -463,7 +463,7 @@ abstract class CrudController extends BaseController
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
         $edit->setToken($this->generateToken('submit_token'));
         $edit->setCreate(true);
-        $this->getView()->append($edit);
+        $this->getView()->pushComponent($edit);
         if ($this->getControllerRequest()->hasData()) {
             $edit->getBean()->fromArray($this->getControllerRequest()->getData()->getAttributes());
         }
@@ -488,7 +488,7 @@ abstract class CrudController extends BaseController
         $this->getModel()->getBeanConverter()
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
         $edit->setToken($this->generateToken('submit_token'));
-        $this->getView()->append($edit);
+        $this->getView()->pushComponent($edit);
         if ($this->getControllerRequest()->hasData()) {
             $edit->getBean()->fromArray($this->getControllerRequest()->getData()->getAttributes());
         }
@@ -520,14 +520,14 @@ abstract class CrudController extends BaseController
         $delete = $this->createDelete();
         $this->injectContext($delete);
         $delete->setToken($this->generateToken('submit_token'));
-        $this->getView()->append($delete);
+        $this->getView()->pushComponent($delete);
         $detail = $this->createDetail();
         $detail->setShowDelete(false);
         $detail->setShowBack(false);
         $detail->setShowEdit(false);
         $bean = $this->getModel()->getBean();
         $detail->setBean($bean);
-        $this->getView()->append($detail);
+        $this->getView()->pushComponent($detail);
         return $delete;
     }
 

@@ -5,7 +5,7 @@ namespace Pars\Admin\Locale;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\Field\Badge;
 use Pars\Helper\Parameter\PaginationParameter;
-use Pars\Mvc\View\HtmlElement;
+use Pars\Mvc\View\ViewElement;
 
 class LocaleOverview extends BaseOverview
 {

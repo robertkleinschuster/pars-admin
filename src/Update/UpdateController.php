@@ -48,7 +48,7 @@ class UpdateController extends BaseController
         $this->updateNavigation->addItem($this->translate('update.database.data'), $this->getPathHelper()->setController('update')->setAction('data'), 'data');
         $this->updateNavigation->addItem($this->translate('update.database.schema'), $this->getPathHelper()->setController('update')->setAction('schema'), 'schema');
         $this->updateNavigation->addItem($this->translate('update.database.special'), $this->getPathHelper()->setController('update')->setAction('special'), 'special');
-        $this->getView()->append($this->updateNavigation);
+        $this->getView()->pushComponent($this->updateNavigation);
     }
 
 
@@ -62,7 +62,7 @@ class UpdateController extends BaseController
         $update = new Update($this->getPathHelper(), $this->getTranslator(), $this->getUserBean(), $this->getModel()->getSchemaUpdater());
         $update->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $update->setToken($this->generateToken('submit_token'));
-        $this->getView()->append($update);
+        $this->getView()->pushComponent($update);
     }
 
 
@@ -72,7 +72,7 @@ class UpdateController extends BaseController
         $update = new Update($this->getPathHelper(), $this->getTranslator(), $this->getUserBean(), $this->getModel()->getDataUpdater());
         $update->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $update->setToken($this->generateToken('submit_token'));
-        $this->getView()->append($update);
+        $this->getView()->pushComponent($update);
     }
 
     public function specialAction()
@@ -81,6 +81,6 @@ class UpdateController extends BaseController
         $update = new Update($this->getPathHelper(), $this->getTranslator(), $this->getUserBean(), $this->getModel()->getSpecialUpdater());
         $update->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $update->setToken($this->generateToken('submit_token'));
-        $this->getView()->append($update);
+        $this->getView()->pushComponent($update);
     }
 }
