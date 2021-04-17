@@ -6,6 +6,7 @@ use DateTime;
 use Pars\Admin\Base\BaseController;
 use Pars\Bean\Type\Base\BeanException;
 use Pars\Component\Base\Alert\Alert;
+use Pars\Component\Base\Collapsable\Collapsable;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Field\Headline;
@@ -48,8 +49,11 @@ class IndexController extends BaseController
 
         $detail = new Detail();
 
-        $collapsable = $this->createCollapsable("detail", true);
-        $collapsable->setTitle($this->translate("index.collapse.detail"));
+        $collapsable = new Collapsable(
+            'missing-settings-collapsable',
+            $this->getPathHelper(true)->getPath(),
+            $this->translate("index.collapse.detail")
+        );
         $collapsable->pushComponent($detail);
         $this->getView()->append($collapsable);
 

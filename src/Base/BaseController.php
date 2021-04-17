@@ -495,29 +495,10 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function createCollapsable(string $id, bool $expanded): Collapsable
     {
-        $collapsable = new Collapsable();
         $id = 'collapse' . $id
             . $this->getControllerRequest()->getController()
             . $this->getControllerRequest()->getAction();
-
-        $path = $this->getPathHelper(true);
-        $collapseParameter = new CollapseParameter();
-        $collapseParameter->setId($id);
-        $path->addParameter($collapseParameter);
-
-        $collapsableState = $this->getCollapsableState($id);
-
-        if($collapsableState === null) {
-            $collapsable->setExpanded($expanded);
-            $collapseParameter->setExpanded(!$expanded);
-        } else {
-            $collapsable->setExpanded($collapsableState);
-            $collapseParameter->setExpanded(!$collapsableState);
-        }
-
-        $collapsable->getButton()->setPath($path->getPath());
-
-        return $collapsable;
+        return new Collapsable($id, $this->getPathHelper(true)->getPath());
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Pars\Admin\Base;
 use DateTime;
 use Pars\Bean\Type\Base\BeanException;
 use Pars\Component\Base\Breadcrumb\Breadcrumb;
+use Pars\Component\Base\Collapsable\Collapsable;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Filter\Filter;
