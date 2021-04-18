@@ -111,7 +111,17 @@ abstract class CrudController extends BaseController
         $overview->setToken($this->generateToken('submit_token'));
         $overview->setBeanList($this->getModel()->getBeanList());
         $this->initFilter($overview);
-        $this->getView()->pushComponent($overview);
+        if ($this->hasParent()) {
+            if ($overview->hasName()) {
+                $id = md5($overview->getName());
+                $collapsable = $this->createCollapsable($id, false);
+                $collapsable->setTitle($overview->getName());
+                $collapsable->pushComponent($overview);
+                $this->getView()->pushComponent($collapsable);
+            }
+        } else {
+            $this->getView()->pushComponent($overview);
+        }
         $this->initPagination($overview, $this->getModel()->getBeanFinder()->count());
         return $overview;
     }

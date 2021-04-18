@@ -41,7 +41,7 @@ class UserRoleController extends RoleController
 
     protected function createOverview(): BaseOverview
     {
-        $overview = new UserRoleOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $overview = new UserRoleOverview($this->getTranslator(), $this->getUserBean());
         $overview->setShowEdit(false);
         return $overview;
     }
@@ -49,8 +49,8 @@ class UserRoleController extends RoleController
 
     protected function createEdit(): BaseEdit
     {
-        $edit = new UserRoleEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $overview = new RoleOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = new UserRoleEdit($this->getTranslator(), $this->getUserBean());
+        $overview = new RoleOverview( $this->getTranslator(), $this->getUserBean());
         $overview->setBeanList($this->getModel()->getRoleBeanList($this->getUserBean()->getPermissions(), $this->getControllerRequest()->getId()));
         $overview->setShowDeleteBulk(false);
         $overview->setShowCreate(false);

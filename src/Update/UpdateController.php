@@ -59,7 +59,7 @@ class UpdateController extends BaseController
     public function schemaAction()
     {
         $this->updateNavigation->setActive('schema');
-        $update = new Update($this->getPathHelper(), $this->getTranslator(), $this->getUserBean(), $this->getModel()->getSchemaUpdater());
+        $update = new Update( $this->getTranslator(), $this->getUserBean(), $this->getModel()->getSchemaUpdater());
         $update->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $update->setToken($this->generateToken('submit_token'));
         $this->getView()->pushComponent($update);
@@ -69,7 +69,7 @@ class UpdateController extends BaseController
     public function dataAction()
     {
         $this->updateNavigation->setActive('data');
-        $update = new Update($this->getPathHelper(), $this->getTranslator(), $this->getUserBean(), $this->getModel()->getDataUpdater());
+        $update = new Update($this->getTranslator(), $this->getUserBean(), $this->getModel()->getDataUpdater());
         $update->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $update->setToken($this->generateToken('submit_token'));
         $this->getView()->pushComponent($update);
@@ -78,7 +78,7 @@ class UpdateController extends BaseController
     public function specialAction()
     {
         $this->updateNavigation->setActive('special');
-        $update = new Update($this->getPathHelper(), $this->getTranslator(), $this->getUserBean(), $this->getModel()->getSpecialUpdater());
+        $update = new Update( $this->getTranslator(), $this->getUserBean(), $this->getModel()->getSpecialUpdater());
         $update->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $update->setToken($this->generateToken('submit_token'));
         $this->getView()->pushComponent($update);

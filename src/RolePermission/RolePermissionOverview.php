@@ -7,6 +7,13 @@ use Pars\Component\Base\Field\Span;
 
 class RolePermissionOverview extends BaseOverview
 {
+    protected function initName()
+    {
+        parent::initName();
+        $this->setName($this->translate('section.permission'));
+    }
+
+
     protected function initialize()
     {
         $this->setShowDetail(false);

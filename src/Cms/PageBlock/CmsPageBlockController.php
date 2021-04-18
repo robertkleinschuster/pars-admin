@@ -59,6 +59,12 @@ class CmsPageBlockController extends CmsBlockController
         }
     }
 
+    public function indexAction()
+    {
+        return parent::indexAction();
+    }
+
+
     protected function createEdit(): BaseEdit
     {
         $this->addFilter_Select(

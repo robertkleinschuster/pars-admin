@@ -40,7 +40,7 @@ class RolePermissionController extends CrudController
 
     protected function createOverview(): BaseOverview
     {
-        $overview = new RolePermissionOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $overview = new RolePermissionOverview($this->getTranslator(), $this->getUserBean());
         $overview->setShowEdit(false);
         return $overview;
     }
@@ -48,8 +48,8 @@ class RolePermissionController extends CrudController
 
     protected function createEdit(): BaseEdit
     {
-        $edit = new RolePermissionEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $overview = new RolePermissionOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = new RolePermissionEdit($this->getTranslator(), $this->getUserBean());
+        $overview = new RolePermissionOverview($this->getTranslator(), $this->getUserBean());
         $overview->setBeanList($this->getModel()->getPermissionBeanList($this->getUserBean()->getPermissions(), $this->getControllerRequest()->getId()));
         $overview->setShowDeleteBulk(false);
         $overview->setShowCreate(false);

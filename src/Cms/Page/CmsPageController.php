@@ -81,12 +81,6 @@ class CmsPageController extends ArticleController
     {
         $this->getView()->set('CmsPage_ID', (int)$this->getControllerRequest()->getId()->getAttribute('CmsPage_ID'));
         $detail = parent::detailAction();
-        $childRequest = clone $this->getControllerRequest();
-        $childRequest->setController('cmsblock');
-        $childRequest->setAction('index');
-        $this->getSubActionContainer()->add(
-            new ControllerSubAction($childRequest, 'cmsblock')
-        );
         $this->pushAction(
             'cmspost',
             'index',
