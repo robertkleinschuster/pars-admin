@@ -19,6 +19,7 @@ use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Toolbar\MoreButton;
 use Pars\Core\Config\ParsConfig;
 use Pars\Core\Database\ParsDatabaseAdapter;
+use Pars\Core\Database\Profiler;
 use Pars\Core\Session\SessionViewStatePersistence;
 use Pars\Core\Translation\ParsTranslator;
 use Pars\Helper\Parameter\CollapseParameter;
@@ -472,8 +473,9 @@ abstract class BaseController extends AbstractController implements AttributeAwa
     protected function initializeProfiler()
     {
         $profiler = $this->getModel()->getDbAdpater()->getProfiler();
-        if ($profiler instanceof ProfilerInterface) {
+        if ($profiler instanceof Profiler) {
             $profiles = $profiler->getProfiles();
+            $profiler->clearProfiles();
             $group = new Detail();
             $collapsable = $this->createCollapsable('debug', false);
             $collapsable->getButton()->setPath($this->getPathHelper(true));
