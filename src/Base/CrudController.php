@@ -136,21 +136,11 @@ abstract class CrudController extends BaseController
     protected function initFilter(Overview $overview)
     {
         if ($this->hasFilter()) {
-            $filterPath = $this->getPathHelper(true);
-            $navParameter = new NavParameter();
             $id = 'filter'
                 . $this->getControllerRequest()->getController()
                 . $this->getControllerRequest()->getAction();
-            $navParameter->setId($id);
-            if ($this->getNavigationState($id) === 0) {
-                $this->getFilter()->getForm()->addOption('show');
-                $navParameter->setIndex(1);
-            } else {
-                $navParameter->setIndex(0);
-            }
-            $filterPath->addParameter($navParameter);
+            $this->getFilter()->setId($id);
             $this->getFilter()->getForm()->setName($this->translate('admin.filter'));
-            $this->getFilter()->getButton()->setPath($filterPath);
             $this->getFilter()->getForm()->addSubmit(
                 '',
                 $this->translate('admin.filter.apply'),
