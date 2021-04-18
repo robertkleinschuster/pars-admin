@@ -36,9 +36,8 @@ use Pars\Pattern\Exception\AttributeNotFoundException;
 class IndexController extends BaseController
 {
     /**
-     * @throws AttributeLockException
      * @throws AttributeExistsException
-     * @throws AttributeNotFoundException
+     * @throws AttributeLockException
      * @throws BeanException
      */
     public function indexAction()
