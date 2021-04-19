@@ -22,7 +22,7 @@ class CmsBlockOverview extends ArticleOverview
             $span->setPath($this->getDetailPath());
             $span->addOption(Span::OPTION_DECORATION_NONE);
         }
-        $this->append($span);
+        $this->pushField($span);
 
         parent::initialize();
 

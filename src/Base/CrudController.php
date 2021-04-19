@@ -140,7 +140,7 @@ abstract class CrudController extends BaseController
                 . $this->getControllerRequest()->getController()
                 . $this->getControllerRequest()->getAction();
             $this->getFilter()->setId($id);
-            $this->getFilter()->getForm()->setName($this->translate('admin.filter'));
+            $this->getFilter()->getCollapsable()->setTitle($this->translate('admin.filter'));
             $this->getFilter()->getForm()->addSubmit(
                 '',
                 $this->translate('admin.filter.apply'),
@@ -162,8 +162,8 @@ abstract class CrudController extends BaseController
                 10,
                 2
             )->getInput()->setPath($resetPath->getPath());
-            $overview->getToolbar()->push($this->getFilter()->getButton());
-            $this->getView()->pushComponent($this->getFilter());
+            #$overview->getToolbar()->push($this->getFilter()->getButton());
+            $overview->getBefore()->push($this->getFilter());
         }
     }
 

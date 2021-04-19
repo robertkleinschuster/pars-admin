@@ -22,7 +22,7 @@ class LocaleOverview extends BaseOverview
         $this->setShowDelete(false);
         $active = new Badge('{Locale_Active}');
         $active->setFormat(new LocaleActiveFieldFormat($this->getTranslator()));
-        $this->append($active);
+        $this->pushField($active);
         $this->addField('Locale_Name', $this->translate('locale.name'));
         $this->addField('Locale_Code', $this->translate('locale.code'));
         $this->addField('Locale_Domain', $this->translate('locale.domain'));

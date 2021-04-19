@@ -52,16 +52,17 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
 
     protected function initFormFields()
     {
-        $this->setAttribute('method', 'post');
-        $this->setAttribute('action', $this->generateBulkAction());
+        $this->getMain()->setTag('form');
+        $this->getMain()->setAttribute('method', 'post');
+        $this->getMain()->setAttribute('action', $this->generateBulkAction());
         if ($this->hasToken()) {
-            $this->push(new Hidden('submit_token', $this->getToken()));
+            $this->getMain()->push(new Hidden('submit_token', $this->getToken()));
         }
         $redirect = new Hidden(
             RedirectParameter::name(),
             RedirectParameter::fromPath($this->generateRedirectPath(false))
         );
-        $this->push($redirect);
+        $this->getMain()->push($redirect);
         if ($this->isShowDeleteBulk()) {
             $this->setBulkFieldName(IdListParameter::name());
             $this->setBulkFieldValue(IdListParameter::fromMap($this->getDetailIdFields()));
@@ -176,7 +177,6 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             $button->setConfirm($this->translate('delete_bulk.message'));
             $button->addOption('d-none');
             $this->getToolbar()->push($button);
-            $this->setTag('form');
         }
     }
 

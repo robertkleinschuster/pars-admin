@@ -21,7 +21,7 @@ class UserOverview extends BaseOverview
 
         $badge = new Badge('{UserState_Code}');
         $badge->setFormat(new UserStateFieldFormat($this->getTranslator()));
-        $this->append($badge);
+        $this->pushField($badge);
         $this->addField('User_Username', $this->translate('user.username'));
         $this->addField('Person_Firstname', $this->translate('person.firstname'));
         $this->addField('Person_Lastname', $this->translate('person.lastname'));

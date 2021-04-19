@@ -37,12 +37,12 @@ class ConfigOverview extends BaseOverview
         $icon = new Icon(Icon::ICON_ALERT_TRIANGLE);
         $icon->addOption(ColorAwareInterface::COLOR_DANGER);
         $icon->setAccept(new ConfigValueInfoFieldAccept());
-        $this->append($icon);
+        $this->pushField($icon);
 
         $icon = new Icon(Icon::ICON_LOCK);
         $icon->addOption(ColorAwareInterface::COLOR_SECONDARY);
         $icon->setAccept(new BooleanValueFieldAccept('Config_Locked'));
-        $this->append($icon);
+        $this->pushField($icon);
         $this->setShowEditFieldAccept(new BooleanValueFieldAccept('Config_Locked', true));
 
         $this->addFieldOrderable('Config_Code', $this->translate('config.code'));

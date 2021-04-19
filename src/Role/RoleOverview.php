@@ -20,7 +20,7 @@ class RoleOverview extends BaseOverview
         $this->addField('UserRole_Code', $this->translate('userrole.code'));
         $active = new Badge('{UserRole_Active}');
         $active->setFormat(new RoleActiveFieldFormat($this->getTranslator()));
-        $this->append($active);
+        $this->pushField($active);
         parent::initialize();
     }
 

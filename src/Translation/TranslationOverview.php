@@ -18,7 +18,7 @@ class TranslationOverview extends BaseOverview
         $this->setShowOrder(true);
         $badge = new Badge();
         $badge->setFormat(new TranslationStateFieldFormat($this->getTranslator()));
-        $this->append($badge);
+        $this->pushField($badge);
         $this->addFieldOrderable('Translation_Code', $this->translate('translation.code'));
         $this->addFieldOrderable('Translation_Text', $this->translate('translation.text'));
         $this->addFieldOrderable('Locale_Name', $this->translate('locale.name'));

@@ -22,10 +22,10 @@ class CmsPostOverview extends ArticleOverview
             $span->setPath($this->getDetailPath());
             $span->addOption(Span::OPTION_DECORATION_NONE);
         }
-        $this->append($span);
+        $this->pushField($span);
         $span = new Span('{CmsPost_PublishTimestamp}', $this->translate('cmspost.publishtimestamp'));
         $span->setFormat(new CmsPostPublishTimestampFieldFormat());
-        $this->append($span);
+        $this->pushField($span);
         parent::initialize();
         $span = new Span('{CmsPostType_Code}', $this->translate('cmsposttype.code'));
         $span->setFormat(new CmsPostTypeFieldFormat($this->getTranslator()));
@@ -33,7 +33,7 @@ class CmsPostOverview extends ArticleOverview
             $span->setPath($this->getDetailPath());
             $span->addOption(Span::OPTION_DECORATION_NONE);
         }
-        $this->append($span);
+        $this->pushField($span);
     }
 
 

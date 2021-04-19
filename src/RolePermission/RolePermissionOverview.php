@@ -18,7 +18,7 @@ class RolePermissionOverview extends BaseOverview
     {
         $this->setShowDetail(false);
         $this->addField('UserPermission_Code', $this->translate('userpermission.code'));
-        $this->append((new Span(null, $this->translate('userpermission.description')))->setFormat(new RolePermissionDescriptionFieldFormat($this->getTranslator())));
+        $this->pushField((new Span(null, $this->translate('userpermission.description')))->setFormat(new RolePermissionDescriptionFieldFormat($this->getTranslator())));
         parent::initialize();
     }
 

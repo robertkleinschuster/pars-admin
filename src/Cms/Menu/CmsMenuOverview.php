@@ -26,7 +26,7 @@ class CmsMenuOverview extends BaseOverview
             $span->setPath($this->getDetailPath());
             $span->addOption(Span::OPTION_DECORATION_NONE);
         }
-        $this->append($span);
+        $this->pushField($span);
         if ($this->isShowType()) {
             $span = new Span('{CmsMenuType_Code}', $this->translate('cmsmenutype.code'));
             $span->setFormat(new CmsMenuTypeFieldFormat($this->getTranslator()));
@@ -34,7 +34,7 @@ class CmsMenuOverview extends BaseOverview
                 $span->setPath($this->getDetailPath());
                 $span->addOption(Span::OPTION_DECORATION_NONE);
             }
-            $this->append($span);
+            $this->pushField($span);
         }
 
         $this->addField('ArticleTranslation_Name', $this->translate('articletranslation.name'));

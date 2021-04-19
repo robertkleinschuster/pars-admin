@@ -24,8 +24,8 @@ class ImportOverview extends BaseOverview
             $id->addId($idField);
         }
         $redirect = $this->getPathHelper()->setController($this->getRedirectController())->setAction($this->getRedirectAction())->getPath();
-        $this->append(new ConfigureButton($this->getPathHelper()->setController($this->getController())->setAction('configure')->setId($id)->getPath()));
-        $this->append(new RunButton($this->getPathHelper()
+        $this->pushField(new ConfigureButton($this->getPathHelper()->setController($this->getController())->setAction('configure')->setId($id)->getPath()));
+        $this->pushField(new RunButton($this->getPathHelper()
             ->setController($this->getController())->setAction('run')
             ->setId($id)->addParameter((new RedirectParameter())->setPath(
                 $redirect
@@ -33,19 +33,19 @@ class ImportOverview extends BaseOverview
         $this->addField('Import_Name', $this->translate('import.name'));
         $active = new Badge('{Import_Active}');
         $active->setFormat(new ImportActiveFieldFormat($this->getTranslator()));
-        $this->append($active);
+        $this->pushField($active);
         $span = new Span();
         $span->setLabel($this->translate('import.day'));
         $span->setFormat(new ImportDayFieldFormat($this->getTranslator()));
-        $this->append($span);
+        $this->pushField($span);
         $span = new Span();
         $span->setLabel($this->translate('import.hour'));
         $span->setFormat(new ImportHourFieldFormat($this->getTranslator()));
-        $this->append($span);
+        $this->pushField($span);
         $span = new Span();
         $span->setLabel($this->translate('import.minute'));
         $span->setFormat(new ImportMinuteFieldFormat($this->getTranslator()));
-        $this->append($span);
+        $this->pushField($span);
     }
 
 
