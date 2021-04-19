@@ -2,9 +2,6 @@
 
 namespace Pars\Admin\Base;
 
-use Pars\Pattern\Exception\AttributeExistsException;
-use Pars\Pattern\Exception\AttributeLockException;
-use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Navigation\Brand;
 use Pars\Component\Base\Navigation\Dropdown;
@@ -12,6 +9,9 @@ use Pars\Component\Base\Navigation\Item;
 use Pars\Component\Base\Navigation\Navigation;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\Parameter;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
+use Pars\Pattern\Exception\AttributeNotFoundException;
 
 /**
  * Class MainNavigation
@@ -29,7 +29,9 @@ class MainNavigation extends BaseNavigation
      */
     protected function initialize()
     {
-        $this->setBackground(Navigation::BACKGROUND_DARK);
+        if (!$this->hasBackground()) {
+            $this->setBackground(Navigation::BACKGROUND_DARK);
+        }
         $this->setBreakpoint(Navigation::BREAKPOINT_MEDIUM);
         $this->initContentItem();
         $this->initMediaItem();

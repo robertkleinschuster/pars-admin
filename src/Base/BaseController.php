@@ -3,32 +3,37 @@
 namespace Pars\Admin\Base;
 
 use Laminas\Db\Adapter\AdapterInterface;
-use Laminas\Db\Adapter\Profiler\ProfilerInterface;
 use Mezzio\Authentication\UserInterface;
 use Mezzio\Csrf\CsrfGuardInterface;
 use Mezzio\Csrf\CsrfMiddleware;
 use Mezzio\Flash\FlashMessageMiddleware;
 use Mezzio\Flash\FlashMessagesInterface;
 use Mezzio\Session\LazySession;
-use Mezzio\Session\Session;
 use Mezzio\Session\SessionMiddleware;
 use Pars\Bean\Converter\BeanConverterAwareInterface;
 use Pars\Bean\Type\Base\BeanException;
+use Pars\Component\Base\Alert\Alert;
 use Pars\Component\Base\Collapsable\Collapsable;
 use Pars\Component\Base\Detail\Detail;
-use Pars\Component\Base\Toolbar\MoreButton;
+use Pars\Component\Base\Field\Span;
+use Pars\Component\Base\Layout\DashboardLayout;
+use Pars\Component\Base\Navigation\Navigation;
+use Pars\Component\Base\View\BaseView;
 use Pars\Core\Config\ParsConfig;
+use Pars\Core\Database\DatabaseMiddleware;
 use Pars\Core\Database\ParsDatabaseAdapter;
 use Pars\Core\Database\Profiler;
+use Pars\Core\Logging\LoggingMiddleware;
 use Pars\Core\Session\SessionViewStatePersistence;
 use Pars\Core\Translation\ParsTranslator;
-use Pars\Helper\Parameter\CollapseParameter;
-use Pars\Helper\Parameter\NavParameter;
+use Pars\Helper\Validation\ValidationHelper;
+use Pars\Model\Authentication\User\UserBean;
+use Pars\Mvc\Controller\AbstractController;
+use Pars\Mvc\Controller\ControllerResponse;
+use Pars\Mvc\Controller\ControllerResponseInjector;
 use Pars\Mvc\View\ComponentInterface;
+use Pars\Mvc\View\ViewBeanConverter;
 use Pars\Mvc\View\ViewElement;
-use Pars\Mvc\View\Event\ViewEvent;
-use Pars\Mvc\View\State\ViewState;
-use Pars\Mvc\View\State\ViewStatePersistenceInterface;
 use Pars\Pattern\Attribute\AttributeAwareInterface;
 use Pars\Pattern\Attribute\AttributeAwareTrait;
 use Pars\Pattern\Exception\AttributeExistsException;
@@ -36,17 +41,6 @@ use Pars\Pattern\Exception\AttributeLockException;
 use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Pattern\Option\OptionAwareInterface;
 use Pars\Pattern\Option\OptionAwareTrait;
-use Pars\Component\Base\Alert\Alert;
-use Pars\Component\Base\Layout\DashboardLayout;
-use Pars\Component\Base\View\BaseView;
-use Pars\Core\Database\DatabaseMiddleware;
-use Pars\Core\Logging\LoggingMiddleware;
-use Pars\Helper\Validation\ValidationHelper;
-use Pars\Model\Authentication\User\UserBean;
-use Pars\Mvc\Controller\AbstractController;
-use Pars\Mvc\Controller\ControllerResponse;
-use Pars\Mvc\Controller\ControllerResponseInjector;
-use Pars\Mvc\View\ViewBeanConverter;
 use Psr\Log\LoggerInterface;
 use Symfony\WebpackEncoreBundle\Asset\EntrypointLookup;
 use Throwable;
@@ -87,6 +81,24 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $navigation = new MainNavigation($this->getTranslator(), $this->getUserBean());
         $this->getView()->setLayout($layout);
         $layout->setNavigation($navigation);
+        $roles = $this->getUserBean()->getRoles();
+        $appConfig = $this->getConfig()->getApplicationConfig();
+        if (in_array('admin', (array)$roles) && empty($appConfig->get('debug'))) {
+            $navigation->setBackground(Navigation::BACKGROUND_DANGER);
+        }
+        if ($appConfig->get('debug')) {
+            $navigation->getContainer()->unshift((new Span('DEV'))
+                ->addInlineStyle('font-size', '1.9rem')
+                ->addInlineStyle('font-weight', 'bolder')
+                ->addInlineStyle('margin-right', '1rem')
+                ->setColor(Span::COLOR_SUCCESS));
+            $script = new ViewElement('script');
+            $script->setContent('window.debug = true');
+            $navigation->push($script);
+            if ($this->getControllerRequest()->isAjax()) {
+                $this->getLogger()->notice('EVENT', $this->getControllerRequest()->getEvent()->toArray());
+            }
+        }
         $this->getView()->set('baseUrl', $this->getPathHelper()->getBaseUrl());
         $this->getView()->set('Current_Person_ID', $this->getUserBean()->Person_ID);
         $this->getView()->set('Current_User_Username', $this->getUserBean()->User_Username);
@@ -492,7 +504,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 . ' ms'
             );
             foreach ($profiles as $profile) {
-                $alert->addBlock( $profile['trace'].  $profile['sql'] . "<br>{$profile['elapse']} ms");
+                $alert->addBlock($profile['trace'] . $profile['sql'] . "<br>{$profile['elapse']} ms");
             }
             $group->getJumbotron()->setContent($alert->render());
             $this->getView()->unshiftComponent($collapsable);
