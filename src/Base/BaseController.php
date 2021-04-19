@@ -94,7 +94,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 ->setColor(Span::COLOR_SUCCESS));
             $script = new ViewElement('script');
             $script->setContent('window.debug = true');
-            $navigation->push($script);
+            $layout->getContainer()->push($script);
             if ($this->getControllerRequest()->isAjax()) {
                 $this->getLogger()->notice('EVENT', $this->getControllerRequest()->getEvent()->toArray());
             }
