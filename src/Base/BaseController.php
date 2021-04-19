@@ -550,14 +550,10 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         ) {
             $layout = $this->getView()->getLayout();
             if ($layout instanceof DashboardLayout) {
-                $bean = $this->getView();
-                if ($bean instanceof BeanConverterAwareInterface && $bean->hasBeanConverter()) {
-                    $bean = $bean->getBeanConverter()->convert($this->getView());
-                }
                 $layout->getSubNavigation()->setId('subnavigation');
                 if ($this->getControllerRequest()->isAjax()) {
                     $this->getControllerResponse()->getInjector()->addHtml(
-                        $layout->getSubNavigation()->render($bean, true),
+                        $this->getViewRenderer()->render($this->getView(), 'subnavigation'),
                         '#subnavigation',
                         ControllerResponseInjector::MODE_REPLACE
                     );
@@ -565,7 +561,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 $layout->getNavigation()->setId('navigation');
                 if ($this->getControllerRequest()->isAjax()) {
                     $this->getControllerResponse()->getInjector()->addHtml(
-                        $layout->getNavigation()->render($bean, true),
+                        $this->getViewRenderer()->render($this->getView(), 'navigation'),
                         '#navigation',
                         ControllerResponseInjector::MODE_REPLACE
                     );
