@@ -68,63 +68,63 @@ class IndexController extends BaseController
 
 
         if (!$this->getModel()->hasStartpage()) {
-            $heading = new ViewElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.me-1.d-inline');
             $heading->setPath($this->getPathHelper()->setController('cmspage'));
             $heading->push(new Badge($this->translate('index.no.active.startpage'), Badge::STYLE_DANGER));
             $span->push($heading);
         } else {
             $score += 20;
-            $heading = new ViewElement('h5.mr-1.d-inline.mb-1');
+            $heading = new ViewElement('h5.me-1.d-inline.mb-1');
             $heading->push(new Badge($this->translate('index.active.startpage'), Badge::STYLE_SUCCESS));
             $span->push($heading);
         }
 
         if (!$this->getModel()->hasPage()) {
-            $heading = new ViewElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.me-1.d-inline');
             $heading->setPath($this->getPathHelper()->setController('cmspage'));
             $heading->push(new Badge($this->translate('index.no.active.page'), Badge::STYLE_DANGER));
             $span->push($heading);
         } else {
             $score += 10;
-            $heading = new ViewElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.me-1.d-inline');
             $heading->push(new Badge($this->translate('index.active.page'), Badge::STYLE_SUCCESS));
             $span->push($heading);
         }
 
 
         if (!$this->getModel()->hasBlock()) {
-            $heading = new ViewElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.me-1.d-inline');
             $heading->setPath($this->getPathHelper()->setController('cmsblock'));
             $heading->push(new Badge($this->translate('index.no.active.block'), Badge::STYLE_WARNING));
             $span->push($heading);
         } else {
             $score += 10;
-            $heading = new ViewElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.me-1.d-inline');
             $heading->push(new Badge($this->translate('index.active.block'), Badge::STYLE_SUCCESS));
             $span->push($heading);
         }
 
         if (!$this->getModel()->hasMenu()) {
-            $heading = new ViewElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.me-1.d-inline');
             $heading->setPath($this->getPathHelper()->setController('cmsmenu'));
 
             $heading->push(new Badge($this->translate('index.no.active.menu'), Badge::STYLE_WARNING));
             $span->push($heading);
         } else {
             $score += 10;
-            $heading = new ViewElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.me-1.d-inline');
             $heading->push(new Badge($this->translate('index.active.menu'), Badge::STYLE_SUCCESS));
             $span->push($heading);
         }
 
         if (!$this->getModel()->hasLocale()) {
-            $heading = new ViewElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.me-1.d-inline');
             $heading->setPath($this->getPathHelper()->setController('locale'));
             $heading->push(new Badge($this->translate('index.no.additional.locale'), Badge::STYLE_WARNING));
             $span->push($heading);
         } else {
             $score += 10;
-            $heading = new ViewElement('h5.mr-1.d-inline');
+            $heading = new ViewElement('h5.me-1.d-inline');
             $heading->push(new Badge($this->translate('index.additional.locale'), Badge::STYLE_SUCCESS));
             $span->push($heading);
         }
@@ -140,13 +140,13 @@ class IndexController extends BaseController
             }
             foreach ($config as $key => $value) {
                 if (empty($value)) {
-                    $heading = new ViewElement('h5.mr-1.d-inline');
+                    $heading = new ViewElement('h5.me-1.d-inline');
                     $heading->push(new Badge($this->translate('index.config.empty') . ': ' . $key, Badge::STYLE_DANGER));
                     $heading->setPath($this->getPathHelper()->setController('config'));
                     $span->push($heading);
                 } else {
                     $score += $factor;
-                    $heading = new ViewElement('h5.mr-1.d-inline');
+                    $heading = new ViewElement('h5.me-1.d-inline');
                     $heading->push(new Badge($this->translate('index.config.ok') . ': ' . $key, Badge::STYLE_SUCCESS));
                     $span->push($heading);
                 }

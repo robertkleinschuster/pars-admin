@@ -9,6 +9,7 @@ use Pars\Component\Base\Collapsable\Collapsable;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Filter\Filter;
+use Pars\Component\Base\Form\Submit;
 use Pars\Component\Base\Layout\DashboardLayout;
 use Pars\Component\Base\Navigation\Item;
 use Pars\Component\Base\Overview\Overview;
@@ -145,7 +146,7 @@ abstract class CrudController extends BaseController
                 '',
                 $this->translate('admin.filter.apply'),
                 null,
-                null,
+                Submit::STYLE_PRIMARY,
                 null,
                 10,
                 1
@@ -240,7 +241,7 @@ abstract class CrudController extends BaseController
     {
         $this->getView()->set('OverviewCount', $count);
         $span = new Span($this->translate('overview.count'));
-        $span->addOption('float-right');
+        $span->addOption('float-end');
         $span->addOption('border');
         $span->addOption('p-1');
         $span->addOption('d-none');

@@ -44,7 +44,6 @@ class UpdateController extends BaseController
         $updateNavigation = new Navigation();
         $this->updateNavigation = $updateNavigation;
         $this->updateNavigation->setBackground(Navigation::BACKGROUND_LIGHT);
-        $this->updateNavigation->setRounded(Navigation::ROUNDED_NONE);
         $this->updateNavigation->addItem($this->translate('update.database.data'), $this->getPathHelper()->setController('update')->setAction('data'), 'data');
         $this->updateNavigation->addItem($this->translate('update.database.schema'), $this->getPathHelper()->setController('update')->setAction('schema'), 'schema');
         $this->updateNavigation->addItem($this->translate('update.database.special'), $this->getPathHelper()->setController('update')->setAction('special'), 'special');

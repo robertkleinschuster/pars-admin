@@ -479,7 +479,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             $group = new Detail();
             $collapsable = $this->createCollapsable('debug', false);
             $collapsable->getButton()->setPath($this->getPathHelper(true));
-            $collapsable->setTitle($this->translate('showdebug'));
+            $collapsable->setTitle($this->translate('showdebug') . ': ' . static::class);
             $collapsable->pushComponent($group);
             $alert = new Alert();
             $alert->setHeading('Debug');

@@ -15,7 +15,6 @@ class Setup extends UserEdit
         $this->setShowTitle(false);
         parent::initialize();
         $this->getForm()->setBackground(Form::BACKGROUND_LIGHT);
-        $this->getForm()->setRounded(Form::ROUNDED_NONE);
         $this->getForm()->setShadow(Form::SHADOW_LARGE);
         $this->getForm()->setColor(Form::COLOR_DARK);
         $this->getForm()->addOption('py-4');
