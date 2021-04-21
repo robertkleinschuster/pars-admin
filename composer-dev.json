@@ -1,0 +1,67 @@
+{
+  "repositories": {
+    "pars/pars-core": {
+      "type": "path",
+      "url": "../pars-core",
+      "options": {
+        "symlink": true
+      }
+    },
+    "pars/pars-cli": {
+      "type": "path",
+      "url": "../pars-cli",
+      "options": {
+        "symlink": true
+      }
+    },
+    "pars/pars-mvc": {
+      "type": "path",
+      "url": "../pars-mvc",
+      "options": {
+        "symlink": true
+      }
+    },
+    "pars/pars-components": {
+      "type": "path",
+      "url": "../pars-components",
+      "options": {
+        "symlink": true
+      }
+    },
+    "pars/pars-helpers": {
+      "type": "path",
+      "url": "../pars-helpers",
+      "options": {
+        "symlink": true
+      }
+    },
+    "pars/pars-models": {
+      "type": "path",
+      "url": "../pars-models",
+      "options": {
+        "symlink": true
+      }
+    },
+    "pars/pars-import": {
+      "type": "path",
+      "url": "../pars-import",
+      "options": {
+        "symlink": true
+      }
+    },
+    "pars/pars-beans": {
+      "type": "path",
+      "url": "../pars-beans",
+      "options": {
+        "symlink": true
+      }
+    },
+    "pars/pars-patterns": {
+      "type": "path",
+      "url": "../pars-patterns",
+      "options": {
+        "symlink": true
+      }
+    }
+  }
+}

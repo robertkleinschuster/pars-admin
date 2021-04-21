@@ -16,6 +16,6 @@ if (file_exists('data/cache/config/config.php')) {
     unlink('data/cache/config/config.php');
 }
 
-$command = new \Laminas\DevelopmentMode\Command();
-echo($command(array_slice($argv, 1)));
+$command = new \Pars\Cli\DevCommand();
+echo($command(array_slice($argv, 1), __DIR__ . '/../'));
 exit;

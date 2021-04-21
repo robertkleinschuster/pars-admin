@@ -1,137 +1,70 @@
 {
-  "name": "pars/pars-admin",
-  "description": "",
-  "license": "BSD-3-Clause",
-  "keywords": [
-    "pars"
-  ],
-  "support": {
-    "docs": "https://docs.parsphp.org/pars-admin/",
-    "issues": "https://github.com/pars/pars-admin/issues",
-    "source": "https://github.com/pars/pars-admin",
-    "rss": "https://github.com/pars/pars-admin/releases.atom",
-    "forum": "https://discourse.parsphp.org/"
-  },
-  "require": {
-    "php": "^7.4",
-    "pars/pars-core": "dev-master",
-    "pars/pars-cli": "dev-master",
-    "pars/pars-mvc": "dev-master",
-    "pars/pars-components": "dev-master",
-    "pars/pars-helpers": "dev-master",
-    "pars/pars-models": "dev-master",
-    "pars/pars-import": "dev-master",
-    "pars/pars-beans": "dev-master",
-    "pars/pars-patterns": "dev-master"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^9.5"
-  },
-  "repositories": {
-    "pars/pars-core": {
-      "type": "path",
-      "url": "../pars-core",
-      "options": {
-        "symlink": true
-      }
-    },
-    "pars/pars-cli": {
-      "type": "path",
-      "url": "../pars-cli",
-      "options": {
-        "symlink": true
-      }
-    },
-    "pars/pars-mvc": {
-      "type": "path",
-      "url": "../pars-mvc",
-      "options": {
-        "symlink": true
-      }
-    },
-    "pars/pars-components": {
-      "type": "path",
-      "url": "../pars-components",
-      "options": {
-        "symlink": true
-      }
-    },
-    "pars/pars-helpers": {
-      "type": "path",
-      "url": "../pars-helpers",
-      "options": {
-        "symlink": true
-      }
-    },
-    "pars/pars-models": {
-      "type": "path",
-      "url": "../pars-models",
-      "options": {
-        "symlink": true
-      }
-    },
-    "pars/pars-import": {
-      "type": "path",
-      "url": "../pars-import",
-      "options": {
-        "symlink": true
-      }
-    },
-    "pars/pars-beans": {
-      "type": "path",
-      "url": "../pars-beans",
-      "options": {
-        "symlink": true
-      }
-    },
-    "pars/pars-patterns": {
-      "type": "path",
-      "url": "../pars-patterns",
-      "options": {
-        "symlink": true
-      }
-    }
-  },
-  "autoload": {
-    "psr-4": {
-      "Pars\\Admin\\": "src//"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "ParsTest\\Admin\\": "test/"
-    }
-  },
-  "extra": {
-
-    "merge-plugin": {
-      "include": [
-        "vendor/pars/pars-core/composer.json"
-      ],
-      "require": [
-      ],
-      "recurse": true,
-      "replace": false,
-      "ignore-duplicates": false,
-      "merge-dev": true,
-      "merge-extra": true,
-      "merge-extra-deep": false,
-      "merge-scripts": true
-    }
-  },
-  "config": {
-    "sort-packages": true,
-    "optimize-autoloader": true,
-    "classmap-authoritative": true
-  },
-  "scripts": {
-    "serve": [
-      "php -q -S admin.localhost:8080 -t public/ & yarn encore dev --watch & log stream --style syslog --level debug --predicate 'process == \"php\"'"
+    "name": "pars/pars-admin",
+    "description": "",
+    "license": "BSD-3-Clause",
+    "keywords": [
+        "pars"
     ],
-    "development": "php bin/development-mode.php",
-    "cs-check": "phpcs",
-    "cs-fix": "phpcbf",
-    "test": "phpunit --colors=always",
-    "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
-  }
+    "support": {
+        "docs": "https://docs.parsphp.org/pars-admin/",
+        "issues": "https://github.com/pars/pars-admin/issues",
+        "source": "https://github.com/pars/pars-admin",
+        "rss": "https://github.com/pars/pars-admin/releases.atom",
+        "forum": "https://discourse.parsphp.org/"
+    },
+    "require": {
+        "php": "^7.4",
+        "pars/pars-core": "dev-master",
+        "pars/pars-cli": "dev-master",
+        "pars/pars-mvc": "dev-master",
+        "pars/pars-components": "dev-master",
+        "pars/pars-helpers": "dev-master",
+        "pars/pars-models": "dev-master",
+        "pars/pars-import": "dev-master",
+        "pars/pars-beans": "dev-master",
+        "pars/pars-patterns": "dev-master"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Pars\\Admin\\": "src//"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "ParsTest\\Admin\\": "test/"
+        }
+    },
+    "extra": {
+        "merge-plugin": {
+            "include": [
+                "vendor/pars/pars-core/composer.json"
+            ],
+            "require": [],
+            "recurse": true,
+            "replace": false,
+            "ignore-duplicates": false,
+            "merge-dev": true,
+            "merge-extra": true,
+            "merge-extra-deep": false,
+            "merge-scripts": true
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true,
+        "classmap-authoritative": true
+    },
+    "scripts": {
+        "serve": [
+            "php -q -S admin.localhost:8080 -t public/ & yarn encore dev --watch & log stream --style syslog --level debug --predicate 'process == \"php\"'"
+        ],
+        "development": "php bin/development-mode.php",
+        "cs-check": "phpcs",
+        "cs-fix": "phpcbf",
+        "test": "phpunit --colors=always",
+        "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
+    }
 }
