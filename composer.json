@@ -61,6 +61,10 @@
         "serve": [
             "php -q -S admin.localhost:8080 -t public/ & yarn encore dev --watch & log stream --style syslog --level debug --predicate 'process == \"php\"'"
         ],
+        "post-install-cmd": [
+            "yarn install",
+            "yarn encore production"
+        ],
         "development": "php bin/development-mode.php",
         "cs-check": "phpcs",
         "cs-fix": "phpcbf",
