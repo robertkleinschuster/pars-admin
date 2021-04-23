@@ -8,6 +8,7 @@ use Pars\Admin\Base\BaseController;
 use Pars\Component\Base\View\BaseView;
 use Pars\Core\Database\DatabaseMiddleware;
 use Pars\Core\Database\ParsDatabaseAdapter;
+use Pars\Core\Translation\ParsTranslatorAwareInterface;
 use Pars\Helper\Path\PathHelper;
 use Pars\Model\Authentication\User\UserBean;
 use Pars\Mvc\View\ViewBeanConverter;
@@ -23,6 +24,7 @@ class SetupController extends BaseController
         $this->setView(new BaseView());
         $layout = new SigninLayout();
         $this->getView()->setLayout($layout);
+        $this->injectStaticFiles();
     }
 
     public function init()
@@ -54,7 +56,7 @@ class SetupController extends BaseController
         }
         if ($this->getModel()->hasBeanProcessor()) {
             $processor = $this->getModel()->getBeanProcessor();
-            if ($processor instanceof TranslatorAwareInterface) {
+            if ($processor instanceof ParsTranslatorAwareInterface) {
                 $processor->setTranslator($this->getTranslator());
             }
         }
@@ -70,7 +72,7 @@ class SetupController extends BaseController
 
     public function indexAction()
     {
-        $setup = new Setup($this->getPathHelper(), $this->getTranslator(), new UserBean());
+        $setup = new Setup($this->getTranslator(), new UserBean());
         $setup->setCreate(true);
         $this->getView()->pushComponent($setup);
         $setup->setBean($this->getModel()->getEmptyBean());

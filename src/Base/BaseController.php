@@ -106,19 +106,27 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $this->getView()->set('Current_Person_Firstname', $this->getUserBean()->Person_Firstname);
         $this->getView()->set('Current_Person_Lastname', $this->getUserBean()->Person_Lastname);
         $this->getView()->getLayout()->setPersistence(new SessionViewStatePersistence($this->getSession()));
-        $entryPoints = new EntrypointLookup($_SERVER['DOCUMENT_ROOT'] . '/build/entrypoints.json');
-        $jsFiles = [];
-        $cssFiles = [];
-        $config = $this->getContainer()->get('config');
-        $bundlesConfig = $config['bundles'];
-        if (isset($bundlesConfig['entrypoints']) && is_array($bundlesConfig['entrypoints'])) {
-            foreach ($bundlesConfig['entrypoints'] as $entrypoint) {
-                $jsFiles = array_merge($jsFiles, $entryPoints->getJavaScriptFiles($entrypoint));
-                $cssFiles = array_merge($cssFiles, $entryPoints->getCssFiles($entrypoint));
+        $this->injectStaticFiles();
+    }
+
+    protected function injectStaticFiles()
+    {
+        if ($this->hasView()) {
+            $entryPoints = new EntrypointLookup($_SERVER['DOCUMENT_ROOT'] . '/build/entrypoints.json');
+            $jsFiles = [];
+            $cssFiles = [];
+            $config = $this->getContainer()->get('config');
+            $bundlesConfig = $config['bundles'];
+            if (isset($bundlesConfig['entrypoints']) && is_array($bundlesConfig['entrypoints'])) {
+                foreach ($bundlesConfig['entrypoints'] as $entrypoint) {
+                    $jsFiles = array_merge($jsFiles, $entryPoints->getJavaScriptFiles($entrypoint));
+                    $cssFiles = array_merge($cssFiles, $entryPoints->getCssFiles($entrypoint));
+                }
             }
+            $this->getView()->setJavascript($jsFiles);
+            $this->getView()->setStylesheets($cssFiles);
         }
-        $this->getView()->setJavascript($jsFiles);
-        $this->getView()->setStylesheets($cssFiles);
+
     }
 
     /**
