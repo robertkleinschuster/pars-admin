@@ -82,8 +82,8 @@ class CmsPageBlockController extends CmsBlockController
             2
         );
         $this->addFilter_Search($this->translate('search'), 1);
-        $edit = new CmsPageBlockEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $overview = new CmsBlockOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = new CmsPageBlockEdit($this->getTranslator(), $this->getUserBean());
+        $overview = new CmsBlockOverview($this->getTranslator(), $this->getUserBean());
         $overview->setShowDeleteBulk(false);
         $overview->setShowCreate(false);
         $overview->setShowEdit(false);
@@ -117,7 +117,7 @@ class CmsPageBlockController extends CmsBlockController
 
     public function create_newAction()
     {
-        $edit = new CmsPageBlockCreateNew($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = new CmsPageBlockCreateNew( $this->getTranslator(), $this->getUserBean());
         $this->injectContext($edit);
         $edit->setStateOptions($this->getModel()->getCmsBlockState_Options());
         $edit->setTypeOptions($this->getModel()->getCmsBlockType_Options());

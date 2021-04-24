@@ -52,9 +52,11 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
 
     protected function initFormFields()
     {
-        $this->getMain()->setTag('form');
-        $this->getMain()->setAttribute('method', 'post');
-        $this->getMain()->setAttribute('action', $this->generateBulkAction());
+        if ($this->isShowDeleteBulk()) {
+            $this->getMain()->setTag('form');
+            $this->getMain()->setAttribute('method', 'post');
+            $this->getMain()->setAttribute('action', $this->generateBulkAction());
+        }
         if ($this->hasToken()) {
             $this->getMain()->push(new Hidden('submit_token', $this->getToken()));
         }
@@ -63,11 +65,8 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             RedirectParameter::fromPath($this->generateRedirectPath(false))
         );
         $this->getMain()->push($redirect);
-        if ($this->isShowDeleteBulk()) {
-            $this->setBulkFieldName(IdListParameter::name());
-            $this->setBulkFieldValue(IdListParameter::fromMap($this->getDetailIdFields()));
-        }
-
+        $this->setBulkFieldName(IdListParameter::name());
+        $this->setBulkFieldValue(IdListParameter::fromMap($this->getDetailIdFields()));
     }
 
 
