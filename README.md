@@ -76,7 +76,7 @@ to update tests as appropriate.
 NOTE: Be sure to merge the latest from "upstream" before making a pull request!
 
 ## Version Bump
-Any commit message that includes #major, #minor, #patch, or #none will trigger the respective version bump. If two or more are present, the highest-ranking one will take precedence.
+Any commit message that includes major, minor, patch will trigger the respective version bump.
 
 ## Support
 
