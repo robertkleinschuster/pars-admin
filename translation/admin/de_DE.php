@@ -376,4 +376,7 @@ return [
     'section.tasklog' => 'Log',
     'tasklog.message' => 'Info',
     'tasklog.text' => 'Text',
+    'update.version.current' => 'Aktuelle Version',
+    'update.version.available' => 'Verfügbare Version',
+    'update.version.start' => 'Update starten',
 ];

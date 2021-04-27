@@ -5,8 +5,13 @@ namespace Pars\Admin\Update;
 use GuzzleHttp\Client;
 use Pars\Admin\Base\BaseController;
 use Pars\Admin\Base\SystemNavigation;
+use Pars\Component\Base\Detail\Detail;
+use Pars\Component\Base\Field\Button;
+use Pars\Component\Base\Field\Span;
+use Pars\Component\Base\Jumbotron\Jumbotron;
 use Pars\Component\Base\Navigation\Navigation;
 use Pars\Model\Updater\ParsUpdater;
+use Pars\Mvc\View\DefaultComponent;
 
 /**
  * Class UpdateController
@@ -55,6 +60,20 @@ class UpdateController extends BaseController
 
     public function indexAction()
     {
+        $jumbo = new Jumbotron();
+        $jumbo->pushField(new Span(PARS_VERSION, $this->translate('update.version.current')));
+        $client = new Client();
+        $response = $client->get('https://api.github.com/repos/PARS-Framework/pars-admin/releases/latest');
+        $data = json_decode($response->getBody()->getContents(), true);
+        $jumbo->pushField(new Span($data['tag_name'], $this->translate('update.version.available')));
+        $button = new Button($this->translate('update.version.start'),
+            Button::STYLE_DANGER,
+            $this->getPathHelper()
+                ->setController('update')
+                ->setAction('updateversion')
+                ->getPath());
+        $jumbo->pushField($button);
+        $this->getView()->pushComponent($jumbo);
     }
 
     public function schemaAction()
