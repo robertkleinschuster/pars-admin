@@ -36,7 +36,7 @@ jobs:
         run: composer validate
 
       - name: Install dependencies
-        run: composer install
+        run: composer install --no-dev --no-interaction
       - name: Zip
         uses: papeloto/action-zip@v1
         with:
