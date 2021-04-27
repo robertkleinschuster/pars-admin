@@ -76,7 +76,7 @@ to update tests as appropriate.
 NOTE: Be sure to merge the latest from "upstream" before making a pull request!
 
 ## Version Bump
-Any commit message that includes major, minor, patch will trigger the respective version bump.
+[Semantic Release Conventions](https://github.com/semantic-release/semantic-release)
 
 ## Support
 
