@@ -9,6 +9,10 @@ Admin module for PARS CMS
 
 Clone this repository:
 ```bash
+$ git clone --recurse-submodules https://github.com/pars-framework/pars-admin -b develop
+
+or 
+
 $ git clone https://github.com/pars-framework/pars-admin.git
 $ cd pars-master
 $ git submodule init

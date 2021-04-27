@@ -2,9 +2,11 @@
 
 namespace Pars\Admin\Update;
 
+use GuzzleHttp\Client;
 use Pars\Admin\Base\BaseController;
 use Pars\Admin\Base\SystemNavigation;
 use Pars\Component\Base\Navigation\Navigation;
+use Pars\Model\Updater\ParsUpdater;
 
 /**
  * Class UpdateController
@@ -82,4 +84,32 @@ class UpdateController extends BaseController
         $update->setToken($this->generateToken('submit_token'));
         $this->getView()->pushComponent($update);
     }
+
+    public function updateVersionAction()
+    {
+        $updater = new ParsUpdater($this->getContainer());
+        $updater->update();
+        $client = new Client();
+        $response = $client->get('https://api.github.com/repos/PARS-Framework/pars-admin/releases/latest');
+        $data = json_decode($response->getBody()->getContents(), true);
+        $assets = array_filter($data['assets'], function($asset) {
+            return $asset['name'] == 'pars-admin.zip';
+        });
+        $asset = reset($assets);
+        $download = $asset['browser_download_url'];
+        $response = $client->get($download);
+        $file = 'update.zip';
+        file_put_contents($file, $response->getBody());
+        $path = pathinfo(realpath($file), PATHINFO_DIRNAME);
+        $zip = new \ZipArchive();
+        $res = $zip->open($file);
+        if ($res === TRUE) {
+            $zip->extractTo($path);
+            $zip->close();
+        }
+        unlink($file);
+        $updater->update();
+        $this->getControllerResponse()->setRedirect('/');
+    }
+
 }
