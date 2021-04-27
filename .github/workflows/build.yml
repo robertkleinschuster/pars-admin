@@ -32,7 +32,8 @@ jobs:
           php-version: '7.4'
           extensions: mbstring, intl, json, dom, gd
           ini-values: post_max_size=256M, max_execution_time=180
-
+      - name: write version
+        run: echo "<?php define('PARS_VERSION', '${{ steps.tag_version.outputs.new_tag }}');" > version.php
       - name: Validate composer.json and composer.lock
         run: composer validate
 
