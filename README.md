@@ -3,8 +3,6 @@
 [![Build Status](https://travis-ci.com/pars-framework/pars-admin.svg?branch=master)](https://travis-ci.com/pars-framework/pars-admin)
 [![Coverage Status](https://coveralls.io/repos/github/pars-framework/pars-admin/badge.svg?branch=master)](https://coveralls.io/github/pars-framework/pars-admin?branch=master)
 
-[![Dev Builds](https://github.com/PARS-Framework/pars-admin/actions/workflows/build.yml/badge.svg?branch=develop)](https://github.com/PARS-Framework/pars-admin/actions/workflows/test.yml)
-
 This library provides …
 
 ## Installation
