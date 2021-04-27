@@ -14,15 +14,15 @@
     },
     "require": {
         "php": "^7.4",
-        "pars/pars-core": "dev-master",
-        "pars/pars-cli": "dev-master",
-        "pars/pars-mvc": "dev-master",
-        "pars/pars-components": "dev-master",
-        "pars/pars-helpers": "dev-master",
-        "pars/pars-models": "dev-master",
-        "pars/pars-import": "dev-master",
-        "pars/pars-beans": "dev-master",
-        "pars/pars-patterns": "dev-master"
+        "pars/pars-beans": "@dev",
+        "pars/pars-core": "@dev",
+        "pars/pars-components": "@dev",
+        "pars/pars-cli": "@dev",
+        "pars/pars-helpers": "@dev",
+        "pars/pars-import": "@dev",
+        "pars/pars-mvc": "@dev",
+        "pars/pars-models": "@dev",
+        "pars/pars-patterns": "@dev"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5"
@@ -70,5 +70,70 @@
         "cs-fix": "phpcbf",
         "test": "phpunit --colors=always",
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
+    },
+    "repositories": {
+        "pars/pars-beans": {
+            "type": "path",
+            "url": "modules/pars-beans",
+            "options": {
+                "symlink": true
+            }
+        },
+        "pars/pars-cli": {
+            "type": "path",
+            "url": "modules/pars-cli",
+            "options": {
+                "symlink": true
+            }
+        },
+        "pars/pars-components": {
+            "type": "path",
+            "url": "modules/pars-components",
+            "options": {
+                "symlink": true
+            }
+        },
+        "pars/pars-core": {
+            "type": "path",
+            "url": "modules/pars-core",
+            "options": {
+                "symlink": true
+            }
+        },
+        "pars/pars-helpers": {
+            "type": "path",
+            "url": "modules/pars-helpers",
+            "options": {
+                "symlink": true
+            }
+        },
+        "pars/pars-import": {
+            "type": "path",
+            "url": "modules/pars-import",
+            "options": {
+                "symlink": true
+            }
+        },
+        "pars/pars-models": {
+            "type": "path",
+            "url": "modules/pars-models",
+            "options": {
+                "symlink": true
+            }
+        },
+        "pars/pars-mvc": {
+            "type": "path",
+            "url": "modules/pars-mvc",
+            "options": {
+                "symlink": true
+            }
+        },
+        "pars/pars-patterns": {
+            "type": "path",
+            "url": "modules/pars-patterns",
+            "options": {
+                "symlink": true
+            }
+        }
     }
 }
