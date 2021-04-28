@@ -175,7 +175,7 @@ class CmsPageController extends ArticleController
      */
     public function importAction()
     {
-        $edit = new CmsPageImport($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = new CmsPageImport($this->getTranslator(), $this->getUserBean());
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $edit->setBean($this->getModel()->getEmptyBean($this->getPreviousAttributes()));
         $this->getModel()->getBeanConverter()
