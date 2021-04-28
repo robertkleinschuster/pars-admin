@@ -5,13 +5,12 @@ namespace Pars\Admin\Update;
 use GuzzleHttp\Client;
 use Pars\Admin\Base\BaseController;
 use Pars\Admin\Base\SystemNavigation;
-use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Button;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Jumbotron\Jumbotron;
 use Pars\Component\Base\Navigation\Navigation;
+use Pars\Helper\String\StringHelper;
 use Pars\Model\Updater\ParsUpdater;
-use Pars\Mvc\View\DefaultComponent;
 
 /**
  * Class UpdateController
@@ -79,7 +78,7 @@ class UpdateController extends BaseController
     public function schemaAction()
     {
         $this->updateNavigation->setActive('schema');
-        $update = new Update( $this->getTranslator(), $this->getUserBean(), $this->getModel()->getSchemaUpdater());
+        $update = new Update($this->getTranslator(), $this->getUserBean(), $this->getModel()->getSchemaUpdater());
         $update->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $update->setToken($this->generateToken('submit_token'));
         $this->getView()->pushComponent($update);
@@ -98,7 +97,7 @@ class UpdateController extends BaseController
     public function specialAction()
     {
         $this->updateNavigation->setActive('special');
-        $update = new Update( $this->getTranslator(), $this->getUserBean(), $this->getModel()->getSpecialUpdater());
+        $update = new Update($this->getTranslator(), $this->getUserBean(), $this->getModel()->getSpecialUpdater());
         $update->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $update->setToken($this->generateToken('submit_token'));
         $this->getView()->pushComponent($update);
@@ -111,8 +110,8 @@ class UpdateController extends BaseController
         $client = new Client();
         $response = $client->get('https://api.github.com/repos/PARS-Framework/pars-admin/releases/latest');
         $data = json_decode($response->getBody()->getContents(), true);
-        $assets = array_filter($data['assets'], function($asset) {
-            return $asset['name'] == 'pars-admin.zip';
+        $assets = array_filter($data['assets'], function ($asset) {
+            return StringHelper::startsWith($asset['name'], 'pars-admin');
         });
         $asset = reset($assets);
         $download = $asset['browser_download_url'];
