@@ -3,10 +3,14 @@
 namespace Pars\Admin\Base;
 
 use Pars\Bean\Type\Base\BeanException;
+use Pars\Component\Base\Field\Button;
+use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Form\Hidden;
+use Pars\Component\Base\Modal\Modal;
 use Pars\Component\Base\Overview\DeleteButton;
 use Pars\Component\Base\Overview\EditButton;
 use Pars\Component\Base\Overview\Overview;
+use Pars\Component\Base\Toolbar\BulkButton;
 use Pars\Component\Base\Toolbar\CreateButton;
 use Pars\Component\Base\Toolbar\CreateNewButton;
 use Pars\Component\Base\Toolbar\DeleteBulkButton;
@@ -17,6 +21,7 @@ use Pars\Helper\Parameter\OrderParameter;
 use Pars\Helper\Parameter\RedirectParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Helper\Path\PathHelper;
+use Pars\Mvc\View\Event\ViewEvent;
 use Pars\Mvc\View\FieldInterface;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
@@ -173,8 +178,40 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     {
         if ($this->isShowDeleteBulk()) {
             $button = new DeleteBulkButton(SubmitParameter::name(), SubmitParameter::deleteBulk());
-            $button->setConfirm($this->translate('delete_bulk.message'));
+            $id = md5($this->translate('delete_bulk.message'));
+            if (!$this->getMain()->hasId()) {
+                $this->getMain()->setId($id);
+            }
+            $button->setId($id . '__confirm_delete');
             $button->addOption('d-none');
+            $button->setEvent(ViewEvent::createCallback(function (DeleteBulkButton $element) use ($id) {
+                $modal = new Modal();
+                $modal->addInlineStyle('color', 'initial');
+                $modal->addInlineStyle('display', 'block');
+                $modal->addOption('show');
+                $element->setTag('div');
+                $element->setEvent(null);
+                $modal->getModalBody()->setContent($this->translate('delete_bulk.message'));
+                $button = new Button();
+                $button->setId($id . '__confirm');
+                $button->setStyle(Button::STYLE_WARNING);
+                $button->push(new Icon(Icon::ICON_CHECK));
+                $button->setEvent(ViewEvent::createSubmit(null, $id));
+                if ($element->hasName() && $element->hasValue()) {
+                    $element->push(new Hidden($element->getName(), $element->getValue()));
+                }
+                $button->getEvent()->setTargetId($id);
+                $modal->getModalFooter()->push($button);
+                $button = new Button();
+                $button->setId($id . '__cancel');
+                $button->setStyle(Button::STYLE_SECONDARY);
+                $button->push(new Icon(Icon::ICON_X));
+                $button->setEvent(ViewEvent::createLink($this->generateRedirectPath(false)));
+                $button->getEvent()->setTargetId($id);
+                $modal->getModalFooter()->push($button);
+                $element->push($modal);
+                $element->removeOption('d-none');
+            }));
             $this->getToolbar()->push($button);
         }
     }

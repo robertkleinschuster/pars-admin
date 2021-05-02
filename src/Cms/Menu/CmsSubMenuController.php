@@ -29,7 +29,7 @@ class CmsSubMenuController extends CmsMenuController
 
     protected function createOverview(): BaseOverview
     {
-        $overview = new CmsSubMenuOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $overview = new CmsSubMenuOverview($this->getTranslator(), $this->getUserBean());
         if (count($this->getModel()->getCmsPage_Options()) == 0) {
             $overview->setShowCreate(false);
         }
@@ -38,14 +38,14 @@ class CmsSubMenuController extends CmsMenuController
 
     protected function createDetail(): BaseDetail
     {
-        $detail = new CmsSubMenuDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $detail = new CmsSubMenuDetail($this->getTranslator(), $this->getUserBean());
         $detail->setPreviewPath($this->getModel()->generatePreviewPath());
         return $detail;
     }
 
     protected function createEdit(): BaseEdit
     {
-        $edit = new CmsSubMenuEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = new CmsSubMenuEdit($this->getTranslator(), $this->getUserBean());
         $edit->setStateOptions($this->getModel()->getCmsMenuState_Options());
         $edit->setPageOptions($this->getModel()->getCmsPage_Options());
         return $edit;
@@ -53,6 +53,6 @@ class CmsSubMenuController extends CmsMenuController
 
     protected function createDelete(): BaseDelete
     {
-        return new CmsMenuDelete($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        return new CmsMenuDelete($this->getTranslator(), $this->getUserBean());
     }
 }
