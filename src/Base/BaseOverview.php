@@ -194,7 +194,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
                 $modal->getModalBody()->setContent($this->translate('delete_bulk.message'));
                 $button = new Button();
                 $button->setId($id . '__confirm');
-                $button->setStyle(Button::STYLE_WARNING);
+                $button->setStyle(Button::STYLE_DANGER);
                 $button->push(new Icon(Icon::ICON_CHECK));
                 $button->setEvent(ViewEvent::createSubmit(null, $id));
                 if ($element->hasName() && $element->hasValue()) {
