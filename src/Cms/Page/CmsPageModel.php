@@ -189,7 +189,7 @@ class CmsPageModel extends ArticleModel
                 $pageList->push($page);
 
                 $processor = new CmsPageBeanProcessor($this->getDbAdpater());
-                $processor->setTranslator($this->getTranslator());
+                $processor->setTranslator($this->getTranslator()->getTranslator());
                 $processor->setBeanList($pageList);
                 $processor->save();
                 $this->getDbAdpater()->getDriver()->getConnection()->commit();

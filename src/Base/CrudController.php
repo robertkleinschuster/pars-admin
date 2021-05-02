@@ -457,6 +457,7 @@ abstract class CrudController extends BaseController
     public function createAction()
     {
         $edit = $this->createEdit();
+        $edit->getForm()->setAction($this->getPathHelper(true)->getPath());
         $this->injectContext($edit);
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $edit->setBean($this->getModel()->getEmptyBean($this->getPreviousAttributes()));

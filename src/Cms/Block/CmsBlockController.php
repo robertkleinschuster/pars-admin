@@ -79,16 +79,14 @@ class CmsBlockController extends ArticleController
                 $this->pushAction(
                     'articledata',
                     'index',
-                    $this->translate('section.data.contact'),
-                    self::SUB_ACTION_MODE_TABBED
+                    $this->translate('section.data.contact')
                 );
                 break;
             case 'poll':
                 $this->pushAction(
                     'articledata',
                     'index',
-                    $this->translate('section.data.poll'),
-                    self::SUB_ACTION_MODE_TABBED
+                    $this->translate('section.data.poll')
                 );
                 break;
         }

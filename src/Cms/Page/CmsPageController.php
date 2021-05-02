@@ -84,30 +84,26 @@ class CmsPageController extends ArticleController
         $this->pushAction(
             'cmspost',
             'index',
-            $this->translate('section.post'),
-            self::SUB_ACTION_MODE_TABBED
+            $this->translate('section.post')
         );
         $this->pushAction(
             'cmspageblock',
             'index',
-            $this->translate('section.block'),
-            self::SUB_ACTION_MODE_TABBED
+            $this->translate('section.block')
         );
         switch ($detail->getBean()->get('CmsPageType_Code')) {
             case 'contact':
                 $this->pushAction(
                     'articledata',
                     'index',
-                    $this->translate('section.data.contact'),
-                    self::SUB_ACTION_MODE_TABBED
+                    $this->translate('section.data.contact')
                 );
                 break;
             case 'poll':
                 $this->pushAction(
                     'articledata',
                     'index',
-                    $this->translate('section.data.poll'),
-                    self::SUB_ACTION_MODE_TABBED
+                    $this->translate('section.data.poll')
                 );
                 break;
         }
@@ -169,13 +165,13 @@ class CmsPageController extends ArticleController
      * @return CmsPageImport
      * @throws AttributeExistsException
      * @throws AttributeLockException
-     * @throws AttributeNotFoundException
      * @throws BeanException
      * @throws MvcException
      */
     public function importAction()
     {
         $edit = new CmsPageImport($this->getTranslator(), $this->getUserBean());
+        $edit->getForm()->setAction($this->getPathHelper(true)->getPath());
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $edit->setBean($this->getModel()->getEmptyBean($this->getPreviousAttributes()));
         $this->getModel()->getBeanConverter()
