@@ -182,7 +182,6 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
                 $this->getMain()->setId($id);
             }
             $button->setId($id . '__confirm_delete');
-            $button->addOption('d-none');
             $button->setEvent(ViewEvent::createCallback(function (DeleteBulkButton $element) use ($id) {
                 $modal = new Modal();
                 $modal->addInlineStyle('color', 'initial');
@@ -191,6 +190,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
                 $element->setTag('div');
                 $element->setEvent(null);
                 $modal->getModalBody()->setContent($this->translate('delete_bulk.message'));
+                $modal->getModalTitle()->setContent($this->translate('delete_bulk.title'));
                 $button = new Button();
                 $button->setId($id . '__confirm');
                 $button->setStyle(Button::STYLE_DANGER);
@@ -549,14 +549,23 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
                 if ($orgiginalOrder->hasField() && $orgiginalOrder->getField() == $name) {
                     $field->setLabel($field->getLabel() . ' &darr;');
                 }
-            } else {
-                $order->setMode(OrderParameter::MODE_ASC);
+                $order->setField($name);
+                $path->addParameter($order);
+            } elseif ( $orgiginalOrder->hasMode()
+                && $orgiginalOrder->getMode() == OrderParameter::MODE_DESC) {
                 if ($orgiginalOrder->hasField() && $orgiginalOrder->getField() == $name) {
                     $field->setLabel($field->getLabel() . ' &uarr;');
                 }
+                $path->getOrder()->clear();
+            } else {
+                $order->setMode(OrderParameter::MODE_ASC);
+                if ($orgiginalOrder->hasField() && $orgiginalOrder->getField() == $name) {
+                    $field->setLabel($field->getLabel());
+                }
+                $order->setField($name);
+                $path->addParameter($order);
             }
-            $order->setField($name);
-            $path->addParameter($order);
+
             $field->setLabelPath($path->getPath());
         }
         return $field;

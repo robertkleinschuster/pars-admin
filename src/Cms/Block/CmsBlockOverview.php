@@ -13,8 +13,7 @@ class CmsBlockOverview extends ArticleOverview
         $this->setName($this->translate('section.block'));
     }
 
-
-    protected function initialize()
+    protected function initFields()
     {
         $span = new Badge('{CmsBlockState_Code}');
         $span->setFormat(new CmsBlockStateFieldFormat($this->getTranslator()));
@@ -23,8 +22,7 @@ class CmsBlockOverview extends ArticleOverview
             $span->addOption(Span::OPTION_DECORATION_NONE);
         }
         $this->pushField($span);
-
-        parent::initialize();
+        parent::initFields();
 
         $span = $this->addFieldOrderable('CmsBlockType_Code', $this->translate('cmsblocktype.code'));
         $span->setFormat(new CmsBlockTypeFieldFormat($this->getTranslator()));

@@ -379,4 +379,5 @@ return [
     'update.version.current' => 'Aktuelle Version',
     'update.version.available' => 'Verfügbare Version',
     'update.version.start' => 'Update starten',
+    'delete_bulk.title' => 'Sicherheitsabfrage',
 ];
