@@ -96,6 +96,7 @@ abstract class CrudController extends BaseController
      * @throws AttributeLockException
      * @throws AttributeNotFoundException
      * @throws BeanException
+     * @throws MvcException
      * @throws NotFoundException
      */
     public function indexAction()
@@ -133,7 +134,6 @@ abstract class CrudController extends BaseController
      * @param Overview $overview
      * @throws AttributeExistsException
      * @throws AttributeLockException
-     * @throws AttributeNotFoundException
      */
     protected function initFilter(Overview $overview)
     {
