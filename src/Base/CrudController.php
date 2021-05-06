@@ -21,6 +21,7 @@ use Pars\Helper\Parameter\PaginationParameter;
 use Pars\Helper\Parameter\SearchParameter;
 use Pars\Mvc\Exception\MvcException;
 use Pars\Mvc\Exception\NotFoundException;
+use Pars\Mvc\View\Event\ViewEvent;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
 use Pars\Pattern\Exception\AttributeNotFoundException;
@@ -142,6 +143,7 @@ abstract class CrudController extends BaseController
                 . $this->getControllerRequest()->getAction();
             $this->getFilter()->setId($id);
             $this->getFilter()->getCollapsable()->setTitle($this->translate('admin.filter'));
+            $submitEvent = ViewEvent::createSubmit(null,  "{$id}_form");
             $this->getFilter()->getForm()->addSubmit(
                 '',
                 $this->translate('admin.filter.apply'),
@@ -150,7 +152,7 @@ abstract class CrudController extends BaseController
                 null,
                 10,
                 1
-            );
+            )->getInput()->setEvent($submitEvent);
             $resetPath = $this->getPathHelper(true);
             $resetPath->getFilter()->clear();
             $resetPath->getSearch()->clear();
@@ -162,8 +164,7 @@ abstract class CrudController extends BaseController
                 null,
                 10,
                 2
-            )->getInput()->setPath($resetPath->getPath());
-            #$overview->getToolbar()->push($this->getFilter()->getButton());
+            )->getInput()->setPath($resetPath->getPath())->setEvent(ViewEvent::createLink($resetPath->getPath()));
             $overview->getBefore()->push($this->getFilter());
         }
     }

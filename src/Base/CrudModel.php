@@ -3,13 +3,13 @@
 namespace Pars\Admin\Base;
 
 use Pars\Bean\Type\Base\BeanException;
-use Pars\Pattern\Exception\AttributeExistsException;
-use Pars\Pattern\Exception\AttributeLockException;
-use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Helper\Parameter\PaginationParameter;
 use Pars\Model\Article\Translation\ArticleTranslationBean;
 use Pars\Model\Authentication\User\UserBean;
 use Pars\Model\Authentication\User\UserBeanFinder;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
+use Pars\Pattern\Exception\AttributeNotFoundException;
 
 /**
  * Class CrudModel
@@ -29,9 +29,13 @@ abstract class CrudModel extends BaseModel
      */
     public function getUserById(int $personID): UserBean
     {
-        $userFinder = new UserBeanFinder($this->getDbAdpater());
-        $userFinder->setPerson_ID($personID);
-        return $userFinder->getBean();
+        static $userBeans = [];
+        if (!isset($userBeans[$personID])) {
+            $userFinder = new UserBeanFinder($this->getDbAdpater());
+            $userFinder->setPerson_ID($personID);
+            $userBeans[$personID] = $userFinder->getBean();
+        }
+        return $userBeans[$personID];
     }
 
     /**
@@ -50,18 +54,18 @@ abstract class CrudModel extends BaseModel
     }
 
     /**
-    * @return int
-    */
+     * @return int
+     */
     public function getCurrentPage(): int
     {
         return $this->currentPage;
     }
 
     /**
-    * @param int $currentPage
-    *
-    * @return $this
-    */
+     * @param int $currentPage
+     *
+     * @return $this
+     */
     public function setCurrentPage(int $currentPage): self
     {
         $this->currentPage = $currentPage;
@@ -69,8 +73,8 @@ abstract class CrudModel extends BaseModel
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasCurrentPage(): bool
     {
         return isset($this->currentPage);
@@ -96,12 +100,12 @@ abstract class CrudModel extends BaseModel
             return 'https://'
                 . $bean->get('ArticleTranslation_Host')
                 . '/'
-                .  $this->getUserBean()->getLocale()->getUrl_Code()
+                . $this->getUserBean()->getLocale()->getUrl_Code()
                 . "/$code?clearcache=$key";
         } else {
             return $this->getConfig('frontend.domain')
                 . '/'
-                .  $this->getUserBean()->getLocale()->getUrl_Code()
+                . $this->getUserBean()->getLocale()->getUrl_Code()
                 . "/$code?clearcache=$key";
         }
     }

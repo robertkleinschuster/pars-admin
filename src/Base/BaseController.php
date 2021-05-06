@@ -96,7 +96,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             $script->setContent('window.debug = true');
             $layout->getContainer()->push($script);
             if ($this->getControllerRequest()->isAjax()) {
-                $this->getLogger()->notice('EVENT', $this->getControllerRequest()->getEvent()->toArray());
+                $this->getLogger()->debug('EVENT', $this->getControllerRequest()->getEvent()->toArray());
             }
         }
         $this->getView()->set('baseUrl', $this->getPathHelper()->getBaseUrl());
@@ -512,7 +512,16 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 . ' ms'
             );
             foreach ($profiles as $profile) {
-                $alert->addBlock($profile['trace'] . $profile['sql'] . "<br>{$profile['elapse']} ms");
+                $sql = $profile['sql'];
+                $sql = str_replace('FROM', '<br>FROM', $sql);
+                $sql = str_replace('LEFT JOIN', '<br>LEFT JOIN', $sql);
+                $sql = str_replace('INNER JOIN', '<br>INNER JOIN', $sql);
+                $sql = str_replace('WHERE', '<br>WHERE', $sql);
+                $sql = str_replace('AND', '<br>AND', $sql);
+                $sql = str_replace('LIMIT', '<br>LIMIT', $sql);
+                $sql = str_replace('ORDER BY', '<br>ORDER BY', $sql);
+
+                $alert->addCodeblock($profile['trace'] . $sql . "<br>{$profile['elapse']} ms")->addOption('text-wrap');
             }
             $group->getJumbotron()->setContent($alert->render());
             $this->getView()->unshiftComponent($collapsable);

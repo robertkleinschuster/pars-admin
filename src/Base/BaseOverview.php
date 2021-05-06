@@ -10,7 +10,6 @@ use Pars\Component\Base\Modal\Modal;
 use Pars\Component\Base\Overview\DeleteButton;
 use Pars\Component\Base\Overview\EditButton;
 use Pars\Component\Base\Overview\Overview;
-use Pars\Component\Base\Toolbar\BulkButton;
 use Pars\Component\Base\Toolbar\CreateButton;
 use Pars\Component\Base\Toolbar\CreateNewButton;
 use Pars\Component\Base\Toolbar\DeleteBulkButton;
@@ -196,7 +195,11 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
                 $button->setId($id . '__confirm');
                 $button->setStyle(Button::STYLE_DANGER);
                 $button->push(new Icon(Icon::ICON_CHECK));
-                $button->setEvent(ViewEvent::createSubmit(null, $id));
+                $path = null;
+                if ($this->getMain()->hasAttribute('action')) {
+                    $path = $this->getMain()->getAttribute('action');
+                }
+                $button->setEvent(ViewEvent::createSubmit($path, $id));
                 if ($element->hasName() && $element->hasValue()) {
                     $element->push(new Hidden($element->getName(), $element->getValue()));
                 }
@@ -206,7 +209,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
                 $button->setId($id . '__cancel');
                 $button->setStyle(Button::STYLE_SECONDARY);
                 $button->push(new Icon(Icon::ICON_X));
-                $button->setEvent(ViewEvent::createLink($this->generateRedirectPath(false)));
+                $button->setEvent(ViewEvent::createLink());
                 $button->getEvent()->setTargetId($id);
                 $modal->getModalFooter()->push($button);
                 $element->push($modal);
@@ -544,12 +547,12 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             ) {
                 $order->setMode(OrderParameter::MODE_DESC);
                 if ($orgiginalOrder->hasField() && $orgiginalOrder->getField() == $name) {
-                    $field->setLabel($field->getLabel() . ' &uarr;');
+                    $field->setLabel($field->getLabel() . ' &darr;');
                 }
             } else {
                 $order->setMode(OrderParameter::MODE_ASC);
                 if ($orgiginalOrder->hasField() && $orgiginalOrder->getField() == $name) {
-                    $field->setLabel($field->getLabel() . ' &darr;');
+                    $field->setLabel($field->getLabel() . ' &uarr;');
                 }
             }
             $order->setField($name);
