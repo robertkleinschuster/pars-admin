@@ -87,7 +87,7 @@ class ArticleDataController extends CrudController
         if ($this->hasParent() && $this->getParent()->hasView()) {
             $parentBean = $this->getParent()->getModel()->getBean();
             $this->getModel()->getBeanFinder()->filter(['Article_ID' => $parentBean->get('Article_ID')]);
-            $overview->set('parent', $parentBean);
+            $overview->set('parentBean', $parentBean);
         }
         return $overview;
     }
