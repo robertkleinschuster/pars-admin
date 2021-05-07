@@ -20,6 +20,7 @@ class SigninForm extends Form
 
     protected function initialize()
     {
+        $this->setUseColumns(false);
         $this->setBackground(Form::BACKGROUND_LIGHT);
         $this->setShadow(Form::SHADOW_LARGE);
         $this->setColor(Form::COLOR_DARK);
@@ -34,8 +35,8 @@ class SigninForm extends Form
         $icon->addOption('mx-auto');
         $icon->addOption('mb-3');
         $this->push($icon);
-        $username = $this->addText('login_username', '', $this->translate('login.username'), 1);
-        $password = $this->addPassword('login_password', '', $this->translate('login.password'), 2);
+        $username = $this->addText('login_username', '', $this->translate('login.username'));
+        $password = $this->addPassword('login_password', '', $this->translate('login.password'));
         if ($this->hasError()) {
             $alert = new Alert();
             $alert->setHeading($this->translate('login.error'));
@@ -52,8 +53,7 @@ class SigninForm extends Form
             $this->translate('login.submit'),
             'sigin',
             Submit::STYLE_SUCCESS,
-            null,
-            3
+            null
         )->getInput()->setEvent(null);
 
         parent::initialize();
