@@ -605,7 +605,7 @@ abstract class CrudController extends BaseController
     protected function addFilter_Select(
         string $field,
         string $label,
-        array $options,
+        array $options
     ): self
     {
         $parameter = new FilterParameter();
@@ -635,7 +635,7 @@ abstract class CrudController extends BaseController
      * @throws AttributeLockException
      * @throws AttributeNotFoundException
      */
-    protected function addFilter_Search(string $label, int $row = 1, int $column = 1): self
+    protected function addFilter_Search(string $label): self
     {
         $parameter = new SearchParameter();
         $value = '';
@@ -660,7 +660,7 @@ abstract class CrudController extends BaseController
      * @throws AttributeLockException
      * @throws AttributeNotFoundException
      */
-    protected function addFilter_Checkbox(string $field, string $label, int $row = 1, int $column = 1): self
+    protected function addFilter_Checkbox(string $field, string $label): self
     {
         $parameter = new FilterParameter();
         $value = '';
