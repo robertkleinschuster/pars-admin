@@ -14,20 +14,19 @@ class CmsPostDetail extends ArticleDetail
      */
     protected function initFields()
     {
+        parent::initFields();
         $span = new Badge('{CmsPostState_Code}');
         $span->setLabel($this->translate('cmspoststate.code'));
         $span->setFormat(new CmsPostStateFieldFormat($this->getTranslator()));
-        $this->append($span, 2, 1);
+        $span->setGroup($this->translate('article.group.visibility'));
+        $this->pushField($span);
         $span = new Span('{CmsPostType_Code}', $this->translate('cmsposttype.code'));
         $span->setFormat(new CmsPostTypeFieldFormat($this->getTranslator()));
-        $this->append($span, 2, 2);
-        $this->addField(
-            'CmsPost_PublishTimestamp',
-            $this->translate('cmspost.publishtimestamp'),
-            3,
-            1
-        )->setFormat(new CmsPostPublishTimestampFieldFormat());
-        parent::initFields();
+        $span->setGroup($this->translate('article.group.general'));
+        $this->pushField($span);
+        $span = $this->addSpan('CmsPost_PublishTimestamp', $this->translate('cmspost.publishtimestamp'));
+        $span->setFormat(new CmsPostPublishTimestampFieldFormat());
+        $span->setGroup($this->translate('article.group.visibility'));
     }
 
 

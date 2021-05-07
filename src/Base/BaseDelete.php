@@ -17,24 +17,24 @@ abstract class BaseDelete extends Delete implements CrudComponentInterface
 
     public ?string $token = null;
 
-    /**
-     * @throws AttributeExistsException
-     * @throws AttributeLockException
-     */
-    protected function initialize()
+    protected function initBase()
     {
+        parent::initBase();
         $this->setHeading($this->translate('delete.heading'));
         $this->setText($this->translate('delete.text'));
-        parent::initialize();
+    }
+
+
+    protected function initFields()
+    {
+        parent::initFields();
         $form = new Form();
         $form->addSubmit(
             SubmitParameter::name(),
             $this->translate('delete.submit'),
             SubmitParameter::delete(),
             Submit::STYLE_DANGER,
-            null,
-            1,
-            2
+            null
         );
         $form->addHidden(SubmitParameter::name(), SubmitParameter::delete());
         $form->addCancel($this->translate('delete.cancel'), $this->generateIndexPath());
@@ -43,6 +43,13 @@ abstract class BaseDelete extends Delete implements CrudComponentInterface
             $form->addHidden('submit_token', $this->getToken());
         }
         $this->push($form);
+    }
+
+
+    protected function initName()
+    {
+        parent::initName();
+        $this->setName($this->translate('delete.title'));
     }
 
 

@@ -22,14 +22,14 @@ class UserDetail extends BaseDetail
     protected function initialize()
     {
         $this->setHeading('{Person_Firstname} {Person_Lastname}');
-        $this->addField('User_Username', $this->translate('user.username'));
-        $this->addField('User_Displayname', $this->translate('user.displayname'));
-        $this->addField('User_LastLogin', $this->translate('user.lastlogin'));
-        $this->addField('Locale_Name', $this->translate('user.locale'));
+        $this->addSpan('User_Username', $this->translate('user.username'));
+        $this->addSpan('User_Displayname', $this->translate('user.displayname'));
+        $this->addSpan('User_LastLogin', $this->translate('user.lastlogin'));
+        $this->addSpan('Locale_Name', $this->translate('user.locale'));
         $state = new Badge('{UserState_Code}');
         $state->setLabel('Status');
         $state->setFormat(new UserStateFieldFormat($this->getTranslator()));
-        $this->append($state);
+        $this->pushField($state);
 
         parent::initialize();
     }

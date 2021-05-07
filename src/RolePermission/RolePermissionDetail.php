@@ -9,9 +9,9 @@ class RolePermissionDetail extends BaseDetail
 {
     protected function initialize()
     {
-        $this->addField('UserPermission_Code', $this->translate('userpermission.code'));
-        $this->append((new Span(null, $this->translate('userpermission.description')))->setFormat(new RolePermissionDescriptionFieldFormat($this->getTranslator())));
-        $this->addField('UserPermission_Code', $this->translate('userpermission.code'));
+        $this->addSpan('UserPermission_Code', $this->translate('userpermission.code'));
+        $this->pushField((new Span(null, $this->translate('userpermission.description')))->setFormat(new RolePermissionDescriptionFieldFormat($this->getTranslator())));
+        $this->addSpan('UserPermission_Code', $this->translate('userpermission.code'));
         $this->setShowEdit(false);
         parent::initialize();
     }

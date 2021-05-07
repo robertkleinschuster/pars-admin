@@ -11,10 +11,10 @@ class ApiKeyDetail extends BaseDetail
     protected function initialize()
     {
         $this->setName('{ApiKey_Name}');
-        $this->addField('ApiKey_Name', $this->translate('apikey.name'));
-        $this->addField('ApiKey_Key', $this->translate('apikey.key'));
-        $this->addField('ApiKey_Host', $this->translate('apikey.host'));
-        $this->addField('ApiKey_Active', $this->translate('apikey.active'));
+        $this->addSpan('ApiKey_Name', $this->translate('apikey.name'));
+        $this->addSpan('ApiKey_Key', $this->translate('apikey.key'));
+        $this->addSpan('ApiKey_Host', $this->translate('apikey.host'));
+        $this->addSpan('ApiKey_Active', $this->translate('apikey.active'));
         parent::initialize();
     }
 

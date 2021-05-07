@@ -172,7 +172,7 @@ class IndexController extends BaseController
         }
 
         if ($span->getElementList()->count()) {
-            $detail->append($span);
+            $detail->pushField($span);
         }
 
         $group = new Group();
@@ -204,7 +204,7 @@ class IndexController extends BaseController
         foreach ($articleDataFinder->getBeanListDecorator() as $item) {
             $data = $item->get('ArticleData_Data');
             if (isset($data['email'])) {
-                $messages->addField('', empty($data['name']) ? $data['email'] : $data['name'] . ' - ' . $data['email'])->setContent(empty($data['subject']) ? $data['message'] : $data['subject'])->setPath(
+                $messages->addSpan('', empty($data['name']) ? $data['email'] : $data['name'] . ' - ' . $data['email'])->setContent(empty($data['subject']) ? $data['message'] : $data['subject'])->setPath(
                     $this->getPathHelper()->setController('articledata')->setAction('detail')->setId((new IdParameter())->addId('ArticleData_ID', $item->get('ArticleData_ID')))
                         ->addParameter(ContextParameter::fromPath($this->getPathHelper(true)->getPath()))->getPath()
                 );

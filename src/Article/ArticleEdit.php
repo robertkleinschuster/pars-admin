@@ -40,7 +40,8 @@ abstract class ArticleEdit extends BaseEdit
                 'Article_Code',
                 '{Article_Code}',
                 $this->translate('article.code')
-            )->setHint($this->translate('article.code.hint'));
+            )->setHint($this->translate('article.code.hint'))
+            ->setGroup($this->translate('article.group.general'));
         }
     }
 
@@ -64,67 +65,57 @@ abstract class ArticleEdit extends BaseEdit
             $this->getForm()->addWysiwyg(
                 'ArticleTranslation_Text',
                 '{ArticleTranslation_Text}',
-                $this->translate('articletranslation.text'),
-                32
-            )->setHint($this->translate('articletranslation.text.hint'));
+                $this->translate('articletranslation.text')
+            )->setHint($this->translate('articletranslation.text.hint'))
+                ->setGroup($this->translate('article.group.text'));
             $this->getForm()->addWysiwyg(
                 'ArticleTranslation_Teaser',
                 '{ArticleTranslation_Teaser}',
-                $this->translate('articletranslation.teaser'),
-                33
-            );
+                $this->translate('articletranslation.teaser')
+            )->setGroup($this->translate('article.group.meta'));
             $this->getForm()->addWysiwyg(
                 'ArticleTranslation_Footer',
                 '{ArticleTranslation_Footer}',
-                $this->translate('articletranslation.footer'),
-                34
-            );
+                $this->translate('articletranslation.footer')
+            )->setGroup($this->translate('article.group.meta_text'));
         } else {
             $this->getForm()->addText(
                 'ArticleTranslation_Name',
                 '{ArticleTranslation_Name}',
-                $this->translate('articletranslation.name'),
-                30
-            );
+                $this->translate('articletranslation.name')
+            )->setGroup($this->translate('article.group.general'));
             $this->getForm()->addText(
                 'ArticleTranslation_Title',
                 '{ArticleTranslation_Title}',
-                $this->translate('articletranslation.title'),
-                30,
-                2
-            );
-            $this->getForm()->addText(
-                'ArticleTranslation_Heading',
-                '{ArticleTranslation_Heading}',
-                $this->translate('articletranslation.heading'),
-                31
-            );
-            $this->getForm()->addText(
-                'ArticleTranslation_SubHeading',
-                '{ArticleTranslation_SubHeading}',
-                $this->translate('articletranslation.subheading'),
-                31,
-                2
-            );
-            $this->getForm()->addWysiwyg(
-                'ArticleTranslation_Teaser',
-                '{ArticleTranslation_Teaser}',
-                $this->translate('articletranslation.teaser'),
-                32
-            );
-            $this->getForm()->addWysiwyg(
-                'ArticleTranslation_Text',
-                '{ArticleTranslation_Text}',
-                $this->translate('articletranslation.text'),
-                33
-            )->setHint($this->translate('articletranslation.text.hint'));
+                $this->translate('articletranslation.title')
+            )->setGroup($this->translate('article.group.meta'));
             $this->getForm()->addWysiwyg(
                 'ArticleTranslation_Footer',
                 '{ArticleTranslation_Footer}',
-                $this->translate('articletranslation.footer'),
-                32,
-                2
-            );
+                $this->translate('articletranslation.footer')
+            )->setGroup($this->translate('article.group.meta_text'));
+            $this->getForm()->addText(
+                'ArticleTranslation_Heading',
+                '{ArticleTranslation_Heading}',
+                $this->translate('articletranslation.heading')
+            )->setGroup($this->translate('article.group.heading'));
+            $this->getForm()->addText(
+                'ArticleTranslation_SubHeading',
+                '{ArticleTranslation_SubHeading}',
+                $this->translate('articletranslation.subheading')
+            )->setGroup($this->translate('article.group.heading'));
+            $this->getForm()->addWysiwyg(
+                'ArticleTranslation_Teaser',
+                '{ArticleTranslation_Teaser}',
+                $this->translate('articletranslation.teaser')
+            )->setGroup($this->translate('article.group.meta_text'));
+            $this->getForm()->addWysiwyg(
+                'ArticleTranslation_Text',
+                '{ArticleTranslation_Text}',
+                $this->translate('articletranslation.text')
+            )->setHint($this->translate('articletranslation.text.hint'))
+                ->setGroup($this->translate('article.group.text'));
+
         }
 
     }
@@ -138,47 +129,44 @@ abstract class ArticleEdit extends BaseEdit
             $this->getForm()->addText(
                 'ArticleTranslation_Code',
                 '{ArticleTranslation_Code}',
-                $this->translate('articletranslation.code'),
-                2
-            )->setHint($this->translate('articletranslation.code.hint'));
+                $this->translate('articletranslation.code')
+            )->setHint($this->translate('articletranslation.code.hint'))
+                ->setGroup($this->translate('article.group.meta'));
             if ($this->hasDomain_List()) {
                 $options = array_combine($this->getDomain_List(), $this->getDomain_List());
                 $this->getForm()->addSelect(
                     'ArticleTranslation_Host',
                     $options,
                     '{ArticleTranslation_Host}',
-                    $this->translate('articletranslation.host'),
-                    2,
-                    2
-                )->setHint($this->translate('articletranslation.host.hint'));
+                    $this->translate('articletranslation.host')
+                )->setHint($this->translate('articletranslation.host.hint'))
+                    ->setGroup($this->translate('article.group.general'));
             } else {
                 $this->getForm()->addText(
                     'ArticleTranslation_Host',
                     '{ArticleTranslation_Host}',
-                    $this->translate('articletranslation.host'),
-                    2,
-                    2
-                )->setHint($this->translate('articletranslation.host.hint'));
+                    $this->translate('articletranslation.host')
+                )->setHint($this->translate('articletranslation.host.hint'))
+                    ->setGroup($this->translate('article.group.general'));
             }
 
             $this->getForm()->addCheckbox(
                 'ArticleTranslation_Active',
                 '{ArticleTranslation_Active}',
-                $this->translate('articletranslation.active'),
-                3
-            );
+                $this->translate('articletranslation.active')
+            )->setGroup($this->translate('article.group.visibility'));
             $this->getForm()->addText(
                 'ArticleTranslation_Keywords',
                 '{ArticleTranslation_Keywords}',
-                $this->translate('articletranslation.keywords'),
-                34
-            )->setHint($this->translate('articletranslation.keywords.hint'));
+                $this->translate('articletranslation.keywords')
+            )->setHint($this->translate('articletranslation.keywords.hint'))
+                ->setGroup($this->translate('article.group.meta'));
             $this->getForm()->addUrl(
                 'ArticleTranslation_Path',
                 '{ArticleTranslation_Path}',
-                $this->translate('articletranslation.path'),
-                35
-            )->setHint($this->translate('articletranslation.path.hint'));
+                $this->translate('articletranslation.path')
+            )->setHint($this->translate('articletranslation.path.hint'))
+                ->setGroup($this->translate('article.group.additional'));
             if ($this->hasFileBeanList()) {
                 $fileSelect = new FileSelect();
                 $fileSelect->addFile($this->translate('noselection'), null);
@@ -189,7 +177,7 @@ abstract class ArticleEdit extends BaseEdit
                         '/u/' . $file->get('FileDirectory_Code')
                     );
                 }
-                $this->getForm()->addFileSelect('File_ID', $fileSelect, '{File_ID}', $this->translate('file.id'), 36, 1)
+                $this->getForm()->addFileSelect('File_ID', $fileSelect, '{File_ID}', $this->translate('file.id'))
                     ->setHint($this->translate('file.id.hint'));
             }
         }

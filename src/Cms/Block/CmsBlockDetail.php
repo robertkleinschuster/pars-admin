@@ -15,14 +15,16 @@ class CmsBlockDetail extends ArticleDetail
      */
     protected function initFields()
     {
+        parent::initFields();
         $span = new Badge('{CmsBlockState_Code}');
         $span->setLabel($this->translate('cmsblockstate.code'));
         $span->setFormat(new CmsBlockStateFieldFormat($this->getTranslator()));
-        $this->append($span, 2, 1);
+        $span->setGroup($this->translate('article.group.visibility'));
+        $this->pushField($span);
         $span = new Span('{CmsBlockType_Code}', $this->translate('cmsblocktype.code'));
         $span->setFormat(new CmsBlockTypeFieldFormat($this->getTranslator()));
-        $this->append($span, 2, 2);
-        parent::initFields();
+        $span->setGroup($this->translate('article.group.general'));
+        $this->pushField($span);
     }
 
     /**

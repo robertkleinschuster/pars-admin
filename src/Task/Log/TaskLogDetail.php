@@ -26,7 +26,7 @@ class TaskLogDetail extends BaseDetail
     {
         parent::initFields();
 
-        $this->addField('TaskLog_Text', $this->translate('tasklog.text'));
+        $this->addSpan('TaskLog_Text', $this->translate('tasklog.text'));
     }
 
 

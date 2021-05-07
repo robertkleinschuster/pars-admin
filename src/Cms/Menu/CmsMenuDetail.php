@@ -25,15 +25,19 @@ class CmsMenuDetail extends BaseDetail
         $span = new Badge('{CmsMenuState_Code}');
         $span->setLabel($this->translate('cmsmenustate.code'));
         $span->setFormat(new CmsMenuStateFieldFormat($this->getTranslator()));
-        $this->append($span);
+        $span->setGroup($this->translate('cmsmenu.group.visibility'));
+        $this->pushField($span);
         if ($this->isShowType()) {
             $span = new Span('{CmsMenuType_Code}', $this->translate('cmsmenutype.code'));
             $span->setFormat(new CmsMenuTypeFieldFormat($this->getTranslator()));
-            $this->append($span);
+            $span->setGroup($this->translate('cmsmenu.group.general'));
+            $this->pushField($span);
         }
 
-        $this->addField('Article_Code', $this->translate('article.code'));
-        $this->addField('ArticleTranslation_Code', $this->translate('articletranslation.code'));
+        $span = $this->addSpan('Article_Code', $this->translate('article.code'));
+        $span->setGroup($this->translate('cmsmenu.group.general'));
+        $span = $this->addSpan('ArticleTranslation_Code', $this->translate('articletranslation.code'));
+        $span->setGroup($this->translate('cmsmenu.group.general'));
         parent::initialize();
         if ($this->hasPreviewPath()) {
             $this->getToolbar()->push((new PreviewButton($this->getPreviewPath()))->setTarget('_blank'));

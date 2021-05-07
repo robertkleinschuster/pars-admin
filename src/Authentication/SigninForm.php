@@ -34,8 +34,8 @@ class SigninForm extends Form
         $icon->addOption('mx-auto');
         $icon->addOption('mb-3');
         $this->push($icon);
-        $username = $this->addText('login_username', '', $this->translate('login.username'));
-        $password = $this->addPassword('login_password', '', $this->translate('login.password'));
+        $username = $this->addText('login_username', '', $this->translate('login.username'), 1);
+        $password = $this->addPassword('login_password', '', $this->translate('login.password'), 2);
         if ($this->hasError()) {
             $alert = new Alert();
             $alert->setHeading($this->translate('login.error'));
@@ -53,8 +53,8 @@ class SigninForm extends Form
             'sigin',
             Submit::STYLE_SUCCESS,
             null,
-            2
-        );
+            3
+        )->getInput()->setEvent(null);
 
         parent::initialize();
 

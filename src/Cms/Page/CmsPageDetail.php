@@ -13,17 +13,20 @@ class CmsPageDetail extends ArticleDetail
 
     protected function initFields()
     {
+        parent::initFields();
         $span = new Badge('{CmsPageState_Code}');
         $span->setLabel($this->translate('cmspagestate.code'));
         $span->setFormat(new CmsPageStateFieldFormat($this->getTranslator()));
-        #$this->append($span, 1, 3);
+        $span->setGroup($this->translate('article.group.visibility'));
+        $this->pushField($span);
         $span = new Span('{CmsPageType_Code}', $this->translate('cmspagetype.code'));
         $span->setFormat(new CmsPageTypeFieldFormat($this->getTranslator()));
-        #$this->append($span, 2, 3);
+        $span->setGroup($this->translate('article.group.general'));
+        $this->pushField($span);
         $span = new Span('{CmsPageLayout_Code}', $this->translate('cmspagelayout.code'));
         $span->setFormat(new CmsPageLayoutFieldFormat($this->getTranslator()));
-        #$this->append($span, 3, 3);
-        parent::initFields();
+        $span->setGroup($this->translate('article.group.general'));
+        $this->pushField($span);
 
     }
 

@@ -6,11 +6,6 @@ use Pars\Admin\Cms\Block\CmsBlockDetail;
 
 class CmsPageBlockDetail extends CmsBlockDetail
 {
-    protected function initialize()
-    {
-        parent::initialize();
-    }
-
     protected function getEditIdFields(): array
     {
         return [

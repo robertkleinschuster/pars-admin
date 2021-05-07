@@ -6,6 +6,10 @@ use Pars\Admin\Article\ArticleEdit;
 use Pars\Admin\Base\NotEmptyWarningFieldFormat;
 use Pars\Admin\Base\ValueWarningFieldFormat;
 
+/**
+ * Class CmsPageEdit
+ * @package Pars\Admin\Cms\Page
+ */
 class CmsPageEdit extends ArticleEdit
 {
     protected ?array $pageStateOptions = null;
@@ -18,37 +22,37 @@ class CmsPageEdit extends ArticleEdit
         parent::initialize();
         if (!$this->textOnly && !$this->translationOnly) {
             if ($this->hasLayoutOptions()) {
-                $this->getForm()->addSelect('CmsPageLayout_Code', $this->getLayoutOptions(), '{CmsPageLayout_Code}', $this->translate('cmspagelayout.code'), 10, 1);
+                $this->getForm()->addSelect('CmsPageLayout_Code', $this->getLayoutOptions(), '{CmsPageLayout_Code}', $this->translate('cmspagelayout.code'))
+                    ->setGroup($this->translate('article.group.general'));
             }
             if ($this->hasTypeOptions()) {
-                $this->getForm()->addSelect('CmsPageType_Code', $this->getTypeOptions(), '{CmsPageType_Code}', $this->translate('cmspagetype.code'), 10, 2)->addOption('ajax');
+                $this->getForm()->addSelect('CmsPageType_Code', $this->getTypeOptions(), '{CmsPageType_Code}', $this->translate('cmspagetype.code'))->addOption('ajax')
+                    ->setGroup($this->translate('article.group.general'));
             }
             if ($this->hasStateOptions()) {
-                $this->getForm()->addSelect('CmsPageState_Code', $this->getStateOptions(), '{CmsPageState_Code}', $this->translate('cmspagestate.code'), 10, 3)
-                    ->setFormat(new ValueWarningFieldFormat('CmsPageState_Code', 'inactive'));
+                $this->getForm()->addSelect('CmsPageState_Code', $this->getStateOptions(), '{CmsPageState_Code}', $this->translate('cmspagestate.code'))
+                    ->setFormat(new ValueWarningFieldFormat('CmsPageState_Code', 'inactive'))
+                    ->setGroup($this->translate('article.group.visibility'));
             }
             if ($this->hasRedirectOptions()) {
-                $this->getForm()->addSelect('CmsPage_ID_Redirect', $this->getRedirectOptions(), '{CmsPage_ID_Redirect}', $this->translate('cmspage.id.redirect'), 10, 4)
-                    ->setFormat(new NotEmptyWarningFieldFormat('CmsPage_ID_Redirect'));
+                $this->getForm()->addSelect('CmsPage_ID_Redirect', $this->getRedirectOptions(), '{CmsPage_ID_Redirect}', $this->translate('cmspage.id.redirect'))
+                    ->setFormat(new NotEmptyWarningFieldFormat('CmsPage_ID_Redirect'))
+                    ->setGroup($this->translate('article.group.general'));
             }
             if ($this->hasBean()) {
                 if ($this->getBean()->get('CmsPageType_Code') == 'poll') {
                     $this->getForm()->addCheckbox(
                         'Article_Data[vote_once]',
                         '{Article_Data[vote_once]}',
-                        $this->translate('article.data.vote.once'),
-                        11,
-                        1
-                    );
+                        $this->translate('article.data.vote.once')
+                    )->setGroup($this->translate('article.group.additional'));
                 }
                 if ($this->getBean()->get('CmsPageType_Code') == 'contact') {
                     $this->getForm()->addEmail(
                         'Article_Data[contact_email]',
                         '{Article_Data[contact_email]}',
-                        $this->translate('article.data.contact_email'),
-                        11,
-                        1
-                    )->getInput()->setRequired(true);
+                        $this->translate('article.data.contact_email')
+                    )->setGroup($this->translate('article.group.additional'))->getInput()->setRequired(true);
                 }
             }
         }

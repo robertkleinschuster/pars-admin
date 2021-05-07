@@ -144,6 +144,10 @@ abstract class CrudController extends BaseController
             $this->getFilter()->setId($id);
             $this->getFilter()->getCollapsable()->setTitle($this->translate('admin.filter'));
             $submitEvent = ViewEvent::createSubmit(null,  "{$id}_form");
+            $this->getFilter()->getForm()->addHidden(
+                FilterParameter::nameAttr(FilterParameter::ATTRIBUTE_HASH),
+                $this->getControllerRequest()->getHash()
+            );
             $this->getFilter()->getForm()->addSubmit(
                 '',
                 $this->translate('admin.filter.apply'),
@@ -178,7 +182,7 @@ abstract class CrudController extends BaseController
     protected function injectContext(CrudComponentInterface $component)
     {
         $context = new ContextParameter();
-        $context->setPath($this->getPathHelper(true)->getPath());
+        $context->setPath($this->getControllerRequest()->getCurrentPathReal());
         if (!$this->hasParent() && $component->hasName()) {
             $context->setTitle($component->getName());
         }
@@ -414,24 +418,33 @@ abstract class CrudController extends BaseController
         if ($bean->exists('Person_ID_Create') && !$bean->empty('Person_ID_Create')) {
             if ($bean->get('Person_ID_Create') > 0) {
                 $user = $this->getModel()->getUserById($bean->get('Person_ID_Create'));
-                $metaInfo->append(new Span($user->get('User_Displayname'), $this->translate('user.create')), 1, 1);
+                $span = new Span($user->get('User_Displayname'), $this->translate('user.create'));
+                $span->setGroup('metainfo.group.create');
+                $metaInfo->pushField($span);
             }
         }
         if ($bean->exists('Person_ID_Edit') && !$bean->empty('Person_ID_Edit')) {
             if ($bean->get('Person_ID_Edit') > 0) {
                 $user = $this->getModel()->getUserById($bean->get('Person_ID_Edit'));
-                $metaInfo->append(new Span($user->get('User_Displayname'), $this->translate('user.edit')), 2, 1);
+                $span = new Span($user->get('User_Displayname'), $this->translate('user.edit'));
+                $span->setGroup('metainfo.group.edit');
+                $metaInfo->pushField($span);
+
             }
         }
         if ($bean->exists('Timestamp_Create') && !$bean->empty('Timestamp_Create')) {
             $date = $this->getModel()->getBeanConverter()->convert($bean)->get('Timestamp_Create');
             $date = new DateTime($date);
-            $metaInfo->append(new Span($date->format('d.m.Y H:i:s'), $this->translate('timestamp.create')), 1, 2);
+            $span = new Span($date->format('d.m.Y H:i:s'), $this->translate('timestamp.create'));
+            $span->setGroup('metainfo.group.create');
+            $metaInfo->pushField($span);
         }
         if ($bean->exists('Timestamp_Edit') && !$bean->empty('Timestamp_Edit')) {
             $date = $this->getModel()->getBeanConverter()->convert($bean)->get('Timestamp_Edit');
             $date = new DateTime($date);
-            $metaInfo->append(new Span($date->format('d.m.Y H:i:s'), $this->translate('timestamp.edit')), 2, 2);
+            $span = new Span($date->format('d.m.Y H:i:s'), $this->translate('timestamp.edit'));
+            $span->setGroup('metainfo.group.edit');
+            $metaInfo->pushField($span);
         }
         return $metaInfo;
     }

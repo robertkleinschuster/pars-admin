@@ -125,7 +125,7 @@ class TranslationController extends CrudController
             $detail->setName($this->translate('translation.edit.placeholder'));
             foreach ($this->getView() as $key => $value) {
                 $span = new Span($value, "[{$key}]");
-                $detail->append($span);
+                $detail->pushField($span);
             }
             $this->getView()->pushComponent($detail);
         }
