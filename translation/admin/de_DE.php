@@ -390,4 +390,6 @@ return [
     'user.group.personal' => 'Persönliche Informationen',
     'user.group.login' => 'Anmelde-Informationen',
     'user.group.additional' => 'Zusätzliche Informationen',
+    'metainfo.group.create' => 'Erstellt',
+    'metainfo.group.edit' => 'Bearbeitet',
 ];

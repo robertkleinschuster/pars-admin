@@ -419,7 +419,7 @@ abstract class CrudController extends BaseController
             if ($bean->get('Person_ID_Create') > 0) {
                 $user = $this->getModel()->getUserById($bean->get('Person_ID_Create'));
                 $span = new Span($user->get('User_Displayname'), $this->translate('user.create'));
-                $span->setGroup('metainfo.group.create');
+                $span->setGroup($this->translate('metainfo.group.create'));
                 $metaInfo->pushField($span);
             }
         }
@@ -427,7 +427,7 @@ abstract class CrudController extends BaseController
             if ($bean->get('Person_ID_Edit') > 0) {
                 $user = $this->getModel()->getUserById($bean->get('Person_ID_Edit'));
                 $span = new Span($user->get('User_Displayname'), $this->translate('user.edit'));
-                $span->setGroup('metainfo.group.edit');
+                $span->setGroup($this->translate('metainfo.group.edit'));
                 $metaInfo->pushField($span);
 
             }
@@ -436,14 +436,14 @@ abstract class CrudController extends BaseController
             $date = $this->getModel()->getBeanConverter()->convert($bean)->get('Timestamp_Create');
             $date = new DateTime($date);
             $span = new Span($date->format('d.m.Y H:i:s'), $this->translate('timestamp.create'));
-            $span->setGroup('metainfo.group.create');
+            $span->setGroup($this->translate('metainfo.group.create'));
             $metaInfo->pushField($span);
         }
         if ($bean->exists('Timestamp_Edit') && !$bean->empty('Timestamp_Edit')) {
             $date = $this->getModel()->getBeanConverter()->convert($bean)->get('Timestamp_Edit');
             $date = new DateTime($date);
             $span = new Span($date->format('d.m.Y H:i:s'), $this->translate('timestamp.edit'));
-            $span->setGroup('metainfo.group.edit');
+            $span->setGroup($this->translate('metainfo.group.edit'));
             $metaInfo->pushField($span);
         }
         return $metaInfo;
