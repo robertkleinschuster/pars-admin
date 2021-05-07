@@ -392,4 +392,6 @@ return [
     'user.group.additional' => 'Zusätzliche Informationen',
     'metainfo.group.create' => 'Erstellt',
     'metainfo.group.edit' => 'Bearbeitet',
+    'cmsmenu.group.visibility' => 'Sichtbarkeit',
+    'cmsmenu.group.general' => 'Allgemein',
 ];
