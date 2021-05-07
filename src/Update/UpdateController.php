@@ -72,6 +72,7 @@ class UpdateController extends BaseController
                 ->setController('update')
                 ->setAction('updateversion')
                 ->getPath());
+        $button->addOption(Button::OPTION_DECORATION_NONE);
         $jumbo->pushField($button);
         $this->getView()->pushComponent($jumbo);
     }
