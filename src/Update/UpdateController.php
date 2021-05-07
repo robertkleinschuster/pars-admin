@@ -3,6 +3,7 @@
 namespace Pars\Admin\Update;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\RequestOptions;
 use Pars\Admin\Base\BaseController;
 use Pars\Admin\Base\SystemNavigation;
 use Pars\Component\Base\Field\Button;
@@ -108,7 +109,11 @@ class UpdateController extends BaseController
         $updater = new ParsUpdater($this->getContainer());
         $updater->update();
         $client = new Client();
-        $response = $client->get('https://api.github.com/repos/PARS-Framework/pars-admin/releases/latest');
+        $response = $client->get('https://api.github.com/repos/PARS-Framework/pars-admin/releases/latest',
+            [
+                RequestOptions::CONNECT_TIMEOUT => 20
+            ]
+        );
         $data = json_decode($response->getBody()->getContents(), true);
         $assets = array_filter($data['assets'], function ($asset) {
             return StringHelper::startsWith($asset['name'], 'pars-admin');
