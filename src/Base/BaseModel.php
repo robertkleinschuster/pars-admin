@@ -220,4 +220,11 @@ abstract class BaseModel extends AbstractModel implements
         }
         return null;
     }
+
+    public function repairOrder()
+    {
+        if ($this->hasBeanOrderProcessor()) {
+            $this->getBeanOrderProcessor()->repair($this->getBeanList());
+        }
+    }
 }

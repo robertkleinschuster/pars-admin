@@ -3,8 +3,11 @@
 namespace Pars\Admin\Cms\PageBlock;
 
 use Pars\Admin\Cms\Block\CmsBlockOverview;
-use Pars\Helper\Parameter\IdParameter;
 
+/**
+ * Class CmsPageBlockOverview
+ * @package Pars\Admin\Cms\PageBlock
+ */
 class CmsPageBlockOverview extends CmsBlockOverview
 {
     protected function initialize()
@@ -15,6 +18,7 @@ class CmsPageBlockOverview extends CmsBlockOverview
         $this->setShowOrder(false);
         parent::initialize();
     }
+
 
     protected function getController(): string
     {

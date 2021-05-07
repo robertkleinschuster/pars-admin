@@ -13,7 +13,6 @@ use Pars\Model\Cms\Page\CmsPageBeanFinder;
 use Pars\Model\Cms\PageBlock\CmsPageBlockBeanFinder;
 use Pars\Model\Cms\PageBlock\CmsPageBlockBeanProcessor;
 use Pars\Model\Cms\Block\CmsBlockBeanFinder;
-use Pars\Model\Cms\Block\CmsBlockBeanList;
 use Pars\Mvc\Exception\MvcException;
 
 /**

@@ -9,6 +9,7 @@ use Pars\Component\Base\Form\Hidden;
 use Pars\Component\Base\Modal\Modal;
 use Pars\Component\Base\Overview\DeleteButton;
 use Pars\Component\Base\Overview\EditButton;
+use Pars\Component\Base\Overview\MoveDownButton;
 use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Toolbar\CreateButton;
 use Pars\Component\Base\Toolbar\CreateNewButton;
@@ -43,6 +44,22 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     public bool $showMove = false;
     public bool $showOrder = false;
     public ?string $token = null;
+
+    protected function handleAdditionalAfter()
+    {
+        parent::handleAdditionalAfter();
+        foreach ($this->getFieldList() as $item) {
+            if ($item instanceof MoveDownButton) {
+                $item->setLabel((new Icon(Icon::ICON_REFRESH_CW))->render());
+                $redirect = (new RedirectParameter())
+                    ->setPath($this->getPathHelper(false)->getCurrentPathReal());
+                $item->setLabelPath($this->getPathHelper(false)
+                    ->addParameter($redirect)
+                    ->setController($this->getController())
+                    ->setAction('repairOrder')->getPath());
+            }
+        }
+    }
 
 
     protected function initAdditionalBefore()

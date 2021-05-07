@@ -650,4 +650,9 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             }
         }
     }
+
+    public function repairOrderAction()
+    {
+        $this->getModel()->repairOrder();
+    }
 }
