@@ -123,16 +123,18 @@ class UpdateController extends BaseController
         $asset = reset($assets);
         $download = $asset['browser_download_url'];
         $response = $client->get($download);
-        $file = 'update.zip';
-        file_put_contents($file, $response->getBody());
-        $path = pathinfo(realpath($file), PATHINFO_DIRNAME);
-        $zip = new \ZipArchive();
-        $res = $zip->open($file);
-        if ($res === TRUE) {
-            $zip->extractTo($path);
-            $zip->close();
+        if (PARS_VERSION != 'DEV' && PARS_VERSION != 'CORE') {
+            $file = 'update.zip';
+            file_put_contents($file, $response->getBody());
+            $path = pathinfo(realpath($file), PATHINFO_DIRNAME);
+            $zip = new \ZipArchive();
+            $res = $zip->open($file);
+            if ($res === TRUE) {
+                $zip->extractTo($path);
+                $zip->close();
+            }
+            unlink($file);
         }
-        unlink($file);
         $updater->update();
         $this->getControllerResponse()->setRedirect('/');
     }
