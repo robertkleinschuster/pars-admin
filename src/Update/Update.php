@@ -32,7 +32,8 @@ class Update extends BaseEdit
         ));
         foreach ($previewList as $key => $item) {
             $this->getForm()->addCheckbox($key, '')->setValue('true')
-                ->setLabel($key . ': <br><pre>' . json_encode($item, JSON_PRETTY_PRINT) . '</pre>');
+                ->setLabel('<pre>' . json_encode($item, JSON_PRETTY_PRINT) . '</pre>')
+            ->setGroup($key);
         }
         parent::initialize();
     }
