@@ -5,7 +5,6 @@ namespace Pars\Admin\Base;
 use DateTime;
 use Pars\Bean\Type\Base\BeanException;
 use Pars\Component\Base\Breadcrumb\Breadcrumb;
-use Pars\Component\Base\Collapsable\Collapsable;
 use Pars\Component\Base\Detail\Detail;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Filter\Filter;
@@ -16,7 +15,6 @@ use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Pagination\Pagination;
 use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\FilterParameter;
-use Pars\Helper\Parameter\NavParameter;
 use Pars\Helper\Parameter\PaginationParameter;
 use Pars\Helper\Parameter\SearchParameter;
 use Pars\Mvc\Exception\MvcException;
@@ -143,7 +141,7 @@ abstract class CrudController extends BaseController
                 . $this->getControllerRequest()->getAction();
             $this->getFilter()->setId($id);
             $this->getFilter()->getCollapsable()->setTitle($this->translate('admin.filter'));
-            $submitEvent = ViewEvent::createSubmit(null,  "{$id}_form");
+            $submitEvent = ViewEvent::createSubmit(null, "{$id}_form");
             $this->getFilter()->getForm()->addHidden(
                 FilterParameter::nameAttr(FilterParameter::ATTRIBUTE_HASH),
                 $this->getControllerRequest()->getHash()
@@ -153,9 +151,7 @@ abstract class CrudController extends BaseController
                 $this->translate('admin.filter.apply'),
                 null,
                 Submit::STYLE_PRIMARY,
-                null,
-                10,
-                1
+                null
             )->getInput()->setEvent($submitEvent);
             $resetPath = $this->getPathHelper(true);
             $resetPath->getFilter()->clear();
@@ -165,9 +161,7 @@ abstract class CrudController extends BaseController
                 $this->translate('admin.filter.reset'),
                 null,
                 null,
-                null,
-                10,
-                2
+                null
             )->getInput()->setPath($resetPath->getPath())->setEvent(ViewEvent::createLink($resetPath->getPath()));
             $overview->getBefore()->push($this->getFilter());
         }
@@ -612,8 +606,6 @@ abstract class CrudController extends BaseController
         string $field,
         string $label,
         array $options,
-        int $row = 1,
-        int $column = 1
     ): self
     {
         $parameter = new FilterParameter();
@@ -628,9 +620,7 @@ abstract class CrudController extends BaseController
             $parameter::nameAttr($field),
             $options,
             $value,
-            $label,
-            $row,
-            $column
+            $label
         );
         return $this;
     }
@@ -655,9 +645,7 @@ abstract class CrudController extends BaseController
         $this->getFilter()->getForm()->addText(
             $parameter::getFormKeyText(),
             $value,
-            $label,
-            $row,
-            $column
+            $label
         );
         return $this;
     }
@@ -685,9 +673,7 @@ abstract class CrudController extends BaseController
         $this->getFilter()->getForm()->addCheckbox(
             $parameter::nameAttr($field),
             $value,
-            $label,
-            $row,
-            $column
+            $label
         );
         return $this;
     }

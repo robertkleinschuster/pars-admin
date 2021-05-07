@@ -101,7 +101,7 @@ class UserController extends CrudController
 
     public function passwordAction()
     {
-        $edit = new UserPasswordEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = new UserPasswordEdit($this->getTranslator(), $this->getUserBean());
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $edit->setBean($this->getModel()->getBean());
         $this->getModel()->getBeanConverter()
@@ -112,7 +112,7 @@ class UserController extends CrudController
 
     public function localeAction()
     {
-        $edit = new UserLocaleEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = new UserLocaleEdit($this->getTranslator(), $this->getUserBean());
         $edit->setLocaleOptions($this->getModel()->getLocale_Options());
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $edit->setBean($this->getModel()->getBean());
