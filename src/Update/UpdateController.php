@@ -114,6 +114,7 @@ class UpdateController extends BaseController
                 RequestOptions::CONNECT_TIMEOUT => 20
             ]
         );
+
         $data = json_decode($response->getBody()->getContents(), true);
         $assets = array_filter($data['assets'], function ($asset) {
             return StringHelper::startsWith($asset['name'], 'pars-admin');
