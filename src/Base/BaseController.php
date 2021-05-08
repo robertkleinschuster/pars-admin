@@ -32,6 +32,7 @@ use Pars\Mvc\Controller\AbstractController;
 use Pars\Mvc\Controller\ControllerResponse;
 use Pars\Mvc\Controller\ControllerResponseInjector;
 use Pars\Mvc\View\ComponentInterface;
+use Pars\Mvc\View\Event\ViewEvent;
 use Pars\Mvc\View\ViewBeanConverter;
 use Pars\Mvc\View\ViewElement;
 use Pars\Pattern\Attribute\AttributeAwareInterface;
@@ -87,14 +88,24 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             $navigation->setBackground(Navigation::BACKGROUND_DANGER);
         }
         if ($appConfig->get('debug')) {
-            $navigation->getContainer()->unshift((new Span('DEV'))
-                ->addInlineStyle('font-size', '1.9rem')
+            $devSpan = new Span('DEV');
+            $devSpan->setId('dev-span');
+            $devSpan->setEvent(ViewEvent::createCallback(function () {
+                $this->getSession()->set('debugView', !$this->getSession()->get('debugView', false));
+            }));
+            $devSpan->addInlineStyle('font-size', '1.9rem')
                 ->addInlineStyle('font-weight', 'bolder')
                 ->addInlineStyle('margin-right', '1rem')
-                ->setColor(Span::COLOR_SUCCESS));
+                ->setColor(Span::COLOR_SUCCESS);
+            $navigation->getContainer()->unshift($devSpan);
             $script = new ViewElement('script');
-            $script->setContent('window.debug = true');
+            $script->setContent('window.debug = true;');
             $layout->getContainer()->push($script);
+            if ($this->getSession()->get('debugView')) {
+                $script = new ViewElement('script');
+                $script->setContent('window.debugView = true;');
+                $layout->getContainer()->push($script);
+            }
             if ($this->getControllerRequest()->isAjax()) {
                 $this->getLogger()->debug('EVENT', $this->getControllerRequest()->getEvent()->toArray());
             }
