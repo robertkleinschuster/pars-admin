@@ -33,7 +33,7 @@ class SigninForm extends Form
         $icon->addInlineStyle('max-width', '200px');
         $icon->addInlineStyle('fill', '#343a40');
         $icon->addOption('mx-auto');
-        $icon->addOption('mb-3');
+        $icon->addOption('mb-4');
         $this->push($icon);
         $username = $this->addText('login_username', '', $this->translate('login.username'));
         $password = $this->addPassword('login_password', '', $this->translate('login.password'));

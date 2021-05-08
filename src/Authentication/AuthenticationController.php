@@ -22,6 +22,7 @@ class AuthenticationController extends BaseController
 
     public function loginAction()
     {
+        $this->getSession()->regenerate();
         try {
             $userFinder = new UserBeanFinder($this->getModel()->getDbAdpater());
             $count = $userFinder->count();
@@ -56,7 +57,8 @@ class AuthenticationController extends BaseController
 
     public function logoutAction()
     {
-        $this->getSession()->unset(UserInterface::class);
+        $this->getSession()->clear();
+        $this->getSession()->regenerate();
         return $this->getControllerResponse()->setRedirect($this->getPathHelper()->setController('auth')->setAction('login')->getPath());
     }
 }

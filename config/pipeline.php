@@ -48,7 +48,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // - $app->pipe('/docs', $apiDocMiddleware);
     // - $app->pipe('/files', $filesMiddleware);
 
-    $app->pipe(\Mezzio\Session\SessionMiddleware::class);
+    $app->pipe(\Pars\Core\Session\ParsSessionMiddleware::class);
     $app->pipe(\Mezzio\Flash\FlashMessageMiddleware::class);
     $app->pipe(\Mezzio\Csrf\CsrfMiddleware::class);
 

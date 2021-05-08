@@ -37,7 +37,7 @@ class CmsPageDetail extends ArticleDetail
             (new DownloadButton())
                 ->addOption('noajax')
                 ->setPath(
-                    $this->getPathHelper(true)
+                    $this->getPathHelper(false)
                         ->setAction('export')
                         ->getPath()
                 )
