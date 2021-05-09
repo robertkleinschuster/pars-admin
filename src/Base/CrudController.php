@@ -384,19 +384,19 @@ abstract class CrudController extends BaseController
     public function detailAction()
     {
         $detail = $this->createDetail();
-        $collapsable = $this->createCollapsable('detail', $this->expandCollapse);
-        $collapsable->setTitle($this->translate("showdetails"));
-        $detail->setCollapsable($collapsable);
+        $collapsableDetail = $this->createCollapsable('detail', $this->expandCollapse);
+        $collapsableDetail->setTitle($this->translate("showdetails"));
+        $detail->setCollapsable($collapsableDetail);
         $this->injectContext($detail);
         $bean = $this->getModel()->getBean();
         $detail->setBean($bean);
         $this->getView()->pushComponent($detail);
 
         $metaInfo = $this->initMetaInfo($bean);
-        $collapsable = $this->createCollapsable('metainfo', false);
-        $collapsable->setTitle($this->translate('showmetainfo'));
-        $collapsable->pushComponent($metaInfo);
-        $this->getView()->pushComponent($collapsable);
+        $collapsableMeta = $this->createCollapsable('metainfo', false);
+        $collapsableMeta->setTitle($this->translate('showmetainfo'));
+        $collapsableMeta->pushComponent($metaInfo);
+        $this->getView()->pushComponent($collapsableMeta);
         return $detail;
     }
 

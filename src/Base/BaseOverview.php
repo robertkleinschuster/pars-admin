@@ -194,7 +194,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     {
         if ($this->isShowDeleteBulk()) {
             $button = new DeleteBulkButton(SubmitParameter::name(), SubmitParameter::deleteBulk());
-            $id = md5($this->translate('delete_bulk.message'));
+            $id = 'bulk_delete_' . $this->getController();
             if (!$this->getMain()->hasId()) {
                 $this->getMain()->setId($id);
             }

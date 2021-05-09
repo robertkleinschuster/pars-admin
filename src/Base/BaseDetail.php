@@ -23,11 +23,6 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
     public bool $showBack = true;
     protected ?LocaleBeanList $locale_List = null;
 
-    protected function initialize()
-    {
-        parent::initialize();
-    }
-
     protected function handleAdditionalBefore()
     {
         $this->initBackButton();
