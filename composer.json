@@ -65,7 +65,7 @@
             "yarn install",
             "yarn encore production"
         ],
-        "development": "php bin/development-mode.php",
+        "development": "laminas-development-mode",
         "cs-check": "phpcs",
         "cs-fix": "phpcbf",
         "test": "phpunit --colors=always",
