@@ -18,16 +18,13 @@ $aggregator = new ConfigAggregator([
     \Laminas\Mail\ConfigProvider::class,
     \Laminas\Validator\ConfigProvider::class,
     \Laminas\Serializer\ConfigProvider::class,
-    \Laminas\Cache\ConfigProvider::class,
     \Laminas\I18n\ConfigProvider::class,
     \Laminas\Log\ConfigProvider::class,
-    \Laminas\Hydrator\ConfigProvider::class,
     \Laminas\Db\ConfigProvider::class,
     \Laminas\HttpHandlerRunner\ConfigProvider::class,
     \Laminas\Diactoros\ConfigProvider::class,
     \Mezzio\Flash\ConfigProvider::class,
     \Mezzio\Session\Cache\ConfigProvider::class,
-    \Mezzio\Authentication\Session\ConfigProvider::class,
     \Mezzio\Csrf\ConfigProvider::class,
     \Mezzio\Session\ConfigProvider::class,
     \Mezzio\Authentication\ConfigProvider::class,
@@ -36,16 +33,12 @@ $aggregator = new ConfigAggregator([
     \Mezzio\Helper\ConfigProvider::class,
     \Mezzio\ConfigProvider::class,
     \Mezzio\Router\ConfigProvider::class,
-
     // Include cache configuration
     new ArrayProvider($cacheConfig),
-
     \Mezzio\Helper\ConfigProvider::class,
     \Mezzio\ConfigProvider::class,
     \Mezzio\Router\ConfigProvider::class,
     \Laminas\Diactoros\ConfigProvider::class,
-
-
     // Default App module config
     \Pars\Core\ConfigProvider::class,
     \Pars\Helper\ConfigProvider::class,

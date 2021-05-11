@@ -13,7 +13,7 @@
         "forum": "https://discourse.parsphp.org/"
     },
     "require": {
-        "php": "^7.4",
+        "php": "^7.4 || ^8.0",
         "pars/pars-beans": "@dev",
         "pars/pars-core": "@dev",
         "pars/pars-components": "@dev",
