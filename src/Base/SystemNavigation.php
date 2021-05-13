@@ -47,17 +47,6 @@ class SystemNavigation extends BaseNavigation
             'config'
         )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'config'))->addOption('cache');
         $this->addItem(
-            $this->translate('navigation.system.style'),
-            $this->getPathHelper()->setController('config')->setAction('index')->addParameter((new FilterParameter())->addId('ConfigType_Code', 'style')),
-            'style'
-        )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'config'))->addOption('cache');
-        $this->addItem(
-            $this->translate('navigation.system.frontend'),
-            $this->getPathHelper()->setController('config')->setAction('index')->addParameter((new FilterParameter())->addId('ConfigType_Code', 'frontend')),
-            'frontend'
-        )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'config'))->addOption('cache');
-
-        $this->addItem(
             $this->translate('navigation.system.import'),
             $this->getPathHelper()->setController('import')->setAction('index'),
             'import'
