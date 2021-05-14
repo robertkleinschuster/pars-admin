@@ -8,6 +8,8 @@ use Pars\Bean\Processor\DefaultMetaFieldHandler;
 use Pars\Bean\Processor\TimestampMetaFieldHandler;
 use Pars\Bean\Type\Base\BeanException;
 use Pars\Core\Cache\ParsCache;
+use Pars\Core\Container\ParsContainer;
+use Pars\Core\Container\ParsContainerAwareTrait;
 use Pars\Core\Database\ParsDatabaseAdapterAwareInterface;
 use Pars\Core\Database\ParsDatabaseAdapterAwareTrait;
 use Pars\Core\Translation\ParsTranslatorAwareInterface;
@@ -33,6 +35,7 @@ abstract class BaseModel extends AbstractModel implements
     ParsDatabaseAdapterAwareInterface,
     ParsTranslatorAwareInterface
 {
+    use ParsContainerAwareTrait;
     use ParsDatabaseAdapterAwareTrait;
     use ParsTranslatorAwareTrait;
     use LoggerAwareTrait;
@@ -57,6 +60,16 @@ abstract class BaseModel extends AbstractModel implements
         return $this;
     }
 
+    /**
+     * @return ParsContainer
+     */
+    public function getParsContainer(): ParsContainer
+    {
+        if (!$this->hasParsContainer()) {
+            $this->setParsContainer($this->getContainer()->get(ParsContainer::class));
+        }
+        return $this->parsContainer;
+    }
 
     public function initializeDependencies()
     {

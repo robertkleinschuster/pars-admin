@@ -3,6 +3,7 @@
 namespace Pars\Admin\File;
 
 use Pars\Admin\Base\CrudModel;
+use Pars\Core\Container\ParsContainer;
 use Pars\Model\File\Directory\FileDirectoryBeanFinder;
 use Pars\Model\File\FileBean;
 use Pars\Model\File\FileBeanFinder;
@@ -27,7 +28,7 @@ class FileModel extends CrudModel
     public function initialize()
     {
         $this->setBeanFinder(new FileBeanFinder($this->getDbAdpater()));
-        $this->setBeanProcessor(new FileBeanProcessor($this->getDbAdpater()));
+        $this->setBeanProcessor(new FileBeanProcessor($this->getParsContainer()));
     }
 
     /**
