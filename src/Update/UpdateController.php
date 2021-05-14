@@ -10,6 +10,7 @@ use Pars\Component\Base\Field\Button;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Jumbotron\Jumbotron;
 use Pars\Component\Base\Navigation\Navigation;
+use Pars\Helper\Parameter\Parameter;
 use Pars\Helper\String\StringHelper;
 use Pars\Model\Updater\ParsUpdater;
 
@@ -70,10 +71,13 @@ class UpdateController extends BaseController
             Button::STYLE_DANGER,
             $this->getPathHelper()
                 ->setController('update')
-                ->setAction('updateversion')
+                ->setAction('index')
+                ->addParameter(new Parameter('update', $this->getConfig()->getSecret()))
                 ->getPath());
         $button->addOption(Button::OPTION_DECORATION_NONE);
-        $jumbo->pushField($button);
+        if ($this->getConfig()->get('update.enabled')) {
+            $jumbo->pushField($button);
+        }
         $this->getView()->pushComponent($jumbo);
     }
 
@@ -103,40 +107,6 @@ class UpdateController extends BaseController
         $update->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $update->setToken($this->generateToken('submit_token'));
         $this->getView()->pushComponent($update);
-    }
-
-    public function updateVersionAction()
-    {
-        $updater = new ParsUpdater($this->getContainer());
-        $updater->update();
-        $client = new Client();
-        $response = $client->get('https://api.github.com/repos/PARS-Framework/pars-admin/releases/latest',
-            [
-                RequestOptions::CONNECT_TIMEOUT => 20
-            ]
-        );
-
-        $data = json_decode($response->getBody()->getContents(), true);
-        $assets = array_filter($data['assets'], function ($asset) {
-            return StringHelper::startsWith($asset['name'], 'pars-admin');
-        });
-        $asset = reset($assets);
-        $download = $asset['browser_download_url'];
-        $response = $client->get($download);
-        if (PARS_VERSION != 'DEV' && PARS_VERSION != 'CORE') {
-            $file = 'update.zip';
-            file_put_contents($file, $response->getBody());
-            $path = pathinfo(realpath($file), PATHINFO_DIRNAME);
-            $zip = new \ZipArchive();
-            $res = $zip->open($file);
-            if ($res === TRUE) {
-                $zip->extractTo($path);
-                $zip->close();
-            }
-            unlink($file);
-        }
-        $updater->update();
-        $this->getControllerResponse()->setRedirect('/');
     }
 
 }

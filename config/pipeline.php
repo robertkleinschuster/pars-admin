@@ -33,6 +33,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $app->pipe(ErrorHandler::class);
     $app->pipe(ServerUrlMiddleware::class);
     $app->pipe(\Pars\Core\Deployment\DeploymentMiddleware::class);
+    $app->pipe(\Pars\Core\Deployment\UpdateMiddleware::class);
 
     // Pipe more middleware here that you want to execute on every request:
     // - bootstrapping
