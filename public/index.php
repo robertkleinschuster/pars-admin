@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 // Delegate static file requests back to the PHP built-in webserver
 if (PHP_SAPI === 'cli-server' && $_SERVER['SCRIPT_FILENAME'] !== __FILE__) {
-    if (file_exists('public' . $_SERVER['SCRIPT_NAME']) && count($_GET) == 0) {
-        return false;
+    $decodedUri = urldecode($_SERVER['REQUEST_URI']);
+    $uri = $_SERVER['REQUEST_URI'];
+    if (count($_GET) == 0) {
+        if (file_exists("public$decodedUri") || file_exists("public$uri")) {
+            return false;
+        }
     }
 }
 
