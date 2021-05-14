@@ -21,8 +21,12 @@ use Psr\Container\ContainerInterface;
 
 return function (Application $app, MiddlewareFactory $factory, ContainerInterface $container): void {
     $app->pipe(\Pars\Core\Logging\LoggingMiddleware::class);
+    /**
+     * @var $config \Pars\Core\Config\ParsConfig
+     */
+    $config = $container->get(\Pars\Core\Config\ParsConfig::class);
 
-    $app->pipe(\Pars\Core\Image\ImageMiddleware::class);
+    $app->pipe($config->getFromAppConfig('image')['source'], \Pars\Core\Image\ImageMiddleware::class);
 
     // The error handler should be the first (most outer) middleware to catch
     // all Exceptions.

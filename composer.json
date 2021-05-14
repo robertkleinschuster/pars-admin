@@ -59,7 +59,7 @@
     },
     "scripts": {
         "serve": [
-            "php -q -S admin.localhost:8080 -t public/ & yarn encore dev --watch & log stream --style syslog --level debug --predicate 'process == \"php\"'"
+            "php -q -S localhost:8080 -t public/ public/index.php & yarn encore dev --watch & log stream --style syslog --level debug --predicate 'process == \"php\"'"
         ],
         "post-install-cmd": [
             "yarn install",
