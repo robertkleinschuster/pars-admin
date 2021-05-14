@@ -56,9 +56,9 @@ class TranslationModel extends CrudModel
      */
     public function getTranslationSource()
     {
-        if ($this->getConfig('locale.default')) {
+        if ($this->getConfigValue('locale.default')) {
             $bean = $this->getBean();
-            $locale = $this->getConfig('locale.default');
+            $locale = $this->getConfigValue('locale.default');
             $finder = new TranslationBeanFinder($this->getDbAdpater());
             $finder->filterLocale_Code($locale);
             $finder->filterTranslation_Code($bean->get('Translation_Code'));

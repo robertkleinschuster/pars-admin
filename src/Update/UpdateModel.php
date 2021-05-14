@@ -35,7 +35,7 @@ class UpdateModel extends BaseModel
         return new SpecialDatabaseUpdater($this->getDbAdpater());
     }
 
-    public function getConfig(string $key = null)
+    public function getConfigValue(string $key = null)
     {
         return null;
     }

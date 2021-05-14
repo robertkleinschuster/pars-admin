@@ -558,7 +558,7 @@ abstract class CrudController extends BaseController
      */
     protected function getDefaultLimit(): int
     {
-        return $this->getSession()->get('limit') ?? $this->getModel()->getConfig('admin.pagination.limit') ?? 10;
+        return $this->getSession()->get('limit') ?? $this->getModel()->getConfigValue('admin.pagination.limit') ?? 10;
     }
 
     /**

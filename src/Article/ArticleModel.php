@@ -84,7 +84,7 @@ abstract class ArticleModel extends CrudModel
     {
         $default = (new ArticleTranslationBeanFinder($this->getDbAdpater()))
             ->setArticle_ID($bean->Article_ID)
-            ->filterLocale_Code($this->getConfig('locale.default'))
+            ->filterLocale_Code($this->getConfigValue('locale.default'))
             ->limit(1, 0)->getBean();
 
         if ($bean->empty('ArticleTranslation_Code') && $default->isset('ArticleTranslation_Code')) {

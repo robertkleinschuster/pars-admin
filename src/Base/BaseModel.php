@@ -57,6 +57,7 @@ abstract class BaseModel extends AbstractModel implements
         return $this;
     }
 
+
     public function initializeDependencies()
     {
         parent::initializeDependencies();
@@ -193,7 +194,7 @@ abstract class BaseModel extends AbstractModel implements
      * @param string|null $key
      * @return mixed
      */
-    public function getConfig(string $key = null)
+    public function getConfigValue(string $key = null)
     {
         if ($this->config === null) {
             return null;
@@ -204,12 +205,17 @@ abstract class BaseModel extends AbstractModel implements
         return $this->config->get($key);
     }
 
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
     /**
      * @return array|null
      */
     public function getDomain_List(): ?array
     {
-        $domains = $this->getConfig('domains');
+        $domains = $this->getConfigValue('domains');
         if ($domains) {
             $domains = explode(',', $domains);
             $domains = array_map('trim', $domains);

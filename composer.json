@@ -15,13 +15,13 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "pars/pars-beans": "@dev",
-        "pars/pars-core": "@dev",
-        "pars/pars-components": "@dev",
         "pars/pars-cli": "@dev",
+        "pars/pars-components": "@dev",
+        "pars/pars-core": "@dev",
         "pars/pars-helpers": "@dev",
         "pars/pars-import": "@dev",
-        "pars/pars-mvc": "@dev",
         "pars/pars-models": "@dev",
+        "pars/pars-mvc": "@dev",
         "pars/pars-patterns": "@dev"
     },
     "require-dev": {

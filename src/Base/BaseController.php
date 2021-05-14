@@ -158,22 +158,22 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         } else {
             $converter = new ViewBeanConverter();
         }
-        $converter->setTimezone($this->getModel()->getConfig('admin.timezone'));
+        $converter->setTimezone($this->getModel()->getConfigValue('admin.timezone'));
         $this->getModel()->setBeanConverter($converter);
         $this->getModel()->initialize();
         $this->getModel()->initializeDependencies();
         $layout = $this->getView()->getLayout();
         if ($layout instanceof DashboardLayout) {
             if ($layout->hasNavigation()) {
-                $layout->getNavigation()->key = $this->getModel()->getConfig('asset.key');
+                $layout->getNavigation()->key = $this->getModel()->getConfig()->getSecret();
             }
         }
         $this->getView()->set('language', $this->getTranslator()->getLocale()->getLocale_Code());
-        $this->getView()->set('title', $this->getModel()->getConfig('admin.title'));
-        $this->getView()->set('author', $this->getModel()->getConfig('admin.author'));
-        $this->getView()->set('favicon', $this->getModel()->getConfig('admin.favicon'));
-        $this->getView()->set('description', $this->getModel()->getConfig('admin.description'));
-        $this->getView()->set('charset', $this->getModel()->getConfig('admin.charset'));
+        $this->getView()->set('title', $this->getModel()->getConfigValue('admin.title'));
+        $this->getView()->set('author', $this->getModel()->getConfigValue('admin.author'));
+        $this->getView()->set('favicon', $this->getModel()->getConfigValue('admin.favicon'));
+        $this->getView()->set('description', $this->getModel()->getConfigValue('admin.description'));
+        $this->getView()->set('charset', $this->getModel()->getConfigValue('admin.charset'));
     }
 
 

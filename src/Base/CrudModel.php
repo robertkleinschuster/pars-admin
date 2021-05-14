@@ -95,7 +95,7 @@ abstract class CrudModel extends BaseModel
         if ($code == '/') {
             $code = '';
         }
-        $key = $this->getConfig('asset.key');
+        $key = $this->getConfig()->getSecret();
         if (!$bean->empty('ArticleTranslation_Host')) {
             return '//'
                 . $bean->get('ArticleTranslation_Host')
@@ -103,7 +103,7 @@ abstract class CrudModel extends BaseModel
                 . $this->getUserBean()->getLocale()->getUrl_Code()
                 . "/$code?clearcache=$key";
         } else {
-            return "//" . $this->getConfig('frontend.domain')
+            return "//" . $this->getConfigValue('frontend.domain')
                 . '/'
                 . $this->getUserBean()->getLocale()->getUrl_Code()
                 . "/$code?clearcache=$key";
