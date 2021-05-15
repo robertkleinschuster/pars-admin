@@ -3,6 +3,7 @@
 namespace Pars\Admin\Update;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Uri;
 use GuzzleHttp\RequestOptions;
 use Pars\Admin\Base\BaseController;
 use Pars\Admin\Base\SystemNavigation;
@@ -62,11 +63,31 @@ class UpdateController extends BaseController
     public function indexAction()
     {
         $jumbo = new Jumbotron();
-        $jumbo->pushField(new Span(PARS_VERSION, $this->translate('update.version.current')));
         $client = new Client();
+        $frontendVersion = '';
+        try {
+            $frontendUri = new Uri($this->getConfig()->get('frontend.domain'));
+            $frontendUri = Uri::withQueryValue($frontendUri, 'version', $this->getConfig()->getSecret());
+            $frontendVersion = $client->get($frontendUri)->getBody()->getContents();
+        } catch (\Throwable $exception) {
+            $this->getLogger()->error('Error getting fronten version.', ['exception' => $exception]);
+        }
+        $field = new Span($frontendVersion, $this->translate('update.version.current'));
+        $field->setGroup('PARS-Frontend');
+        $jumbo->pushField($field);
+        $response = $client->get('https://api.github.com/repos/PARS-Framework/pars-frontend/releases/latest');
+        $data = json_decode($response->getBody()->getContents(), true);
+        $field = new Span($data['tag_name'], $this->translate('update.version.available'));
+        $field->setGroup('PARS-Frontend');
+        $jumbo->pushField($field);
+        $field = new Span(PARS_VERSION, $this->translate('update.version.current'));
+        $field->setGroup('PARS-Admin');
+        $jumbo->pushField($field);
         $response = $client->get('https://api.github.com/repos/PARS-Framework/pars-admin/releases/latest');
         $data = json_decode($response->getBody()->getContents(), true);
-        $jumbo->pushField(new Span($data['tag_name'], $this->translate('update.version.available')));
+        $field = new Span($data['tag_name'], $this->translate('update.version.available'));
+        $field->setGroup('PARS-Admin');
+        $jumbo->pushField($field);
         $button = new Button($this->translate('update.version.start'),
             Button::STYLE_DANGER,
             $this->getPathHelper()
