@@ -62,6 +62,7 @@ class UpdateController extends BaseController
 
     public function indexAction()
     {
+
         $jumbo = new Jumbotron();
         $client = new Client();
         $frontendVersion = '';
