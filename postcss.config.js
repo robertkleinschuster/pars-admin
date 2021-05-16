@@ -5,9 +5,5 @@ module.exports = {
 
         // add browserslist config to package.json
         "autoprefixer": {},
-        "postcss-combine-media-query": {},
-        "postcss-clean": {
-            level: 2,
-        }
     }
 }

@@ -59,13 +59,19 @@
     },
     "scripts": {
         "serve": [
-            "php -q -S localhost:8080 -t public/ public/index.php & yarn encore dev --watch"
+            "php -q -S localhost:9090 -t public/ public/index.php & composer run-script yarn-watch"
         ],
         "development": "laminas-development-mode",
         "cs-check": "phpcs",
         "cs-fix": "phpcbf",
         "test": "phpunit --colors=always",
-        "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
+        "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
+        "post-update-cmd": [
+            "@yarn"
+        ],
+        "post-install-cmd": [
+            "@yarn"
+        ]
     },
     "repositories": {
         "pars/pars-beans": {
