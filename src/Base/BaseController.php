@@ -43,7 +43,6 @@ use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Pattern\Option\OptionAwareInterface;
 use Pars\Pattern\Option\OptionAwareTrait;
 use Psr\Log\LoggerInterface;
-use Symfony\WebpackEncoreBundle\Asset\EntrypointLookup;
 use Throwable;
 
 /**
@@ -123,21 +122,23 @@ abstract class BaseController extends AbstractController implements AttributeAwa
     protected function injectStaticFiles()
     {
         if ($this->hasView()) {
-            $entryPoints = new EntrypointLookup($_SERVER['DOCUMENT_ROOT'] . '/build/entrypoints.json');
-            $jsFiles = [];
-            $cssFiles = [];
-            $config = $this->getContainer()->get('config');
-            $bundlesConfig = $config['bundles'];
-            if (isset($bundlesConfig['entrypoints']) && is_array($bundlesConfig['entrypoints'])) {
-                foreach ($bundlesConfig['entrypoints'] as $entrypoint) {
-                    $jsFiles = array_merge($jsFiles, $entryPoints->getJavaScriptFiles($entrypoint));
-                    $cssFiles = array_merge($cssFiles, $entryPoints->getCssFiles($entrypoint));
+            try {
+                $entrypoints = json_decode(file_get_contents('public/build/entrypoints.json'), true);
+                if ($entrypoints && isset($entrypoints['entrypoints'])) {
+                    $jsFiles = [];
+                    $cssFiles = [];
+                    $entrypoints = $entrypoints['entrypoints'];
+                    foreach ($entrypoints as $entrypoint) {
+                        $jsFiles = array_unique(array_merge($jsFiles, $entrypoint['js']));
+                        $cssFiles = array_unique(array_merge($cssFiles, $entrypoint['css']));
+                    }
+                    $this->getView()->setJavascript($jsFiles);
+                    $this->getView()->setStylesheets($cssFiles);
                 }
+            } catch (Throwable $exception) {
+                $this->getLogger()->error($exception->getMessage(), ['exception' => $exception]);
             }
-            $this->getView()->setJavascript($jsFiles);
-            $this->getView()->setStylesheets($cssFiles);
         }
-
     }
 
     /**

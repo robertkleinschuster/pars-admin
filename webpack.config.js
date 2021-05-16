@@ -23,8 +23,8 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('component', './vendor/pars/pars-components/index.js')
     .addEntry('mvc', './vendor/pars/pars-mvc/index.js')
+    .addEntry('component', './vendor/pars/pars-components/index.js')
     //.addEntry('mvc', './vendor/pars/pars-mvc/bundles/entrypoints/mvc.js')
     //.addEntry('page1', './assets/page1.js')
     //.addEntry('page2', './assets/page2.js')
@@ -62,6 +62,7 @@ Encore
 
     // enables Sass/SCSS support
     .enableSassLoader()
+    .enablePostCssLoader()
 
 // uncomment if you use TypeScript
 //.enableTypeScriptLoader()
@@ -75,6 +76,5 @@ Encore
 
 // uncomment if you use API Platform Admin (composer require api-admin)
 //.enableReactPreset()
-//.addEntry('admin', './assets/admin.js')
 ;
 module.exports = Encore.getWebpackConfig();
