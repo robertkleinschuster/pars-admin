@@ -651,11 +651,15 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             ->getServerRequest()
             ->getAttribute(DatabaseMiddleware::ADAPTER_ATTRIBUTE);
         if ($adapter instanceof AdapterInterface) {
-            if (
-                $adapter->getDriver()->getConnection()->inTransaction()
-                && $adapter->getDriver()->getConnection()->isConnected()
-            ) {
-                $adapter->getDriver()->getConnection()->rollback();
+            try {
+                if (
+                    $adapter->getDriver()->getConnection()->inTransaction()
+                    && $adapter->getDriver()->getConnection()->isConnected()
+                ) {
+                    $adapter->getDriver()->getConnection()->rollback();
+                }
+            } catch (Throwable $exception) {
+                $this->getLogger()->error($exception->getMessage(), ['exception' => $exception]);
             }
         }
     }

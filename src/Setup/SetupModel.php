@@ -12,6 +12,7 @@ use Pars\Model\Authorization\UserRole\UserRoleBeanFinder;
 use Pars\Model\Authorization\UserRole\UserRoleBeanProcessor;
 use Pars\Model\Updater\Database\DataDatabaseUpdater;
 use Pars\Model\Updater\Database\SchemaDatabaseUpdater;
+use Pars\Pattern\Exception\CoreException;
 
 /**
  * Class SetupModel
@@ -27,76 +28,69 @@ class SetupModel extends \Pars\Admin\Base\BaseModel
 
     protected function create(IdParameter $idParameter, array &$attributes): void
     {
-        $schemaUpdater = new SchemaDatabaseUpdater($this->getDbAdpater());
-        $methods = [];
-        foreach ($schemaUpdater->getUpdateMethodList() as $method) {
-            $methods[$method] = true;
-        }
-        $result = $schemaUpdater->execute($methods);
-        ;
-        $dataUpdater = new DataDatabaseUpdater($this->getDbAdpater());
-        $methods = [];
-        foreach ($dataUpdater->getUpdateMethodList() as $method) {
-            $methods[$method] = true;
-        }
-        $result = $dataUpdater->execute($methods);
-        $this->getDbAdpater()->getDriver()->getConnection()->beginTransaction();
-        parent::create($idParameter, $attributes);
-        if ($this->getBeanFinder()->count() == 1) {
-            try {
-                $user = $this->getBeanFinder()->getBean();
-                $roleFinder = new RoleBeanFinder($this->getDbAdpater());
-                $role = $roleFinder->getBeanFactory()->getEmptyBean([]);
-                $role->set('UserRole_Code', 'admin');
-                $role->set('UserRole_Name', 'Administrator');
-                $role->set('UserRole_Active', true);
-                $roleList = $roleFinder->getBeanFactory()->getEmptyBeanList();
-                $roleList->push($role);
+        try {
+            $this->getParsContainer()->getDatabaseAdapter()->startTransaction();
+            $schemaUpdater = new SchemaDatabaseUpdater($this->getDbAdpater());
+            $schemaUpdater->executeSilent();
+            $dataUpdater = new DataDatabaseUpdater($this->getDbAdpater());
+            $dataUpdater->executeSilent();
+            parent::create($idParameter, $attributes);
+            if ($this->getBeanFinder()->count() == 1) {
+                    $user = $this->getBeanFinder()->getBean();
+                    $roleFinder = new RoleBeanFinder($this->getDbAdpater());
+                    $role = $roleFinder->getBeanFactory()->getEmptyBean([]);
+                    $role->set('UserRole_Code', 'admin');
+                    $role->set('UserRole_Name', 'Administrator');
+                    $role->set('UserRole_Active', true);
+                    $roleList = $roleFinder->getBeanFactory()->getEmptyBeanList();
+                    $roleList->push($role);
 
-                $roleProcessor = new RoleBeanProcessor($this->getDbAdpater());
-                $roleProcessor->setBeanList($roleList);
-                $roleProcessor->save();
+                    $roleProcessor = new RoleBeanProcessor($this->getDbAdpater());
+                    $roleProcessor->setBeanList($roleList);
+                    $roleProcessor->save();
 
-                if ($roleFinder->count() == 1) {
-                    $role = $roleFinder->getBean();
-                    $permissionFinder = new PermissionBeanFinder($this->getDbAdpater());
-                    $permissionBeanList = $permissionFinder->getBeanList();
+                    if ($roleFinder->count() == 1) {
+                        $role = $roleFinder->getBean();
+                        $permissionFinder = new PermissionBeanFinder($this->getDbAdpater());
+                        $permissionBeanList = $permissionFinder->getBeanList();
 
-                    $rolePermissionFinder = new RolePermissionBeanFinder($this->getDbAdpater());
-                    $rolePermissionBeanList = $rolePermissionFinder->getBeanFactory()->getEmptyBeanList();
+                        $rolePermissionFinder = new RolePermissionBeanFinder($this->getDbAdpater());
+                        $rolePermissionBeanList = $rolePermissionFinder->getBeanFactory()->getEmptyBeanList();
 
-                    foreach ($permissionBeanList as $permission) {
-                        $rolePermission = $rolePermissionFinder->getBeanFactory()->getEmptyBean([]);
-                        $rolePermission->set('UserRole_ID', $role->get('UserRole_ID'));
-                        $rolePermission->set('UserPermission_Code', $permission->get('UserPermission_Code'));
-                        $rolePermissionBeanList->push($rolePermission);
+                        foreach ($permissionBeanList as $permission) {
+                            $rolePermission = $rolePermissionFinder->getBeanFactory()->getEmptyBean([]);
+                            $rolePermission->set('UserRole_ID', $role->get('UserRole_ID'));
+                            $rolePermission->set('UserPermission_Code', $permission->get('UserPermission_Code'));
+                            $rolePermissionBeanList->push($rolePermission);
+                        }
+
+                        $rolePermissionProcessor = new RolePermissionBeanProcessor($this->getDbAdpater());
+                        $rolePermissionProcessor->setBeanList($rolePermissionBeanList);
+                        $rolePermissionProcessor->save();
+
+                        $userRoleFinder = new UserRoleBeanFinder($this->getDbAdpater());
+                        $userRole = $userRoleFinder->getBeanFactory()->getEmptyBean([]);
+                        $userRoleList = $userRoleFinder->getBeanFactory()->getEmptyBeanList();
+                        $userRole->set('Person_ID', $user->get('Person_ID'));
+                        $userRole->set('UserRole_ID', $role->get('UserRole_ID'));
+                        $userRoleList->push($userRole);
+
+                        $userRoleProcessor = new UserRoleBeanProcessor($this->getDbAdpater());
+                        $userRoleProcessor->setBeanList($userRoleList);
+                        $userRoleProcessor->save();
+                        $this->getParsContainer()->getDatabaseAdapter()->commitTransaction();
+                    } else {
+                        throw new CoreException('Could not create user.');
                     }
-
-                    $rolePermissionProcessor = new RolePermissionBeanProcessor($this->getDbAdpater());
-                    $rolePermissionProcessor->setBeanList($rolePermissionBeanList);
-                    $rolePermissionProcessor->save();
-
-                    $userRoleFinder = new UserRoleBeanFinder($this->getDbAdpater());
-                    $userRole = $userRoleFinder->getBeanFactory()->getEmptyBean([]);
-                    $userRoleList = $userRoleFinder->getBeanFactory()->getEmptyBeanList();
-                    $userRole->set('Person_ID', $user->get('Person_ID'));
-                    $userRole->set('UserRole_ID', $role->get('UserRole_ID'));
-                    $userRoleList->push($userRole);
-
-                    $userRoleProcessor = new UserRoleBeanProcessor($this->getDbAdpater());
-                    $userRoleProcessor->setBeanList($userRoleList);
-                    $userRoleProcessor->save();
-                    $this->getDbAdpater()->getDriver()->getConnection()->commit();
-                } else {
-                    $this->getDbAdpater()->getDriver()->getConnection()->rollback();
-                }
-            } catch (\Throwable $exception) {
-                $this->getDbAdpater()->getDriver()->getConnection()->rollback();
-                $this->getValidationHelper()->addError('error', $exception->getMessage());
-                $this->getValidationHelper()->addError('errorDetails', $exception->getTraceAsString());
+            } else {
+                throw new CoreException('Could not create user.');
             }
-        } else {
-            $this->getDbAdpater()->getDriver()->getConnection()->rollback();
+        } catch (\Throwable $exception) {
+            $this->getParsContainer()->getDatabaseAdapter()->rollbackTransaction();
+            $this->getLogger()->error($exception->getMessage(), ['exception' => $exception]);
+            $this->getValidationHelper()->addError('error', $exception->getMessage());
+            $this->getValidationHelper()->addError('errorDetails', $exception->getTraceAsString());
         }
     }
+
 }

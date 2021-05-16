@@ -12,6 +12,7 @@ class Setup extends UserEdit
 {
     protected function initialize()
     {
+        $this->getForm()->setUseEvents(false);
         $this->setShowTitle(false);
         parent::initialize();
         $this->getForm()->setBackground(Form::BACKGROUND_LIGHT);
@@ -34,7 +35,7 @@ class Setup extends UserEdit
                 $this->getValidationHelper()->getSummary('error'),
                 $this->getValidationHelper()->getSummary('errorDetails')
             );
-            $this->getElementList()->unshift($alert);
+            $this->getElementList()->push($alert);
         }
     }
 }

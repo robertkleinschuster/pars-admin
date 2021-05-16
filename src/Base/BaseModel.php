@@ -99,6 +99,9 @@ abstract class BaseModel extends AbstractModel implements
      */
     public function getLogger(): LoggerInterface
     {
+        if (!$this->hasLogger()) {
+            $this->setLogger($this->getParsContainer()->getLogger());
+        }
         return $this->logger;
     }
 
