@@ -16,7 +16,6 @@ $cacheConfig = [
 $aggregator = new ConfigAggregator([
     \Laminas\Mail\ConfigProvider::class,
     \Laminas\Validator\ConfigProvider::class,
-    \Laminas\Serializer\ConfigProvider::class,
     \Laminas\I18n\ConfigProvider::class,
     \Laminas\Log\ConfigProvider::class,
     \Laminas\Db\ConfigProvider::class,
