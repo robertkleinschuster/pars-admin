@@ -4,7 +4,6 @@ namespace Pars\Admin\Update;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Uri;
-use GuzzleHttp\RequestOptions;
 use Pars\Admin\Base\BaseController;
 use Pars\Admin\Base\SystemNavigation;
 use Pars\Component\Base\Field\Button;
@@ -12,8 +11,6 @@ use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Jumbotron\Jumbotron;
 use Pars\Component\Base\Navigation\Navigation;
 use Pars\Helper\Parameter\Parameter;
-use Pars\Helper\String\StringHelper;
-use Pars\Model\Updater\ParsUpdater;
 
 /**
  * Class UpdateController
