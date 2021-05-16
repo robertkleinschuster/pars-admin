@@ -394,4 +394,5 @@ return [
     'metainfo.group.edit' => 'Bearbeitet',
     'cmsmenu.group.visibility' => 'Sichtbarkeit',
     'cmsmenu.group.general' => 'Allgemein',
+    'cmsmenu.name' => 'Interne Bezeichnung'
 ];

@@ -13,6 +13,7 @@ class CmsMenuEdit extends BaseEdit
 
     protected function initialize()
     {
+        $this->getForm()->addText('CmsMenu_Name', '{CmsMenu_Name}', $this->translate('cmsmenu.name'));
         if ($this->hasPageOptions()) {
             $this->getForm()->addSelect('CmsPage_ID', $this->getPageOptions(), '{CmsPage_ID}', $this->translate('cmspage.id'));
         }
@@ -22,7 +23,6 @@ class CmsMenuEdit extends BaseEdit
         if ($this->hasStateOptions()) {
             $this->getForm()->addSelect('CmsMenuState_Code', $this->getStateOptions(), '{CmsMenuState_Code}', $this->translate('cmsmenustate.code'));
         }
-
         parent::initialize();
     }
 

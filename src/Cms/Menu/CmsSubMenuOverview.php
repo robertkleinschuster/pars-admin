@@ -7,7 +7,17 @@ class CmsSubMenuOverview extends CmsMenuOverview
     protected function initialize()
     {
         $this->setShowType(false);
+        $this->setShowMove(true);
         parent::initialize();
+    }
+
+    protected function initFields()
+    {
+        parent::initFields();
+        $this->addField('ArticleTranslation_Name', $this->translate('articletranslation.name'));
+        $this->addField('Article_Code', $this->translate('article.code'));
+        $this->addField('ArticleTranslation_Code', $this->translate('articletranslation.code'));
+
     }
 
 

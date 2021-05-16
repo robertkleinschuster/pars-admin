@@ -100,7 +100,6 @@ class CmsMenuController extends CrudController
         $edit = parent::createEdit();
         $edit->setStateOptions($this->getModel()->getCmsMenuState_Options());
         $edit->setTypeOptions($this->getModel()->getCmsMenuType_Options());
-        $edit->setPageOptions($this->getModel()->getCmsPage_Options());
         return $edit;
     }
 }

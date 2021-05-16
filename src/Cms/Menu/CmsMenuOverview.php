@@ -36,10 +36,7 @@ class CmsMenuOverview extends BaseOverview
             }
             $this->pushField($span);
         }
-
-        $this->addField('ArticleTranslation_Name', $this->translate('articletranslation.name'));
-        $this->addField('Article_Code', $this->translate('article.code'));
-        $this->addField('ArticleTranslation_Code', $this->translate('articletranslation.code'));
+        $this->addField('CmsMenu_Name', $this->translate('cmsmenu.name'));
     }
 
 
