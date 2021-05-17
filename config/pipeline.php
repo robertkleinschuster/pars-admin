@@ -26,7 +26,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
      */
     $config = $container->get(\Pars\Core\Config\ParsConfig::class);
 
-    $app->pipe($config->getFromAppConfig('image')['source'], \Pars\Core\Image\ImageMiddleware::class);
+    $app->pipe($config->get('image.path'), \Pars\Core\Image\ImageMiddleware::class);
 
     // The error handler should be the first (most outer) middleware to catch
     // all Exceptions.
