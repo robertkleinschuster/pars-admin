@@ -10,8 +10,10 @@ use Pars\Bean\Type\Base\BeanException;
 use Pars\Core\Cache\ParsCache;
 use Pars\Core\Container\ParsContainer;
 use Pars\Core\Container\ParsContainerAwareTrait;
+use Pars\Core\Database\ParsDatabaseAdapter;
 use Pars\Core\Database\ParsDatabaseAdapterAwareInterface;
 use Pars\Core\Database\ParsDatabaseAdapterAwareTrait;
+use Pars\Core\Translation\ParsTranslator;
 use Pars\Core\Translation\ParsTranslatorAwareInterface;
 use Pars\Core\Translation\ParsTranslatorAwareTrait;
 use Pars\Pattern\Exception\AttributeNotFoundException;
@@ -71,6 +73,14 @@ abstract class BaseModel extends AbstractModel implements
         return $this->parsContainer;
     }
 
+    public function getDatabaseAdapter(): ParsDatabaseAdapter
+    {
+        if (!$this->hasDatabaseAdapter()) {
+            $this->setDatabaseAdapter($this->getParsContainer()->getDatabaseAdapter());
+        }
+        return $this->databaseAdapter;
+    }
+
     public function initializeDependencies()
     {
         parent::initializeDependencies();
@@ -103,6 +113,14 @@ abstract class BaseModel extends AbstractModel implements
             $this->setLogger($this->getParsContainer()->getLogger());
         }
         return $this->logger;
+    }
+
+    public function getTranslator(): ParsTranslator
+    {
+        if (!$this->hasTranslator()) {
+            $this->setTranslator($this->getParsContainer()->getTranslator());
+        }
+        return $this->translator;
     }
 
     /**
@@ -223,6 +241,9 @@ abstract class BaseModel extends AbstractModel implements
 
     public function getConfig()
     {
+        if (!isset($this->config)) {
+            $this->setConfig($this->getParsContainer()->getConfig());
+        }
         return $this->config;
     }
 

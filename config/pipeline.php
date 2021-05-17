@@ -25,7 +25,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // all Exceptions.
     $app->pipe(ErrorHandler::class);
     $app->pipe(ServerUrlMiddleware::class);
-    $app->pipe(\Pars\Core\Logging\LoggingMiddleware::class);
     $app->pipe(\Pars\Core\Deployment\DeploymentMiddleware::class);
     $app->pipe(\Pars\Core\Deployment\UpdateMiddleware::class);
     /**
@@ -80,8 +79,6 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // - route-based authentication
     // - route-based validation
     // - etc.
-    $app->pipe(\Pars\Core\Config\ParsConfigMiddleware::class);
-    $app->pipe(\Pars\Core\Database\DatabaseMiddleware::class);
     $app->pipe(\Pars\Core\Authentication\AuthenticationMiddleware::class);
     $app->pipe(\Pars\Core\Localization\LocalizationMiddleware::class);
     $app->pipe(\Pars\Core\Translation\TranslatorMiddleware::class);

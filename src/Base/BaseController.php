@@ -146,9 +146,6 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function initModel()
     {
-        $this->getModel()->setDatabaseAdapter(
-            $this->getMiddlewareAttribute(ParsDatabaseAdapter::class)
-        );
         $this->getModel()->setUserBean($this->getUserBean());
         $this->getModel()->setTranslator($this->getTranslator());
         $this->getModel()->setLogger($this->getLogger());
@@ -332,7 +329,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function getTranslator(): ParsTranslator
     {
-        return $this->getMiddlewareAttribute(ParsTranslator::class);
+        return $this->getModel()->getParsContainer()->getTranslator();
     }
 
     /**
@@ -372,7 +369,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     public function getLogger(): LoggerInterface
     {
-        return $this->getMiddlewareAttribute(LoggingMiddleware::LOGGER_ATTRIBUTE);
+        return $this->getModel()->getLogger();
     }
 
     /**
@@ -380,7 +377,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     public function getConfig(): ?ParsConfig
     {
-        return $this->getMiddlewareAttribute(ParsConfig::class);
+        return $this->getModel()->getConfig();
     }
 
     /**
@@ -648,21 +645,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function handleErrorTransaction()
     {
-        $adapter = $this->getControllerRequest()
-            ->getServerRequest()
-            ->getAttribute(DatabaseMiddleware::ADAPTER_ATTRIBUTE);
-        if ($adapter instanceof AdapterInterface) {
-            try {
-                if (
-                    $adapter->getDriver()->getConnection()->inTransaction()
-                    && $adapter->getDriver()->getConnection()->isConnected()
-                ) {
-                    $adapter->getDriver()->getConnection()->rollback();
-                }
-            } catch (Throwable $exception) {
-                $this->getLogger()->error($exception->getMessage(), ['exception' => $exception]);
-            }
-        }
+        $this->getModel()->getDatabaseAdapter()->rollbackTransaction();
     }
 
     public function repairOrderAction()

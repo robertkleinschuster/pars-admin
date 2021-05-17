@@ -37,9 +37,7 @@ class SetupController extends BaseController
     protected function initModel()
     {
         $this->getModel()->setBeanConverter(new ViewBeanConverter());
-        $this->getModel()->setDatabaseAdapter($this->getMiddlewareAttribute(ParsDatabaseAdapter::class));
         $this->getModel()->initialize();
-        $this->getModel()->setTranslator($this->getTranslator());
         $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->getModel()->getDbAdpater());
         $tableNames = $metadata->getTableNames($this->getModel()->getDbAdpater()->getCurrentSchema());
         if (in_array('Person', $tableNames) && in_array('User', $tableNames)) {
