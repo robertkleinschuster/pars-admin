@@ -11,6 +11,7 @@ use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Jumbotron\Jumbotron;
 use Pars\Component\Base\Navigation\Navigation;
 use Pars\Helper\Parameter\Parameter;
+use Pars\Mvc\View\Event\ViewEvent;
 
 /**
  * Class UpdateController
@@ -70,7 +71,7 @@ class UpdateController extends BaseController
         } catch (\Throwable $exception) {
             $this->getLogger()->error('Error getting fronten version.', ['exception' => $exception]);
         }
-        $field = new Span($frontendVersion, $this->translate('update.version.current'));
+        $field = new Span(strip_tags(substr($frontendVersion, 0, 20)), $this->translate('update.version.current'));
         $field->setGroup('PARS-Frontend');
         $jumbo->pushField($field);
         $response = $client->get('https://api.github.com/repos/PARS-Framework/pars-frontend/releases/latest');
@@ -86,14 +87,14 @@ class UpdateController extends BaseController
         $field = new Span($data['tag_name'], $this->translate('update.version.available'));
         $field->setGroup('PARS-Admin');
         $jumbo->pushField($field);
-        $button = new Button($this->translate('update.version.start'),
-            Button::STYLE_DANGER,
-            $this->getPathHelper()
-                ->setController('update')
-                ->setAction('index')
-                ->addParameter(new Parameter('update', $this->getConfig()->getSecret()))
-                ->getPath());
+        $path =  $this->getPathHelper()
+            ->setController('update')
+            ->setAction('index')
+            ->addParameter(new Parameter('update', $this->getConfig()->getSecret()))
+            ->getPath();
+        $button = new Button($this->translate('update.version.start'), Button::STYLE_DANGER, $path);
         $button->addOption(Button::OPTION_DECORATION_NONE);
+        $button->setEvent(ViewEvent::createLink($path));
         if ($this->getConfig()->get('update.enabled')) {
             $jumbo->pushField($button);
         }
