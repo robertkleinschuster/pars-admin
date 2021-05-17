@@ -134,9 +134,7 @@ class MainNavigation extends BaseNavigation
             )
             ->addItem(
                 $this->translate('navigation.user.clearcache'),
-                $this->getPathHelper()
-                    ->setController('index')
-                    ->setAction('index')
+                $this->getPathHelper(false)
                     ->addParameter(new Parameter('clearcache', $this->key ?? 'pars'))
                     ->getPath()
             )
