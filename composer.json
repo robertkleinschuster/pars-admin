@@ -1,141 +1,141 @@
 {
-    "name": "pars/pars-admin",
-    "description": "",
-    "license": "BSD-3-Clause",
-    "keywords": [
-        "pars"
-    ],
-    "support": {
-        "docs": "https://docs.parsphp.org/pars-admin/",
-        "issues": "https://github.com/pars/pars-admin/issues",
-        "source": "https://github.com/pars/pars-admin",
-        "rss": "https://github.com/pars/pars-admin/releases.atom",
-        "forum": "https://discourse.parsphp.org/"
-    },
-    "require": {
-        "php": "^7.4 || ^8.0",
-        "pars/pars-beans": "@dev",
-        "pars/pars-cli": "@dev",
-        "pars/pars-components": "@dev",
-        "pars/pars-core": "@dev",
-        "pars/pars-helpers": "@dev",
-        "pars/pars-import": "@dev",
-        "pars/pars-models": "@dev",
-        "pars/pars-mvc": "@dev",
-        "pars/pars-patterns": "@dev"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^9.5"
-    },
-    "autoload": {
-        "psr-4": {
-            "Pars\\Admin\\": "src//"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "ParsTest\\Admin\\": "test/"
-        }
-    },
-    "extra": {
-        "merge-plugin": {
-            "include": [
-                "vendor/pars/pars-core/composer.json"
-            ],
-            "require": [],
-            "recurse": true,
-            "replace": false,
-            "ignore-duplicates": false,
-            "merge-dev": true,
-            "merge-extra": true,
-            "merge-extra-deep": false,
-            "merge-scripts": true
-        }
-    },
-    "config": {
-        "sort-packages": true,
-        "optimize-autoloader": true,
-        "classmap-authoritative": true
-    },
-    "scripts": {
-        "serve": [
-            "php -q -S localhost:9090 -t public/ public/index.php & composer run-script yarn-watch"
-        ],
-        "development": "laminas-development-mode",
-        "cs-check": "phpcs",
-        "cs-fix": "phpcbf",
-        "test": "phpunit --colors=always",
-        "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
-        "post-update-cmd": [
-            "@yarn"
-        ],
-        "post-install-cmd": [
-            "@yarn"
-        ]
-    },
-    "repositories": {
-        "pars/pars-beans": {
-            "type": "path",
-            "url": "modules/pars-beans",
-            "options": {
-                "symlink": true
-            }
-        },
-        "pars/pars-cli": {
-            "type": "path",
-            "url": "modules/pars-cli",
-            "options": {
-                "symlink": true
-            }
-        },
-        "pars/pars-components": {
-            "type": "path",
-            "url": "modules/pars-components",
-            "options": {
-                "symlink": true
-            }
-        },
-        "pars/pars-core": {
-            "type": "path",
-            "url": "modules/pars-core",
-            "options": {
-                "symlink": true
-            }
-        },
-        "pars/pars-helpers": {
-            "type": "path",
-            "url": "modules/pars-helpers",
-            "options": {
-                "symlink": true
-            }
-        },
-        "pars/pars-import": {
-            "type": "path",
-            "url": "modules/pars-import",
-            "options": {
-                "symlink": true
-            }
-        },
-        "pars/pars-models": {
-            "type": "path",
-            "url": "modules/pars-models",
-            "options": {
-                "symlink": true
-            }
-        },
-        "pars/pars-mvc": {
-            "type": "path",
-            "url": "modules/pars-mvc",
-            "options": {
-                "symlink": true
-            }
-        },
-        "pars/pars-patterns": {
-            "type": "path",
-            "url": "modules/pars-patterns",
-            "options": {
-                "symlink": true
-            }
-        }
+  "name": "pars/pars-admin",
+  "description": "",
+  "license": "BSD-3-Clause",
+  "keywords": [
+    "pars"
+  ],
+  "support": {
+    "docs": "https://docs.parsphp.org/pars-admin/",
+    "issues": "https://github.com/pars/pars-admin/issues",
+    "source": "https://github.com/pars/pars-admin",
+    "rss": "https://github.com/pars/pars-admin/releases.atom",
+    "forum": "https://discourse.parsphp.org/"
+  },
+  "require": {
+    "php": "^7.4 || ^8.0",
+    "pars/pars-beans": "@dev",
+    "pars/pars-cli": "@dev",
+    "pars/pars-components": "@dev",
+    "pars/pars-core": "@dev",
+    "pars/pars-helpers": "@dev",
+    "pars/pars-import": "@dev",
+    "pars/pars-models": "@dev",
+    "pars/pars-mvc": "@dev",
+    "pars/pars-patterns": "@dev"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Pars\\Admin\\": "src//"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ParsTest\\Admin\\": "test/"
+    }
+  },
+  "extra": {
+    "merge-plugin": {
+      "include": [
+        "vendor/pars/pars-core/composer.json"
+      ],
+      "require": [],
+      "recurse": true,
+      "replace": false,
+      "ignore-duplicates": false,
+      "merge-dev": true,
+      "merge-extra": true,
+      "merge-extra-deep": false,
+      "merge-scripts": true
+    }
+  },
+  "config": {
+    "sort-packages": true,
+    "optimize-autoloader": true,
+    "classmap-authoritative": true
+  },
+  "scripts": {
+    "serve": [
+      "php -q -S localhost:9090 -t public/ public/index.php & composer run-script yarn-watch"
+    ],
+    "development": "laminas-development-mode",
+    "cs-check": "phpcs",
+    "cs-fix": "phpcbf",
+    "test": "phpunit --colors=always",
+    "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
+    "post-update-cmd": [
+      "@yarn"
+    ],
+    "post-install-cmd": [
+      "@yarn"
+    ]
+  },
+  "repositories": {
+    "pars/pars-beans": {
+      "type": "path",
+      "url": "modules/pars-beans",
+      "options": {
+        "symlink": true
+      }
+    },
+    "pars/pars-cli": {
+      "type": "path",
+      "url": "modules/pars-cli",
+      "options": {
+        "symlink": true
+      }
+    },
+    "pars/pars-components": {
+      "type": "path",
+      "url": "modules/pars-components",
+      "options": {
+        "symlink": true
+      }
+    },
+    "pars/pars-core": {
+      "type": "path",
+      "url": "modules/pars-core",
+      "options": {
+        "symlink": true
+      }
+    },
+    "pars/pars-helpers": {
+      "type": "path",
+      "url": "modules/pars-helpers",
+      "options": {
+        "symlink": true
+      }
+    },
+    "pars/pars-import": {
+      "type": "path",
+      "url": "modules/pars-import",
+      "options": {
+        "symlink": true
+      }
+    },
+    "pars/pars-models": {
+      "type": "path",
+      "url": "modules/pars-models",
+      "options": {
+        "symlink": true
+      }
+    },
+    "pars/pars-mvc": {
+      "type": "path",
+      "url": "modules/pars-mvc",
+      "options": {
+        "symlink": true
+      }
+    },
+    "pars/pars-patterns": {
+      "type": "path",
+      "url": "modules/pars-patterns",
+      "options": {
+        "symlink": true
+      }
+    }
+  }
 }
