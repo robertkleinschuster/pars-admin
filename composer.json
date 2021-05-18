@@ -59,13 +59,19 @@
   },
   "scripts": {
     "serve": [
+      "composer run-script serve-php & composer run-script yarn-watch"
+    ],
+    "serve-php": [
       "Composer\\Config::disableProcessTimeout",
-      "php -q -S localhost:9090 -t public/ public/index.php & composer run-script yarn-watch"
+      "php -q -S localhost:9090 -t public/ public/index.php"
     ],
     "development": "laminas-development-mode",
     "cs-check": "phpcs",
     "cs-fix": "phpcbf",
-    "test": "phpunit --colors=always",
+    "test": [
+      "composer run-script serve-php > phpd.log 2>&1 & sleep 2",
+      "phpunit --colors=always"
+    ],
     "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
     "post-update-cmd": [
       "@yarn"
