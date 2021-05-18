@@ -33,6 +33,7 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     $config = $container->get(\Pars\Core\Config\ParsConfig::class);
     $app->pipe($config->get('image.path'), \Pars\Core\Image\ImageMiddleware::class);
 
+
     // Pipe more middleware here that you want to execute on every request:
     // - bootstrapping
     // - pre-conditions
