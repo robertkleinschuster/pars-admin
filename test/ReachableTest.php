@@ -5,9 +5,13 @@ namespace ParsTest\Admin;
 
 
 use GuzzleHttp\Client;
+use Pars\Admin\Setup\SetupModel;
 use Pars\Bean\PHPUnit\DefaultTestCase;
 use Pars\Core\Container\ParsContainer;
 use Pars\Core\Deployment\UpdaterInterface;
+use Pars\Helper\Parameter\IdListParameter;
+use Pars\Helper\Parameter\IdParameter;
+use Pars\Helper\Parameter\SubmitParameter;
 use Psr\Container\ContainerInterface;
 
 class ReachableTest extends DefaultTestCase
@@ -17,6 +21,20 @@ class ReachableTest extends DefaultTestCase
         parent::setUp();
         $updater = $this->getContainer()->get(UpdaterInterface::class);
         $updater->updateDB();
+
+        $setupModel = new SetupModel($this->getContainer());
+        $setupModel->handleSubmit(
+            SubmitParameter::create(),
+            IdParameter::fromMap([]),
+            IdListParameter::fromMap([]),
+            [
+                'Person_Firstname' => 'Max',
+                'Person_Lastname' => 'Mustermann',
+                'User_Username' => 'max',
+                'User_Displayname' => 'Max M.',
+                'User_Password' => 'password'
+            ]
+        );
     }
 
     protected function getParsContainer(): ParsContainer
