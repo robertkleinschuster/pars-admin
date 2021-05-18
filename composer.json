@@ -59,6 +59,7 @@
   },
   "scripts": {
     "serve": [
+      "Composer\\Config::disableProcessTimeout",
       "php -q -S localhost:9090 -t public/ public/index.php & composer run-script yarn-watch"
     ],
     "development": "laminas-development-mode",
