@@ -39,6 +39,6 @@ class ReachableTest extends DefaultTestCase
         $client = new Client();
         $response = $client->get('localhost:9090');
         $this->assertEquals(200, $response->getStatusCode());
-        $this->assertContains('pars-admin-authentication-signinform', $response->getBody()->getContents());
+        $this->assertStringContainsString('pars-admin-authentication-signinform', $response->getBody()->getContents());
     }
 }
