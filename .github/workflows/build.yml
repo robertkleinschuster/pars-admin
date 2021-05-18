@@ -23,10 +23,14 @@ jobs:
         run: echo "<?php define('PARS_VERSION', '${{ steps.tag_version.outputs.new_tag }}');" > version.php
       - name: Validate composer.json and composer.lock
         run: composer validate
-      - name: Install dependencies
-        run: composer install --no-dev --no-interaction
+      - name: Install test dependencies
+        run: composer install --no-interaction
       - name: Run test suite
         run: composer run-script test
+      - name: Remove test dependencies
+        run: rm -rf vendor && rm -rf composer.lock
+      - name: Install dependencies
+        run: composer install --no-dev --no-interaction
       - name: Clean files
         run: rm -rf node_modules & rm -rf yarn.lock & rm -rf composer.json & rm -rf package.json & rm -rf mkdocs.yml & rm -rf test & rm -rf docs & rm -rf phpcs.xml & rm -rf phpunit.xml.dist & rm -rf modules/*/node_modules & rm -rf modules/*/test & rm -rf modules/*/mkdocs.yml & rm -rf modules/*/mkdocs.yml & rm -rf modules/*/composer.lock & rm -rf modules/*/yarn.lock & rm -rf modules/*/package.json & rm -rf modules/*/composer.json & rm -rf modules/*/phpunit.xml.dist
       - name: Zip
