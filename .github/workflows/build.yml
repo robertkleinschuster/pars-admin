@@ -14,6 +14,20 @@ jobs:
           php-version: '8.0'
           extensions: mbstring, intl, json, dom, gd
           ini-values: post_max_size=256M, max_execution_time=180
+      - name: Shutdown Ubuntu MySQL (SUDO)
+        run: sudo service mysql stop # Shutdown the Default MySQL, "sudo" is necessary, please not remove it
+      - name: Set up MySQL
+        uses: mirromutth/mysql-action@v1.1
+        with:
+          character set server: 'utf8'
+          collation server: 'utf8_general_ci'
+          mysql version: '8.0'
+          mysql database: 'pars'
+          mysql root password: 'pars'
+          mysql user: 'pars'
+          mysql password: 'pars'
+      - name: write test db config
+        run: echo "<?php return ['db' => ['driver' => 'Pdo_Mysql','database' => 'pars','username' => 'pars','password' => 'pars','hostname' => 'localhost',]];" > config/autoload/database.local.php
       - name: Bump version and push tag
         id: tag_version
         uses: mathieudutour/github-tag-action@v5.5
@@ -28,7 +42,7 @@ jobs:
       - name: Run test suite
         run: composer run-script test
       - name: Remove test dependencies
-        run: rm -rf vendor && rm -rf composer.lock
+        run: rm -rf vendor && rm -rf composer.lock && rm -rf config/autoload/database.local.php
       - name: Install dependencies
         run: composer install --no-dev --no-interaction
       - name: Clean files
