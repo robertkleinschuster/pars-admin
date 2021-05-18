@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use Laminas\Stratigility\Middleware\ErrorHandler;
 use Mezzio\Application;
+use Mezzio\Csrf\CsrfMiddleware;
+use Mezzio\Flash\FlashMessageMiddleware;
 use Mezzio\Handler\NotFoundHandler;
 use Mezzio\Helper\ServerUrlMiddleware;
 use Mezzio\Helper\UrlHelperMiddleware;
@@ -13,6 +15,14 @@ use Mezzio\Router\Middleware\ImplicitHeadMiddleware;
 use Mezzio\Router\Middleware\ImplicitOptionsMiddleware;
 use Mezzio\Router\Middleware\MethodNotAllowedMiddleware;
 use Mezzio\Router\Middleware\RouteMiddleware;
+use Pars\Core\Authentication\AuthenticationMiddleware;
+use Pars\Core\Config\ParsConfig;
+use Pars\Core\Deployment\DeploymentMiddleware;
+use Pars\Core\Deployment\UpdateMiddleware;
+use Pars\Core\Image\ImageMiddleware;
+use Pars\Core\Localization\LocalizationMiddleware;
+use Pars\Core\Session\ParsSessionMiddleware;
+use Pars\Core\Translation\TranslatorMiddleware;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -25,13 +35,13 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // all Exceptions.
     $app->pipe(ErrorHandler::class);
     $app->pipe(ServerUrlMiddleware::class);
-    $app->pipe(\Pars\Core\Deployment\DeploymentMiddleware::class);
-    $app->pipe(\Pars\Core\Deployment\UpdateMiddleware::class);
+    $app->pipe(DeploymentMiddleware::class);
+    $app->pipe(UpdateMiddleware::class);
     /**
-     * @var $config \Pars\Core\Config\ParsConfig
+     * @var $config ParsConfig
      */
-    $config = $container->get(\Pars\Core\Config\ParsConfig::class);
-    $app->pipe($config->get('image.path'), \Pars\Core\Image\ImageMiddleware::class);
+    $config = $container->get(ParsConfig::class);
+    $app->pipe($config->get('image.path'), ImageMiddleware::class);
 
 
     // Pipe more middleware here that you want to execute on every request:
@@ -52,9 +62,9 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // - $app->pipe('/docs', $apiDocMiddleware);
     // - $app->pipe('/files', $filesMiddleware);
 
-    $app->pipe(\Pars\Core\Session\ParsSessionMiddleware::class);
-    $app->pipe(\Mezzio\Flash\FlashMessageMiddleware::class);
-    $app->pipe(\Mezzio\Csrf\CsrfMiddleware::class);
+    $app->pipe(ParsSessionMiddleware::class);
+    $app->pipe(FlashMessageMiddleware::class);
+    $app->pipe(CsrfMiddleware::class);
 
 
     // Register the routing middleware in the middleware pipeline.
@@ -80,9 +90,9 @@ return function (Application $app, MiddlewareFactory $factory, ContainerInterfac
     // - route-based authentication
     // - route-based validation
     // - etc.
-    $app->pipe(\Pars\Core\Authentication\AuthenticationMiddleware::class);
-    $app->pipe(\Pars\Core\Localization\LocalizationMiddleware::class);
-    $app->pipe(\Pars\Core\Translation\TranslatorMiddleware::class);
+    $app->pipe(LocalizationMiddleware::class);
+    $app->pipe(TranslatorMiddleware::class);
+    $app->pipe(AuthenticationMiddleware::class);
 
     // Register the dispatch middleware in the middleware pipeline
     $app->pipe(DispatchMiddleware::class);
