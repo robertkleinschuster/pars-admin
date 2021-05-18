@@ -15,7 +15,7 @@ jobs:
           extensions: mbstring, intl, json, dom, gd
           ini-values: post_max_size=256M, max_execution_time=180
       - name: Shutdown Ubuntu MySQL (SUDO)
-        run: sudo service mysql stop # Shutdown the Default MySQL, "sudo" is necessary, please not remove it
+        run: sudo service mysql stop
       - name: Set up MySQL
         uses: mirromutth/mysql-action@v1.1
         with:
