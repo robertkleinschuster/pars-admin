@@ -34,7 +34,7 @@ jobs:
           mysql user: 'pars'
           mysql password: 'pars'
       - name: write test db config
-        run: echo "<?php return ['db' => ['driver' => 'Pdo_Mysql','database' => 'pars','username' => 'pars','password' => 'pars','hostname' => '127.0.0.1',]];" > config/autoload/database.local.php
+        run: echo "<?php return ['db' => ['driver' => 'Pdo_Mysql','database' => 'pars','username' => 'root','password' => 'pars','hostname' => '127.0.0.1',]];" > config/autoload/database.local.php
 
       - name: Validate composer.json and composer.lock
         run: composer validate
