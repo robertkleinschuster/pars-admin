@@ -89,16 +89,18 @@ abstract class BaseModel extends AbstractModel implements
             $processor->addMetaFieldHandler(
                 new TimestampMetaFieldHandler('Timestamp_Edit', 'Timestamp_Create')
             );
-            $processor->addMetaFieldHandler(
-                new DefaultMetaFieldHandler('Person_ID_Edit', $this->getUserBean()->Person_ID, true)
-            );
-            $processor->addMetaFieldHandler(
-                new DefaultMetaFieldHandler('Person_ID_Create', $this->getUserBean()->Person_ID)
-            );
-            if ($processor instanceof TranslatorAwareInterface && $this->hasTranslator()) {
+            if ($this->hasUserBean()) {
+                $processor->addMetaFieldHandler(
+                    new DefaultMetaFieldHandler('Person_ID_Edit', $this->getUserBean()->Person_ID, true)
+                );
+                $processor->addMetaFieldHandler(
+                    new DefaultMetaFieldHandler('Person_ID_Create', $this->getUserBean()->Person_ID)
+                );
+            }
+            if ($processor instanceof TranslatorAwareInterface) {
                 $processor->setTranslator($this->getTranslator()->getTranslator());
             }
-            if ($processor instanceof ParsTranslatorAwareInterface && $this->hasTranslator()) {
+            if ($processor instanceof ParsTranslatorAwareInterface) {
                 $processor->setTranslator($this->getTranslator());
             }
         }
