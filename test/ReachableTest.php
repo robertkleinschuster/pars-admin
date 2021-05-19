@@ -52,7 +52,7 @@ class ReachableTest extends DefaultTestCase
 
     protected function getContainer(): ContainerInterface
     {
-        return require 'config/container.php';
+        return require PARS_CONTAINER;
     }
 
     /**
