@@ -12,6 +12,7 @@ $cacheConfig = [
     'config_cache_path' => implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'data' , 'cache', 'config', 'config.php']),
 ];
 
+
 $aggregator = new ConfigAggregator([
     \Laminas\Mail\ConfigProvider::class,
     \Laminas\Validator\ConfigProvider::class,
