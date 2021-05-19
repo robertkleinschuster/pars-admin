@@ -1,9 +1,8 @@
 <?php
-
 declare(strict_types=1);
-
 chdir(dirname(__DIR__));
 require 'vendor/autoload.php';
+require 'vendor/pars/pars-core/initialize.php';
 
 /**
  * Self-called anonymous function that creates its own scope and keeps the global namespace clean.

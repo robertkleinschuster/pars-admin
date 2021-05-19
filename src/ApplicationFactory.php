@@ -9,6 +9,7 @@ use Mezzio\Router\RouteCollector;
 use Pars\Core\Application\AbstractApplication;
 use Pars\Core\Application\AbstractApplicationContainer;
 use Pars\Core\Application\AbstractApplicationFactory;
+use Pars\Core\Authentication\AuthenticationMiddleware;
 
 class ApplicationFactory extends AbstractApplicationFactory
 {
@@ -21,14 +22,12 @@ class ApplicationFactory extends AbstractApplicationFactory
         return new \Pars\Admin\Application($factory, $pipeline, $routes, $runner);
     }
 
-    protected function initPipeline(
-        AbstractApplication $app,
-        MiddlewareFactory $factory,
-        AbstractApplicationContainer $container
-    )
+    protected function initPipeline(AbstractApplication $app, MiddlewareFactory $factory, AbstractApplicationContainer $container)
     {
-        (require realpath(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'config', 'pipeline.php'])))($app, $factory, $container);
+        parent::initPipeline($app, $factory, $container);
+        $app->pipe(AuthenticationMiddleware::class);
     }
+
 
     protected function initRoutes(
         AbstractApplication $app,
@@ -36,7 +35,7 @@ class ApplicationFactory extends AbstractApplicationFactory
         AbstractApplicationContainer $container
     )
     {
-        (require realpath(implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'config', 'routes.php'])))($app, $factory, $container);
+        $app->any(\Pars\Mvc\Handler\MvcHandler::getRoute(), \Pars\Mvc\Handler\MvcHandler::class, 'mvc');
     }
 
 
