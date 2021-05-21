@@ -6,6 +6,7 @@ use Pars\Bean\Type\Base\BeanException;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Component\Base\Field\Paragraph;
 use Pars\Component\Base\Form\FileSelect;
+use Pars\Helper\String\StringHelper;
 use Pars\Model\File\FileBeanList;
 
 /**

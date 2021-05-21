@@ -475,7 +475,8 @@ abstract class CrudController extends BaseController
         $edit->setCreate(true);
         $this->getView()->pushComponent($edit);
         if ($this->getControllerRequest()->hasData()) {
-            $edit->getBean()->fromArray($this->getControllerRequest()->getData()->getAttributes());
+            $this->getModel()->getBeanConverter()
+                ->convert($edit->getBean(), $this->getControllerRequest()->getData()->getAttributes())->fromArray($this->getControllerRequest()->getData()->getAttributes());
         }
         return $edit;
     }
@@ -500,7 +501,8 @@ abstract class CrudController extends BaseController
         $edit->setToken($this->generateToken('submit_token'));
         $this->getView()->pushComponent($edit);
         if ($this->getControllerRequest()->hasData()) {
-            $edit->getBean()->fromArray($this->getControllerRequest()->getData()->getAttributes());
+            $this->getModel()->getBeanConverter()
+                ->convert($edit->getBean(), $this->getControllerRequest()->getData()->getAttributes())->fromArray($this->getControllerRequest()->getData()->getAttributes());
         }
         return $edit;
     }

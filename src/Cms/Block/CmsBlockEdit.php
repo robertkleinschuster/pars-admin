@@ -14,14 +14,12 @@ class CmsBlockEdit extends ArticleEdit
         parent::initAttributeFields();
         if (!$this->isTranslationOnly() && !$this->isTextOnly()) {
             if ($this->hasTypeOptions()) {
-                $this->getForm()->addSelect(
+                $formGroup = $this->getForm()->addSelect(
                     'CmsBlockType_Code',
                     $this->getTypeOptions(),
                     '{CmsBlockType_Code}',
                     $this->translate('cmsblocktype.code'),
-                    2,
-                    1
-                )->addOption('ajax');
+                );
             }
             if ($this->hasStateOptions()) {
                 $this->getForm()->addSelect(
@@ -29,23 +27,32 @@ class CmsBlockEdit extends ArticleEdit
                     $this->getStateOptions(),
                     '{CmsBlockState_Code}',
                     $this->translate('cmsblockstate.code'),
-                    2,
-                    2
                 );
             }
         }
 
-        if ($this->hasBean() && $this->getBean()->get('CmsBlockType_Code') == 'contact') {
-            $this->getForm()->addEmail(
-                'Article_Data[contact_email]',
-                '{Article_Data[contact_email]}',
-                $this->translate('article.data.contact_email'),
-                11,
-                1
-            )->getInput()->setRequired(true);
+        if ($this->hasBean()) {
+            $this->initFieldsByType($this->getBean()->get('CmsBlockType_Code'));
+
         }
     }
 
+    protected function initFieldsByType(string $type)
+    {
+        switch ($type) {
+            case 'contact':
+                return $this->initFieldsContact();
+        }
+    }
+
+    protected function initFieldsContact()
+    {
+        $this->getForm()->addEmail(
+            'Article_Data[contact_email]',
+            '{Article_Data[contact_email]}',
+            $this->translate('article.data.contact_email')
+        )->getInput()->setRequired(true);
+    }
 
     protected function getRedirectController(): string
     {

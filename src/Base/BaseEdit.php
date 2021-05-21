@@ -2,6 +2,7 @@
 
 namespace Pars\Admin\Base;
 
+use Pars\Helper\String\StringHelper;
 use Pars\Pattern\Mode\ModeAwareInterface;
 use Pars\Pattern\Mode\ModeAwareTrait;
 use Pars\Component\Base\Edit\Edit;
@@ -41,6 +42,7 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
         if ($this->isShowTitle()) {
             $this->setName($this->translate('edit.title'));
         }
+        $this->getForm()->setId(StringHelper::slugify(static::class));
     }
 
 
