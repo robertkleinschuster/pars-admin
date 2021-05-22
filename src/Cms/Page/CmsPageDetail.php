@@ -69,7 +69,7 @@ class CmsPageDetail extends ArticleDetail
         $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
-        $this->addFieldTeaser($this->translate('cmspage.tiles.metatext'));
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
     }
 
     protected function initFieldsTesla()
@@ -77,7 +77,7 @@ class CmsPageDetail extends ArticleDetail
         $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
-        $this->addFieldTeaser($this->translate('cmspage.tesla.metatext'));
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
     }
 
     protected function initFieldsRedirect()
@@ -90,7 +90,7 @@ class CmsPageDetail extends ArticleDetail
         $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
-        $this->addFieldTeaser($this->translate('cmspage.poll.metatext'));
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
     }
 
     protected function initFieldsHome()
@@ -98,7 +98,7 @@ class CmsPageDetail extends ArticleDetail
         $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
-        $this->addFieldTeaser($this->translate('cmspage.home.metatext'));
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
         $this->addFieldText();
         $this->addFieldFooter();
     }
@@ -108,7 +108,7 @@ class CmsPageDetail extends ArticleDetail
         $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
-        $this->addFieldTeaser($this->translate('cmspage.gallery.metatext'));
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
     }
 
     protected function initFieldsFaq()
@@ -116,7 +116,7 @@ class CmsPageDetail extends ArticleDetail
         $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
-        $this->addFieldTeaser($this->translate('cmspage.faq.metatext'));
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
     }
 
     protected function initFieldsContact()
@@ -124,7 +124,7 @@ class CmsPageDetail extends ArticleDetail
         $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
-        $this->addFieldTeaser($this->translate('cmspage.contact.metatext'));
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
         $this->addFieldContactEmail();
     }
 
@@ -133,7 +133,7 @@ class CmsPageDetail extends ArticleDetail
         $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
-        $this->addFieldTeaser($this->translate('cmspage.columns.metatext'));
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
     }
 
     protected function initFieldsBlog()
@@ -141,7 +141,7 @@ class CmsPageDetail extends ArticleDetail
         $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
-        $this->addFieldTeaser($this->translate('cmspage.blog.metatext'));
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
     }
 
     protected function initFieldsAbout()
@@ -149,7 +149,7 @@ class CmsPageDetail extends ArticleDetail
         $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
-        $this->addFieldTeaser($this->translate('cmspage.about.metatext'));
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
     }
 
 

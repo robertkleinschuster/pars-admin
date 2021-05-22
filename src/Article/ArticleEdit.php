@@ -79,7 +79,6 @@ abstract class ArticleEdit extends BaseEdit
             '{Article_Code}',
             $label
         );
-        $formGroup->setHint($this->translate('article.code.hint'));
         $formGroup->setGroup($group);
 
         return $formGroup;
@@ -335,7 +334,6 @@ abstract class ArticleEdit extends BaseEdit
             }
         }
         $formGroup = $this->getForm()->addFileSelect('File_ID', $fileSelect, '{File_ID}', $label);
-        $formGroup->setHint($this->translate('file.id.hint'));
         $formGroup->setGroup($group);
         return $formGroup;
     }

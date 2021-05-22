@@ -10,7 +10,6 @@ trait ArticleComponentTrait
     {
         switch ($field) {
             case 'ArticleTranslation_Active':
-            case 'ArticleTranslation_Name':
             case 'ArticleTranslation_Host':
                 return $this->getGroupGeneral();
             case 'ArticleTranslation_Heading':
@@ -26,6 +25,7 @@ trait ArticleComponentTrait
                 return $this->getGroupMetaText();
             case 'Article_Code':
             case 'ArticleTranslation_Code':
+            case 'ArticleTranslation_Name':
                 return $this->getGroupIdentification();
             default:
                 return $this->getGroupAdditional();

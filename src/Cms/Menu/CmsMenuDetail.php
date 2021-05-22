@@ -39,11 +39,7 @@ class CmsMenuDetail extends BaseDetail
             $span->setGroup($this->translate('cmsmenu.group.general'));
         }
 
-        $span = $this->addSpan('Article_Code', $this->translate('article.code'));
-        $span->setGroup($this->translate('cmsmenu.group.general'));
-        $span = $this->addSpan('ArticleTranslation_Code', $this->translate('articletranslation.code'));
-        $span->setGroup($this->translate('cmsmenu.group.general'));
-        parent::initialize();
+          parent::initialize();
         if ($this->hasPreviewPath()) {
             $this->getToolbar()->push((new PreviewButton($this->getPreviewPath()))->setTarget('_blank'));
         }

@@ -29,10 +29,7 @@ class ValueWarningFieldFormat implements FieldFormatInterface
     {
         if (!$bean->empty($this->field) && $bean->get($this->field) == $this->value) {
             if ($field instanceof ViewElement) {
-                $field->addOption('border');
-                $field->addOption('text-danger');
-                $field->addOption('bg-light');
-                $field->addOption('p-1');
+               $field->getInput()->addOption('border-warning');
             }
         }
         return $value;

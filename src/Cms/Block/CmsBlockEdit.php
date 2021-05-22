@@ -106,7 +106,7 @@ class CmsBlockEdit extends ArticleEdit
 
     protected function initFieldsTiles()
     {
-        $this->addFieldHeading($this->translate('cmsblock.poll.heading'));
+        $this->addFieldHeading($this->translate('cmsblock.tiles.heading'));
     }
 
     protected function initFieldsVideo()

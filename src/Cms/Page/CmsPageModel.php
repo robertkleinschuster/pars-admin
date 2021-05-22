@@ -9,7 +9,6 @@ use Pars\Core\Cache\ParsCache;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
-use Pars\Model\Article\DataBean;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
 use Pars\Model\Cms\Page\CmsPageBeanProcessor;
 use Pars\Model\Cms\Page\Layout\CmsPageLayoutBeanFinder;
@@ -91,7 +90,7 @@ class CmsPageModel extends ArticleModel
                 $finder = new CmsPageBeanFinder($this->getDbAdpater(), false);
                 $finder->filterLocale_Code($this->getTranslator()->getLocale());
                 $finder->setCmsPageState_Code('active');
-                $options[null] = $this->translate('noselection');
+                $options[0] = $this->translate('noselection');
                 foreach ($finder->getBeanListDecorator() as $bean) {
                     if ($this->getBeanFinder()->count() != 1 || $bean->get('CmsPage_ID') != $this->getBean()->get('CmsPage_ID')) {
                         $options[$bean->get('CmsPage_ID')] = $bean->get('ArticleTranslation_Name');
@@ -108,7 +107,7 @@ class CmsPageModel extends ArticleModel
     public function getEmptyBean(array $data = []): BeanInterface
     {
         $bean = parent::getEmptyBean($data);
-        $bean->set('CmsPageType_Code', 'home');
+        $bean->set('CmsPageType_Code', 'default');
         $bean->set('CmsPageLayout_Code', 'default');
         $bean->set('CmsPageState_Code', 'active');
         return $bean;
