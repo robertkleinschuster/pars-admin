@@ -9,49 +9,124 @@ class CmsBlockEdit extends ArticleEdit
     private ?array $typeOptions = null;
     private ?array $stateOptions = null;
 
-    protected function initAttributeFields()
+    protected function initFields()
     {
-        parent::initAttributeFields();
-        if (!$this->isTranslationOnly() && !$this->isTextOnly()) {
-            if ($this->hasTypeOptions()) {
-                $formGroup = $this->getForm()->addSelect(
-                    'CmsBlockType_Code',
-                    $this->getTypeOptions(),
-                    '{CmsBlockType_Code}',
-                    $this->translate('cmsblocktype.code'),
-                );
-            }
-            if ($this->hasStateOptions()) {
-                $this->getForm()->addSelect(
-                    'CmsBlockState_Code',
-                    $this->getStateOptions(),
-                    '{CmsBlockState_Code}',
-                    $this->translate('cmsblockstate.code'),
-                );
-            }
-        }
-
+        parent::initFields();
+        $this->addFieldType();
+        $this->addFieldState();
+        $this->addFieldCodeInternal();
+        $this->addFieldCodeUrl();
         if ($this->hasBean()) {
             $this->initFieldsByType($this->getBean()->get('CmsBlockType_Code'));
+        }
+    }
 
+
+    protected function addFieldType()
+    {
+        if ($this->hasTypeOptions()) {
+            $this->getForm()->addSelect(
+                'CmsBlockType_Code',
+                $this->getTypeOptions(),
+                '{CmsBlockType_Code}',
+                $this->translate('cmsblocktype.code'),
+            )->setGroup($this->getGroupGeneral());
+        }
+    }
+
+    protected function addFieldState()
+    {
+        if ($this->hasStateOptions()) {
+            $this->getForm()->addSelect(
+                'CmsBlockState_Code',
+                $this->getStateOptions(),
+                '{CmsBlockState_Code}',
+                $this->translate('cmsblockstate.code'),
+            )->setGroup($this->getGroupGeneral());
         }
     }
 
     protected function initFieldsByType(string $type)
     {
         switch ($type) {
+            case 'banner':
+                $this->initFieldsBanner();
+                break;
             case 'contact':
-                return $this->initFieldsContact();
+                $this->initFieldsContact();
+                break;
+            case 'link':
+                $this->initFieldsLink();
+                break;
+            case 'picture':
+                $this->initFieldsPicture();
+                break;
+            case 'poll':
+                $this->initFieldsPoll();
+                break;
+            case 'text':
+                $this->initFieldsText();
+                break;
+            case 'tiles':
+                $this->initFieldsTiles();
+                break;
+            case 'video':
+                $this->initFieldsVideo();
+                break;
+            case 'default':
+                $this->initFieldsDefault();
+                break;
         }
+    }
+
+    protected function initFieldsBanner()
+    {
+        $this->addFieldFile($this->translate('cmsblock.banner.file'));
+        $this->addFieldPath($this->translate('cmsblock.banner.path'));
+        $this->addFieldHeading($this->translate('cmsblock.banner.heading'));
+        $this->addFieldSubHeading($this->translate('cmsblock.banner.subheading'));
+        $this->addFieldText($this->translate('cmsblock.banner.text'));
+    }
+    protected function initFieldsLink()
+    {
+        $this->addFieldPath($this->translate('cmsblock.link.path'));
+        $this->addFieldHeading($this->translate('cmsblock.link.heading'));
+    }
+
+    protected function initFieldsPicture()
+    {
+        $this->addFieldFile($this->translate('cmsblock.picture.file'));
+    }
+
+    protected function initFieldsPoll()
+    {
+        $this->addFieldHeading($this->translate('cmsblock.poll.heading'));
+        $this->addFieldText($this->translate('cmsblock.poll.text'));
+    }
+
+    protected function initFieldsTiles()
+    {
+        $this->addFieldHeading($this->translate('cmsblock.poll.heading'));
+    }
+
+    protected function initFieldsVideo()
+    {
+        $this->addFieldPath($this->translate('cmsblock.video.path'));
+    }
+
+    protected function initFieldsDefault()
+    {
+        $this->addFieldText($this->translate('cmsblock.default.text'));
+    }
+
+    protected function initFieldsText()
+    {
+        $this->addFieldText($this->translate('cmsblock.text.text'));
     }
 
     protected function initFieldsContact()
     {
-        $this->getForm()->addEmail(
-            'Article_Data[contact_email]',
-            '{Article_Data[contact_email]}',
-            $this->translate('article.data.contact_email')
-        )->getInput()->setRequired(true);
+        $this->addFieldContactEmail();
     }
 
     protected function getRedirectController(): string

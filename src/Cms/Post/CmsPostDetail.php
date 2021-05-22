@@ -15,18 +15,43 @@ class CmsPostDetail extends ArticleDetail
     protected function initFields()
     {
         parent::initFields();
+        $this->addFieldType();
+        $this->addFieldState();
+        $this->addFieldPublishTimestamp();
+        $this->addFieldCodeUrl();
+        $this->addFieldCodeInternal();
+        $this->addFieldName();
+        $this->addFieldTitle();
+        $this->addFieldHeading();
+        $this->addFieldSubHeading();
+        $this->addFieldKeywords();
+        $this->addFieldTeaser();
+        $this->addFieldText();
+        $this->addFieldFooter();
+    }
+
+    protected function addFieldState()
+    {
         $span = new Badge('{CmsPostState_Code}');
         $span->setLabel($this->translate('cmspoststate.code'));
         $span->setFormat(new CmsPostStateFieldFormat($this->getTranslator()));
-        $span->setGroup($this->translate('article.group.visibility'));
+        $span->setGroup($this->getGroupGeneral());
         $this->pushField($span);
+    }
+
+    protected function addFieldType()
+    {
         $span = new Span('{CmsPostType_Code}', $this->translate('cmsposttype.code'));
         $span->setFormat(new CmsPostTypeFieldFormat($this->getTranslator()));
-        $span->setGroup($this->translate('article.group.general'));
+        $span->setGroup($this->getGroupGeneral());
         $this->pushField($span);
+    }
+
+    protected function addFieldPublishTimestamp()
+    {
         $span = $this->addSpan('CmsPost_PublishTimestamp', $this->translate('cmspost.publishtimestamp'));
         $span->setFormat(new CmsPostPublishTimestampFieldFormat());
-        $span->setGroup($this->translate('article.group.visibility'));
+        $span->setGroup($this->getGroupGeneral());
     }
 
 
