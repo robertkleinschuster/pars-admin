@@ -34,6 +34,9 @@ class CmsMenuDetail extends BaseDetail
             $span->setFormat(new CmsMenuTypeFieldFormat($this->getTranslator()));
             $span->setGroup($this->translate('cmsmenu.group.general'));
             $this->pushField($span);
+        } else {
+            $span = $this->addSpan('CmsMenu_Level', $this->translate('cmsmenu.level'));
+            $span->setGroup($this->translate('cmsmenu.group.general'));
         }
 
         $span = $this->addSpan('Article_Code', $this->translate('article.code'));

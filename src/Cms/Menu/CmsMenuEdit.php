@@ -16,6 +16,7 @@ class CmsMenuEdit extends BaseEdit
         $this->getForm()->addText('CmsMenu_Name', '{CmsMenu_Name}', $this->translate('cmsmenu.name'));
         if ($this->hasPageOptions()) {
             $this->getForm()->addSelect('CmsPage_ID', $this->getPageOptions(), '{CmsPage_ID}', $this->translate('cmspage.id'));
+            $this->getForm()->addSelect('CmsMenu_Level', [1 => 1, 2 => 2],'{CmsMenu_Level}',  $this->translate('cmsmenu.level'));
         }
         if ($this->hasTypeOptions()) {
             $this->getForm()->addSelect('CmsMenuType_Code', $this->getTypeOptions(), '{CmsMenuType_Code}', $this->translate('cmsmenutype.code'));
