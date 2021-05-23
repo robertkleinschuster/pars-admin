@@ -405,4 +405,6 @@ return [
     'cmsblock.poll.text' => 'Frage',
     'cmsblock.video.path' => 'YouTube Einbettungs-URL',
     'index.quickactions' => 'Schnellaktionen',
+    'article.placeholder.label' => '{...}',
+    'article.placeholder.title' => 'Platzhalter',
 ];

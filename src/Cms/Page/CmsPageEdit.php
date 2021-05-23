@@ -5,7 +5,6 @@ namespace Pars\Admin\Cms\Page;
 use Pars\Admin\Article\ArticleEdit;
 use Pars\Admin\Base\NotEmptyWarningFieldFormat;
 use Pars\Admin\Base\ValueWarningFieldFormat;
-use Pars\Component\Base\Form\Wysiwyg\Action;
 
 /**
  * Class CmsPageEdit
@@ -27,6 +26,7 @@ class CmsPageEdit extends ArticleEdit
         $this->addFieldState();
         $this->addFieldCodeInternal();
         $this->addFieldCodeUrl();
+        $this->addFieldName();
         if ($this->hasBean()) {
             $this->initFieldsByType($this->getBean()->get('CmsPageType_Code'));
         }
@@ -77,7 +77,6 @@ class CmsPageEdit extends ArticleEdit
 
     protected function initFieldsTiles()
     {
-        $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
         $this->addFieldTeaser($this->translate('cmspage.metatext'));
@@ -85,7 +84,6 @@ class CmsPageEdit extends ArticleEdit
 
     protected function initFieldsTesla()
     {
-        $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
         $this->addFieldTeaser($this->translate('cmspage.metatext'));
@@ -99,7 +97,6 @@ class CmsPageEdit extends ArticleEdit
 
     protected function initFieldsPoll()
     {
-        $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
         $this->addFieldTeaser($this->translate('cmspage.metatext'));
@@ -108,7 +105,6 @@ class CmsPageEdit extends ArticleEdit
 
     protected function initFieldsDefault()
     {
-        $this->addFieldName();
         $this->addFieldText();
         $this->addFieldFooter();
         $this->addFieldTitle();
@@ -118,7 +114,6 @@ class CmsPageEdit extends ArticleEdit
 
     protected function initFieldsGallery()
     {
-        $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
         $this->addFieldTeaser($this->translate('cmspage.metatext'));
@@ -126,7 +121,6 @@ class CmsPageEdit extends ArticleEdit
 
     protected function initFieldsFaq()
     {
-        $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
         $this->addFieldTeaser($this->translate('cmspage.metatext'));
@@ -134,7 +128,6 @@ class CmsPageEdit extends ArticleEdit
 
     protected function initFieldsContact()
     {
-        $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
         $this->addFieldTeaser($this->translate('cmspage.metatext'));
@@ -143,7 +136,6 @@ class CmsPageEdit extends ArticleEdit
 
     protected function initFieldsColumns()
     {
-        $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
         $this->addFieldTeaser($this->translate('cmspage.metatext'));
@@ -151,7 +143,6 @@ class CmsPageEdit extends ArticleEdit
 
     protected function initFieldsBlog()
     {
-        $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
         $this->addFieldTeaser($this->translate('cmspage.metatext'));
@@ -159,7 +150,6 @@ class CmsPageEdit extends ArticleEdit
 
     protected function initFieldsAbout()
     {
-        $this->addFieldName();
         $this->addFieldTitle();
         $this->addFieldKeywords();
         $this->addFieldTeaser($this->translate('cmspage.metatext'));

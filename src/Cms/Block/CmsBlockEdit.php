@@ -16,6 +16,7 @@ class CmsBlockEdit extends ArticleEdit
         $this->addFieldState();
         $this->addFieldCodeInternal();
         $this->addFieldCodeUrl();
+        $this->addFieldName();
         if ($this->hasBean()) {
             $this->initFieldsByType($this->getBean()->get('CmsBlockType_Code'));
         }

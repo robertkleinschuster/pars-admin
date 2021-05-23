@@ -137,7 +137,7 @@ abstract class ArticleEdit extends BaseEdit
         );
         $formGroup->setGroup($group);
         if ($this->hasPlaceholderOptions()) {
-            $formGroup->getInput()->addOptionDropdown('{}', $this->getPlaceholderOptions());
+            $formGroup->getInput()->addOptionDropdown($this->translate('article.placeholder.label'), $this->getPlaceholderOptions(), $this->translate('article.placeholder.title'));
         }
         return $formGroup;
     }
@@ -211,7 +211,7 @@ abstract class ArticleEdit extends BaseEdit
         $formGroup->setGroup($group);
         $formGroup->setHint($this->translate('articletranslation.text.hint'));
         if ($this->hasPlaceholderOptions()) {
-            $formGroup->getInput()->addOptionDropdown('{}', $this->getPlaceholderOptions());
+            $formGroup->getInput()->addOptionDropdown($this->translate('article.placeholder.label'), $this->getPlaceholderOptions(), $this->translate('article.placeholder.title'));
         }
         return $formGroup;
     }
