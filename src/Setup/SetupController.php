@@ -76,7 +76,7 @@ class SetupController extends BaseController
         $setup->setBean($this->getModel()->getEmptyBean());
         $setup->getBean()->set('Locale_Code', 'de_AT');
         $setup->getBean()->set('UserState_Code', 'active');
-        $setup->setToken($this->generateToken('submit_token'));
+        $setup->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
         $this->getModel()->getBeanConverter()
             ->convert($setup->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
         $setup->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());

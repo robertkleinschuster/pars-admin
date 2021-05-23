@@ -71,12 +71,12 @@ class ImportController extends CrudController
                     $alert = new Alert($this->translate('tesla.authentication.alert'));
                     $this->getView()->pushComponent($alert);
                 }
-                $configure = new TeslaImportConfigure($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+                $configure = new TeslaImportConfigure($this->getTranslator(), $this->getUserBean());
                 $configure->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
                 $configure->setBean($bean);
                 $this->getModel()->getBeanConverter()
                     ->convert($configure->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
-                $configure->setToken($this->generateToken('submit_token'));
+                $configure->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
                 $this->getView()->pushComponent($configure);
                 break;
         }

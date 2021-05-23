@@ -403,5 +403,6 @@ return [
     'cmsblock.tiles.heading' => 'Überschrift',
     'cmsblock.poll.heading' => 'Überschrift',
     'cmsblock.poll.text' => 'Frage',
-    'cmsblock.video.path' => 'YouTube Einbettungs-URL'
+    'cmsblock.video.path' => 'YouTube Einbettungs-URL',
+    'index.quickactions' => 'Schnellaktionen',
 ];

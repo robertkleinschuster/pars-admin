@@ -8,10 +8,12 @@ use Pars\Admin\Base\CrudModel;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Article\DataBean;
 use Pars\Model\Article\Translation\ArticleTranslationBeanFinder;
+use Pars\Model\Cms\Block\CmsBlockBeanFinder;
 use Pars\Model\File\FileBeanFinder;
 use Pars\Model\File\FileBeanList;
 use Pars\Model\Localization\Locale\LocaleBeanFinder;
 use Pars\Model\Localization\Locale\LocaleBeanList;
+use Pars\Model\Translation\TranslationLoader\TranslationBeanFinder;
 
 /**
  * Class ArticleModel
@@ -64,6 +66,22 @@ abstract class ArticleModel extends CrudModel
     {
         $finder = new FileBeanFinder($this->getDbAdpater());
         return $finder->getBeanList();
+    }
+
+    public function getPlaceholderOptions()
+    {
+        $options = [];
+        $finder = new CmsBlockBeanFinder($this->getDbAdpater());
+        $finder->filterLocale_Code($this->getUserBean()->getLocale()->getLocale_Code());
+        foreach ($finder->getBeanListDecorator() as $bean) {
+            $options["{block:{$bean->Article_Code}}"] = "{$bean->ArticleTranslation_Name} ({$bean->Article_Code})";
+        }
+        $finder = new TranslationBeanFinder($this->getDbAdpater());
+        $finder->filterLocale_Code($this->getUserBean()->getLocale()->getLocale_Code());
+        foreach ($finder->getBeanListDecorator() as $bean) {
+            $options["{translation:{$bean->Translation_Code}}"] = "{$bean->Translation_Text} ({$bean->Translation_Code})";
+        }
+        return $options;
     }
 
     /**

@@ -175,26 +175,9 @@ class IndexController extends BaseController
             $detail->pushField($span);
         }
 
-        $group = new Group();
-        $item = new Item();
-        $item->setContent($this->translate('index.create.page'));
-        $item->setPath($this->getPathHelper()->setController('cmspage')->setAction('create'));
-        $group->push($item);
-
-        $item = new Item();
-        $item->setContent($this->translate('index.edit.page'));
-        $item->setPath($this->getPathHelper()->setController('cmspage')->setAction('index'));
-        $group->push($item);
-
-        $item = new Item();
-        $item->setContent($this->translate('index.create.block'));
-        $item->setPath($this->getPathHelper()->setController('cmsblock')->setAction('create'));
-        $group->push($item);
-
-        $item = new Item();
-        $item->setContent($this->translate('index.create.menu'));
-        $item->setPath($this->getPathHelper()->setController('cmsmenu')->setAction('create'));
-        $group->push($item);
+        $headline = new DefaultComponent();
+        $headline->push(new Headline($this->translate('index.quickactions')));
+        $this->getView()->pushComponent($headline);
 
         $messages = new Detail();
         $messages->setHeading($this->translate('index.messages'));
@@ -215,6 +198,9 @@ class IndexController extends BaseController
             $this->getView()->pushComponent($messages);
         }
 
-        $this->getView()->pushComponent($group);
+        $this->pushAction('cmspage', 'index', $this->translate('index.quickactions.cmspage'));
+        $this->pushAction('cmsblock', 'index', $this->translate('index.quickactions.cmsblock'));
+        $this->pushAction('cmsmenu', 'index', $this->translate('index.quickactions.cmsblock'));
+
     }
 }

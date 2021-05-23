@@ -314,16 +314,20 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function handleSubmitSecurity(): bool
     {
-        if ($this->getControllerRequest()->hasAttribute('submit_token')) {
+        if ($this->getControllerRequest()->hasAttribute($this->getTokenName())) {
             return $this->validateToken(
-                'submit_token',
-                $this->getControllerRequest()->getAttribute('submit_token') ?? ''
+                $this->getTokenName(),
+                $this->getControllerRequest()->getAttribute($this->getTokenName()) ?? ''
             );
         } else {
             return false;
         }
     }
 
+    protected function getTokenName()
+    {
+        return 'token_' . $this->getControllerRequest()->getHash();
+    }
     /**
      * @return ParsTranslator
      */

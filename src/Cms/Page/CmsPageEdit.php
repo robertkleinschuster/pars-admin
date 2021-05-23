@@ -5,6 +5,7 @@ namespace Pars\Admin\Cms\Page;
 use Pars\Admin\Article\ArticleEdit;
 use Pars\Admin\Base\NotEmptyWarningFieldFormat;
 use Pars\Admin\Base\ValueWarningFieldFormat;
+use Pars\Component\Base\Form\Wysiwyg\Action;
 
 /**
  * Class CmsPageEdit
@@ -108,11 +109,11 @@ class CmsPageEdit extends ArticleEdit
     protected function initFieldsDefault()
     {
         $this->addFieldName();
+        $this->addFieldText();
+        $this->addFieldFooter();
         $this->addFieldTitle();
         $this->addFieldKeywords();
         $this->addFieldTeaser($this->translate('cmspage.metatext'));
-        $this->addFieldText();
-        $this->addFieldFooter();
     }
 
     protected function initFieldsGallery()

@@ -109,7 +109,7 @@ abstract class CrudController extends BaseController
         }
         $overview = $this->createOverview();
         $this->injectContext($overview);
-        $overview->setToken($this->generateToken('submit_token'));
+        $overview->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
         $overview->setBeanList($this->getModel()->getBeanList());
         $this->initFilter($overview);
         if ($this->hasParent()) {
@@ -471,7 +471,7 @@ abstract class CrudController extends BaseController
         $edit->setBean($this->getModel()->getEmptyBean($this->getPreviousAttributes()));
         $this->getModel()->getBeanConverter()
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
-        $edit->setToken($this->generateToken('submit_token'));
+        $edit->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
         $edit->setCreate(true);
         $this->getView()->pushComponent($edit);
         if ($this->getControllerRequest()->hasData()) {
@@ -498,7 +498,7 @@ abstract class CrudController extends BaseController
         $edit->setBean($this->getModel()->getBean());
         $this->getModel()->getBeanConverter()
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
-        $edit->setToken($this->generateToken('submit_token'));
+        $edit->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
         $this->getView()->pushComponent($edit);
         if ($this->getControllerRequest()->hasData()) {
             $this->getModel()->getBeanConverter()
@@ -531,7 +531,7 @@ abstract class CrudController extends BaseController
     {
         $delete = $this->createDelete();
         $this->injectContext($delete);
-        $delete->setToken($this->generateToken('submit_token'));
+        $delete->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
         $this->getView()->pushComponent($delete);
         $detail = $this->createDetail();
         $detail->setShowDelete(false);

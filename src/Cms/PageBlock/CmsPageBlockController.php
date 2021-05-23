@@ -126,7 +126,7 @@ class CmsPageBlockController extends CmsBlockController
         $edit->setBean($this->getModel()->getEmptyBean(array_replace($this->getControllerRequest()->getId()->getAttribute_List(), $this->getPreviousAttributes())));
         $this->getModel()->getBeanConverter()
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
-        $edit->setToken($this->generateToken('submit_token'));
+        $edit->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
         $edit->setCreate(true);
         $this->getView()->pushComponent($edit);
         return $edit;

@@ -106,7 +106,7 @@ class UserController extends CrudController
         $edit->setBean($this->getModel()->getBean());
         $this->getModel()->getBeanConverter()
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
-        $edit->setToken($this->generateToken('submit_token'));
+        $edit->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
         $this->getView()->pushComponent($edit);
     }
 
@@ -118,7 +118,7 @@ class UserController extends CrudController
         $edit->setBean($this->getModel()->getBean());
         $this->getModel()->getBeanConverter()
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
-        $edit->setToken($this->generateToken('submit_token'));
+        $edit->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
         $this->getView()->pushComponent($edit);
     }
 }

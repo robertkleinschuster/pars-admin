@@ -16,6 +16,7 @@ abstract class BaseDelete extends Delete implements CrudComponentInterface
     use CrudComponentTrait;
 
     public ?string $token = null;
+    public ?string $tokenName = null;
 
     protected function initBase()
     {
@@ -39,8 +40,8 @@ abstract class BaseDelete extends Delete implements CrudComponentInterface
         $form->addHidden(SubmitParameter::name(), SubmitParameter::delete());
         $form->addCancel($this->translate('delete.cancel'), $this->generateIndexPath());
         $form->addHidden(RedirectParameter::nameAttr(RedirectParameter::ATTRIBUTE_PATH), $this->generateRedirectPath());
-        if ($this->hasToken()) {
-            $form->addHidden('submit_token', $this->getToken());
+        if ($this->hasToken() && $this->hasTokenName()) {
+            $form->addHidden($this->getTokenName(), $this->getToken());
         }
         $this->push($form);
     }
@@ -105,8 +106,9 @@ abstract class BaseDelete extends Delete implements CrudComponentInterface
      *
      * @return $this
      */
-    public function setToken(string $token): self
+    public function setToken(string $tokenName, string $token): self
     {
+        $this->setTokenName($tokenName);
         $this->token = $token;
         return $this;
     }
@@ -118,4 +120,32 @@ abstract class BaseDelete extends Delete implements CrudComponentInterface
     {
         return isset($this->token);
     }
+
+    /**
+    * @return string
+    */
+    public function getTokenName(): string
+    {
+        return $this->tokenName;
+    }
+
+    /**
+    * @param string $tokenName
+    *
+    * @return $this
+    */
+    public function setTokenName(string $tokenName): self
+    {
+        $this->tokenName = $tokenName;
+        return $this;
+    }
+
+    /**
+    * @return bool
+    */
+    public function hasTokenName(): bool
+    {
+        return isset($this->tokenName);
+    }
+
 }

@@ -87,6 +87,7 @@ abstract class ArticleController extends CrudController
     {
         $edit = parent::createEdit();
         $edit->setFileBeanList($this->getModel()->getFileBeanList());
+        $edit->setPlaceholderOptions($this->getModel()->getPlaceholderOptions());
         return $edit;
     }
 

@@ -4,6 +4,7 @@ namespace Pars\Admin\Article;
 
 use Pars\Admin\Base\BaseEdit;
 use Pars\Component\Base\Form\FileSelect;
+use Pars\Component\Base\Form\Wysiwyg\Action;
 use Pars\Model\File\FileBeanList;
 
 /**
@@ -18,6 +19,7 @@ abstract class ArticleEdit extends BaseEdit
     public bool $translationOnly = false;
     public ?FileBeanList $fileBeanList = null;
     public ?array $domain_List = null;
+    protected ?array $placeholderOptions = null;
 
     protected function initFieldsBefore()
     {
@@ -134,6 +136,9 @@ abstract class ArticleEdit extends BaseEdit
             $label
         );
         $formGroup->setGroup($group);
+        if ($this->hasPlaceholderOptions()) {
+            $formGroup->getInput()->addOptionDropdown('{}', $this->getPlaceholderOptions());
+        }
         return $formGroup;
     }
 
@@ -205,6 +210,9 @@ abstract class ArticleEdit extends BaseEdit
         );
         $formGroup->setGroup($group);
         $formGroup->setHint($this->translate('articletranslation.text.hint'));
+        if ($this->hasPlaceholderOptions()) {
+            $formGroup->getInput()->addOptionDropdown('{}', $this->getPlaceholderOptions());
+        }
         return $formGroup;
     }
 
@@ -440,6 +448,34 @@ abstract class ArticleEdit extends BaseEdit
     public function hasDomain_List(): bool
     {
         return isset($this->domain_List);
+    }
+
+
+    /**
+     * @return array
+     */
+    public function getPlaceholderOptions(): array
+    {
+        return $this->placeholderOptions;
+    }
+
+    /**
+     * @param array $placeholderOptions
+     *
+     * @return $this
+     */
+    public function setPlaceholderOptions(array $placeholderOptions): self
+    {
+        $this->placeholderOptions = $placeholderOptions;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasPlaceholderOptions(): bool
+    {
+        return isset($this->placeholderOptions);
     }
 
 }

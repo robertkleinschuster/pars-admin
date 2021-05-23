@@ -19,6 +19,7 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
     use ModeAwareTrait;
 
     public ?string $token = null;
+    public ?string $tokenName = null;
     public bool $create = false;
     public bool $createBulk = false;
     public bool $showSubmit = true;
@@ -71,8 +72,8 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
      */
     protected function initToken()
     {
-        if ($this->hasToken()) {
-            $this->getForm()->addHidden('submit_token', $this->getToken());
+        if ($this->hasToken() && $this->hasTokenName()) {
+            $this->getForm()->addHidden($this->getTokenName(), $this->getToken());
         }
     }
 
@@ -275,8 +276,9 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
      *
      * @return $this
      */
-    public function setToken(string $token): self
+    public function setToken(string $tokenName, string $token): self
     {
+        $this->setTokenName($tokenName);
         $this->token = $token;
         return $this;
     }
@@ -306,4 +308,32 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
         $this->create = $create;
         return $this;
     }
+
+    /**
+    * @return string
+    */
+    public function getTokenName(): string
+    {
+        return $this->tokenName;
+    }
+
+    /**
+    * @param string $tokenName
+    *
+    * @return $this
+    */
+    public function setTokenName(string $tokenName): self
+    {
+        $this->tokenName = $tokenName;
+        return $this;
+    }
+
+    /**
+    * @return bool
+    */
+    public function hasTokenName(): bool
+    {
+        return isset($this->tokenName);
+    }
+
 }

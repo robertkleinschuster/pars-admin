@@ -106,7 +106,7 @@ class UpdateController extends BaseController
         $this->updateNavigation->setActive('schema');
         $update = new Update($this->getTranslator(), $this->getUserBean(), $this->getModel()->getSchemaUpdater());
         $update->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
-        $update->setToken($this->generateToken('submit_token'));
+        $update->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
         $this->getView()->pushComponent($update);
     }
 
@@ -116,7 +116,7 @@ class UpdateController extends BaseController
         $this->updateNavigation->setActive('data');
         $update = new Update($this->getTranslator(), $this->getUserBean(), $this->getModel()->getDataUpdater());
         $update->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
-        $update->setToken($this->generateToken('submit_token'));
+        $update->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
         $this->getView()->pushComponent($update);
     }
 
@@ -125,7 +125,7 @@ class UpdateController extends BaseController
         $this->updateNavigation->setActive('special');
         $update = new Update($this->getTranslator(), $this->getUserBean(), $this->getModel()->getSpecialUpdater());
         $update->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
-        $update->setToken($this->generateToken('submit_token'));
+        $update->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
         $this->getView()->pushComponent($update);
     }
 

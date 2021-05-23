@@ -44,6 +44,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     public bool $showMove = false;
     public bool $showOrder = false;
     public ?string $token = null;
+    public ?string $tokenName = null;
 
     protected function handleAdditionalAfter()
     {
@@ -78,8 +79,8 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             $this->getMain()->setAttribute('method', 'post');
             $this->getMain()->setAttribute('action', $this->generateBulkAction());
         }
-        if ($this->hasToken()) {
-            $this->getMain()->push(new Hidden('submit_token', $this->getToken()));
+        if ($this->hasToken() && $this->hasTokenName()) {
+            $this->getMain()->push(new Hidden($this->getTokenName(), $this->getToken()));
         }
         $redirect = new Hidden(
             RedirectParameter::name(),
@@ -491,8 +492,9 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
      *
      * @return $this
      */
-    public function setToken(string $token): self
+    public function setToken(string $tokenName, string $token): self
     {
+        $this->setTokenName($tokenName);
         $this->token = $token;
         return $this;
     }
@@ -538,6 +540,34 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
         $this->showOrder = $showOrder;
         return $this;
     }
+
+    /**
+    * @return string
+    */
+    public function getTokenName(): string
+    {
+        return $this->tokenName;
+    }
+
+    /**
+    * @param string $tokenName
+    *
+    * @return $this
+    */
+    public function setTokenName(string $tokenName): self
+    {
+        $this->tokenName = $tokenName;
+        return $this;
+    }
+
+    /**
+    * @return bool
+    */
+    public function hasTokenName(): bool
+    {
+        return isset($this->tokenName);
+    }
+
 
 
     /**

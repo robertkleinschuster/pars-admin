@@ -122,15 +122,11 @@ class CmsPageController extends ArticleController
             'CmsPageLayout_Code',
             $this->translate('cmspagelayout.code'),
             $this->getModel()->getCmsPageLayout_Options(true),
-            1,
-            2
         );
         $this->addFilter_Select(
             'CmsPageState_Code',
             $this->translate('cmspagestate.code'),
             $this->getModel()->getCmsPageState_Options(true),
-            1,
-            3
         );
         $overview = parent::indexAction();
         $overview->getToolbar()->push(
@@ -176,7 +172,7 @@ class CmsPageController extends ArticleController
         $edit->setBean($this->getModel()->getEmptyBean($this->getPreviousAttributes()));
         $this->getModel()->getBeanConverter()
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
-        $edit->setToken($this->generateToken('submit_token'));
+        $edit->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
         $this->getView()->pushComponent($edit);
         return $edit;
     }
