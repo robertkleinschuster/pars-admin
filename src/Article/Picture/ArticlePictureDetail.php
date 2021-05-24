@@ -10,7 +10,11 @@ class ArticlePictureDetail extends PictureDetail
 {
     protected function getEditController(): string
     {
-        return 'articlepicture';
+        return $this->getPathHelper(false)->getController();
     }
 
+    protected function getEditIdFields(): array
+    {
+        return $this->getPathHelper(false)->getId()->getAttribute_Keys();
+    }
 }

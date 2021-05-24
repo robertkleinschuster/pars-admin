@@ -408,4 +408,6 @@ return [
     'article.placeholder.label' => '{...}',
     'article.placeholder.title' => 'Platzhalter',
     'articlepicture.overview' => 'Bilder',
+    'file.group.upload' => 'Upload',
+    'link.name' => 'Verknüpfen'
 ];

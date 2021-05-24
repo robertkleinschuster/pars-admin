@@ -77,7 +77,7 @@ class CmsPageBlockController extends CmsBlockController
             $this->translate('cmsblockstate.code'),
             $this->getModel()->getCmsBlockState_Options(true),
         );
-        $this->addFilter_Search($this->translate('search'), 1);
+        $this->addFilter_Search($this->translate('search'));
         $edit = new CmsPageBlockEdit($this->getTranslator(), $this->getUserBean());
         $overview = new CmsBlockOverview($this->getTranslator(), $this->getUserBean());
         $overview->setShowDeleteBulk(false);

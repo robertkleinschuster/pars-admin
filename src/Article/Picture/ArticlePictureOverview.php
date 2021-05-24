@@ -14,6 +14,11 @@ class ArticlePictureOverview extends PictureOverview
         $this->setName($this->translate('articlepicture.overview'));
     }
 
+    protected function initAdditionalBefore()
+    {
+        parent::initAdditionalBefore();
+        $this->setShowLink(true);
+    }
 
     protected function getController(): string
     {

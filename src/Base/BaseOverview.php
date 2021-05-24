@@ -14,6 +14,7 @@ use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Toolbar\CreateButton;
 use Pars\Component\Base\Toolbar\CreateNewButton;
 use Pars\Component\Base\Toolbar\DeleteBulkButton;
+use Pars\Component\Base\Toolbar\LinkButton;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\MoveParameter;
@@ -41,6 +42,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     public bool $showDetail = true;
     public bool $showCreate = true;
     public bool $showCreateNew = false;
+    public bool $showLink = false;
     public bool $showMove = false;
     public bool $showOrder = false;
     public ?string $token = null;
@@ -63,16 +65,18 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     }
 
 
-    protected function initAdditionalBefore()
+    protected function handleAdditionalBefore()
     {
-        parent::initAdditionalBefore();
-        $this->initFormFields();
-        $this->initCreateButton();
-        $this->initCreateNewButton();
-        $this->initDeleteBulkButton();
+        parent::handleAdditionalBefore();
+        $this->handleFormFields();
+        $this->handleCreateButton();
+        $this->handleLinkButton();
+        $this->handleCreateNewButton();
+        $this->handleDeleteBulkButton();
     }
 
-    protected function initFormFields()
+
+    protected function handleFormFields()
     {
         if ($this->isShowDeleteBulk()) {
             $this->getMain()->setTag('form');
@@ -92,7 +96,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     }
 
 
-    protected function initCreateNewButton()
+    protected function handleCreateNewButton()
     {
         if ($this->isShowCreateNew()) {
             $this->getToolbar()->push(
@@ -103,7 +107,18 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
         }
     }
 
-    protected function initCreateButton()
+    protected function handleLinkButton()
+    {
+        if ($this->isShowLink()) {
+            $this->getToolbar()->push(
+                (new LinkButton($this->generateLinkPath()))
+                    ->setModal(true)
+                    ->setModalTitle($this->translate('link.title'))
+            );
+        }
+    }
+
+    protected function handleCreateButton()
     {
         if ($this->isShowCreate()) {
             $this->getToolbar()->unshift(
@@ -186,12 +201,28 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
         return $path->getPath();
     }
 
+
+    /**
+     * @return string
+     */
+    protected function generateLinkPath(): string
+    {
+        $path = $this->getPathHelper()
+            ->setController($this->getController())
+            ->setAction('link')
+            ->setId(IdParameter::fromMap($this->getCreateIdFields()));
+        if ($this->hasNextContext()) {
+            $path->addParameter($this->getNextContext());
+        }
+        return $path->getPath();
+    }
+
     /**
      * @throws AttributeExistsException
      * @throws AttributeLockException
      * @throws BeanException
      */
-    protected function initDeleteBulkButton()
+    protected function handleDeleteBulkButton()
     {
         if ($this->isShowDeleteBulk()) {
             $button = new DeleteBulkButton(SubmitParameter::name(), SubmitParameter::deleteBulk());
@@ -311,7 +342,8 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     {
         $path = $this->getPathHelper()
             ->setController($this->getController())
-            ->setAction('index');
+            ->setAction('index')
+            ->setId($this->getControllerRequest()->getId());
         return $path->getPath();
     }
 
@@ -320,6 +352,9 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
      */
     protected function getRedirectController(): string
     {
+        if ($this->hasPathHelper()) {
+            return $this->getPathHelper(false)->getController();
+        }
         return $this->getController();
     }
 
@@ -328,6 +363,9 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
      */
     protected function getRedirectAction(): string
     {
+        if ($this->hasPathHelper()) {
+            return $this->getPathHelper(false)->getAction();
+        }
         return 'index';
     }
 
@@ -336,6 +374,9 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
      */
     protected function getRedirectIdFields(): array
     {
+        if ($this->hasPathHelper()) {
+            return $this->getPathHelper(false)->getId()->getAttribute_Keys();
+        }
         return [];
     }
 
@@ -542,18 +583,18 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     }
 
     /**
-    * @return string
-    */
+     * @return string
+     */
     public function getTokenName(): string
     {
         return $this->tokenName;
     }
 
     /**
-    * @param string $tokenName
-    *
-    * @return $this
-    */
+     * @param string $tokenName
+     *
+     * @return $this
+     */
     public function setTokenName(string $tokenName): self
     {
         $this->tokenName = $tokenName;
@@ -561,13 +602,12 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasTokenName(): bool
     {
         return isset($this->tokenName);
     }
-
 
 
     /**
@@ -598,7 +638,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
                 }
                 $order->setField($name);
                 $path->addParameter($order);
-            } elseif ( $orgiginalOrder->hasMode()
+            } elseif ($orgiginalOrder->hasMode()
                 && $orgiginalOrder->getMode() == OrderParameter::MODE_DESC) {
                 if ($orgiginalOrder->hasField() && $orgiginalOrder->getField() == $name) {
                     $field->setLabel($field->getLabel() . ' &uarr;');
@@ -617,4 +657,24 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
         }
         return $field;
     }
+
+    /**
+     * @return bool
+     */
+    public function isShowLink(): bool
+    {
+        return $this->showLink;
+    }
+
+    /**
+     * @param bool $showLink
+     * @return BaseOverview
+     */
+    public function setShowLink(bool $showLink): BaseOverview
+    {
+        $this->showLink = $showLink;
+        return $this;
+    }
+
+
 }

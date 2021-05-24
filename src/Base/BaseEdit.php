@@ -36,6 +36,12 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
         $this->initSubmitButton();
     }
 
+    protected function onConstruct()
+    {
+        parent::onConstruct();
+        $this->getForm()->setId(StringHelper::slugify(static::class));
+    }
+
 
     protected function initName()
     {
@@ -43,7 +49,6 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
         if ($this->isShowTitle()) {
             $this->setName($this->translate('edit.title'));
         }
-        $this->getForm()->setId(StringHelper::slugify(static::class));
     }
 
 

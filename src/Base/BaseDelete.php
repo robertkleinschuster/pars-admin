@@ -74,6 +74,9 @@ abstract class BaseDelete extends Delete implements CrudComponentInterface
      */
     protected function generateRedirectPath(): string
     {
+        if ($this->hasCurrentContext()) {
+            return $this->getCurrentContext()->getPath();
+        }
         $indexPath = $this->getPathHelper()
             ->setController($this->getRedirectController())
             ->setAction($this->getRedirectAction());
