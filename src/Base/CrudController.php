@@ -192,7 +192,6 @@ abstract class CrudController extends BaseController
         );
         $layout = $this->getView()->getLayout();
         if ($layout instanceof DashboardLayout) {
-            $layout->getNavigation()->setPathHelper($this->getPathHelper());
             if ($layout->getNavigation()->hasActive()) {
                 $navItem = $layout->getNavigation()->getElementById($layout->getNavigation()->getActive());
                 if ($navItem) {

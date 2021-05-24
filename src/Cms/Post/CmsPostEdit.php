@@ -32,7 +32,6 @@ class CmsPostEdit extends ArticleEdit
         $this->addFieldTeaser();
         $this->addFieldText();
         $this->addFieldFooter();
-        $this->addFieldFile();
     }
 
     protected function addFieldPublishTimestamp()

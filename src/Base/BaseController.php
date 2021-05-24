@@ -115,7 +115,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $this->getView()->set('Current_User_Displayname', $this->getUserBean()->User_Displayname);
         $this->getView()->set('Current_Person_Firstname', $this->getUserBean()->Person_Firstname);
         $this->getView()->set('Current_Person_Lastname', $this->getUserBean()->Person_Lastname);
-        $this->getView()->getLayout()->setPersistence(new SessionViewStatePersistence($this->getSession()));
+        $this->getView()->setPersistence(new SessionViewStatePersistence($this->getSession()));
         $this->injectStaticFiles();
     }
 

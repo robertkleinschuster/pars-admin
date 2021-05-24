@@ -82,7 +82,6 @@ class CmsBlockEdit extends ArticleEdit
 
     protected function initFieldsBanner()
     {
-        $this->addFieldFile($this->translate('cmsblock.banner.file'));
         $this->addFieldPath($this->translate('cmsblock.banner.path'));
         $this->addFieldHeading($this->translate('cmsblock.banner.heading'));
         $this->addFieldSubHeading($this->translate('cmsblock.banner.subheading'));
@@ -96,7 +95,7 @@ class CmsBlockEdit extends ArticleEdit
 
     protected function initFieldsPicture()
     {
-        $this->addFieldFile($this->translate('cmsblock.picture.file'));
+
     }
 
     protected function initFieldsPoll()

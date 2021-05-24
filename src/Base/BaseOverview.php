@@ -342,8 +342,10 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     {
         $path = $this->getPathHelper()
             ->setController($this->getController())
-            ->setAction('index')
-            ->setId($this->getControllerRequest()->getId());
+            ->setAction('index');
+        if ($this->getControllerRequest()->hasId()) {
+            $path->setId($this->getControllerRequest()->getId());
+        }
         return $path->getPath();
     }
 
