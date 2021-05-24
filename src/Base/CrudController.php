@@ -237,15 +237,12 @@ abstract class CrudController extends BaseController
      */
     protected function initPagination(Overview $overview, int $count)
     {
-        $this->getView()->set('OverviewCount', $count);
-        $span = new Span($this->translate('overview.count'));
+        $span = new Span($this->getTranslator()->translate('overview.count', ['OverviewCount' => "$count"]));
         $span->addOption('float-end');
         $span->addOption('border');
         $span->addOption('p-1');
         $span->addOption('d-none');
         $span->addOption('d-sm-block');
-        $span->setContent($span->render($this->getView(), true));
-        $span->clearOptions();
         $overview->getAfter()->push($span);
 
         $pagination = new Pagination();
