@@ -99,15 +99,11 @@ class CmsBlockController extends ArticleController
             'CmsBlockType_Code',
             $this->translate('cmsblocktype.code'),
             $this->getModel()->getCmsBlockType_Options(true),
-            1,
-            1
         );
         $this->addFilter_Select(
             'CmsBlockState_Code',
             $this->translate('cmsblockstate.code'),
             $this->getModel()->getCmsBlockState_Options(true),
-            1,
-            2
         );
         return parent::indexAction();
     }

@@ -315,7 +315,6 @@ abstract class ArticleEdit extends BaseEdit
             '{ArticleTranslation_Path}',
             $label
         );
-        $formGroup->setHint($this->translate('articletranslation.path.hint'));
         $formGroup->setGroup($group);
         return $formGroup;
     }

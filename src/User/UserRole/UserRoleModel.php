@@ -1,10 +1,10 @@
 <?php
 
-namespace Pars\Admin\UserRole;
+namespace Pars\Admin\User\UserRole;
 
 use Exception;
+use Pars\Admin\User\Role\RoleModel;
 use Pars\Bean\Type\Base\BeanInterface;
-use Pars\Admin\Role\RoleModel;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Authorization\Role\RoleBean;
 use Pars\Model\Authorization\Role\RoleBeanFinder;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pars\Admin\RolePermission;
+namespace Pars\Admin\User\RolePermission;
 
 use Pars\Admin\Base\CrudModel;
 use Pars\Helper\Parameter\IdParameter;

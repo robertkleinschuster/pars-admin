@@ -1,14 +1,14 @@
 <?php
 
-namespace Pars\Admin\UserRole;
+namespace Pars\Admin\User\RolePermission;
 
-use Pars\Admin\Role\RoleDelete;
+use Pars\Admin\Base\BaseDelete;
 
-class UserRoleDelete extends RoleDelete
+class RolePermissionDelete extends BaseDelete
 {
     protected function getRedirectController(): string
     {
-        return 'user';
+        return 'role';
     }
 
     protected function getRedirectAction(): string
@@ -19,7 +19,7 @@ class UserRoleDelete extends RoleDelete
     protected function getRedirectIdFields(): array
     {
         return [
-            'Person_ID'
+            'UserRole_ID'
         ];
     }
 }

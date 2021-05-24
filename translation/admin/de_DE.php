@@ -407,4 +407,5 @@ return [
     'index.quickactions' => 'Schnellaktionen',
     'article.placeholder.label' => '{...}',
     'article.placeholder.title' => 'Platzhalter',
+    'articlepicture.overview' => 'Bilder',
 ];

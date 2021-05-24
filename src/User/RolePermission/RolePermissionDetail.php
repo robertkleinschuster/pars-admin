@@ -1,6 +1,6 @@
 <?php
 
-namespace Pars\Admin\RolePermission;
+namespace Pars\Admin\User\RolePermission;
 
 use Pars\Admin\Base\BaseDetail;
 use Pars\Component\Base\Field\Span;

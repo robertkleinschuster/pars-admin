@@ -71,15 +71,11 @@ class CmsPageBlockController extends CmsBlockController
             'CmsBlockType_Code',
             $this->translate('cmsblocktype.code'),
             $this->getModel()->getCmsBlockType_Options(true),
-            2,
-            1
         );
         $this->addFilter_Select(
             'CmsBlockState_Code',
             $this->translate('cmsblockstate.code'),
             $this->getModel()->getCmsBlockState_Options(true),
-            2,
-            2
         );
         $this->addFilter_Search($this->translate('search'), 1);
         $edit = new CmsPageBlockEdit($this->getTranslator(), $this->getUserBean());

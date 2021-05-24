@@ -1,14 +1,12 @@
 <?php
 
-namespace Pars\Admin\UserRole;
+namespace Pars\Admin\User\UserRole;
 
-use Pars\Admin\Base\BaseDelete;
-use Pars\Admin\Base\BaseDetail;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\SystemNavigation;
-use Pars\Admin\Role\RoleController;
-use Pars\Admin\Role\RoleOverview;
+use Pars\Admin\User\Role\RoleController;
+use Pars\Admin\User\Role\RoleOverview;
 
 /**
  * Class UserRoleController

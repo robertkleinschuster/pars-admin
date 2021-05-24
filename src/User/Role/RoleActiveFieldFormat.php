@@ -1,6 +1,6 @@
 <?php
 
-namespace Pars\Admin\Role;
+namespace Pars\Admin\User\Role;
 
 use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Component\Base\StyleAwareInterface;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pars\Admin\Role;
+namespace Pars\Admin\User\Role;
 
 use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\Field\Badge;

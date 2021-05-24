@@ -1,8 +1,8 @@
 <?php
 
-namespace Pars\Admin\UserRole;
+namespace Pars\Admin\User\UserRole;
 
-use Pars\Admin\Role\RoleEdit;
+use Pars\Admin\User\Role\RoleEdit;
 
 /**
  * Class UserRoleEdit

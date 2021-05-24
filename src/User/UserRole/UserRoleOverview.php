@@ -1,8 +1,8 @@
 <?php
 
-namespace Pars\Admin\UserRole;
+namespace Pars\Admin\User\UserRole;
 
-use Pars\Admin\Role\RoleOverview;
+use Pars\Admin\User\Role\RoleOverview;
 
 class UserRoleOverview extends RoleOverview
 {

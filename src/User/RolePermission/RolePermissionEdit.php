@@ -1,6 +1,6 @@
 <?php
 
-namespace Pars\Admin\RolePermission;
+namespace Pars\Admin\User\RolePermission;
 
 use Pars\Admin\Base\BaseEdit;
 use Pars\Model\Authorization\Permission\PermissionBeanList;
