@@ -41,6 +41,7 @@ return [
     'locale.urlcode.empty' => 'Der URL-Code darf nicht leer sein!',
     'articlestate.code.empty' => 'Der Status darf nicht leer sein!',
     'articletype.code.empty' => 'Der Typ darf nicht leer sein!',
-    'cmspost.publishtimestamp.empty' => 'Der Veröffentlichungszeitpunkt dar nicht leer sein!'
+    'cmspost.publishtimestamp.empty' => 'Der Veröffentlichungszeitpunkt dar nicht leer sein!',
+    'general.save' => 'Speichern nicht möglich.',
 
 ];

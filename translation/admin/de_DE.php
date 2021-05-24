@@ -409,5 +409,5 @@ return [
     'article.placeholder.title' => 'Platzhalter',
     'articlepicture.overview' => 'Bilder',
     'file.group.upload' => 'Upload',
-    'link.name' => 'Verknüpfen'
+    'link.name' => 'Verknüpfen',
 ];
