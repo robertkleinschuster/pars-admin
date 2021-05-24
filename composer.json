@@ -63,7 +63,7 @@
     ],
     "serve-php": [
       "Composer\\Config::disableProcessTimeout",
-      "php -q -S localhost:9090 -t public/ public/index.php"
+      "php -S localhost:9090 -t public/ public/index.php 2>&1"
     ],
     "development": "laminas-development-mode",
     "cs-check": "phpcs",
