@@ -46,6 +46,7 @@ class CmsPageModel extends ArticleModel
             $options[''] = $this->translate('noselection');
         }
         $finder = new CmsPageTypeBeanFinder($this->getDbAdpater());
+        $finder->orderByOrderField();
         $finder->setCmsPageType_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('CmsPageType_Code')] = $this->translate("cmspagetype.code." . $bean->get('CmsPageType_Code'));

@@ -49,6 +49,7 @@ class CmsBlockModel extends ArticleModel
         }
         $finder = new CmsBlockTypeBeanFinder($this->getDbAdpater());
         $finder->setCmsBlockType_Active(true);
+        $finder->orderByOrderField();
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('CmsBlockType_Code')] = $this->translate('cmsblocktype.code.' . $bean->get('CmsBlockType_Code'));
         }
@@ -72,7 +73,7 @@ class CmsBlockModel extends ArticleModel
     public function getEmptyBean(array $data = []): BeanInterface
     {
         $bean = parent::getEmptyBean($data);
-        $bean->set('CmsBlockType_Code', 'text');
+        $bean->set('CmsBlockType_Code', 'default');
         $bean->set('CmsBlockState_Code', 'active');
         return $bean;
     }
