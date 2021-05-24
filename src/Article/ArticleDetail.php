@@ -229,7 +229,7 @@ abstract class ArticleDetail extends BaseDetail
      */
     protected function initEditTextButton()
     {
-        if ($this->isShowEdit()) {
+       /* if ($this->isShowEdit()) {
             $button = new EditTextButton();
             $button->setModal(true);
             $button->setModalTitle($this->translate('edit.title'));
@@ -246,7 +246,7 @@ abstract class ArticleDetail extends BaseDetail
                 }
             }
             $this->getToolbar()->push($dropdown);
-        }
+        }*/
     }
 
     /**
