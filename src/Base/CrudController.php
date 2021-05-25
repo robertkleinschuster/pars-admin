@@ -380,6 +380,25 @@ abstract class CrudController extends BaseController
      */
     public function detailAction()
     {
+        $detail = $this->loadDetail();
+        $metaInfo = $this->initMetaInfo($detail->getBean());
+        $collapsableMeta = $this->createCollapsable('metainfo', false);
+        $collapsableMeta->setTitle($this->translate('showmetainfo'));
+        $collapsableMeta->pushComponent($metaInfo);
+        $this->getView()->pushComponent($collapsableMeta);
+        return $detail;
+    }
+
+    /**
+     * @return BaseDetail
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws MvcException
+     * @throws NotFoundException
+     */
+    protected function loadDetail()
+    {
         $detail = $this->createDetail();
         $collapsableDetail = $this->createCollapsable('detail', $this->expandCollapse);
         $collapsableDetail->setExpanded($this->expandCollapse);
@@ -389,12 +408,6 @@ abstract class CrudController extends BaseController
         $bean = $this->getModel()->getBean();
         $detail->setBean($bean);
         $this->getView()->pushComponent($detail);
-
-        $metaInfo = $this->initMetaInfo($bean);
-        $collapsableMeta = $this->createCollapsable('metainfo', false);
-        $collapsableMeta->setTitle($this->translate('showmetainfo'));
-        $collapsableMeta->pushComponent($metaInfo);
-        $this->getView()->pushComponent($collapsableMeta);
         return $detail;
     }
 

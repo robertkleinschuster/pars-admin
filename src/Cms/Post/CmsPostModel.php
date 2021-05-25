@@ -62,24 +62,12 @@ class CmsPostModel extends ArticleModel
         $bean = parent::getEmptyBean($data);
         $bean->set('CmsPost_PublishTimestamp', new \DateTime());
         if (isset($data['CmsPage_ID'])) {
-            $finder = new CmsPageBeanFinder($this->getDbAdpater());
-            $finder->filterLocale_Code($this->getTranslator()->getLocale());
-            $finder->setCmsPage_ID($data['CmsPage_ID']);
-            $page = $finder->getBean();
-            $count = $page->get('CmsBlock_BeanList')->count() + 1;
-            $code =  $page->get('Article_Code') . '-' . $count;
-            $i = 1;
-            while ((new CmsPageBeanFinder($this->getDbAdpater()))->setArticle_Code($code)->count()) {
-                $code .= '-' . $i;
-            }
-            $bean->set('Article_Code', $code);
-            $code =  $page->get('ArticleTranslation_Code') . '-' . $count;
-            $i = 1;
-            while ((new CmsPageBeanFinder($this->getDbAdpater()))->setArticleTranslation_Code($code)->count()) {
-                $code .= '-' . $i;
-            }
-            $bean->set('ArticleTranslation_Code', $code);
-            $bean->set('ArticleTranslation_Name', $page->get('ArticleTranslation_Name'));
+            $finder = new CmsPostBeanFinder($this->getDatabaseAdapter());
+            $finder->filterLocale_Code($this->getUserBean()->getLocale()->getLocale_Code());
+            $count = $finder->count();
+            $bean->set('Article_Code', 'blogpost-' . $count);
+            $bean->set('ArticleTranslation_Code', 'blogpost-' . $count);
+            $bean->set('ArticleTranslation_Name', $this->translate('cmspost.name.default') . ' ' . $count);
         }
         return $bean;
     }

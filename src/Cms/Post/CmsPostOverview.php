@@ -65,6 +65,9 @@ class CmsPostOverview extends ArticleOverview
 
     protected function getCreateIdFields(): array
     {
+        if ($this->getControllerRequest()->hasId()) {
+            return $this->getControllerRequest()->getId()->getAttributes();
+        }
         return ['CmsPage_ID'];
     }
 }

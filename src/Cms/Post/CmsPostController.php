@@ -53,22 +53,16 @@ class CmsPostController extends ArticleController
         $this->addFilter_Select(
             'CmsPostType_Code',
             $this->translate('cmsposttype.code'),
-            $this->getModel()->getCmsPostType_Options(true),
-            1,
-            1
+            $this->getModel()->getCmsPostType_Options(true)
         );
         $this->addFilter_Select(
             'CmsPostState_Code',
             $this->translate('cmspoststate.code'),
-            $this->getModel()->getCmsPostState_Options(true),
-            1,
-            2
+            $this->getModel()->getCmsPostState_Options(true)
         );
         $this->addFilter_Checkbox(
             'CmsPost_Published',
-            $this->translate('cmspost.published'),
-            2,
-            1
+            $this->translate('cmspost.published')
         );
         return parent::indexAction();
     }

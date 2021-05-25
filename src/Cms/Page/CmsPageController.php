@@ -86,6 +86,10 @@ class CmsPageController extends ArticleController
         return $detail;
     }
 
+    public function blogAction(){
+        $this->detailBlog();
+    }
+
     public function detailByType(string $type)
     {
         switch ($type) {

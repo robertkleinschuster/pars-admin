@@ -412,5 +412,6 @@ return [
     'link.name' => 'Verknüpfen',
     'submenu.overview' => 'Menüeinträge',
     'navigation.content.picture' => 'Bilder',
+    'cmspost.name.default' => 'Beitrag',
 
 ];

@@ -2,7 +2,6 @@
 
 namespace Pars\Admin\Index;
 
-use DateTime;
 use Pars\Admin\Base\BaseController;
 use Pars\Bean\Type\Base\BeanException;
 use Pars\Component\Base\Alert\Alert;
@@ -12,21 +11,15 @@ use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Field\Headline;
 use Pars\Component\Base\Field\Progress;
 use Pars\Component\Base\Field\Span;
-use Pars\Component\Base\ListGroup\Group;
-use Pars\Component\Base\ListGroup\Item;
-use Pars\Core\Task\Base\AbstractTask;
 use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Article\Data\ArticleDataBeanFinder;
+use Pars\Model\Cms\Page\CmsPageBeanFinder;
 use Pars\Model\Config\ConfigBeanFinder;
 use Pars\Mvc\View\DefaultComponent;
-use Pars\Model\Localization\Locale\LocaleBean;
-use Pars\Mvc\View\Event\ViewEvent;
 use Pars\Mvc\View\ViewElement;
-use Pars\Mvc\View\State\ViewState;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
-use Pars\Pattern\Exception\AttributeNotFoundException;
 
 /**
  * Class IndexController
@@ -197,6 +190,15 @@ class IndexController extends BaseController
         if ($messages->getJumbotron()->getFieldList()->count()) {
             $this->getView()->pushComponent($messages);
         }
+
+        $finder = new CmsPageBeanFinder($this->getModel()->getDatabaseAdapter());
+        $finder->filterLocale_Code($this->getUserBean()->getLocale()->getLocale_Code());
+        $finder->filterBlogPage();
+        if ($finder->count() === 1) {
+            $request = $this->pushAction('cmspage', 'blog', $this->translate('index.quickactions.blog'));
+            $request->setParameter(IdParameter::fromMap(['CmsPage_ID' => $finder->getBean()->CmsPage_ID]));
+        }
+
 
         $this->pushAction('cmspage', 'index', $this->translate('index.quickactions.cmspage'));
         $this->pushAction('cmsblock', 'index', $this->translate('index.quickactions.cmsblock'));
