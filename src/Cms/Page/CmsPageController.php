@@ -81,6 +81,34 @@ class CmsPageController extends ArticleController
     {
         $this->getView()->set('CmsPage_ID', (int)$this->getControllerRequest()->getId()->getAttribute('CmsPage_ID'));
         $detail = parent::detailAction();
+        $this->detailByType($detail->getBean()->get('CmsPageType_Code'));
+        $this->initRedirectInfo($detail->getBean());
+        return $detail;
+    }
+
+    public function detailByType(string $type)
+    {
+        switch ($type) {
+            case 'blog':
+                $this->getSubActionContainer()->clear();
+                $this->detailBlog();
+                break;
+            default:
+                $this->detailDefault();
+        }
+    }
+
+    public function detailBlog()
+    {
+        $this->pushAction(
+            'cmspost',
+            'index',
+            $this->translate('section.post')
+        );
+    }
+
+    public function detailDefault()
+    {
         $this->pushAction(
             'cmspost',
             'index',
@@ -91,24 +119,6 @@ class CmsPageController extends ArticleController
             'index',
             $this->translate('section.block')
         );
-        switch ($detail->getBean()->get('CmsPageType_Code')) {
-            case 'contact':
-                $this->pushAction(
-                    'articledata',
-                    'index',
-                    $this->translate('section.data.contact')
-                );
-                break;
-            case 'poll':
-                $this->pushAction(
-                    'articledata',
-                    'index',
-                    $this->translate('section.data.poll')
-                );
-                break;
-        }
-        $this->initRedirectInfo($detail->getBean());
-        return $detail;
     }
 
     public function indexAction()
