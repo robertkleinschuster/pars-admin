@@ -30,4 +30,12 @@ class FileOverview extends BaseOverview
             'File_ID'
         ];
     }
+
+    protected function getCreateIdFields(): array
+    {
+        if ($this->getControllerRequest()->hasId()) {
+            return $this->getControllerRequest()->getId()->getAttributes();
+        }
+        return [];
+    }
 }

@@ -117,6 +117,7 @@ abstract class CrudController extends BaseController
                 $id = md5($overview->getName());
                 $collapsable = $this->createCollapsable($id, false);
                 $collapsable->setTitle($overview->getName());
+                $overview->setName(null);
                 $collapsable->pushComponent($overview);
                 $this->getView()->pushComponent($collapsable);
             }
@@ -381,6 +382,7 @@ abstract class CrudController extends BaseController
     {
         $detail = $this->createDetail();
         $collapsableDetail = $this->createCollapsable('detail', $this->expandCollapse);
+        $collapsableDetail->setExpanded($this->expandCollapse);
         $collapsableDetail->setTitle($this->translate("showdetails"));
         $detail->setCollapsable($collapsableDetail);
         $this->injectContext($detail);

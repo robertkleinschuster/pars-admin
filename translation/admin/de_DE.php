@@ -410,5 +410,7 @@ return [
     'articlepicture.overview' => 'Bilder',
     'file.group.upload' => 'Upload',
     'link.name' => 'Verknüpfen',
-    'submenu.overview' => 'Menüeinträge'
+    'submenu.overview' => 'Menüeinträge',
+    'navigation.content.picture' => 'Bilder',
+
 ];

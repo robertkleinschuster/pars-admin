@@ -2,7 +2,6 @@
 
 namespace Pars\Admin\Base;
 
-use Laminas\Db\Adapter\AdapterInterface;
 use Mezzio\Authentication\UserInterface;
 use Mezzio\Csrf\CsrfGuardInterface;
 use Mezzio\Csrf\CsrfMiddleware;
@@ -20,10 +19,7 @@ use Pars\Component\Base\Layout\DashboardLayout;
 use Pars\Component\Base\Navigation\Navigation;
 use Pars\Component\Base\View\BaseView;
 use Pars\Core\Config\ParsConfig;
-use Pars\Core\Database\DatabaseMiddleware;
-use Pars\Core\Database\ParsDatabaseAdapter;
 use Pars\Core\Database\Profiler;
-use Pars\Core\Logging\LoggingMiddleware;
 use Pars\Core\Session\SessionViewStatePersistence;
 use Pars\Core\Translation\ParsTranslator;
 use Pars\Helper\Validation\ValidationHelper;

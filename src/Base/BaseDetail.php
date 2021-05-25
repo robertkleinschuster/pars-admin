@@ -8,8 +8,10 @@ use Pars\Component\Base\Toolbar\BackButton;
 use Pars\Component\Base\Toolbar\DeleteButton;
 use Pars\Component\Base\Toolbar\DropdownEditButton;
 use Pars\Component\Base\Toolbar\EditButton;
+use Pars\Helper\Parameter\DataParameter;
 use Pars\Helper\Parameter\EditLocaleParameter;
 use Pars\Helper\Parameter\IdParameter;
+use Pars\Helper\Parameter\Parameter;
 use Pars\Helper\Path\PathHelper;
 use Pars\Model\Localization\Locale\LocaleBeanList;
 use Pars\Mvc\View\Event\ViewEvent;
@@ -119,6 +121,8 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
         if ($this->hasNextContext()) {
             $path->addParameter($this->getNextContext());
         }
+        $param = new Parameter('prevcontext', $this->getCurrentContext()->toString());
+        $path->addParameter($param);
         return $path->getPath();
     }
 

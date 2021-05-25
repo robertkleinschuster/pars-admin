@@ -72,8 +72,8 @@ class CmsBlockController extends ArticleController
             $id = $this->getControllerRequest()->getId()->getAttribute('CmsBlock_ID');
             $this->getView()->set('CmsBlock_ID_Parent', (int) $id);
         }
-        $this->initSubcontroller();
         $detail = parent::detailAction();
+        $this->initSubcontroller();
         switch ($detail->getBean()->get('CmsBlockType_Code')) {
             case 'contact':
                 $this->pushAction(

@@ -15,7 +15,9 @@ class FileEdit extends BaseEdit
         ->setHint('Limit: ' . $this->file_upload_max_size() / 1024 / 1024 . ' MB')
         ->setGroup($this->translate('file.group.upload'));
 
-        if ($this->hasDirectoryOptions()) {
+        if ($this->hasDirectoryOptions() &&
+            !$this->getControllerRequest()->getId()->hasAttribute('FileDirectory_ID')
+        ) {
             $this->getForm()->addSelect('FileDirectory_ID', $this->getDirectoryOptions(), '{FileDirectory_ID}', $this->translate('filedirectory.id'));
         }
         if ($this->hasTypeOptions()) {

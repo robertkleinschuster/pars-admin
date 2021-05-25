@@ -8,11 +8,6 @@ use Pars\Admin\Picture\PictureOverview;
 
 class ArticlePictureOverview extends PictureOverview
 {
-    protected function initName()
-    {
-        parent::initName();
-        $this->setName($this->translate('articlepicture.overview'));
-    }
 
     protected function initAdditionalBefore()
     {

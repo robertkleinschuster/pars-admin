@@ -2,6 +2,7 @@
 
 namespace Pars\Admin\Base;
 
+use Pars\Helper\Parameter\ContextParameter;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
 use Pars\Component\Base\Delete\Delete;
@@ -74,6 +75,11 @@ abstract class BaseDelete extends Delete implements CrudComponentInterface
      */
     protected function generateRedirectPath(): string
     {
+        if ($this->getControllerRequest()->hasAttribute('prevcontext')) {
+            $param = new ContextParameter();
+            $param->fromData($this->getControllerRequest()->getAttribute('prevcontext'));
+            return $param->getPath();
+        }
         if ($this->hasCurrentContext()) {
             return $this->getCurrentContext()->getPath();
         }
