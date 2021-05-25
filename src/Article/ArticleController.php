@@ -53,7 +53,7 @@ abstract class ArticleController extends CrudController
             }
         }
         $detail->setLocale_List($this->getModel()->getLocale_List());
-        $this->getView()->set('Article_ID', $bean->Article_ID);
+        $this->getView()->set('Article_ID', "$bean->Article_ID");
         $this->pushAction(
             'articlepicture',
             'index',
