@@ -5,6 +5,7 @@ namespace Pars\Admin\Article\Picture;
 
 
 use Pars\Admin\Picture\PictureModel;
+use Pars\Bean\Processor\BeanOrderProcessor;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Article\Picture\ArticlePictureBeanFinder;
 use Pars\Model\Article\Picture\ArticlePictureBeanProcessor;
@@ -20,6 +21,12 @@ class ArticlePictureModel extends PictureModel
     {
         $this->setBeanFinder(new ArticlePictureBeanFinder($this->getDbAdpater()));
         $this->setBeanProcessor(new ArticlePictureBeanProcessor($this->getParsContainer()));
+        $this->setBeanOrderProcessor(new BeanOrderProcessor(
+            new ArticlePictureBeanProcessor($this->getParsContainer()),
+            new ArticlePictureBeanFinder($this->getDbAdpater()),
+            'Article_Picture_Order',
+            'Article_ID'
+        ));
     }
 
 

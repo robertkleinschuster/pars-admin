@@ -48,18 +48,31 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     public ?string $token = null;
     public ?string $tokenName = null;
 
+    protected function initAdditionalBefore()
+    {
+        parent::initAdditionalBefore();
+        $this->setId($this->getElementClass() . $this->getControllerRequest()->getHash());
+    }
+
+
     protected function handleAdditionalAfter()
     {
         parent::handleAdditionalAfter();
         foreach ($this->getFieldList() as $item) {
             if ($item instanceof MoveDownButton) {
-                $item->setLabel((new Icon(Icon::ICON_REFRESH_CW))->render());
                 $redirect = (new RedirectParameter())
                     ->setPath($this->getPathHelper(false)->getCurrentPathReal());
-                $item->setLabelPath($this->getPathHelper(false)
+                $path = $this->getPathHelper(false)
                     ->addParameter($redirect)
                     ->setController($this->getController())
-                    ->setAction('repairOrder')->getPath());
+                    ->setAction('repairOrder')->getPath();
+                $icon = new Icon(Icon::ICON_REFRESH_CW);
+                $icon->setEvent(ViewEvent::createLink($path));
+                if ($this->hasId()) {
+                    $icon->getEvent()->setTargetId($this->getId());
+                }
+                $item->setLabel($icon);
+                $item->setLabelPath($path);
             }
         }
     }
@@ -377,7 +390,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     protected function getRedirectIdFields(): array
     {
         if ($this->hasPathHelper()) {
-            return $this->getPathHelper(false)->getId()->getAttribute_Keys();
+            return $this->getPathHelper(false)->getId()->getAttributes();
         }
         return [];
     }

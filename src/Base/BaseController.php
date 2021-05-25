@@ -652,7 +652,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             $this->getView()->pushComponent($alert);
         } else {
             $this->getControllerResponse()->setBody($throwable->getMessage());
-            $this->getControllerResponse()->removeOption(ControllerResponse::OPTION_RENDER_RESPONSE);
+            $this->getControllerResponse()->removeOption(ControllerResponse::OPTION_RENDER_VIEW);
         }
     }
 

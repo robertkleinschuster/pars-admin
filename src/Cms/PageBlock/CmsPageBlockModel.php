@@ -8,6 +8,7 @@ use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Cms\Block\CmsBlockModel;
 use Pars\Helper\Parameter\FilterParameter;
 use Pars\Helper\Parameter\IdParameter;
+use Pars\Helper\Parameter\MoveParameter;
 use Pars\Helper\Parameter\SearchParameter;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
 use Pars\Model\Cms\PageBlock\CmsPageBlockBeanFinder;

@@ -18,6 +18,7 @@ class ArticlePictureOverview extends PictureOverview
     {
         parent::initAdditionalBefore();
         $this->setShowLink(true);
+        $this->setShowMove(true);
     }
 
     protected function getController(): string

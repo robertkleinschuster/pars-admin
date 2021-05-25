@@ -66,6 +66,7 @@
       "php -S localhost:9090 -t public/ public/index.php 2>&1"
     ],
     "development": "laminas-development-mode",
+    "clear-pars-cache": "php bin/clear-cache.php",
     "cs-check": "phpcs",
     "cs-fix": "phpcbf",
     "test": [

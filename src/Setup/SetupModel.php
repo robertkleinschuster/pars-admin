@@ -30,9 +30,9 @@ class SetupModel extends \Pars\Admin\Base\BaseModel
     {
         try {
             $this->getParsContainer()->getDatabaseAdapter()->startTransaction();
-            $schemaUpdater = new SchemaDatabaseUpdater($this->getDbAdpater());
+            $schemaUpdater = new SchemaDatabaseUpdater($this->getParsContainer());
             $schemaUpdater->executeSilent();
-            $dataUpdater = new DataDatabaseUpdater($this->getDbAdpater());
+            $dataUpdater = new DataDatabaseUpdater($this->getParsContainer());
             $dataUpdater->executeSilent();
             parent::create($idParameter, $attributes);
             if ($this->getBeanFinder()->count() == 1) {

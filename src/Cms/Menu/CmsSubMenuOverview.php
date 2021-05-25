@@ -4,6 +4,13 @@ namespace Pars\Admin\Cms\Menu;
 
 class CmsSubMenuOverview extends CmsMenuOverview
 {
+    protected function initName()
+    {
+        parent::initName();
+        $this->setName($this->translate('submenu.overview'));
+    }
+
+
     protected function initialize()
     {
         $this->setShowType(false);
