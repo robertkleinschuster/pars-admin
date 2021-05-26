@@ -43,5 +43,9 @@ return [
     'articletype.code.empty' => 'Der Typ darf nicht leer sein!',
     'cmspost.publishtimestamp.empty' => 'Der Veröffentlichungszeitpunkt dar nicht leer sein!',
     'general.save' => 'Speichern nicht möglich.',
+    'formfield.code.empty' => 'Der Code darf nicht leer sein!',
+    'formfield.code.unique' => 'Der Code ist bereits vergeben!',
+    'form.code.empty' => 'Der Code darf nicht leer sein!',
+    'form.code.unique' => 'Der Code ist bereits vergeben!',
 
 ];

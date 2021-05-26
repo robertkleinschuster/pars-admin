@@ -11,6 +11,7 @@ use Pars\Model\Article\Translation\ArticleTranslationBeanFinder;
 use Pars\Model\Cms\Block\CmsBlockBeanFinder;
 use Pars\Model\File\FileBeanFinder;
 use Pars\Model\File\FileBeanList;
+use Pars\Model\Form\FormBeanFinder;
 use Pars\Model\Localization\Locale\LocaleBeanFinder;
 use Pars\Model\Localization\Locale\LocaleBeanList;
 use Pars\Model\Translation\TranslationLoader\TranslationBeanFinder;
@@ -76,11 +77,17 @@ abstract class ArticleModel extends CrudModel
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options["{block:{$bean->Article_Code}}"] = "{$bean->ArticleTranslation_Name} ({$bean->Article_Code})";
         }
-        $finder = new TranslationBeanFinder($this->getDbAdpater());
+
+        $finder = new FormBeanFinder($this->getDatabaseAdapter());
+        foreach ($finder->getBeanListDecorator() as $bean) {
+            $options["{form:{$bean->Form_Code}}"] = "{$this->translate('form.code.' . $bean->Form_Code)} ({$bean->Form_Code})";
+        }
+
+       /* $finder = new TranslationBeanFinder($this->getDbAdpater());
         $finder->filterLocale_Code($this->getUserBean()->getLocale()->getLocale_Code());
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options["{translation:{$bean->Translation_Code}}"] = "{$bean->Translation_Text} ({$bean->Translation_Code})";
-        }
+        }*/
         return $options;
     }
 

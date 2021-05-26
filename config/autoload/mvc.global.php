@@ -30,6 +30,9 @@ return [
             'tasklog' => \Pars\Admin\Task\Log\TaskLogController::class,
             'picture' => \Pars\Admin\Picture\PictureController::class,
             'articlepicture' => \Pars\Admin\Article\Picture\ArticlePictureController::class,
+            'form' => \Pars\Admin\Form\FormController::class,
+            'formfield' => \Pars\Admin\Form\Field\FormFieldController::class,
+            'formdata' => \Pars\Admin\Form\Data\FormDataController::class,
         ],
         'models' => [
             'setup' => \Pars\Admin\Setup\SetupModel::class,
@@ -58,6 +61,9 @@ return [
             'tasklog' => \Pars\Admin\Task\Log\TaskLogModel::class,
             'picture' => \Pars\Admin\Picture\PictureModel::class,
             'articlepicture' => \Pars\Admin\Article\Picture\ArticlePictureModel::class,
+            'form' => \Pars\Admin\Form\FormModel::class,
+            'formfield' => \Pars\Admin\Form\Field\FormFieldModel::class,
+            'formdata' => \Pars\Admin\Form\Data\FormDataModel::class,
         ],
 
     ],

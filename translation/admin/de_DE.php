@@ -413,5 +413,17 @@ return [
     'submenu.overview' => 'Menüeinträge',
     'navigation.content.picture' => 'Bilder',
     'cmspost.name.default' => 'Beitrag',
+    'navigation.content.form' => 'Formulare',
+    'form.overview' => 'Formulare',
+    'form.code' => 'Code',
+    'formtype.code' => 'Typ',
+    'formtype.code.default' => 'Standard',
+    'formfield.overview' => 'Felder',
+    'formdata.overview' => 'Daten',
+    'formfield.code' => 'Code',
+    'formfield.required' => 'Pflichtfeld',
+    'formfieldtype.code' => 'Typ',
+    'formfieldtype.code.text' => 'Text',
+    'formfieldtype.code.checkbox' => 'Checkbox',
 
 ];

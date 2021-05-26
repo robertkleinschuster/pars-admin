@@ -15,6 +15,7 @@ class ContentNavigation extends BaseNavigation
         $this->addOption('ajax')->addOption('history')->addOption('remote')->setData('component', 'components');
         $this->initCmsPageItem();
         $this->initCmsBlockItem();
+        $this->initFormItem();
         $this->initPictureItem();
         $this->initCmsMenuItem();
         $this->initBrand();
@@ -67,6 +68,16 @@ class ContentNavigation extends BaseNavigation
             $this->getPathHelper()->setController('picture')->setAction('index'),
             'picture'
         )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'file'))->addOption('cache');
+    }
+
+    protected function initFormItem(): Item
+    {
+        return $this->addItem(
+            $this->translate('navigation.content.form'),
+            $this->getPathHelper()->setController('form')->setAction('index'),
+            'form'
+        )->setAccept(new UserPermissionFieldAccept($this->getUserBean(), 'form'));
+
     }
 
     /**
