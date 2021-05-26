@@ -11,8 +11,14 @@ class CmsSubBlockOverview extends CmsBlockOverview
 {
     protected function initialize()
     {
-        $this->setShowMove(true);
         parent::initialize();
+    }
+
+    protected function initBase()
+    {
+        parent::initBase();
+        $this->setShowOrder(false);
+        $this->setShowMove(true);
     }
 
 

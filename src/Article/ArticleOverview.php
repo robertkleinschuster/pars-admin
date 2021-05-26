@@ -10,6 +10,12 @@ use Pars\Admin\Base\BaseOverview;
  */
 abstract class ArticleOverview extends BaseOverview
 {
+    protected function initBase()
+    {
+        parent::initBase();
+        $this->setShowOrder(true);
+    }
+
     protected function initFields()
     {
         parent::initFields();

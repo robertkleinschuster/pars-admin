@@ -18,7 +18,6 @@ class LocaleOverview extends BaseOverview
     protected function initFields()
     {
         parent::initFields();
-
         $this->setShowDelete(false);
         $active = new Badge('{Locale_Active}');
         $active->setFormat(new LocaleActiveFieldFormat($this->getTranslator()));

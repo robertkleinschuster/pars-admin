@@ -24,6 +24,7 @@ use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Helper\Path\PathHelper;
 use Pars\Mvc\View\Event\ViewEvent;
 use Pars\Mvc\View\FieldInterface;
+use Pars\Mvc\View\ViewElement;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
 
@@ -444,6 +445,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
      */
     public function setShowMove(bool $showMove): void
     {
+        $this->setShowOrder(!$showMove);
         $this->showMove = $showMove;
     }
 

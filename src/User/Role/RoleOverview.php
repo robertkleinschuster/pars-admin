@@ -12,16 +12,20 @@ class RoleOverview extends BaseOverview
         $this->setName($this->translate('section.role'));
     }
 
-
-    protected function initialize()
+    protected function initBase()
     {
+        parent::initBase();
+        $this->setShowOrder(true);
+    }
 
-        $this->addField('UserRole_Name', $this->translate('userrole.name'));
-        $this->addField('UserRole_Code', $this->translate('userrole.code'));
+    protected function initFields()
+    {
+        parent::initFields();
         $active = new Badge('{UserRole_Active}');
         $active->setFormat(new RoleActiveFieldFormat($this->getTranslator()));
         $this->pushField($active);
-        parent::initialize();
+        $this->addFieldOrderable('UserRole_Name', $this->translate('userrole.name'));
+        $this->addFieldOrderable('UserRole_Code', $this->translate('userrole.code'));
     }
 
     protected function getController(): string

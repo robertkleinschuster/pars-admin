@@ -13,6 +13,8 @@ class CmsBlockOverview extends ArticleOverview
         $this->setName($this->translate('section.block'));
     }
 
+
+
     protected function initFields()
     {
         $span = new Badge('{CmsBlockState_Code}');

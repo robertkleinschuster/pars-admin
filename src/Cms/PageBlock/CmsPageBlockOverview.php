@@ -10,13 +10,13 @@ use Pars\Admin\Cms\Block\CmsBlockOverview;
  */
 class CmsPageBlockOverview extends CmsBlockOverview
 {
-    protected function initialize()
+    protected function initBase()
     {
+        parent::initBase();
         $this->setShowEdit(false);
         $this->setShowMove(true);
         $this->setShowCreateNew(true);
         $this->setShowOrder(false);
-        parent::initialize();
     }
 
 

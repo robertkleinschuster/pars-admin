@@ -36,6 +36,12 @@ class CmsPostOverview extends ArticleOverview
         $this->pushField($span);
     }
 
+    protected function initBase()
+    {
+        parent::initBase();
+        $this->setShowOrder(false);
+    }
+
 
     protected function getController(): string
     {
