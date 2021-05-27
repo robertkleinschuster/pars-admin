@@ -16,7 +16,7 @@ class FileEdit extends BaseEdit
         ->setGroup($this->translate('file.group.upload'));
 
         if ($this->hasDirectoryOptions() &&
-            !$this->getControllerRequest()->getId()->hasAttribute('FileDirectory_ID')
+            !($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute('FileDirectory_ID'))
         ) {
             $this->getForm()->addSelect('FileDirectory_ID', $this->getDirectoryOptions(), '{FileDirectory_ID}', $this->translate('filedirectory.id'));
         }

@@ -118,11 +118,6 @@ class CmsPageController extends ArticleController
             'index',
             $this->translate('section.post')
         );
-        $this->pushAction(
-            'cmspageblock',
-            'index',
-            $this->translate('section.block')
-        );
     }
 
     public function indexAction()
