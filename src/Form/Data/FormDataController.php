@@ -47,7 +47,7 @@ class FormDataController extends CrudController
     public function detailAction()
     {
         $detail = parent::detailAction();
-        $fields = $this->getModel()->getFieldList($this->getControllerRequest()->getId()->getAttribute('Form_ID'));
+        $fields = $this->getModel()->getFieldList($detail->getBean()->Form_ID);
         foreach ($fields as $field) {
             $detail->addSpan("FormData_Data[$field]", $this->translate('formfield.code.' . $field));
         }
