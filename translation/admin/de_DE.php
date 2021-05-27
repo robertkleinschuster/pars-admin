@@ -436,5 +436,6 @@ return [
     'formfieldtype.code.textarea' => 'Textbereich',
     'formfieldtype.code.email' => 'E-Mail Adresse',
     'form.indexinfo' => 'Eingang auf Startseite anzeigen',
+    'form.contact.overview' => 'Kontaktanfragen',
 
 ];
