@@ -347,7 +347,7 @@ return [
     'userpermission.code.userrole.create' => 'Rollen erstellen',
     'userpermission.code.userrole.edit' => 'Rollen bearbeiten',
     'userpermission.code.userrole.delete' => 'Rollen löschen',
-    'articletranslation.text.hint' => 'Platzhalter: {my-example-translation-code}, {block:my-example-block-code}',
+    'articletranslation.text.hint' => 'Platzhalter: {block:<b>code</b>}, {form:<b>code</b>}, {link:<b>code</b>}, {translation:<b>code</b>}, {lipsum:<b>length</b>}',
     'search.placeholder' => 'Suchen...',
     'apikey.name' => 'Name',
     'apikey.key' => 'Key',
