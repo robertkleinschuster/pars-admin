@@ -8,6 +8,7 @@ use Pars\Admin\Base\CrudModel;
 use Pars\Model\Form\Data\FormDataBeanFinder;
 use Pars\Model\Form\Data\FormDataBeanProcessor;
 use Pars\Model\Form\Field\FormFieldBeanFinder;
+use Pars\Model\Form\FormBeanFinder;
 
 class FormDataModel extends CrudModel
 {
@@ -27,5 +28,29 @@ class FormDataModel extends CrudModel
         }
         return $finder->getBeanListDecorator()->column('FormField_Code');
     }
+
+    public function getForm_Code($formId)
+    {
+        $finder = new FormBeanFinder($this->getDatabaseAdapter());
+        $finder->filterValue('Form_ID', $formId);
+        if ($finder->count() == 1) {
+            return $finder->getBean()->Form_Code;
+        }
+        return '';
+    }
+
+    public function getUnreadCount($formId)
+    {
+        $finder = new FormDataBeanFinder($this->getDatabaseAdapter());
+        $finder->filterValue('FormData_Read', false);
+        $finder->filterValue('Form_ID', $formId);
+        return $finder->count();
+    }
+
+    public function save(array $attributes): void
+    {
+        parent::save($attributes);
+    }
+
 
 }

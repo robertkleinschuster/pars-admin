@@ -419,7 +419,7 @@ return [
     'formtype.code' => 'Typ',
     'formtype.code.default' => 'Standard',
     'formfield.overview' => 'Felder',
-    'formdata.overview' => 'Daten',
+    'formdata.overview' => 'Formulareingang',
     'formfield.code' => 'Code',
     'formfield.code.name' => 'Name',
     'formfield.code.firstname' => 'Vorname',
@@ -435,5 +435,6 @@ return [
     'formfieldtype.code.checkbox' => 'Checkbox',
     'formfieldtype.code.textarea' => 'Textbereich',
     'formfieldtype.code.email' => 'E-Mail Adresse',
+    'form.indexinfo' => 'Eingang auf Startseite anzeigen',
 
 ];

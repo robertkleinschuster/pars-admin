@@ -16,6 +16,7 @@ use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Article\Data\ArticleDataBeanFinder;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
 use Pars\Model\Config\ConfigBeanFinder;
+use Pars\Model\Form\FormBeanFinder;
 use Pars\Mvc\View\DefaultComponent;
 use Pars\Mvc\View\ViewElement;
 use Pars\Pattern\Exception\AttributeExistsException;
@@ -199,6 +200,12 @@ class IndexController extends BaseController
             $request->setParameter(IdParameter::fromMap(['CmsPage_ID' => $finder->getBean()->CmsPage_ID]));
         }
 
+        $finder = new FormBeanFinder($this->getModel()->getDatabaseAdapter());
+        $finder->filterValue('Form_IndexInfo', true);
+        foreach ($finder->getBeanListDecorator() as $bean) {
+            $request = $this->pushAction('formdata', 'index', $bean->Form_Code);
+            $request->setParameter(IdParameter::fromMap(['Form_ID' => $bean->Form_ID]));
+        }
 
         $this->pushAction('cmspage', 'index', $this->translate('index.quickactions.cmspage'));
         $this->pushAction('cmsblock', 'index', $this->translate('index.quickactions.cmsblock'));

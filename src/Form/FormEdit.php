@@ -16,6 +16,7 @@ class FormEdit extends BaseEdit
         parent::initFields();
         $this->getForm()->setUseColumns(false);
         $this->getForm()->addText('Form_Code', '{Form_Code}', $this->translate('form.code'));
+        $this->getForm()->addCheckbox('Form_IndexInfo', '{Form_IndexInfo}', $this->translate('form.indexinfo'));
         if ($this->hasTypeOptions()) {
             $this->getForm()->addSelect('FormType_Code', $this->getTypeOptions(), '{FormType_Code}', $this->translate('formtype.code'));
         }
