@@ -16,12 +16,12 @@ class CmsSubMenuController extends CmsMenuController
 {
     public function indexAction()
     {
-        $this->getModel()->getBeanFinder()->getBeanLoader()->unsetValue('CmsMenu_ID');
-        $this->getModel()->getBeanFinder()->setCmsMenu_ID_Parent($this->getControllerRequest()->getId()->getAttribute('CmsMenu_ID'));
+        #$this->getModel()->getBeanFinder()->getBeanLoader()->unsetValue('CmsMenu_ID');
+        #$this->getModel()->getBeanFinder()->setCmsMenu_ID_Parent($this->getControllerRequest()->getId()->getAttribute('CmsMenu_ID'));
         return parent::indexAction();
     }
 
-    protected function initSubcontroller()
+    protected function initSubcontroller($bean)
     {
 
     }

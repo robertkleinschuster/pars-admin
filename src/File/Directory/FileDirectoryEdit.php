@@ -8,6 +8,7 @@ class FileDirectoryEdit extends BaseEdit
 {
     protected function initialize()
     {
+        $this->getForm()->setUseColumns(false);
         $this->getForm()->addText('FileDirectory_Code', '{FileDirectory_Code}', $this->translate('filedirectory.code'));
         $this->getForm()->addText('FileDirectory_Name', '{FileDirectory_Name}', $this->translate('filedirectory.name'));
         $this->getForm()->addCheckbox('FileDirectory_Active', '{FileDirectory_Active}', $this->translate('filedirectory.active'));

@@ -5,6 +5,7 @@ namespace Pars\Admin\Cms\Menu;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\ContentNavigation;
 use Pars\Admin\Base\CrudController;
+use Pars\Helper\Parameter\IdParameter;
 use Pars\Mvc\Exception\MvcException;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
@@ -45,16 +46,12 @@ class CmsMenuController extends CrudController
         $this->addFilter_Select(
             'CmsMenuType_Code',
             $this->translate('cmsmenutype.code'),
-            $this->getModel()->getCmsMenuType_Options(true),
-            1,
-            1
+            $this->getModel()->getCmsMenuType_Options(true)
         );
         $this->addFilter_Select(
             'CmsMenuState_Code',
             $this->translate('cmsmenustate.code'),
-            $this->getModel()->getCmsMenuState_Options(true),
-            1,
-            2
+            $this->getModel()->getCmsMenuState_Options(true)
         );
         $overview = parent::indexAction();
         if (count($this->getModel()->getCmsPage_Options()) == 0) {
@@ -67,14 +64,7 @@ class CmsMenuController extends CrudController
     {
         $detail = parent::detailAction();
         $bean = $detail->getBean();
-        if (
-            $this->getControllerRequest()->hasId()
-            && $this->getControllerRequest()->getId()->hasAttribute('CmsMenu_ID')
-        ) {
-            $id = $this->getControllerRequest()->getId()->getAttribute('CmsMenu_ID');
-            $this->getView()->set('CmsMenu_ID_Parent', (int)$id);
-        }
-        $this->initSubcontroller();
+        $this->initSubcontroller($bean);
         if ($bean->isset('ArticleTranslation_Code')) {
             if ($detail instanceof CmsMenuDetail) {
                 $detail->setPreviewPath($this->getModel()->generatePreviewPath($bean));
@@ -83,9 +73,10 @@ class CmsMenuController extends CrudController
         return $detail;
     }
 
-    protected function initSubcontroller()
+    protected function initSubcontroller($bean)
     {
-        $this->pushAction('cmssubmenu', 'index', $this->translate('section.menu'));
+        $request = $this->pushAction('cmssubmenu', 'index', $this->translate('section.menu'));
+        $request->setParameter(IdParameter::fromMap(['CmsMenu_ID_Parent' => $bean->CmsMenu_ID]));
     }
 
     /**

@@ -11,9 +11,13 @@ class FileEdit extends BaseEdit
 
     protected function initialize()
     {
+        $this->getForm()->setUseColumns(false);
+
         $this->getForm()->addFile('File_Upload', '{File_Upload}', $this->translate('file.upload'))
         ->setHint('Limit: ' . $this->file_upload_max_size() / 1024 / 1024 . ' MB')
         ->setGroup($this->translate('file.group.upload'));
+        $this->getForm()->addText('File_Name', '{File_Name}', $this->translate('file.name'));
+        $this->getForm()->addText('File_Code', '{File_Code}', $this->translate('file.code'));
 
         if ($this->hasDirectoryOptions() &&
             !($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute('FileDirectory_ID'))
@@ -23,8 +27,6 @@ class FileEdit extends BaseEdit
         if ($this->hasTypeOptions()) {
             $this->getForm()->addSelect('FileType_Code', $this->getTypeOptions(), '{FileType_Code}', $this->translate('filetype.code'));
         }
-        $this->getForm()->addText('File_Name', '{File_Name}', $this->translate('file.name'));
-        $this->getForm()->addText('File_Code', '{File_Code}', $this->translate('file.code'));
         parent::initialize();
     }
 

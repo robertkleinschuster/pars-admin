@@ -6,6 +6,13 @@ use Pars\Admin\Base\BaseEdit;
 
 class RoleEdit extends BaseEdit
 {
+    protected function initBase()
+    {
+        parent::initBase();
+        $this->getForm()->setUseColumns(false);
+
+    }
+
     protected function initFields()
     {
         parent::initFields();

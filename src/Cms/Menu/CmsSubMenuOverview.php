@@ -43,9 +43,7 @@ class CmsSubMenuOverview extends CmsMenuOverview
 
     protected function getCreateIdFields(): array
     {
-        return [
-            'CmsMenu_ID_Parent'
-        ];
+        return $this->getControllerRequest()->getId()->getAttributes();
     }
 
     protected function getRedirectAction(): string
@@ -56,7 +54,7 @@ class CmsSubMenuOverview extends CmsMenuOverview
     protected function getRedirectIdFields(): array
     {
         return [
-            'CmsMenu_ID' => '{CmsMenu_ID_Parent}'
+            'CmsMenu_ID' => $this->getControllerRequest()->getId()->getAttribute('CmsMenu_ID_Parent')
         ];
     }
 

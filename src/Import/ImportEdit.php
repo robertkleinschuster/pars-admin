@@ -11,7 +11,9 @@ class ImportEdit extends BaseEdit
 
     protected function initialize()
     {
-        $this->getForm()->addText('Import_Name', '{Import_Name}', $this->translate('import.name'), 1);
+        $this->getForm()->setUseColumns(false);
+
+        $this->getForm()->addText('Import_Name', '{Import_Name}', $this->translate('import.name'));
         if (null !== $this->getImportTypeOptions()) {
             $this->getForm()->addSelect('ImportType_Code', $this->getImportTypeOptions(), '{ImportType_Code}', $this->translate('importtype.code'));
         }
@@ -34,9 +36,9 @@ class ImportEdit extends BaseEdit
         for ($i = 0; $i <= 59; $i++) {
             $minutes[$i] = $i;
         }
-        $this->getForm()->addSelect('Import_Day', $days, '{Import_Day}', $this->translate('import.day'), 3, 1);
-        $this->getForm()->addSelect('Import_Hour', $hours, '{Import_Hour}', $this->translate('import.hour'), 3, 2);
-        $this->getForm()->addSelect('Import_Minute', $minutes, '{Import_Minute}', $this->translate('import.minute'), 3, 3);
+        $this->getForm()->addSelect('Import_Day', $days, '{Import_Day}', $this->translate('import.day'));
+        $this->getForm()->addSelect('Import_Hour', $hours, '{Import_Hour}', $this->translate('import.hour'));
+        $this->getForm()->addSelect('Import_Minute', $minutes, '{Import_Minute}', $this->translate('import.minute'));
         parent::initialize();
     }
 

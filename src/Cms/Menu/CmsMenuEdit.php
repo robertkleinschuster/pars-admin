@@ -13,6 +13,7 @@ class CmsMenuEdit extends BaseEdit
 
     protected function initialize()
     {
+        $this->getForm()->setUseColumns(false);
         $this->getForm()->addText('CmsMenu_Name', '{CmsMenu_Name}', $this->translate('cmsmenu.name'));
         if ($this->hasPageOptions()) {
             $this->getForm()->addSelect('CmsPage_ID', $this->getPageOptions(), '{CmsPage_ID}', $this->translate('cmspage.id'));
