@@ -11,6 +11,7 @@ use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Field\Headline;
 use Pars\Component\Base\Field\Progress;
 use Pars\Component\Base\Field\Span;
+use Pars\Core\Database\AbstractDatabaseBeanFinder;
 use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Article\Data\ArticleDataBeanFinder;
@@ -191,6 +192,12 @@ class IndexController extends BaseController
         if ($messages->getJumbotron()->getFieldList()->count()) {
             $this->getView()->pushComponent($messages);
         }
+        $finder = new FormBeanFinder($this->getModel()->getDatabaseAdapter());
+        $finder->filterValue('Form_IndexInfo', true);
+        foreach ($finder->getBeanListDecorator() as $bean) {
+            $request = $this->pushAction('formdata', 'index', $bean->Form_Code);
+            $request->setParameter(IdParameter::fromMap(['Form_ID' => $bean->Form_ID]));
+        }
 
         $finder = new CmsPageBeanFinder($this->getModel()->getDatabaseAdapter());
         $finder->filterLocale_Code($this->getUserBean()->getLocale()->getLocale_Code());
@@ -200,12 +207,6 @@ class IndexController extends BaseController
             $request->setParameter(IdParameter::fromMap(['CmsPage_ID' => $finder->getBean()->CmsPage_ID]));
         }
 
-        $finder = new FormBeanFinder($this->getModel()->getDatabaseAdapter());
-        $finder->filterValue('Form_IndexInfo', true);
-        foreach ($finder->getBeanListDecorator() as $bean) {
-            $request = $this->pushAction('formdata', 'index', $bean->Form_Code);
-            $request->setParameter(IdParameter::fromMap(['Form_ID' => $bean->Form_ID]));
-        }
 
         $this->pushAction('cmspage', 'index', $this->translate('index.quickactions.cmspage'));
         $this->pushAction('cmsblock', 'index', $this->translate('index.quickactions.cmsblock'));
