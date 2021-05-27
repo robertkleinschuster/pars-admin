@@ -425,5 +425,7 @@ return [
     'formfieldtype.code' => 'Typ',
     'formfieldtype.code.text' => 'Text',
     'formfieldtype.code.checkbox' => 'Checkbox',
+    'formfieldtype.code.textarea' => 'Textbereich',
+    'formfieldtype.code.email' => 'E-Mail Adresse',
 
 ];
