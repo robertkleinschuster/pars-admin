@@ -37,6 +37,7 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
     {
         if ($this->isShowBack()) {
             $button = new BackButton();
+            $button->setTooltip($this->translate('back'));
             $button->setPath($this->generateIndexPath());
             $button->setEvent(ViewEvent::createLink($this->generateIndexPath()));
             $this->getToolbar()->push($button);
@@ -47,6 +48,7 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
     {
         if ($this->isShowEdit()) {
             $button = new EditButton($this->generateEditPath());
+            $button->setTooltip($this->translate('edit'));
             $button->setEvent(ViewEvent::createModal($this->generateEditPath()));
             $button->setModal(true);
             $button->setModalTitle($this->translate('edit.title'));
@@ -76,7 +78,9 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
         if ($this->isShowDelete()) {
             $this->getToolbar()->push((new DeleteButton($this->generateDeletePath()))
                 ->setModal(true)
-                ->setModalTitle($this->translate('delete.title')));
+                ->setModalTitle($this->translate('delete.title'))
+                ->setTooltip($this->translate('delete')))
+            ;
         }
     }
 

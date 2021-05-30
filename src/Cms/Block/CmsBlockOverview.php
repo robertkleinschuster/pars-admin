@@ -18,6 +18,7 @@ class CmsBlockOverview extends ArticleOverview
     protected function initFields()
     {
         $span = new Badge('{CmsBlockState_Code}');
+        $span->setTooltip($this->translate('cmsblockstate.code'));
         $span->setFormat(new CmsBlockStateFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {
             $span->setPath($this->getDetailPath());

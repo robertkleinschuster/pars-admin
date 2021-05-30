@@ -21,6 +21,7 @@ class CmsPageOverview extends ArticleOverview
         $this->setShowOrder(true);
         $span = new Badge('{CmsPageState_Code}');
         $span->setFormat(new CmsPageStateFieldFormat($this->getTranslator()));
+        $span->setTooltip($this->translate('cmspagestate.code'));
         if ($this->hasDetailPath()) {
             $span->setPath($this->getDetailPath());
             $span->addOption(Span::OPTION_DECORATION_NONE);

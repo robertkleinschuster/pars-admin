@@ -276,7 +276,10 @@ abstract class ArticleDetail extends BaseDetail
     protected function initPreviewButton()
     {
         if ($this->hasPreviewPath()) {
-            $this->getToolbar()->push((new PreviewButton($this->getPreviewPath()))->setTarget('_blank'));
+            $this->getToolbar()->push((new PreviewButton($this->getPreviewPath()))
+                ->setTarget('_blank')
+                ->setTooltip($this->translate('preview'))
+            );
         }
     }
 

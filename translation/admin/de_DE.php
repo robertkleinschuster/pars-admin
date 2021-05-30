@@ -438,6 +438,20 @@ return [
     'form.indexinfo' => 'Eingang auf Startseite anzeigen',
     'form.contact.overview' => 'Kontaktanfragen',
     'form.code.contact' => 'Kontaktformular',
-    'article.group.footer' => 'Footer'
+    'article.group.footer' => 'Footer',
+    'formdata.read' => 'Status',
+    'formdata.read.true' => 'Gelesen',
+    'formdata.read.false' => 'Ungelesen',
+    'formdata.read.true.button' => 'Als gelesen markieren.',
+    'formdata.read.false.button' => 'Als ungelesen markieren.',
+    'link' => 'Verknüpfen',
+    'delete' => 'Löschen',
+    'create' => 'Erstellen',
+    'edit' => 'Bearbeiten',
+    'back' => 'Zurück',
+    'preview' => 'Vorschau',
+    'download' => 'Herunterladen',
+    'locked' => 'Gesperrt',
+    'incomplete' => 'Unvollständig',
 
 ];

@@ -21,6 +21,7 @@ class CmsMenuOverview extends BaseOverview
         parent::initFields();
         $this->setShowMove(true);
         $span = new Badge('{CmsMenuState_Code}');
+        $span->setTooltip($this->translate('cmsmenustate.code'));
         $span->setFormat(new CmsMenuStateFieldFormat($this->getTranslator()));
         if ($this->hasDetailPath()) {
             $span->setPath($this->getDetailPath());

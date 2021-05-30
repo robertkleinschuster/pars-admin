@@ -128,6 +128,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
                 (new LinkButton($this->generateLinkPath()))
                     ->setModal(true)
                     ->setModalTitle($this->translate('link.title'))
+                    ->setTooltip($this->translate('link'))
             );
         }
     }
@@ -139,6 +140,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
                 (new CreateButton($this->generateCreatePath()))
                     ->setModal(true)
                     ->setModalTitle($this->translate('create.title'))
+                    ->setTooltip($this->translate('create'))
             );
         }
     }
@@ -245,6 +247,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
                 $this->getMain()->setId($id);
             }
             $button->setId($id . '__confirm_delete');
+            $button->setTooltip($this->translate('delete'));
             $button->setEvent(ViewEvent::createCallback(function (DeleteBulkButton $element) use ($id) {
                 $modal = new Modal();
                 $modal->addInlineStyle('color', 'initial');

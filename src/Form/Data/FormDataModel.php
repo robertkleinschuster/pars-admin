@@ -26,7 +26,7 @@ class FormDataModel extends CrudModel
         if ($onlyRequired) {
             $finder->filterValue('FormField_Required', true);
         }
-        return $finder->getBeanListDecorator()->column('FormField_Code');
+        return $finder->getBeanListDecorator()->column('FormFieldType_Code', 'FormField_Code');
     }
 
     public function getForm_Code($formId)

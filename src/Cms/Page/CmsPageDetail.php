@@ -195,6 +195,7 @@ class CmsPageDetail extends ArticleDetail
                         ->setAction('export')
                         ->getPath()
                 )
+            ->setTooltip($this->translate('download'))
         );
     }
 

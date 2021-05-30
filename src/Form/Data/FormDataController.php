@@ -8,6 +8,7 @@ use Pars\Admin\Base\BaseOverview;
 use Pars\Admin\Base\ContentNavigation;
 use Pars\Admin\Base\CrudController;
 use Pars\Component\Base\Field\Badge;
+use Pars\Component\Base\Field\Icon;
 
 /**
  * Class FormDataController
@@ -41,8 +42,16 @@ class FormDataController extends CrudController
         $overview = parent::createOverview();
         $formId = $this->getControllerRequest()->getId()->getAttribute('Form_ID');
         $fields = $this->getModel()->getFieldList($formId, true);
-        foreach ($fields as $field) {
-            $overview->addField("FormData_Data[$field]", $this->translate('formfield.code.' . $field));
+        foreach ($fields as $field => $type) {
+            if ($type == 'checkbox') {
+                $icon = new Icon();
+                $icon->setContent($field);
+                $icon->setTooltip($this->translate('formfield.code.' . $field));
+                $icon->setFormat(new FormDataCheckboxFieldFormat());
+                $overview->pushField($icon);
+            } else {
+                $overview->addField("FormData_Data[$field]", $this->translate('formfield.code.' . $field));
+            }
         }
         $badge = new Badge($this->getModel()->getUnreadCount($formId), Badge::STYLE_INFO);
         $name = $this->translate('form.' . $this->getModel()->getForm_Code($formId) . '.overview') . ' ' . $badge;
@@ -53,13 +62,21 @@ class FormDataController extends CrudController
     public function detailAction()
     {
         if ($this->getSession()->get('formdata.unread')
-         != $this->getControllerRequest()->getId()->getAttribute('FormData_ID')) {
+            != $this->getControllerRequest()->getId()->getAttribute('FormData_ID')) {
             $this->readAction();
         }
         $detail = parent::detailAction();
         $fields = $this->getModel()->getFieldList($detail->getBean()->Form_ID);
-        foreach ($fields as $field) {
-            $detail->addSpan("FormData_Data[$field]", $this->translate('formfield.code.' . $field));
+        foreach ($fields as $field => $type) {
+            if ($type == 'checkbox') {
+                $icon = new Icon();
+                $icon->setContent($field);
+                $icon->setLabel($this->translate('formfield.code.' . $field));
+                $icon->setFormat(new FormDataCheckboxFieldFormat());
+                $detail->unshiftField($icon);
+            } else {
+                $detail->addSpan("FormData_Data[$field]", $this->translate('formfield.code.' . $field));
+            }
         }
         return $detail;
     }

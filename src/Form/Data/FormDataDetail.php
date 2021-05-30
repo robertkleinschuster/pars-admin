@@ -22,12 +22,7 @@ class FormDataDetail extends BaseDetail
     protected function initFields()
     {
         parent::initFields();
-        $icon = new Icon(Icon::ICON_MAIL);
-        $icon->setStyle(Icon::STYLE_INFO);
-        $icon->setAccept(new BooleanValueFieldAccept('FormData_Read', true));
-        $this->unshiftField($icon);
     }
-
 
     protected function initAdditionalAfter()
     {
@@ -35,12 +30,14 @@ class FormDataDetail extends BaseDetail
 
 
         $readButton = new MailButton();
+        $readButton->setTooltip($this->translate('formdata.read.false.button'));
         $readButton->setStyle(MailButton::STYLE_INFO);
         $readButton->setPath($this->getPathHelper(false)->setAction('unread')->addParameter(RedirectParameter::fromPath($this->getPathHelper(false)->getPath())));
         $readButton->setAccept(new BooleanValueFieldAccept('FormData_Read', false));
         $this->getToolbar()->push($readButton);
 
         $readButton = new CheckButton();
+        $readButton->setTooltip($this->translate('formdata.read.true.button'));
         $readButton->setStyle(CheckButton::STYLE_SUCCESS);
         $readButton->setPath($this->getPathHelper(false)->setAction('read')->addParameter(RedirectParameter::fromPath($this->getPathHelper(false)->getPath())));
         $readButton->setAccept(new BooleanValueFieldAccept('FormData_Read', true));
