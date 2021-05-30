@@ -11,6 +11,7 @@ class TeslaImportConfigure extends BaseEdit
         $this->getForm()->addText('tesla_username', '', $this->translate('tesla.username'));
         $this->getForm()->addPassword('tesla_password', '', $this->translate('tesla.password'));
         $this->setMode('configure');
+        $this->getForm()->setUseEvents(false);
         parent::initialize();
     }
 
