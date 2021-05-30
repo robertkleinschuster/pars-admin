@@ -6,6 +6,7 @@ use DateTime;
 use Pars\Bean\Type\Base\BeanException;
 use Pars\Component\Base\Breadcrumb\Breadcrumb;
 use Pars\Component\Base\Detail\Detail;
+use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Filter\Filter;
 use Pars\Component\Base\Form\Submit;
@@ -141,7 +142,7 @@ abstract class CrudController extends BaseController
                 . $this->getControllerRequest()->getController()
                 . $this->getControllerRequest()->getAction();
             $this->getFilter()->setId($id);
-            $this->getFilter()->getCollapsable()->setTitle($this->translate('admin.filter'));
+            $this->getFilter()->getCollapsable()->setTitle(Icon::filter()->inline() . $this->translate('admin.filter'));
             $submitEvent = ViewEvent::createSubmit(null, "{$id}_form");
             $this->getFilter()->getForm()->addHidden(
                 FilterParameter::nameAttr(FilterParameter::ATTRIBUTE_HASH),

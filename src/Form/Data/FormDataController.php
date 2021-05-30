@@ -54,8 +54,8 @@ class FormDataController extends CrudController
             }
         }
         $badge = new Badge($this->getModel()->getUnreadCount($formId), Badge::STYLE_INFO);
-        $name = $this->translate('form.' . $this->getModel()->getForm_Code($formId) . '.overview') . ' ' . $badge;
-        $overview->setName($name);
+        $name = $this->translate('form.' . $this->getModel()->getForm_Code($formId) . '.overview');
+        $overview->setName(Icon::inbox()->inline() . $badge . ' ' . $name);
         return $overview;
     }
 

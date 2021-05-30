@@ -19,9 +19,7 @@ class LocaleOverview extends BaseOverview
     {
         parent::initFields();
         $this->setShowDelete(false);
-        $active = new Badge('{Locale_Active}');
-        $active->setFormat(new LocaleActiveFieldFormat($this->getTranslator()));
-        $this->pushField($active);
+        $this->addFieldState('Locale_Active');
         $this->addField('Locale_Name', $this->translate('locale.name'));
         $this->addField('Locale_Code', $this->translate('locale.code'));
         $this->addField('Locale_Domain', $this->translate('locale.domain'));

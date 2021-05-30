@@ -5,6 +5,7 @@ namespace Pars\Admin\Form\Field;
 
 
 use Pars\Admin\Base\BaseOverview;
+use Pars\Admin\Base\BooleanValueFieldFormat;
 
 class FormFieldOverview extends BaseOverview
 {
@@ -26,7 +27,12 @@ class FormFieldOverview extends BaseOverview
         parent::initFields();
         $this->addField('FormFieldType_Code', $this->translate('formfieldtype.code'));
         $this->addField('FormField_Code', $this->translate('formfield.code'));
-        $this->addField('FormField_Required', $this->translate('formfield.required'));
+        $this->addFieldSpan('FormField_Required', '')
+         ->setFormat(new BooleanValueFieldFormat(
+             'FormField_Required',
+             $this->translate('formfield.required.true'),
+             $this->translate('formfield.required.false')
+         ));
 
     }
 

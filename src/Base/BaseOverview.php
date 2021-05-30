@@ -696,5 +696,15 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
         return $this;
     }
 
+    public function addFieldState(string $name, string $active = null, string $inactive = null)
+    {
+        if (!$active) {
+            $active = $this->translate('active');
+        }
+        if (!$inactive) {
+            $inactive = $this->translate('inactive');
+        }
+        return $this->addFieldSpan($name, '')->setFormat(new StateFieldFormat($name, $active, $inactive));
+    }
 
 }

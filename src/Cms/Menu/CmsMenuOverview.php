@@ -4,6 +4,7 @@ namespace Pars\Admin\Cms\Menu;
 
 use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\Field\Badge;
+use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Field\Span;
 
 class CmsMenuOverview extends BaseOverview
@@ -20,14 +21,9 @@ class CmsMenuOverview extends BaseOverview
     {
         parent::initFields();
         $this->setShowMove(true);
-        $span = new Badge('{CmsMenuState_Code}');
-        $span->setTooltip($this->translate('cmsmenustate.code'));
-        $span->setFormat(new CmsMenuStateFieldFormat($this->getTranslator()));
-        if ($this->hasDetailPath()) {
-            $span->setPath($this->getDetailPath());
-            $span->addOption(Span::OPTION_DECORATION_NONE);
-        }
-        $this->pushField($span);
+
+        $this->addFieldState('CmsMenuState_Code');
+
         if ($this->isShowType()) {
             $span = new Span('{CmsMenuType_Code}', $this->translate('cmsmenutype.code'));
             $span->setFormat(new CmsMenuTypeFieldFormat($this->getTranslator()));

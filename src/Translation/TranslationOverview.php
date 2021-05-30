@@ -4,6 +4,7 @@ namespace Pars\Admin\Translation;
 
 use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\Field\Badge;
+use Pars\Component\Base\Field\Span;
 
 class TranslationOverview extends BaseOverview
 {
@@ -16,7 +17,7 @@ class TranslationOverview extends BaseOverview
     protected function initialize()
     {
         $this->setShowOrder(true);
-        $badge = new Badge();
+        $badge = new Span();
         $badge->setFormat(new TranslationStateFieldFormat($this->getTranslator()));
         $this->pushField($badge);
         $this->addFieldOrderable('Translation_Code', $this->translate('translation.code'));

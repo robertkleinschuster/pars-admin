@@ -34,7 +34,7 @@ class MainNavigation extends BaseNavigation
         }
         $this->setBreakpoint(Navigation::BREAKPOINT_MEDIUM);
         $this->initContentItem();
-        $this->initMediaItem();
+        #$this->initMediaItem();
         $this->initSystemItem();
         $this->initDropdownRight();
         $this->initBrand();
@@ -59,7 +59,7 @@ class MainNavigation extends BaseNavigation
     protected function initContentItem(): Item
     {
         return $this->addItem(
-            $this->translate('navigation.content'),
+            Icon::layout()->inline() . $this->translate('navigation.content'),
             $this->getPathHelper()
                 ->setController('cmspage')
                 ->setAction('index'),
@@ -74,8 +74,9 @@ class MainNavigation extends BaseNavigation
      */
     protected function initMediaItem(): Item
     {
+
         return $this->addItem(
-            $this->translate('navigation.media'),
+            Icon::folder()->inline() . $this->translate('navigation.media'),
             $this->getPathHelper()
                 ->setController('filedirectory')
                 ->setAction('index'),
@@ -92,7 +93,7 @@ class MainNavigation extends BaseNavigation
     protected function initSystemItem(): Item
     {
         return $this->addItem(
-            $this->translate('navigation.system'),
+            Icon::tool()->inline() . $this->translate('navigation.system'),
             $this->getPathHelper()
                 ->setController('user')
                 ->setAction('index'),
@@ -107,7 +108,7 @@ class MainNavigation extends BaseNavigation
      */
     protected function initDropdownRight(): Dropdown
     {
-        return $this->addDropdownRight($this->translate('navigation.user'), 'user')
+        return $this->addDropdownRight(Icon::user()->inline() . $this->translate('navigation.user'), 'user')
             ->addItem(
                 $this->translate('navigation.user.detail'),
                 $this->getPathHelper()

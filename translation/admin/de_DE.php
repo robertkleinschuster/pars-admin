@@ -453,5 +453,12 @@ return [
     'download' => 'Herunterladen',
     'locked' => 'Gesperrt',
     'incomplete' => 'Unvollständig',
+    'true' => 'ja',
+    'false' => 'nein',
+    'formfield.required.true' => 'Pflichtfeld: ja',
+    'formfield.required.false' => 'Pflichtfeld: nein',
+    'active' => 'Aktiv',
+    'inactive' => 'Inaktiv',
+
 
 ];

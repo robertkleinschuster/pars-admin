@@ -21,9 +21,7 @@ class RoleOverview extends BaseOverview
     protected function initFields()
     {
         parent::initFields();
-        $active = new Badge('{UserRole_Active}');
-        $active->setFormat(new RoleActiveFieldFormat($this->getTranslator()));
-        $this->pushField($active);
+        $this->addFieldState('UserRole_Active');
         $this->addFieldOrderable('UserRole_Name', $this->translate('userrole.name'));
         $this->addFieldOrderable('UserRole_Code', $this->translate('userrole.code'));
     }
