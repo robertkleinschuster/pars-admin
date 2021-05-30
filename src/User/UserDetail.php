@@ -6,6 +6,7 @@ namespace Pars\Admin\User;
 
 use Pars\Admin\Base\BaseDetail;
 use Pars\Component\Base\Field\Badge;
+use Pars\Component\Base\Field\Span;
 
 /**
  * Class Detail
@@ -26,7 +27,7 @@ class UserDetail extends BaseDetail
         $this->addSpan('User_Displayname', $this->translate('user.displayname'));
         $this->addSpan('User_LastLogin', $this->translate('user.lastlogin'));
         $this->addSpan('Locale_Name', $this->translate('user.locale'));
-        $state = new Badge('{UserState_Code}');
+        $state = new Span('{UserState_Code}');
         $state->setLabel('Status');
         $state->setFormat(new UserStateFieldFormat($this->getTranslator()));
         $this->pushField($state);

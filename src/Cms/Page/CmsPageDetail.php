@@ -175,7 +175,7 @@ class CmsPageDetail extends ArticleDetail
 
     protected function addFieldState()
     {
-        $span = new Badge('{CmsPageState_Code}');
+        $span = new Span('{CmsPageState_Code}');
         $span->setLabel($this->translate('cmspagestate.code'));
         $span->setFormat(new CmsPageStateFieldFormat($this->getTranslator()));
         $span->setGroup($this->getGroupGeneral());

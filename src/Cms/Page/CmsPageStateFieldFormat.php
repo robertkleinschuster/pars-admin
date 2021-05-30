@@ -27,6 +27,7 @@ class CmsPageStateFieldFormat implements FieldFormatInterface
 
     public function __invoke(FieldInterface $field, string $value, ?BeanInterface $bean = null): string
     {
+        $field->setIconField(true);
         $field->setTooltip($this->getTranslator()->translate('cmspagestate.code.' . $bean->get('CmsPageState_Code')));
         switch ($bean->get('CmsPageState_Code')) {
             case 'active':
