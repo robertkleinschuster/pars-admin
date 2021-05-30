@@ -437,6 +437,7 @@ return [
     'formfieldtype.code.email' => 'E-Mail Adresse',
     'form.indexinfo' => 'Eingang auf Startseite anzeigen',
     'form.contact.overview' => 'Kontaktanfragen',
-    'form.code.contact' => 'Kontaktformular'
+    'form.code.contact' => 'Kontaktformular',
+    'article.group.footer' => 'Footer'
 
 ];

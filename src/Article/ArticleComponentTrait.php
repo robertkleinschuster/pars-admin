@@ -16,8 +16,9 @@ trait ArticleComponentTrait
             case 'ArticleTranslation_SubHeading':
                 return $this->getGroupHeading();
             case 'ArticleTranslation_Text':
-            case 'ArticleTranslation_Footer':
                 return $this->getGroupText();
+            case 'ArticleTranslation_Footer':
+                return $this->getGroupFooter();
             case 'ArticleTranslation_Keywords':
             case 'ArticleTranslation_Title':
                 return $this->getGroupMeta();
@@ -57,6 +58,11 @@ trait ArticleComponentTrait
     {
         return $this->translate('article.group.text');
     }
+    protected function getGroupFooter()
+    {
+        return $this->translate('article.group.footer');
+    }
+
 
     protected function getGroupHeading()
     {

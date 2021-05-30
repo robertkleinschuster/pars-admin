@@ -46,8 +46,9 @@ class CmsPageDetail extends ArticleDetail
             case 'gallery':
                 $this->initFieldsGallery();
                 break;
+            case 'default':
             case 'home':
-                $this->initFieldsHome();
+                $this->initFieldsDefault();
                 break;
             case 'poll':
                 $this->initFieldsPoll();
@@ -93,7 +94,7 @@ class CmsPageDetail extends ArticleDetail
         $this->addFieldTeaser($this->translate('cmspage.metatext'));
     }
 
-    protected function initFieldsHome()
+    protected function initFieldsDefault()
     {
         $this->addFieldName();
         $this->addFieldTitle();
