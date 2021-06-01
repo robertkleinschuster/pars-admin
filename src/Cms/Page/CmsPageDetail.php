@@ -17,6 +17,8 @@ class CmsPageDetail extends ArticleDetail
         $this->addFieldState();
         $this->addFieldCodeInternal();
         $this->addFieldCodeUrl();
+        $this->addFieldView();
+        $this->addFieldRead();
         if ($this->hasBean()) {
             $this->initFieldsByType($this->getBean()->get('CmsPageType_Code'));
         }

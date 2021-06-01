@@ -459,6 +459,7 @@ return [
     'formfield.required.false' => 'Pflichtfeld: nein',
     'active' => 'Aktiv',
     'inactive' => 'Inaktiv',
-
-
+    'article.view' => 'Aufrufe',
+    'article.read' => 'Interaktionen',
+    'article.group.statistic' => 'Statistik'
 ];

@@ -28,9 +28,17 @@ trait ArticleComponentTrait
             case 'ArticleTranslation_Code':
             case 'ArticleTranslation_Name':
                 return $this->getGroupIdentification();
+            case 'Article_View':
+            case 'Article_Read':
+                return $this->getGroupStatistic();
             default:
                 return $this->getGroupAdditional();
         }
+    }
+
+    protected function getGroupStatistic()
+    {
+        return $this->translate('article.group.statistic');
     }
 
     protected function getGroupAdditional()

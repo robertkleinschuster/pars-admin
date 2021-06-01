@@ -6,6 +6,7 @@ use Pars\Bean\Type\Base\BeanException;
 use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\CrudModel;
 use Pars\Helper\Parameter\IdParameter;
+use Pars\Model\Article\ArticleBeanFinder;
 use Pars\Model\Article\DataBean;
 use Pars\Model\Article\Translation\ArticleTranslationBeanFinder;
 use Pars\Model\Cms\Block\CmsBlockBeanFinder;
@@ -23,6 +24,18 @@ use Pars\Model\Translation\TranslationLoader\TranslationBeanFinder;
  */
 abstract class ArticleModel extends CrudModel
 {
+    public function initializeDependencies()
+    {
+        parent::initializeDependencies();
+        if ($this->hasBeanFinder()) {
+            $finder = $this->getBeanFinder();
+            if ($finder instanceof ArticleBeanFinder) {
+                $finder->loadStatistic('view', 'Article_View');
+                $finder->loadStatistic('read', 'Article_Read');
+            }
+        }
+    }
+
 
     /**
      * @param IdParameter $idParameter

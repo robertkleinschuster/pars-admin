@@ -23,7 +23,7 @@ abstract class ArticleOverview extends BaseOverview
         $this->addFieldOrderable('ArticleTranslation_Name', $this->translate('articletranslation.name'));
         $this->addFieldOrderable('Article_Code', $this->translate('article.code'));
         $this->addFieldOrderable('ArticleTranslation_Code', $this->translate('articletranslation.code'));
-
+        $this->addFieldOrderable('Article_View', $this->translate('article.view'));
     }
 
 }

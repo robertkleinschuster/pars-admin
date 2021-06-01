@@ -60,6 +60,32 @@ abstract class ArticleDetail extends BaseDetail
         return $span;
     }
 
+    protected function addFieldView(string $label = null, string $group = null)
+    {
+        if (!$label) {
+            $label = $this->translate('article.view');
+        }
+        if (!$group) {
+            $group = $this->getGroupByField('Article_View');
+        }
+        $span = $this->addSpan('Article_View', $label);
+        $span->setGroup($group);
+        return $span;
+    }
+
+    protected function addFieldRead(string $label = null, string $group = null)
+    {
+        if (!$label) {
+            $label = $this->translate('article.read');
+        }
+        if (!$group) {
+            $group = $this->getGroupByField('Article_Read');
+        }
+        $span = $this->addSpan('Article_Read', $label);
+        $span->setGroup($group);
+        return $span;
+    }
+
     protected function addFieldTeaser(string $label = null, string $group = null)
     {
         if (!$label) {
