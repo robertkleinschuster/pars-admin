@@ -65,6 +65,9 @@
       "Composer\\Config::disableProcessTimeout",
       "php -S localhost:9090 -t public/ public/index.php 2>&1"
     ],
+    "build": [
+      "@yarn"
+    ],
     "development": "laminas-development-mode",
     "clear-pars-cache": "php bin/clear-cache.php",
     "cs-check": "phpcs",
@@ -73,13 +76,7 @@
       "composer run-script serve-php > phpd.log 2>&1 & sleep 2",
       "phpunit --colors=always"
     ],
-    "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
-    "post-update-cmd": [
-      "@yarn"
-    ],
-    "post-install-cmd": [
-      "@yarn"
-    ]
+    "test-coverage": "phpunit --colors=always --coverage-clover clover.xml"
   },
   "repositories": {
     "pars/pars-beans": {

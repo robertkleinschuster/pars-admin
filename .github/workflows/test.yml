@@ -40,7 +40,7 @@ jobs:
         run: composer validate
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress
+        run: composer install --prefer-dist --no-progress && composer build
 
       - name: Run test suite
         run: composer run-script test

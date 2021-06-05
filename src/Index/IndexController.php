@@ -124,7 +124,7 @@ class IndexController extends BaseController
             $span->push($heading);
         }
 
-        $configFinder = new ConfigBeanFinder($this->getModel()->getDbAdpater());
+        $configFinder = new ConfigBeanFinder($this->getModel()->getParsContainer());
         $config = $configFinder->getBeanList()->column('Config_Value', 'Config_Code');
 
         if ($config) {

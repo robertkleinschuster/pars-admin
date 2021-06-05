@@ -16,7 +16,7 @@ class ConfigModel extends CrudModel
     public function initialize()
     {
         $this->setBeanProcessor(new ConfigBeanProcessor($this->getDbAdpater()));
-        $this->setBeanFinder(new ConfigBeanFinder($this->getDbAdpater()));
+        $this->setBeanFinder(new ConfigBeanFinder($this->getParsContainer()));
     }
 
     /**

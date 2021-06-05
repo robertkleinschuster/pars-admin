@@ -503,6 +503,7 @@ abstract class CrudController extends BaseController
      */
     public function editAction()
     {
+        $this->getModel()->getBeanFinder()->lock();
         $edit = $this->createEdit();
         $edit->getForm()->setAction($this->getPathHelper(true)->getPath());
         $this->injectContext($edit);
