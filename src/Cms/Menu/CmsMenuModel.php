@@ -21,12 +21,12 @@ class CmsMenuModel extends CrudModel
 {
     public function initialize()
     {
-        $this->setBeanFinder(new CmsMenuBeanFinder($this->getDbAdpater()));
-        $this->setBeanProcessor(new CmsMenuBeanProcessor($this->getDbAdpater()));
+        $this->setBeanFinder(new CmsMenuBeanFinder($this->getDatabaseAdapter()));
+        $this->setBeanProcessor(new CmsMenuBeanProcessor($this->getDatabaseAdapter()));
         $this->getBeanFinder()->filterLocale_Code($this->getTranslator()->getLocale());
         $this->setBeanOrderProcessor(new BeanOrderProcessor(
-            new CmsMenuBeanProcessor($this->getDbAdpater()),
-            (new CmsMenuBeanFinder($this->getDbAdpater()))->filterLocale_Code($this->getTranslator()->getLocale()),
+            new CmsMenuBeanProcessor($this->getDatabaseAdapter()),
+            (new CmsMenuBeanFinder($this->getDatabaseAdapter()))->filterLocale_Code($this->getTranslator()->getLocale()),
             'CmsMenu_Order',
             'CmsMenu_ID_Parent'
         ));
@@ -45,7 +45,7 @@ class CmsMenuModel extends CrudModel
     public function getCmsPage_Options(): array
     {
         $options = [];
-        $finder = new CmsPageBeanFinder($this->getDbAdpater());
+        $finder = new CmsPageBeanFinder($this->getDatabaseAdapter());
         $finder->filterLocale_Code($this->getTranslator()->getLocale());
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('CmsPage_ID')] = $bean->get('ArticleTranslation_Name') ?? '';
@@ -59,7 +59,7 @@ class CmsMenuModel extends CrudModel
         if ($emptyElement) {
             $options[''] = $this->translate('noselection');
         }
-        $finder = new CmsMenuStateBeanFinder($this->getDbAdpater());
+        $finder = new CmsMenuStateBeanFinder($this->getDatabaseAdapter());
         $finder->setCmsMenuState_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('CmsMenuState_Code')] = $this->translate('cmsmenustate.code.' . $bean->get('CmsMenuState_Code'));
@@ -73,7 +73,7 @@ class CmsMenuModel extends CrudModel
         if ($emptyElement) {
             $options[''] = $this->translate('noselection');
         }
-        $finder = new CmsMenuTypeBeanFinder($this->getDbAdpater());
+        $finder = new CmsMenuTypeBeanFinder($this->getDatabaseAdapter());
         $finder->setCmsMenuType_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('CmsMenuType_Code')] = $this->translate('cmsmenutype.code.' . $bean->get('CmsMenuType_Code'));

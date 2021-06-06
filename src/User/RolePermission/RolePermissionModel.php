@@ -14,19 +14,19 @@ class RolePermissionModel extends CrudModel
 {
     public function initialize()
     {
-        $this->setBeanFinder(new RolePermissionBeanFinder($this->getDbAdpater()));
-        $this->setBeanProcessor(new RolePermissionBeanProcessor($this->getDbAdpater()));
+        $this->setBeanFinder(new RolePermissionBeanFinder($this->getDatabaseAdapter()));
+        $this->setBeanProcessor(new RolePermissionBeanProcessor($this->getDatabaseAdapter()));
     }
 
 
     public function getPermissionBeanList(array $userPermissions, IdParameter $idParameter): PermissionBeanList
     {
-        $finder = new RolePermissionBeanFinder($this->getDbAdpater());
+        $finder = new RolePermissionBeanFinder($this->getDatabaseAdapter());
         $finder->getBeanLoader()->initByIdMap($idParameter->getAttribute_List());
 
         $beanList = $finder->getBeanList();
         $existing = $beanList->column('UserPermission_Code');
-        $finder = new PermissionBeanFinder($this->getDbAdpater());
+        $finder = new PermissionBeanFinder($this->getDatabaseAdapter());
         $finder->setUserPermission_Active(true);
         return $finder->getBeanList()->filter(
             function (PermissionBean $bean) use ($existing, $userPermissions) {

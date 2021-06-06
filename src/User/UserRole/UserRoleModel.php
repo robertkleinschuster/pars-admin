@@ -25,8 +25,8 @@ class UserRoleModel extends RoleModel
      */
     public function initialize()
     {
-        $this->setBeanFinder(new UserRoleBeanFinder($this->getDbAdpater()));
-        $this->setBeanProcessor(new UserRoleBeanProcessor($this->getDbAdpater()));
+        $this->setBeanFinder(new UserRoleBeanFinder($this->getDatabaseAdapter()));
+        $this->setBeanProcessor(new UserRoleBeanProcessor($this->getDatabaseAdapter()));
     }
 
     /**
@@ -37,11 +37,11 @@ class UserRoleModel extends RoleModel
      */
     public function getRoleBeanList(array $userPermissions, IdParameter $idParameter): RoleBeanList
     {
-        $finder = new UserRoleBeanFinder($this->getDbAdpater());
+        $finder = new UserRoleBeanFinder($this->getDatabaseAdapter());
         $finder->getBeanLoader()->initByIdMap($idParameter->getAttribute_List());
         $beanList = $finder->getBeanList();
         $existing = $beanList->column('UserRole_Code');
-        $finder = new RoleBeanFinder($this->getDbAdpater());
+        $finder = new RoleBeanFinder($this->getDatabaseAdapter());
         $finder->setUserRole_Active(true);
         return $finder->getBeanList()->filter(
             function (BeanInterface $bean) use ($userPermissions, $existing) {

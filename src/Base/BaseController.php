@@ -513,7 +513,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function initializeProfiler()
     {
-        $profiler = $this->getModel()->getDbAdpater()->getProfiler();
+        /*$profiler = $this->getModel()->getDatabaseAdapter()->getProfiler();
         if ($profiler instanceof Profiler) {
             $profiles = $profiler->getProfiles();
             $profiler->clearProfiles();
@@ -546,7 +546,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             }
             $group->getJumbotron()->setContent($alert->render());
             $this->getView()->unshiftComponent($collapsable);
-        }
+        }*/
     }
 
     /**
@@ -657,7 +657,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function handleErrorTransaction()
     {
-        $this->getModel()->getDatabaseAdapter()->rollbackTransaction();
+        $this->getModel()->getDatabaseAdapter()->transactionRollback();
     }
 
     public function repairOrderAction()

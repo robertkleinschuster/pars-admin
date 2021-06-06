@@ -13,26 +13,26 @@ class IndexModel extends BaseModel
 
     public function hasPage()
     {
-        return (new CmsPageBeanFinder($this->getDbAdpater()))->setCmsPageState_Code('active')->count();
+        return (new CmsPageBeanFinder($this->getDatabaseAdapter()))->setCmsPageState_Code('active')->count();
     }
 
     public function hasStartpage()
     {
-        return (new CmsPageBeanFinder($this->getDbAdpater()))->setCmsPageState_Code('active')->setArticleTranslation_Code('/')->count();
+        return (new CmsPageBeanFinder($this->getDatabaseAdapter()))->setCmsPageState_Code('active')->setArticleTranslation_Code('/')->count();
     }
 
     public function hasBlock()
     {
-        return (new CmsBlockBeanFinder($this->getDbAdpater()))->setCmsBlockState_Code('active')->count();
+        return (new CmsBlockBeanFinder($this->getDatabaseAdapter()))->setCmsBlockState_Code('active')->count();
     }
 
     public function hasMenu()
     {
-        return (new CmsMenuBeanFinder($this->getDbAdpater()))->setCmsMenuState_Code('active')->count();
+        return (new CmsMenuBeanFinder($this->getDatabaseAdapter()))->setCmsMenuState_Code('active')->count();
     }
 
     public function hasLocale()
     {
-        return (new LocaleBeanFinder($this->getDbAdpater()))->filterLocale_Active(true)->count() > 1;
+        return (new LocaleBeanFinder($this->getDatabaseAdapter()))->filterLocale_Active(true)->count() > 1;
     }
 }

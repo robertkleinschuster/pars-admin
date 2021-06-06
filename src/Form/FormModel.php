@@ -15,7 +15,7 @@ class FormModel extends CrudModel
     {
         parent::initialize();
         $this->setBeanFinder(new FormBeanFinder($this->getDatabaseAdapter()));
-        $this->setBeanProcessor(new FormBeanProcessor($this->getParsContainer()));
+        $this->setBeanProcessor(new FormBeanProcessor($this->getDatabaseAdapter()));
     }
 
     /**

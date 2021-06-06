@@ -31,7 +31,7 @@ abstract class CrudModel extends BaseModel
     {
         static $userBeans = [];
         if (!isset($userBeans[$personID])) {
-            $userFinder = new UserBeanFinder($this->getDbAdpater());
+            $userFinder = new UserBeanFinder($this->getDatabaseAdapter());
             $userFinder->setPerson_ID($personID);
             $userBeans[$personID] = $userFinder->getBean();
         }

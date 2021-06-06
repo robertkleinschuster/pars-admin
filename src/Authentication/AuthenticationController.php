@@ -24,7 +24,7 @@ class AuthenticationController extends BaseController
     {
         $this->getSession()->regenerate();
         try {
-            $userFinder = new UserBeanFinder($this->getModel()->getDbAdpater());
+            $userFinder = new UserBeanFinder($this->getModel()->getDatabaseAdapter());
             $count = $userFinder->count();
         } catch (\Exception $ex) {
             $count = 0;

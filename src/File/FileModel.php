@@ -27,8 +27,8 @@ class FileModel extends CrudModel
      */
     public function initialize()
     {
-        $this->setBeanFinder(new FileBeanFinder($this->getDbAdpater()));
-        $this->setBeanProcessor(new FileBeanProcessor($this->getParsContainer()));
+        $this->setBeanFinder(new FileBeanFinder($this->getDatabaseAdapter()));
+        $this->setBeanProcessor(new FileBeanProcessor($this->getDatabaseAdapter()));
     }
 
     /**
@@ -36,7 +36,7 @@ class FileModel extends CrudModel
      */
     public function getFileType_Options(): array
     {
-        $finder = new FileTypeBeanFinder($this->getDbAdpater());
+        $finder = new FileTypeBeanFinder($this->getDatabaseAdapter());
         $finder->setFileType_Active(true);
         return $finder->getBeanList()->getSelectOptions();
     }
@@ -46,7 +46,7 @@ class FileModel extends CrudModel
      */
     public function getFileDirectory_Options(): array
     {
-        $finder = new FileDirectoryBeanFinder($this->getDbAdpater());
+        $finder = new FileDirectoryBeanFinder($this->getDatabaseAdapter());
         $finder->setFileDirectory_Active(true);
         return $finder->getBeanList()->getSelectOptions();
     }

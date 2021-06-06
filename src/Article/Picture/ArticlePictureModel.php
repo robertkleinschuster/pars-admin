@@ -19,11 +19,11 @@ class ArticlePictureModel extends PictureModel
      */
     public function initialize()
     {
-        $this->setBeanFinder(new ArticlePictureBeanFinder($this->getDbAdpater()));
-        $this->setBeanProcessor(new ArticlePictureBeanProcessor($this->getParsContainer()));
+        $this->setBeanFinder(new ArticlePictureBeanFinder($this->getDatabaseAdapter()));
+        $this->setBeanProcessor(new ArticlePictureBeanProcessor($this->getDatabaseAdapter()));
         $this->setBeanOrderProcessor(new BeanOrderProcessor(
-            new ArticlePictureBeanProcessor($this->getParsContainer()),
-            new ArticlePictureBeanFinder($this->getDbAdpater()),
+            new ArticlePictureBeanProcessor($this->getDatabaseAdapter()),
+            new ArticlePictureBeanFinder($this->getDatabaseAdapter()),
             'Article_Picture_Order',
             'Article_ID'
         ));

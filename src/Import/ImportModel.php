@@ -23,8 +23,8 @@ class ImportModel extends CrudModel
     public function initialize()
     {
         parent::initialize();
-        $this->setBeanProcessor(new ImportBeanProcessor($this->getDbAdpater()));
-        $this->setBeanFinder(new ImportBeanFinder($this->getDbAdpater()));
+        $this->setBeanProcessor(new ImportBeanProcessor($this->getDatabaseAdapter()));
+        $this->setBeanFinder(new ImportBeanFinder($this->getDatabaseAdapter()));
     }
 
     /**
@@ -33,7 +33,7 @@ class ImportModel extends CrudModel
      */
     public function getImportTypeOptions(): array
     {
-        $finder = new ImportTypeBeanFinder($this->getDbAdpater());
+        $finder = new ImportTypeBeanFinder($this->getDatabaseAdapter());
         $finder->setImportType_Active(true);
         $options = [];
         foreach ($finder->getBeanListDecorator() as $item) {
@@ -44,7 +44,7 @@ class ImportModel extends CrudModel
 
     public function getArticleOptions(): array
     {
-        $finder = new CmsPageBeanFinder($this->getDbAdpater());
+        $finder = new CmsPageBeanFinder($this->getDatabaseAdapter());
         $finder->filterLocale_Code($this->getTranslator()->getLocale());
         $options = [];
         foreach ($finder->getBeanListDecorator() as $item) {

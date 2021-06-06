@@ -2,13 +2,12 @@
 
 namespace Pars\Admin\Cms\Post;
 
-use Laminas\Db\Sql\Where;
 use Pars\Bean\Finder\BeanFinderInterface;
+use Pars\Bean\Finder\FilterExpression;
+use Pars\Bean\Finder\FilterIdentifier;
 use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Article\ArticleModel;
-use Pars\Core\Database\DatabaseBeanConverter;
 use Pars\Helper\Parameter\FilterParameter;
-use Pars\Model\Cms\Page\CmsPageBeanFinder;
 use Pars\Model\Cms\Post\CmsPostBeanFinder;
 use Pars\Model\Cms\Post\CmsPostBeanProcessor;
 use Pars\Model\Cms\Post\State\CmsPostStateBeanFinder;
@@ -22,8 +21,8 @@ class CmsPostModel extends ArticleModel
 {
     public function initialize()
     {
-        $this->setBeanFinder(new CmsPostBeanFinder($this->getDbAdpater()));
-        $this->setBeanProcessor(new CmsPostBeanProcessor($this->getDbAdpater()));
+        $this->setBeanFinder(new CmsPostBeanFinder($this->getDatabaseAdapter()));
+        $this->setBeanProcessor(new CmsPostBeanProcessor($this->getDatabaseAdapter()));
         $this->getBeanFinder()->filterLocale_Code($this->getTranslator()->getLocale());
     }
 
@@ -35,7 +34,7 @@ class CmsPostModel extends ArticleModel
         if ($emptyElement) {
             $options[''] = $this->translate('noselection');
         }
-        $finder = new CmsPostTypeBeanFinder($this->getDbAdpater());
+        $finder = new CmsPostTypeBeanFinder($this->getDatabaseAdapter());
         $finder->setCmsPostType_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('CmsPostType_Code')] = $this->translate('cmsposttype.code.' . $bean->get('CmsPostType_Code'));
@@ -49,7 +48,7 @@ class CmsPostModel extends ArticleModel
         if ($emptyElement) {
             $options[''] = $this->translate('noselection');
         }
-        $finder = new CmsPostStateBeanFinder($this->getDbAdpater());
+        $finder = new CmsPostStateBeanFinder($this->getDatabaseAdapter());
         $finder->setCmsPostState_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('CmsPostState_Code')] = $this->translate('cmspoststate.code.' . $bean->get('CmsPostState_Code'));
@@ -77,9 +76,7 @@ class CmsPostModel extends ArticleModel
         parent::handleFilter($filterParameter);
         if ($filterParameter->hasAttribute('CmsPost_Published')
         && $filterParameter->getAttribute('CmsPost_Published') == 'true') {
-            $where = new Where();
-            $where->greaterThan('CmsPost_PublishTimestamp', (new \DateTime())->format(DatabaseBeanConverter::DATE_FORMAT), Where::TYPE_IDENTIFIER, Where::TYPE_VALUE);
-            $this->getBeanFinder()->getBeanLoader()->filterValue($where);
+            $this->getBeanFinder()->filterExpression(FilterExpression::greaterThan(new FilterIdentifier('CmsPost_PublishTimestamp'), new \DateTime()));
             $this->getBeanFinder()->filter(['CmsPostState_Code' => 'inactive'], BeanFinderInterface::FILTER_MODE_OR);
         }
     }

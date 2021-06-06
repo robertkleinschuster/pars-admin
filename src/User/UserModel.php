@@ -22,8 +22,8 @@ class UserModel extends CrudModel
 
     public function initialize()
     {
-        $this->setBeanFinder(new UserBeanFinder($this->getDbAdpater()));
-        $this->setBeanProcessor(new UserBeanProcessor($this->getDbAdpater()));
+        $this->setBeanFinder(new UserBeanFinder($this->getDatabaseAdapter()));
+        $this->setBeanProcessor(new UserBeanProcessor($this->getDatabaseAdapter()));
         $this->getBeanProcessor()->setCurrentUserBean($this->getUserBean());
     }
 
@@ -37,7 +37,7 @@ class UserModel extends CrudModel
         if ($emptyElement) {
             $options[''] = $this->translate('noselection');
         }
-        $finder = new UserStateBeanFinder($this->getDbAdpater());
+        $finder = new UserStateBeanFinder($this->getDatabaseAdapter());
 
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('UserState_Code')] = $this->translate('userstate.code.' . $bean->get('UserState_Code'));
@@ -54,7 +54,7 @@ class UserModel extends CrudModel
         if ($emptyElement) {
             $options[''] = $this->translate('noselection');
         }
-        $finder = new LocaleBeanFinder($this->getDbAdpater());
+        $finder = new LocaleBeanFinder($this->getDatabaseAdapter());
         $finder->filterLocale_Active(true);
 
         foreach ($finder->getBeanListDecorator() as $bean) {

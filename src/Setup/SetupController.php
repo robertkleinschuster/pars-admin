@@ -38,8 +38,8 @@ class SetupController extends BaseController
     {
         $this->getModel()->setBeanConverter(new ViewBeanConverter());
         $this->getModel()->initialize();
-        $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->getModel()->getDbAdpater());
-        $tableNames = $metadata->getTableNames($this->getModel()->getDbAdpater()->getCurrentSchema());
+        $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->getModel()->getDatabaseAdapter());
+        $tableNames = $metadata->getTableNames($this->getModel()->getDatabaseAdapter()->getCurrentSchema());
         if (in_array('Person', $tableNames) && in_array('User', $tableNames)) {
             $count = $this->getModel()->getBeanFinder()->count();
         } else {

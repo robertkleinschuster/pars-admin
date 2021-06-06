@@ -16,7 +16,7 @@ class FormDataModel extends CrudModel
     {
         parent::initialize();
         $this->setBeanFinder(new FormDataBeanFinder($this->getDatabaseAdapter()));
-        $this->setBeanProcessor(new FormDataBeanProcessor($this->getParsContainer()));
+        $this->setBeanProcessor(new FormDataBeanProcessor($this->getDatabaseAdapter()));
     }
 
     public function getFieldList($formId, bool $onlyRequired = false)

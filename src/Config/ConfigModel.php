@@ -15,8 +15,8 @@ class ConfigModel extends CrudModel
 {
     public function initialize()
     {
-        $this->setBeanProcessor(new ConfigBeanProcessor($this->getDbAdpater()));
-        $this->setBeanFinder(new ConfigBeanFinder($this->getParsContainer()));
+        $this->setBeanProcessor(new ConfigBeanProcessor($this->getDatabaseAdapter()));
+        $this->setBeanFinder(new ConfigBeanFinder($this->getDatabaseAdapter()));
     }
 
     /**
@@ -29,7 +29,7 @@ class ConfigModel extends CrudModel
         if ($emptyElement) {
             $result[''] = $this->translate('noselection');
         }
-        $finder = new ConfigTypeBeanFinder($this->getDbAdpater());
+        $finder = new ConfigTypeBeanFinder($this->getDatabaseAdapter());
         foreach ($finder->getBeanListDecorator() as $bean) {
             $result[$bean->get('ConfigType_Code')] = $bean->get('ConfigType_Code');
         }

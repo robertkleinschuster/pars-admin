@@ -2,8 +2,7 @@
 
 namespace Pars\Admin\Translation;
 
-use Laminas\Db\Sql\Predicate\Predicate;
-use Laminas\Db\Sql\Where;
+use Pars\Bean\Finder\FilterExpression;
 use Pars\Bean\Type\Base\BeanException;
 use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\CrudModel;
@@ -18,9 +17,9 @@ class TranslationModel extends CrudModel
 {
     public function initialize()
     {
-        $this->setBeanFinder(new TranslationBeanFinder($this->getDbAdpater()));
+        $this->setBeanFinder(new TranslationBeanFinder($this->getDatabaseAdapter()));
         $this->getBeanFinder()->setEscapePlaceholder(true);
-        $this->setBeanProcessor(new TranslationBeanProcessor($this->getDbAdpater()));
+        $this->setBeanProcessor(new TranslationBeanProcessor($this->getDatabaseAdapter()));
     }
 
     /**
@@ -32,7 +31,7 @@ class TranslationModel extends CrudModel
         if ($emptyElement) {
             $options[''] = $this->translate('noselection');
         }
-        $finder = new LocaleBeanFinder($this->getDbAdpater());
+        $finder = new LocaleBeanFinder($this->getDatabaseAdapter());
         $finder->filterLocale_Active(true);
         return array_merge($options, $finder->getBeanList()->getSelectOptions());
     }
@@ -59,7 +58,7 @@ class TranslationModel extends CrudModel
         if ($this->getConfigValue('locale.default')) {
             $bean = $this->getBean();
             $locale = $this->getConfigValue('locale.default');
-            $finder = new TranslationBeanFinder($this->getDbAdpater());
+            $finder = new TranslationBeanFinder($this->getDatabaseAdapter());
             $finder->filterLocale_Code($locale);
             $finder->filterTranslation_Code($bean->get('Translation_Code'));
             $finder->filterTranslation_Namespace($bean->get('Translation_Namespace'));
@@ -89,17 +88,13 @@ class TranslationModel extends CrudModel
             $filterParameter->hasAttribute('Translation_State')
             && $filterParameter->getAttribute('Translation_State') == 'true'
         ) {
-            $where = new Where();
-            $where->notEqualTo('Translation_Text', 'Translation_Code', Where::TYPE_IDENTIFIER, Where::TYPE_IDENTIFIER);
-            $this->getBeanFinder()->getBeanLoader()->filterValue($where);
+            $this->getBeanFinder()->filterExpression(FilterExpression::equalIdentifier('Translation_Text', 'Translation_Code'));
         }
         if (
             $filterParameter->hasAttribute('Translation_State')
             && $filterParameter->getAttribute('Translation_State') == 'false'
         ) {
-            $where = new Where();
-            $where->equalTo('Translation_Text', 'Translation_Code', Where::TYPE_IDENTIFIER, Where::TYPE_IDENTIFIER);
-            $this->getBeanFinder()->getBeanLoader()->filterValue($where);
+            $this->getBeanFinder()->filterExpression(FilterExpression::notEqualIdentifier('Translation_Text', 'Translation_Code'));
         }
     }
 

@@ -124,7 +124,7 @@ class IndexController extends BaseController
             $span->push($heading);
         }
 
-        $configFinder = new ConfigBeanFinder($this->getModel()->getParsContainer());
+        $configFinder = new ConfigBeanFinder($this->getModel()->getDatabaseAdapter());
         $config = $configFinder->getBeanList()->column('Config_Value', 'Config_Code');
 
         if ($config) {
@@ -176,7 +176,7 @@ class IndexController extends BaseController
 
         $messages = new Detail();
         $messages->setHeading($this->translate('index.messages'));
-        $articleDataFinder = new ArticleDataBeanFinder($this->getModel()->getDbAdpater());
+        $articleDataFinder = new ArticleDataBeanFinder($this->getModel()->getDatabaseAdapter());
         $articleDataFinder->order(['Timestamp_Create' => ArticleDataBeanFinder::ORDER_MODE_DESC]);
         $articleDataFinder->limit(5, 0);
         foreach ($articleDataFinder->getBeanListDecorator() as $item) {

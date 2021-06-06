@@ -2,7 +2,6 @@
 
 namespace Pars\Admin\Base;
 
-use Laminas\Db\Adapter\Adapter;
 use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Pars\Bean\Processor\DefaultMetaFieldHandler;
 use Pars\Bean\Processor\TimestampMetaFieldHandler;
@@ -144,14 +143,6 @@ abstract class BaseModel extends AbstractModel implements
             $cache->setLogger($this->getLogger());
         }
         return $cache;
-    }
-
-    /**
-     * @return Adapter
-     */
-    public function getDbAdpater(): Adapter
-    {
-        return $this->getDatabaseAdapter()->getDbAdapter();
     }
 
     /**

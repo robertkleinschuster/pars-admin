@@ -22,10 +22,10 @@ class FormFieldModel extends CrudModel
     {
         parent::initialize();
         $this->setBeanFinder(new FormFieldBeanFinder($this->getDatabaseAdapter()));
-        $this->setBeanProcessor(new FormFieldBeanProcessor($this->getParsContainer()));
+        $this->setBeanProcessor(new FormFieldBeanProcessor($this->getDatabaseAdapter()));
         $this->setBeanOrderProcessor(new BeanOrderProcessor(
-            new FormFieldBeanProcessor($this->getParsContainer()),
-            new FormFieldBeanFinder($this->getDbAdpater()),
+            new FormFieldBeanProcessor($this->getDatabaseAdapter()),
+            new FormFieldBeanFinder($this->getDatabaseAdapter()),
             'FormField_Order',
             'Form_ID'
         ));

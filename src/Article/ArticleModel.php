@@ -65,7 +65,7 @@ abstract class ArticleModel extends CrudModel
     public function getFileOptions(): array
     {
         $options = [];
-        $finder = new FileBeanFinder($this->getDbAdpater());
+        $finder = new FileBeanFinder($this->getDatabaseAdapter());
         $options[null] = $this->translate('noselection');
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('File_ID')] = $bean->get('File_Name');
@@ -78,14 +78,14 @@ abstract class ArticleModel extends CrudModel
      */
     public function getFileBeanList(): FileBeanList
     {
-        $finder = new FileBeanFinder($this->getDbAdpater());
+        $finder = new FileBeanFinder($this->getDatabaseAdapter());
         return $finder->getBeanList();
     }
 
     public function getPlaceholderOptions()
     {
         $options = [];
-        $finder = new CmsBlockBeanFinder($this->getDbAdpater());
+        $finder = new CmsBlockBeanFinder($this->getDatabaseAdapter());
         $finder->filterLocale_Code($this->getUserBean()->getLocale()->getLocale_Code());
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options["{block:{$bean->Article_Code}}"] = "{$bean->ArticleTranslation_Name} ({$bean->Article_Code})";
@@ -96,7 +96,7 @@ abstract class ArticleModel extends CrudModel
             $options["{form:{$bean->Form_Code}}"] = "{$this->translate('form.code.' . $bean->Form_Code)} ({$bean->Form_Code})";
         }
 
-       /* $finder = new TranslationBeanFinder($this->getDbAdpater());
+       /* $finder = new TranslationBeanFinder($this->getDatabaseAdapter());
         $finder->filterLocale_Code($this->getUserBean()->getLocale()->getLocale_Code());
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options["{translation:{$bean->Translation_Code}}"] = "{$bean->Translation_Text} ({$bean->Translation_Code})";
@@ -109,7 +109,7 @@ abstract class ArticleModel extends CrudModel
      */
     public function getLocale_List(): LocaleBeanList
     {
-        $finder = new LocaleBeanFinder($this->getDbAdpater());
+        $finder = new LocaleBeanFinder($this->getDatabaseAdapter());
         $finder->filterLocale_Active(true);
         return $finder->getBeanList();
     }
@@ -120,7 +120,7 @@ abstract class ArticleModel extends CrudModel
      */
     public function loadTranslationDefaults(BeanInterface $bean): void
     {
-        $default = (new ArticleTranslationBeanFinder($this->getDbAdpater()))
+        $default = (new ArticleTranslationBeanFinder($this->getDatabaseAdapter()))
             ->setArticle_ID($bean->Article_ID)
             ->filterLocale_Code($this->getConfigValue('locale.default'))
             ->limit(1, 0)->getBean();

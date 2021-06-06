@@ -15,7 +15,7 @@ class PictureModel extends FileModel
      */
     public function initialize()
     {
-        $this->setBeanFinder(new PictureBeanFinder($this->getDbAdpater()));
-        $this->setBeanProcessor(new PictureBeanProcessor($this->getParsContainer()));
+        $this->setBeanFinder(new PictureBeanFinder($this->getDatabaseAdapter()));
+        $this->setBeanProcessor(new PictureBeanProcessor($this->getDatabaseAdapter()));
     }
 }

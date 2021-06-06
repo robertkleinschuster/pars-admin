@@ -12,10 +12,10 @@ class LocaleModel extends CrudModel
     public function initialize()
     {
         $this->setBeanFinder(new LocaleBeanFinder($this->getDatabaseAdapter()));
-        $this->setBeanProcessor(new LocaleBeanProcessor($this->getParsContainer()));
+        $this->setBeanProcessor(new LocaleBeanProcessor($this->getDatabaseAdapter()));
         $this->setBeanOrderProcessor(new BeanOrderProcessor(
-            new LocaleBeanProcessor($this->getParsContainer()),
-            new LocaleBeanFinder($this->getDbAdpater()),
+            new LocaleBeanProcessor($this->getDatabaseAdapter()),
+            new LocaleBeanFinder($this->getDatabaseAdapter()),
             'Locale_Order'
         ));
     }
