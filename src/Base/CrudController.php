@@ -14,12 +14,14 @@ use Pars\Component\Base\Layout\DashboardLayout;
 use Pars\Component\Base\Navigation\Item;
 use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Pagination\Pagination;
+use Pars\Core\Cache\ParsCache;
 use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\FilterParameter;
 use Pars\Helper\Parameter\PaginationParameter;
 use Pars\Helper\Parameter\SearchParameter;
 use Pars\Mvc\Exception\MvcException;
 use Pars\Mvc\Exception\NotFoundException;
+use Pars\Mvc\Model\AbstractModel;
 use Pars\Mvc\View\Event\ViewEvent;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
@@ -87,6 +89,7 @@ abstract class CrudController extends BaseController
         if ($this->getControllerRequest()->hasPagingation()) {
             $this->getSession()->set('limit', $this->getControllerRequest()->getPagination()->getLimit());
         }
+        $this->getModel()->unlockEntry();
     }
 
     /**
@@ -493,6 +496,7 @@ abstract class CrudController extends BaseController
         return $edit;
     }
 
+
     /**
      * @return BaseEdit
      * @throws AttributeExistsException
@@ -503,8 +507,15 @@ abstract class CrudController extends BaseController
      */
     public function editAction()
     {
-        $this->getModel()->getBeanFinder()->lock();
         $edit = $this->createEdit();
+        $locked = $this->getModel()->lockEntry($this->getControllerRequest()->getHash());
+        if (!$locked) {
+            $this->getModel()->removeOption(AbstractModel::OPTION_EDIT_ALLOWED);
+            if ($this->getControllerRequest()->hasContext()) {
+                $this->getControllerResponse()->setRedirect($this->getControllerRequest()->getContext()->getPath());
+            }
+        }
+        $this->getModel()->getBeanFinder()->lock();
         $edit->getForm()->setAction($this->getPathHelper(true)->getPath());
         $this->injectContext($edit);
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());

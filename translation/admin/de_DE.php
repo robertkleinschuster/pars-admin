@@ -461,5 +461,7 @@ return [
     'inactive' => 'Inaktiv',
     'article.view' => 'Aufrufe',
     'article.read' => 'Interaktionen',
-    'article.group.statistic' => 'Statistik'
+    'article.group.statistic' => 'Statistik',
+    'dblocked.heading' => 'Eintrag gesperrt!',
+    'dblocked.message' => 'Dieser Eintrag wird gerade von {name} bearbeitet.',
 ];

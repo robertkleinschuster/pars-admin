@@ -3,6 +3,9 @@
 namespace Pars\Admin\Base;
 
 use Pars\Bean\Type\Base\BeanException;
+use Pars\Component\Base\Alert\Alert;
+use Pars\Component\Base\Field\Span;
+use Pars\Core\Cache\ParsCache;
 use Pars\Helper\Parameter\PaginationParameter;
 use Pars\Model\Article\Translation\ArticleTranslationBean;
 use Pars\Model\Authentication\User\UserBean;
@@ -37,6 +40,48 @@ abstract class CrudModel extends BaseModel
         }
         return $userBeans[$personID];
     }
+
+    /**
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function lockEntry(string $hash)
+    {
+        $lockId = $this->getLockState($hash);
+        if ($lockId) {
+            $heading = $this->translate('dblocked.heading');
+            $message = $this->translate('dblocked.message', ['name' => $this->getUserById($lockId)->User_Displayname]);
+            $this->getValidationHelper()->addGeneralError("<h4>$heading</h4>$message");
+            return false;
+        } else {
+            $this->getDatabaseAdapter()->getLock()->lock($this->getUserBean()->Person_ID, $hash);
+            return true;
+        }
+    }
+
+    /**
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function unlockEntry()
+    {
+        $this->getDatabaseAdapter()->getLock()->release($this->getUserBean()->Person_ID);
+    }
+
+    /**
+     * @return bool
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
+    public function getLockState(string $hash)
+    {
+        $id = $this->getDatabaseAdapter()->getLock()->has($hash);
+        return $id && $id != $this->getUserBean()->Person_ID;
+    }
+
 
     /**
      * @param PaginationParameter $paginationParameter

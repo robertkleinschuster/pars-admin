@@ -31,6 +31,13 @@ class FileModel extends CrudModel
         $this->setBeanProcessor(new FileBeanProcessor($this->getDatabaseAdapter()));
     }
 
+    public function initializeDependencies()
+    {
+        parent::initializeDependencies();
+        $this->getBeanProcessor()->setBasePath($this->getParsContainer()->getConfig()->get('image.source'));
+    }
+
+
     /**
      * @return array
      */

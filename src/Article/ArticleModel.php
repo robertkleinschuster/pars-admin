@@ -15,7 +15,6 @@ use Pars\Model\File\FileBeanList;
 use Pars\Model\Form\FormBeanFinder;
 use Pars\Model\Localization\Locale\LocaleBeanFinder;
 use Pars\Model\Localization\Locale\LocaleBeanList;
-use Pars\Model\Translation\TranslationLoader\TranslationBeanFinder;
 
 /**
  * Class ArticleModel

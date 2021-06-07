@@ -504,7 +504,6 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             if ($this->hasView()) {
                 $this->getView()->unshiftComponent($alert);
             }
-            $this->getControllerResponse()->setStatusCode(ControllerResponse::STATUS_PERMISSION_DENIED);
         }
     }
 
