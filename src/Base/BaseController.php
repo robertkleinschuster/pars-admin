@@ -19,7 +19,6 @@ use Pars\Component\Base\Layout\DashboardLayout;
 use Pars\Component\Base\Navigation\Navigation;
 use Pars\Component\Base\View\BaseView;
 use Pars\Core\Config\ParsConfig;
-use Pars\Core\Database\Profiler;
 use Pars\Core\Session\SessionViewStatePersistence;
 use Pars\Core\Translation\ParsTranslator;
 use Pars\Helper\Validation\ValidationHelper;
@@ -324,6 +323,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
     {
         return 'token_' . $this->getControllerRequest()->getHash();
     }
+
     /**
      * @return ParsTranslator
      */
@@ -512,10 +512,8 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function initializeProfiler()
     {
-        /*$profiler = $this->getModel()->getDatabaseAdapter()->getProfiler();
-        if ($profiler instanceof Profiler) {
-            $profiles = $profiler->getProfiles();
-            $profiler->clearProfiles();
+        $debug = $this->getModel()->getDatabaseAdapter()->getDebug();
+        if (count($debug)) {
             $group = new Detail();
             $collapsable = $this->createCollapsable('debug', false);
             $collapsable->getButton()->setPath($this->getPathHelper(true));
@@ -526,12 +524,12 @@ abstract class BaseController extends AbstractController implements AttributeAwa
             $alert->setStyle(Alert::STYLE_WARNING);
             $alert->setHeading(
                 'Abfragen: '
-                . count($profiles)
+                . count($debug)
                 . '<br>'
-                . array_sum(array_column($profiles, 'elapse'))
+                . array_sum(array_column($debug, 'elapse'))
                 . ' ms'
             );
-            foreach ($profiles as $profile) {
+            foreach ($debug as $profile) {
                 $sql = $profile['sql'];
                 $sql = str_replace('FROM', '<br>FROM', $sql);
                 $sql = str_replace('LEFT JOIN', '<br>LEFT JOIN', $sql);
@@ -540,12 +538,12 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 $sql = str_replace('AND', '<br>AND', $sql);
                 $sql = str_replace('LIMIT', '<br>LIMIT', $sql);
                 $sql = str_replace('ORDER BY', '<br>ORDER BY', $sql);
-
-                $alert->addCodeblock($profile['trace'] . $sql . "<br>{$profile['elapse']} ms")->addOption('text-wrap');
+                $alert->addCodeblock( $sql . "<br>{$profile['elapse']} ms")->addOption('text-wrap');
             }
             $group->getJumbotron()->setContent($alert->render());
             $this->getView()->unshiftComponent($collapsable);
-        }*/
+            $this->getModel()->getDatabaseAdapter()->clearDebug();
+        }
     }
 
     /**

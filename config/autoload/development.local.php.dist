@@ -38,6 +38,7 @@ return [
         'cache' => null,
     ],
     'db' => [
+        'debug' => true,
         'profiler' => new \Pars\Core\Database\Profiler()
     ],
     'assets' => [

@@ -3,6 +3,7 @@
 return [
     'userrole.code.empty' => 'Der Code darf nicht leer sein!',
     'userrole.code.unique' => 'Der Code ist bereits vergeben!',
+    'userrole.name.empty' => 'Der Name darf nicht leer sein!',
     'user.username.empty' => 'Der Benutzername darf nicht leer sein!',
     'user.username.unique' => 'Der Benutzername ist bereits vergeben!',
     'user.displayname.empty' => 'Der Anzeigename darf nicht leer sein!',
