@@ -104,37 +104,15 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 $this->getLogger()->debug('EVENT', $this->getControllerRequest()->getEvent()->toArray());
             }
         }
-        $this->getView()->set('baseUrl', $this->getPathHelper()->getBaseUrl());
         $this->getView()->set('Current_Person_ID', $this->getUserBean()->Person_ID);
         $this->getView()->set('Current_User_Username', $this->getUserBean()->User_Username);
         $this->getView()->set('Current_User_Displayname', $this->getUserBean()->User_Displayname);
         $this->getView()->set('Current_Person_Firstname', $this->getUserBean()->Person_Firstname);
         $this->getView()->set('Current_Person_Lastname', $this->getUserBean()->Person_Lastname);
         $this->getView()->setPersistence(new SessionViewStatePersistence($this->getSession()));
-        $this->injectStaticFiles();
     }
 
-    protected function injectStaticFiles()
-    {
-        if ($this->hasView()) {
-            try {
-                $entrypoints = json_decode(file_get_contents('public/build/entrypoints.json'), true);
-                if ($entrypoints && isset($entrypoints['entrypoints'])) {
-                    $jsFiles = [];
-                    $cssFiles = [];
-                    $entrypoints = $entrypoints['entrypoints'];
-                    foreach ($entrypoints as $entrypoint) {
-                        $jsFiles = array_unique(array_merge($jsFiles, $entrypoint['js']));
-                        $cssFiles = array_unique(array_merge($cssFiles, $entrypoint['css']));
-                    }
-                    $this->getView()->setJavascript($jsFiles);
-                    $this->getView()->setStylesheets($cssFiles);
-                }
-            } catch (Throwable $exception) {
-                $this->getLogger()->error($exception->getMessage(), ['exception' => $exception]);
-            }
-        }
-    }
+
 
     /**
      * @return mixed|void

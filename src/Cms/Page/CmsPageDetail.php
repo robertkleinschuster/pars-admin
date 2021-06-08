@@ -191,7 +191,6 @@ class CmsPageDetail extends ArticleDetail
         parent::initEditTextButton();
         $this->getToolbar()->push(
             (new DownloadButton())
-                ->addOption('noajax')
                 ->setPath(
                     $this->getPathHelper(false)
                         ->setAction('export')

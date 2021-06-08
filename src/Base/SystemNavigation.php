@@ -15,7 +15,6 @@ class SystemNavigation extends BaseNavigation
         $this->setBackground(Navigation::BACKGROUND_LIGHT);
         $this->setBreakpoint(Navigation::BREAKPOINT_LARGE);
 
-        $this->addOption('ajax')->addOption('history')->addOption('remote')->setData('component', 'components');
 
         $this->addItem(
             Icon::users()->inline() . $this->translate('navigation.system.user'),

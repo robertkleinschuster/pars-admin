@@ -159,7 +159,7 @@ class CmsPageEdit extends ArticleEdit
     protected function addFieldType()
     {
         if ($this->hasTypeOptions()) {
-            $this->getForm()->addSelect('CmsPageType_Code', $this->getTypeOptions(), '{CmsPageType_Code}', $this->translate('cmspagetype.code'))->addOption('ajax')
+            $this->getForm()->addSelect('CmsPageType_Code', $this->getTypeOptions(), '{CmsPageType_Code}', $this->translate('cmspagetype.code'))
                 ->setGroup($this->getGroupGeneral());
         }
     }
