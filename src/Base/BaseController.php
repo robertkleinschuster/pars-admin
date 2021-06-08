@@ -120,7 +120,6 @@ abstract class BaseController extends AbstractController implements AttributeAwa
     protected function initModel()
     {
         $this->getModel()->setUserBean($this->getUserBean());
-        $this->getModel()->setTranslator($this->getTranslator());
         $this->getModel()->setLogger($this->getLogger());
         $this->getModel()->setConfig($this->getConfig());
         $view = $this->getView();

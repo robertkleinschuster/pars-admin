@@ -25,6 +25,7 @@ abstract class ArticleEdit extends BaseEdit
     {
         parent::initFieldsBefore();
         $this->getForm()->addHidden('Locale_Code', $this->getTranslator()->getLocale());
+        $this->addFieldActive();
     }
 
     protected function addFieldContactEmail(string $label = null, string $group = null)
@@ -273,9 +274,9 @@ abstract class ArticleEdit extends BaseEdit
         if (!$group) {
             $group = $this->getGroupByField('ArticleTranslation_Active');
         }
-        $formGroup = $this->getForm()->addCheckbox(
+        $formGroup = $this->getForm()->addHidden(
             'ArticleTranslation_Active',
-            '{ArticleTranslation_Active}',
+            'true',
             $label
         );
         $formGroup->setGroup($group);

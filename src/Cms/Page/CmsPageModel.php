@@ -36,7 +36,7 @@ class CmsPageModel extends ArticleModel
     {
         $this->setBeanFinder(new CmsPageBeanFinder($this->getDatabaseAdapter()));
         $this->setBeanProcessor(new CmsPageBeanProcessor($this->getDatabaseAdapter()));
-        $this->getBeanFinder()->filterLocale_Code($this->getTranslator()->getLocale());
+        $this->getBeanFinder()->filterLocale_Code($this->getTranslator()->getLocale()->getLocale_Code());
     }
 
     public function getCmsPageType_Options(bool $emptyElement = false): array
@@ -169,7 +169,7 @@ class CmsPageModel extends ArticleModel
             $pageList = (new CmsPageBeanFinder($this->getDatabaseAdapter()))->getBeanFactory()->getEmptyBeanList();
             $data = json_decode($file->getStream()->getContents(), true);
             foreach ($data as $locale => $datum) {
-                $this->getDatabaseAdapter()->getDriver()->getConnection()->beginTransaction();
+                $this->getDatabaseAdapter()->transactionBegin();
                 $page = $this->getEmptyBean($datum);
                 $page->fromArray($datum);
                 $page->unset('CmsPage_ID');
@@ -189,10 +189,10 @@ class CmsPageModel extends ArticleModel
                 $pageList->push($page);
 
                 $processor = new CmsPageBeanProcessor($this->getDatabaseAdapter());
-                $processor->setTranslator($this->getTranslator()->getTranslator());
+                $processor->setTranslator($this->getTranslator());
                 $processor->setBeanList($pageList);
                 $processor->save();
-                $this->getDatabaseAdapter()->getDriver()->getConnection()->commit();
+                $this->getDatabaseAdapter()->transactionCommit();
 
                 foreach ($pageList as $page) {
                     $postList = $page->get('CmsPost_BeanList');
