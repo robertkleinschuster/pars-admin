@@ -2,7 +2,6 @@
 
 namespace Pars\Admin\Base;
 
-use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Pars\Bean\Processor\DefaultMetaFieldHandler;
 use Pars\Bean\Processor\TimestampMetaFieldHandler;
 use Pars\Bean\Type\Base\BeanException;
@@ -95,9 +94,6 @@ abstract class BaseModel extends AbstractModel implements
                 $processor->addMetaFieldHandler(
                     new DefaultMetaFieldHandler('Person_ID_Create', $this->getUserBean()->Person_ID)
                 );
-            }
-            if ($processor instanceof TranslatorAwareInterface) {
-                $processor->setTranslator($this->getTranslator()->getTranslator());
             }
             if ($processor instanceof ParsTranslatorAwareInterface) {
                 $processor->setTranslator($this->getTranslator());

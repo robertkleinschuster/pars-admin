@@ -2,11 +2,9 @@
 
 namespace Pars\Admin\Translation;
 
-use Laminas\I18n\Translator\TranslatorAwareTrait;
-use Laminas\I18n\Translator\TranslatorInterface;
+
 use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Component\Base\Field\Icon;
-use Pars\Component\Base\StyleAwareInterface;
 use Pars\Core\Translation\ParsTranslator;
 use Pars\Core\Translation\ParsTranslatorAwareTrait;
 use Pars\Mvc\View\FieldFormatInterface;

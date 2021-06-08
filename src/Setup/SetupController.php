@@ -2,12 +2,9 @@
 
 namespace Pars\Admin\Setup;
 
-use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Pars\Admin\Authentication\SigninLayout;
 use Pars\Admin\Base\BaseController;
 use Pars\Component\Base\View\BaseView;
-use Pars\Core\Database\DatabaseMiddleware;
-use Pars\Core\Database\ParsDatabaseAdapter;
 use Pars\Core\Translation\ParsTranslatorAwareInterface;
 use Pars\Helper\Path\PathHelper;
 use Pars\Model\Authentication\User\UserBean;
@@ -38,9 +35,7 @@ class SetupController extends BaseController
     {
         $this->getModel()->setBeanConverter(new ViewBeanConverter());
         $this->getModel()->initialize();
-        $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->getModel()->getDatabaseAdapter());
-        $tableNames = $metadata->getTableNames($this->getModel()->getDatabaseAdapter()->getCurrentSchema());
-        if (in_array('Person', $tableNames) && in_array('User', $tableNames)) {
+        if ($this->getModel()->getDatabaseAdapter()->isValid()) {
             $count = $this->getModel()->getBeanFinder()->count();
         } else {
             $count = 0;

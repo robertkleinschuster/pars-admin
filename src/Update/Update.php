@@ -2,13 +2,11 @@
 
 namespace Pars\Admin\Update;
 
-use Laminas\I18n\Translator\TranslatorInterface;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Core\Database\Updater\AbstractDatabaseUpdater;
 use Pars\Core\Translation\ParsTranslator;
 use Pars\Helper\Parameter\RedirectParameter;
 use Pars\Helper\Parameter\SubmitParameter;
-use Pars\Helper\Path\PathHelper;
 use Pars\Model\Authentication\User\UserBean;
 
 class Update extends BaseEdit

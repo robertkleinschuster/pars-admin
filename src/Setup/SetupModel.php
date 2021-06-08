@@ -2,6 +2,8 @@
 
 namespace Pars\Admin\Setup;
 
+use Pars\Admin\Base\BaseModel;
+use Pars\Core\Database\Updater\AbstractDatabaseUpdater;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Authorization\Permission\PermissionBeanFinder;
 use Pars\Model\Authorization\Role\RoleBeanFinder;
@@ -12,32 +14,38 @@ use Pars\Model\Authorization\UserRole\UserRoleBeanFinder;
 use Pars\Model\Authorization\UserRole\UserRoleBeanProcessor;
 use Pars\Model\Updater\Database\DataDatabaseUpdater;
 use Pars\Model\Updater\Database\SchemaDatabaseUpdater;
+use Pars\Model\Updater\Database\SpecialDatabaseUpdater;
 use Pars\Pattern\Exception\CoreException;
 
 /**
  * Class SetupModel
  * @package Pars\Admin\Setup
  */
-class SetupModel extends \Pars\Admin\Base\BaseModel
+class SetupModel extends BaseModel
 {
     public function initialize()
     {
         $this->setBeanProcessor(new \Pars\Model\Authentication\User\UserBeanProcessor($this->getDatabaseAdapter()));
         $this->setBeanFinder(new \Pars\Model\Authentication\User\UserBeanFinder($this->getDatabaseAdapter()));
+        if (!$this->getDatabaseAdapter()->isValid()) {
+            $schemaUpdater = new SchemaDatabaseUpdater($this->getParsContainer());
+            $schemaUpdater->executeSilent();
+            $dataUpdater = new DataDatabaseUpdater($this->getParsContainer());
+            $dataUpdater->executeSilent();
+            $dataUpdater = new SpecialDatabaseUpdater($this->getParsContainer());
+            $dataUpdater->executeSilent();
+        }
     }
 
     protected function create(IdParameter $idParameter, array &$attributes): void
     {
         try {
             $this->getParsContainer()->getDatabaseAdapter()->transactionBegin();
-            $schemaUpdater = new SchemaDatabaseUpdater($this->getParsContainer());
-            $schemaUpdater->executeSilent();
-            $dataUpdater = new DataDatabaseUpdater($this->getParsContainer());
-            $dataUpdater->executeSilent();
             parent::create($idParameter, $attributes);
             if ($this->getBeanFinder()->count() == 1) {
                 $user = $this->getBeanFinder()->getBean();
                 $roleFinder = new RoleBeanFinder($this->getDatabaseAdapter());
+                $roleFinder->setUserRole_Code('admin');
                 $role = $roleFinder->getBeanFactory()->getEmptyBean([]);
                 $role->set('UserRole_Code', 'admin');
                 $role->set('UserRole_Name', 'Administrator');
