@@ -14,7 +14,7 @@ class TaskLogModel extends CrudModel
     {
         parent::initialize();
         $this->setBeanFinder(new TaskLogBeanFinder($this->getDatabaseAdapter()));
-        $this->setBeanProcessor(new TaskLogBeanProcessor($this->getParsContainer()));
+        $this->setBeanProcessor(new TaskLogBeanProcessor($this->getDatabaseAdapter()));
     }
 
 }
