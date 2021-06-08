@@ -1,1 +1,3 @@
-<?php define('PARS_VERSION', 'DEV');
+<?php
+define('PARS_VERSION', 'DEV');
+define('PARS_BRANCH', 'master');

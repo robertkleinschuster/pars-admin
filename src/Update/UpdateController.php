@@ -76,7 +76,8 @@ class UpdateController extends BaseController
         $jumbo->pushField($field);
         $response = $client->get('https://api.github.com/repos/PARS-Framework/pars-frontend/releases/latest');
         $data = json_decode($response->getBody()->getContents(), true);
-        $field = new Span($data['tag_name'], $this->translate('update.version.available'));
+        $name = $data['tag_name'];
+        $field = new Span($name, $this->translate('update.version.available'));
         $field->setGroup('PARS-Frontend');
         $jumbo->pushField($field);
         $field = new Span(PARS_VERSION, $this->translate('update.version.current'));
