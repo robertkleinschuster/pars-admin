@@ -14,13 +14,12 @@ class ImportEdit extends BaseEdit
         $this->getForm()->setUseColumns(false);
 
         $this->getForm()->addText('Import_Name', '{Import_Name}', $this->translate('import.name'));
+        $this->getForm()->addText('Import_Code', '{Import_Code}', $this->translate('import.code'));
         if (null !== $this->getImportTypeOptions()) {
             $this->getForm()->addSelect('ImportType_Code', $this->getImportTypeOptions(), '{ImportType_Code}', $this->translate('importtype.code'));
         }
-        if (null !== $this->getArticleOptions()) {
-            $this->getForm()->addSelect('Article_ID', $this->getArticleOptions(), '{Article_ID}', $this->translate('article.id'));
-        }
-        $this->getForm()->addCheckbox('Import_Active', '{Import_Active}', $this->translate('import.active'), 2);
+
+        $this->getForm()->addCheckbox('Import_Active', '{Import_Active}', $this->translate('import.active'));
         $days = [];
         $days[null] = $this->translate('import.day.null');
         for ($i = 1; $i <= 7; $i++) {
