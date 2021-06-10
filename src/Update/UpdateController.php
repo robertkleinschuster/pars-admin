@@ -11,6 +11,7 @@ use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Jumbotron\Jumbotron;
 use Pars\Component\Base\Navigation\Navigation;
 use Pars\Helper\Parameter\Parameter;
+use Pars\Model\Updater\ParsUpdater;
 use Pars\Mvc\View\Event\ViewEvent;
 
 /**
@@ -74,18 +75,16 @@ class UpdateController extends BaseController
         $field = new Span(strip_tags(substr($frontendVersion, 0, 20)), $this->translate('update.version.current'));
         $field->setGroup('PARS-Frontend');
         $jumbo->pushField($field);
-        $response = $client->get('https://api.github.com/repos/PARS-Framework/pars-frontend/releases/latest');
-        $data = json_decode($response->getBody()->getContents(), true);
-        $name = $data['tag_name'];
-        $field = new Span($name, $this->translate('update.version.available'));
+        $updater = new ParsUpdater($this->getContainer());
+        $version = $updater->getLatestVersionString('pars-frontend');
+        $field = new Span($version, $this->translate('update.version.available'));
         $field->setGroup('PARS-Frontend');
         $jumbo->pushField($field);
         $field = new Span(PARS_VERSION, $this->translate('update.version.current'));
         $field->setGroup('PARS-Admin');
         $jumbo->pushField($field);
-        $response = $client->get('https://api.github.com/repos/PARS-Framework/pars-admin/releases/latest');
-        $data = json_decode($response->getBody()->getContents(), true);
-        $field = new Span($data['tag_name'], $this->translate('update.version.available'));
+        $version = $updater->getLatestVersionString('pars-admin');
+        $field = new Span($version, $this->translate('update.version.available'));
         $field->setGroup('PARS-Admin');
         $jumbo->pushField($field);
         $path =  $this->getPathHelper()
@@ -96,7 +95,9 @@ class UpdateController extends BaseController
         $button = new Button($this->translate('update.version.start'), Button::STYLE_DANGER, $path);
         $button->addOption(Button::OPTION_DECORATION_NONE);
         $button->setEvent(ViewEvent::createLink($path));
-        if ($this->getConfig()->get('update.enabled')) {
+        if ($this->getConfig()->get('update.enabled')
+            && ($updater->isNewAvailable('pars-admin') || $updater->isNewAvailable('pars-frontend'))
+        ) {
             $jumbo->pushField($button);
         }
         $this->getView()->pushComponent($jumbo);
