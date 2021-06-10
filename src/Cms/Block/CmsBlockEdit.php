@@ -110,6 +110,7 @@ class CmsBlockEdit extends ArticleEdit
     protected function initFieldsTiles()
     {
         $this->addFieldHeading($this->translate('cmsblock.tiles.heading'));
+        $this->addFieldFooter();
     }
 
     protected function initFieldsVideo()
