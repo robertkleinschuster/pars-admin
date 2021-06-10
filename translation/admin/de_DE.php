@@ -195,6 +195,7 @@ return [
     'cmsblockstate.code.inactive' => 'Inaktiv',
     'cmsblocktype.code' => 'Block Typ',
     'cmsblocktype.code.banner' => 'Banner',
+    'cmsblocktype.code.gallery' => 'Galerie',
     'cmsblocktype.code.video' => 'Video',
     'cmsblocktype.code.picture' => 'Bild',
     'cmsblocktype.code.text' => 'Text',

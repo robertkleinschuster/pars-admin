@@ -25,6 +25,9 @@ class CmsBlockDetail extends ArticleDetail
     protected function initFieldsByType(string $type)
     {
         switch ($type) {
+            case 'card':
+                $this->initFieldsCard();
+                break;
             case 'banner':
                 $this->initFieldsBanner();
                 break;
@@ -49,10 +52,25 @@ class CmsBlockDetail extends ArticleDetail
             case 'video':
                 $this->initFieldsVideo();
                 break;
+            case 'gallery':
+                $this->initFieldsGallery();
+                break;
             case 'default':
                 $this->initFieldsDefault();
                 break;
         }
+    }
+
+    protected function initFieldsCard()
+    {
+        $this->addFieldHeading();
+        $this->addFieldText();
+        $this->addFieldPath();
+    }
+
+    protected function initFieldsGallery()
+    {
+        $this->addFieldHeading();
     }
 
     protected function initFieldsBanner()
@@ -81,7 +99,9 @@ class CmsBlockDetail extends ArticleDetail
 
     protected function initFieldsTiles()
     {
+        $this->addFieldText();
         $this->addFieldHeading($this->translate('cmsblock.poll.heading'));
+        $this->addFieldFooter();
     }
 
     protected function initFieldsVideo()

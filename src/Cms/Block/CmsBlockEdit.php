@@ -77,6 +77,9 @@ class CmsBlockEdit extends ArticleEdit
             case 'video':
                 $this->initFieldsVideo();
                 break;
+            case 'gallery':
+                $this->initFieldsGallery();
+                break;
             case 'default':
                 $this->initFieldsDefault();
                 break;
@@ -109,8 +112,14 @@ class CmsBlockEdit extends ArticleEdit
 
     protected function initFieldsTiles()
     {
+        $this->addFieldText();
         $this->addFieldHeading($this->translate('cmsblock.tiles.heading'));
         $this->addFieldFooter();
+    }
+
+    protected function initFieldsGallery()
+    {
+        $this->addFieldHeading();
     }
 
     protected function initFieldsVideo()
