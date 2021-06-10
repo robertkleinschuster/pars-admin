@@ -74,22 +74,6 @@ class CmsBlockController extends ArticleController
         }
         $detail = parent::detailAction();
         $this->initSubcontroller();
-        switch ($detail->getBean()->get('CmsBlockType_Code')) {
-            case 'contact':
-                $this->pushAction(
-                    'articledata',
-                    'index',
-                    $this->translate('section.data.contact')
-                );
-                break;
-            case 'poll':
-                $this->pushAction(
-                    'articledata',
-                    'index',
-                    $this->translate('section.data.poll')
-                );
-                break;
-        }
         return $detail;
     }
 

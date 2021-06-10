@@ -200,6 +200,7 @@ return [
     'cmsblocktype.code.text' => 'Text',
     'cmsblocktype.code.link' => 'Link',
     'cmsblocktype.code.default' => 'Standard',
+    'cmsblocktype.code.card' => 'Karte',
     'cmsblocktype.code.contact' => 'Kontakt',
     'cmsblocktype.code.poll' => 'Abstimmung',
     'cmsblocktype.code.tiles' => 'Kacheln',

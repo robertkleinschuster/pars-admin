@@ -86,6 +86,7 @@ abstract class ArticleModel extends CrudModel
         $options = [];
         $finder = new CmsBlockBeanFinder($this->getDatabaseAdapter());
         $finder->filterLocale_Code($this->getUserBean()->getLocale()->getLocale_Code());
+        $finder->filterValue('CmsBlock_ID_Parent', null);
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options["{block:{$bean->Article_Code}}"] = "{$bean->ArticleTranslation_Name} ({$bean->Article_Code})";
         }

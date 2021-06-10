@@ -53,6 +53,9 @@ class CmsBlockEdit extends ArticleEdit
             case 'banner':
                 $this->initFieldsBanner();
                 break;
+            case 'card':
+                $this->initFieldsCard();
+                break;
             case 'contact':
                 $this->initFieldsContact();
                 break;
@@ -127,6 +130,13 @@ class CmsBlockEdit extends ArticleEdit
     protected function initFieldsContact()
     {
         $this->addFieldContactEmail();
+    }
+
+    protected function initFieldsCard()
+    {
+        $this->addFieldHeading();
+        $this->addFieldText();
+        $this->addFieldPath();
     }
 
     protected function getRedirectController(): string
