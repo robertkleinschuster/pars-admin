@@ -105,6 +105,8 @@ class CmsPageEdit extends ArticleEdit
 
     protected function initFieldsDefault()
     {
+        $this->addFieldHeading();
+        $this->addFieldSubHeading();
         $this->addFieldText();
         $this->addFieldFooter();
         $this->addFieldTitle();

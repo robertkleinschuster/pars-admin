@@ -100,6 +100,8 @@ class CmsPageDetail extends ArticleDetail
     {
         $this->addFieldName();
         $this->addFieldTitle();
+        $this->addFieldHeading();
+        $this->addFieldSubHeading();
         $this->addFieldKeywords();
         $this->addFieldTeaser($this->translate('cmspage.metatext'));
         $this->addFieldText();
