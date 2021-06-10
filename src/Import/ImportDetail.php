@@ -75,7 +75,7 @@ class ImportDetail extends BaseDetail
                         if (isset($data['last_update'])) {
                             $date = new \DateTime(
                                 $data['last_update']->date,
-                                new \DateTimeZone($data['last_update']->timezone
+                                new \DateTimeZone($data['last_update']['timezone']
                                 )
                             );
                             return $date->format('d.m.Y H:i:s');
