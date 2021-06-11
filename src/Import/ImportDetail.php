@@ -74,7 +74,7 @@ class ImportDetail extends BaseDetail
                         $data = $bean->get('Import_Data');
                         if (isset($data['last_update'])) {
                             $date = new \DateTime(
-                                $data['last_update']->date,
+                                $data['last_update']['date'],
                                 new \DateTimeZone($data['last_update']['timezone']
                                 )
                             );
