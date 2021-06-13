@@ -4,12 +4,16 @@ namespace Pars\Admin\Import;
 
 use Pars\Bean\Type\Base\BeanListAwareInterface;
 use Pars\Admin\Base\CrudModel;
+use Pars\Core\Database\DatabaseBeanFinderTrait;
+use Pars\Core\Database\DatabaseBeanProcessorTrait;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Helper\Validation\ValidationHelperAwareInterface;
 use Pars\Import\Tesla\TeslaImporter;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
+use Pars\Model\Import\Data\ImportDataBeanFinder;
+use Pars\Model\Import\Data\ImportDataBeanProcessor;
 use Pars\Model\Import\ImportBeanFinder;
 use Pars\Model\Import\ImportBeanProcessor;
 use Pars\Model\Import\Type\ImportTypeBeanFinder;
@@ -86,6 +90,17 @@ class ImportModel extends CrudModel
         $bean = $this->getBean();
         switch ($bean->get('ImportType_Code')) {
             case 'tesla':
+
+                $dataProcessor = new ImportDataBeanProcessor($this->getDatabaseAdapter());
+                $dataFinder = new ImportDataBeanFinder($this->getDatabaseAdapter());
+                $dataBeanList = $dataFinder->getBeanFactory()->getEmptyBeanList();
+                $dataBean = $dataFinder->getBeanFactory()->getEmptyBean([]);
+                $dataBean->Import_ID = $bean->Import_ID;
+                $dataBean->ImportData_Data = $bean->Import_Data;
+                $dataBeanList->push($dataBean);
+                $dataProcessor->setBeanList($dataBeanList);
+                $dataProcessor->save();
+
                 $importer = new TeslaImporter($bean);
                 $importer->setTranslator($this->getTranslator());
                 $importer->run();
