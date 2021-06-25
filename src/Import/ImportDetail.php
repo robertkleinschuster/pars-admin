@@ -2,11 +2,12 @@
 
 namespace Pars\Admin\Import;
 
-use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Base\BaseDetail;
+use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Component\Base\Field\Badge;
 use Pars\Component\Base\Toolbar\ConfigureButton;
 use Pars\Component\Base\Toolbar\RunButton;
+use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\RedirectParameter;
 use Pars\Mvc\View\FieldFormatInterface;
 use Pars\Mvc\View\FieldInterface;
@@ -38,16 +39,23 @@ class ImportDetail extends BaseDetail
 
     protected function initRunButton()
     {
-        $editPathHelper = clone $this->generateEditPathHelper();
-        $redirect = $editPathHelper->setController($this->getIndexController())
-            ->setAction('detail')->getPath();
+        $editPathHelper = clone $this->getPathHelper()
+            ->setController($this->getEditController())
+            ->setAction($this->getEditAction())
+            ->setId(IdParameter::fromMap($this->getEditIdFields()));
 
+        $redirect = $editPathHelper->setController($this->getIndexController())
+            ->setAction('detail');
+        if ($this->hasCurrentContext()) {
+            $redirect->addParameter($this->getCurrentContext());
+        }
+        $redirect = (new RedirectParameter())
+            ->setPath($redirect->getPath());
         $this->getToolbar()->push(new RunButton(
             $editPathHelper
                 ->setController($this->getIndexController())
                 ->setAction('run')
-                ->addParameter((new RedirectParameter())
-                    ->setPath($redirect))->getPath()
+                ->addParameter($redirect)->getPath()
         ));
     }
 
@@ -66,6 +74,14 @@ class ImportDetail extends BaseDetail
         $active->setLabel($this->translate('import.active'));
         $active->setFormat(new ImportActiveFieldFormat($this->getTranslator()));
         $this->pushField($active);
+        $this->addSpan('ImportData_IntValue1_AVG', $this->translate('import.avg1'));
+        $this->addSpan('ImportData_IntValue2_AVG', $this->translate('import.avg2'));
+        $this->addSpan('ImportData_IntValue3_AVG', $this->translate('import.avg3'));
+        $this->addLastUpdateField();
+    }
+
+    protected function addLastUpdateField()
+    {
         $this->addSpan('Import_Data[last_update]', $this->translate('import.data.last_update'))->setFormat(
             new class implements FieldFormatInterface {
                 public function __invoke(FieldInterface $field, string $value, ?BeanInterface $bean = null): string

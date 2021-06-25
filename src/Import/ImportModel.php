@@ -10,6 +10,7 @@ use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Helper\Validation\ValidationHelperAwareInterface;
+use Pars\Import\ImportTask;
 use Pars\Import\Tesla\TeslaImporter;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
 use Pars\Model\Import\Data\ImportDataBeanFinder;
@@ -28,7 +29,9 @@ class ImportModel extends CrudModel
     {
         parent::initialize();
         $this->setBeanProcessor(new ImportBeanProcessor($this->getDatabaseAdapter()));
-        $this->setBeanFinder(new ImportBeanFinder($this->getDatabaseAdapter()));
+        $finder = new ImportBeanFinder($this->getDatabaseAdapter());
+        $finder->enhanceWithAvgs();
+        $this->setBeanFinder($finder);
     }
 
     /**
@@ -88,39 +91,8 @@ class ImportModel extends CrudModel
     public function run()
     {
         $bean = $this->getBean();
-        switch ($bean->get('ImportType_Code')) {
-            case 'tesla':
-
-                $dataProcessor = new ImportDataBeanProcessor($this->getDatabaseAdapter());
-                $dataFinder = new ImportDataBeanFinder($this->getDatabaseAdapter());
-                $dataBeanList = $dataFinder->getBeanFactory()->getEmptyBeanList();
-                $dataBean = $dataFinder->getBeanFactory()->getEmptyBean([]);
-                $dataBean->Import_ID = $bean->Import_ID;
-                $dataBean->ImportData_Data = $bean->Import_Data;
-                $dataBeanList->push($dataBean);
-                $dataProcessor->setBeanList($dataBeanList);
-                $dataProcessor->save();
-
-                $importer = new TeslaImporter($bean);
-                $importer->setTranslator($this->getTranslator());
-                $importer->run();
-                if ($importer->getValidationHelper()->hasError()) {
-                    $this->getValidationHelper()->merge($importer->getValidationHelper());
-                } else {
-                    $processor = $this->getBeanProcessor();
-                    $beanList = $this->getBeanFinder()->getBeanFactory()->getEmptyBeanList();
-                    $beanList->push($importer->getBean());
-                    if ($processor instanceof BeanListAwareInterface) {
-                        $processor->setBeanList($beanList);
-                    }
-                    $processor->save();
-                    if (
-                        $processor instanceof ValidationHelperAwareInterface
-                        && $processor->getValidationHelper()->hasError()
-                    ) {
-                        $this->getValidationHelper()->merge($processor->getValidationHelper());
-                    }
-                }
-        }
+        $importTask = new ImportTask([], new \DateTime(), $this->getContainer());
+        $importTask->initById($bean->Import_ID);
+        $importTask->execute();
     }
 }
