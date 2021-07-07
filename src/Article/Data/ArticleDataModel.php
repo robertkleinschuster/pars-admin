@@ -11,7 +11,7 @@ class ArticleDataModel extends CrudModel
     public function initialize()
     {
         parent::initialize();
-        $this->setBeanFinder(new ArticleDataBeanFinder($this->getDbAdpater()));
-        $this->setBeanProcessor(new ArticleDataBeanProcessor($this->getDbAdpater()));
+        $this->setBeanFinder(new ArticleDataBeanFinder($this->getDatabaseAdapter()));
+        $this->setBeanProcessor(new ArticleDataBeanProcessor($this->getDatabaseAdapter()));
     }
 }

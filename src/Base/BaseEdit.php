@@ -2,6 +2,7 @@
 
 namespace Pars\Admin\Base;
 
+use Pars\Helper\String\StringHelper;
 use Pars\Pattern\Mode\ModeAwareInterface;
 use Pars\Pattern\Mode\ModeAwareTrait;
 use Pars\Component\Base\Edit\Edit;
@@ -18,6 +19,7 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
     use ModeAwareTrait;
 
     public ?string $token = null;
+    public ?string $tokenName = null;
     public bool $create = false;
     public bool $createBulk = false;
     public bool $showSubmit = true;
@@ -29,13 +31,26 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
     protected function initialize()
     {
         parent::initialize();
-        if ($this->isShowTitle()) {
-            $this->setName($this->translate('edit.title'));
-        }
         $this->initToken();
         $this->initFieldErrors();
         $this->initSubmitButton();
     }
+
+    protected function onConstruct()
+    {
+        parent::onConstruct();
+        $this->getForm()->setId(StringHelper::slugify(static::class));
+    }
+
+
+    protected function initName()
+    {
+        parent::initName();
+        if ($this->isShowTitle()) {
+            $this->setName($this->translate('edit.title'));
+        }
+    }
+
 
     /**
      * @return bool
@@ -62,8 +77,8 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
      */
     protected function initToken()
     {
-        if ($this->hasToken()) {
-            $this->getForm()->addHidden('submit_token', $this->getToken());
+        if ($this->hasToken() && $this->hasTokenName()) {
+            $this->getForm()->addHidden($this->getTokenName(), $this->getToken());
         }
     }
 
@@ -92,8 +107,7 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
                     $this->translate('edit.submit'),
                     (new SubmitParameter())->setCreateBulk(),
                     null,
-                    '',
-                    50
+                    ''
                 );
                 $this->getForm()->addHidden(
                     SubmitParameter::name(),
@@ -105,8 +119,7 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
                     $this->translate('edit.submit'),
                     (new SubmitParameter())->setCreate(),
                     null,
-                    '',
-                    50
+                    ''
                 );
                 $this->getForm()->addHidden(
                     SubmitParameter::name(),
@@ -118,8 +131,7 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
                     $this->translate('edit.submit'),
                     (new SubmitParameter())->setMode($this->getMode()),
                     null,
-                    '',
-                    50
+                    ''
                 );
                 $this->getForm()->addHidden(
                     SubmitParameter::name(),
@@ -131,8 +143,7 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
                     $this->translate('edit.submit'),
                     (new SubmitParameter())->setSave(),
                     null,
-                    '',
-                    50
+                    ''
                 );
                 $this->getForm()->addHidden(
                     SubmitParameter::name(),
@@ -142,9 +153,7 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
             if ($this->isCreate()) {
                 $this->getForm()->addCancel(
                     $this->translate('edit.cancel'),
-                    $this->generateCreateRedirectPath(),
-                    50,
-                    2
+                    $this->generateCreateRedirectPath()
                 );
                 $this->getForm()->addHidden(
                     RedirectParameter::nameAttr(RedirectParameter::ATTRIBUTE_PATH),
@@ -153,9 +162,7 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
             } else {
                 $this->getForm()->addCancel(
                     $this->translate('edit.cancel'),
-                    $this->generateIndexPath(),
-                    50,
-                    2
+                    $this->generateIndexPath()
                 );
                 $this->getForm()->addHidden(
                     RedirectParameter::nameAttr(RedirectParameter::ATTRIBUTE_PATH),
@@ -274,8 +281,9 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
      *
      * @return $this
      */
-    public function setToken(string $token): self
+    public function setToken(string $tokenName, string $token): self
     {
+        $this->setTokenName($tokenName);
         $this->token = $token;
         return $this;
     }
@@ -305,4 +313,32 @@ abstract class BaseEdit extends Edit implements ValidationHelperAwareInterface, 
         $this->create = $create;
         return $this;
     }
+
+    /**
+    * @return string
+    */
+    public function getTokenName(): string
+    {
+        return $this->tokenName;
+    }
+
+    /**
+    * @param string $tokenName
+    *
+    * @return $this
+    */
+    public function setTokenName(string $tokenName): self
+    {
+        $this->tokenName = $tokenName;
+        return $this;
+    }
+
+    /**
+    * @return bool
+    */
+    public function hasTokenName(): bool
+    {
+        return isset($this->tokenName);
+    }
+
 }

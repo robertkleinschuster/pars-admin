@@ -33,20 +33,20 @@ class CmsPollHandler implements BeanAwareInterface
     public function handle()
     {
         if ($this->getRequest()->hasAttribute('reset_poll')) {
-            $blockFinder = new CmsBlockBeanFinder($this->getModel()->getDbAdpater());
+            $blockFinder = new CmsBlockBeanFinder($this->getModel()->getDatabaseAdapter());
             $blockFinder->initByValueList('Article_Code', $blockList->column('Article_Code'));
             $beanList = $blockFinder->getBeanList(true);
             foreach ($beanList as $item) {
                 $item->getArticle_Data()->set('poll', 0);
                 $item->getArticle_Data()->set('poll_value', 0);
             }
-            $blockProcessor = new CmsBlockBeanProcessor($this->getModel()->getDbAdpater());
+            $blockProcessor = new CmsBlockBeanProcessor($this->getModel()->getDatabaseAdapter());
             $blockProcessor->setBeanList($beanList);
             $blockProcessor->save();
             $this->getResponse()->setRedirect($this->getPathHelper(true)->getPath());
         }
         if ($this->getRequest()->hasAttribute('show_poll')) {
-            $blockFinder = new CmsBlockBeanFinder($this->getModel()->getDbAdpater());
+            $blockFinder = new CmsBlockBeanFinder($this->getModel()->getDatabaseAdapter());
             $blockFinder->initByValueList('Article_Code', $blockList->column('Article_Code'));
             $beanList = $blockFinder->getBeanList(true);
             foreach ($beanList as $item) {
@@ -55,7 +55,7 @@ class CmsPollHandler implements BeanAwareInterface
                     $item->getArticle_Data()->set('poll_value', $value / $max * 100);
                 }
             }
-            $blockProcessor = new CmsBlockBeanProcessor($this->getModel()->getDbAdpater());
+            $blockProcessor = new CmsBlockBeanProcessor($this->getModel()->getDatabaseAdapter());
             $blockProcessor->setBeanList($beanList);
             $blockProcessor->save();
             $this->getResponse()->setRedirect($this->getPathHelper(true)->getPath());

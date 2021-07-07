@@ -11,14 +11,15 @@ class ImportEdit extends BaseEdit
 
     protected function initialize()
     {
-        $this->getForm()->addText('Import_Name', '{Import_Name}', $this->translate('import.name'), 1);
+        $this->getForm()->setUseColumns(false);
+
+        $this->getForm()->addText('Import_Name', '{Import_Name}', $this->translate('import.name'));
+        $this->getForm()->addText('Import_Code', '{Import_Code}', $this->translate('import.code'));
         if (null !== $this->getImportTypeOptions()) {
             $this->getForm()->addSelect('ImportType_Code', $this->getImportTypeOptions(), '{ImportType_Code}', $this->translate('importtype.code'));
         }
-        if (null !== $this->getArticleOptions()) {
-            $this->getForm()->addSelect('Article_ID', $this->getArticleOptions(), '{Article_ID}', $this->translate('article.id'));
-        }
-        $this->getForm()->addCheckbox('Import_Active', '{Import_Active}', $this->translate('import.active'), 2);
+
+        $this->getForm()->addCheckbox('Import_Active', '{Import_Active}', $this->translate('import.active'));
         $days = [];
         $days[null] = $this->translate('import.day.null');
         for ($i = 1; $i <= 7; $i++) {
@@ -34,9 +35,9 @@ class ImportEdit extends BaseEdit
         for ($i = 0; $i <= 59; $i++) {
             $minutes[$i] = $i;
         }
-        $this->getForm()->addSelect('Import_Day', $days, '{Import_Day}', $this->translate('import.day'), 3, 1);
-        $this->getForm()->addSelect('Import_Hour', $hours, '{Import_Hour}', $this->translate('import.hour'), 3, 2);
-        $this->getForm()->addSelect('Import_Minute', $minutes, '{Import_Minute}', $this->translate('import.minute'), 3, 3);
+        $this->getForm()->addSelect('Import_Day', $days, '{Import_Day}', $this->translate('import.day'));
+        $this->getForm()->addSelect('Import_Hour', $hours, '{Import_Hour}', $this->translate('import.hour'));
+        $this->getForm()->addSelect('Import_Minute', $minutes, '{Import_Minute}', $this->translate('import.minute'));
         parent::initialize();
     }
 

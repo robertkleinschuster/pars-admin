@@ -35,15 +35,16 @@ abstract class ArticleController extends CrudController
         $detail = parent::detailAction();
         $bean = $detail->getBean();
         if (!$bean->empty('File_BeanList') && !$bean->get('File_BeanList')->isEmpty()) {
-            $fileOverview = new FileDetail($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+            $fileOverview = new FileDetail($this->getTranslator(), $this->getUserBean());
             $this->injectContext($fileOverview);
-            $collapsable = $this->createCollapsable("detail", $this->expandCollapse);
-            $collapsable->setTitle($this->translate("showdetails"));
+            $fileBean = $bean->get('File_BeanList')->first();
+            $collapsable = $this->createCollapsable("detail_image", $this->expandCollapse);
+            $collapsable->setTitle($fileBean->get('File_Name'));
             $collapsable->pushComponent($fileOverview);
             $fileOverview->setShowDelete(false);
             $fileOverview->setShowEdit(true);
             $fileOverview->setShowBack(false);
-            $fileOverview->setBean($bean->get('File_BeanList')->first());
+            $fileOverview->setBean($fileBean);
             $this->getView()->getLayout()->getComponentListAfter()->push($collapsable);
         }
         if ($bean->isset('ArticleTranslation_Code')) {
@@ -52,6 +53,12 @@ abstract class ArticleController extends CrudController
             }
         }
         $detail->setLocale_List($this->getModel()->getLocale_List());
+        $this->getView()->set('Article_ID', "$bean->Article_ID");
+        $this->pushAction(
+            'articlepicture',
+            'index',
+            $this->translate('articlepicture.overview')
+        )->setParameter($this->getControllerRequest()->getId()->addId('Article_ID', $bean->Article_ID));
         return $detail;
     }
 
@@ -86,6 +93,7 @@ abstract class ArticleController extends CrudController
     {
         $edit = parent::createEdit();
         $edit->setFileBeanList($this->getModel()->getFileBeanList());
+        $edit->setPlaceholderOptions($this->getModel()->getPlaceholderOptions());
         return $edit;
     }
 

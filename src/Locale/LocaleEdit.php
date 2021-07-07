@@ -11,6 +11,13 @@ class LocaleEdit extends BaseEdit
      */
     public ?array $domain_List = null;
 
+    protected function initBase()
+    {
+        parent::initBase();
+        $this->getForm()->setUseColumns(false);
+    }
+
+
     protected function initFields()
     {
         parent::initFields();

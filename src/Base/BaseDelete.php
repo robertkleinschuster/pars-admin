@@ -2,6 +2,7 @@
 
 namespace Pars\Admin\Base;
 
+use Pars\Helper\Parameter\ContextParameter;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
 use Pars\Component\Base\Delete\Delete;
@@ -16,33 +17,41 @@ abstract class BaseDelete extends Delete implements CrudComponentInterface
     use CrudComponentTrait;
 
     public ?string $token = null;
+    public ?string $tokenName = null;
 
-    /**
-     * @throws AttributeExistsException
-     * @throws AttributeLockException
-     */
-    protected function initialize()
+    protected function initBase()
     {
+        parent::initBase();
         $this->setHeading($this->translate('delete.heading'));
         $this->setText($this->translate('delete.text'));
-        parent::initialize();
+    }
+
+
+    protected function initFields()
+    {
+        parent::initFields();
         $form = new Form();
         $form->addSubmit(
             SubmitParameter::name(),
             $this->translate('delete.submit'),
             SubmitParameter::delete(),
             Submit::STYLE_DANGER,
-            null,
-            1,
-            2
+            null
         );
         $form->addHidden(SubmitParameter::name(), SubmitParameter::delete());
         $form->addCancel($this->translate('delete.cancel'), $this->generateIndexPath());
         $form->addHidden(RedirectParameter::nameAttr(RedirectParameter::ATTRIBUTE_PATH), $this->generateRedirectPath());
-        if ($this->hasToken()) {
-            $form->addHidden('submit_token', $this->getToken());
+        if ($this->hasToken() && $this->hasTokenName()) {
+            $form->addHidden($this->getTokenName(), $this->getToken());
         }
         $this->push($form);
+    }
+
+
+    protected function initName()
+    {
+        parent::initName();
+        $this->setName($this->translate('delete.title'));
     }
 
 
@@ -66,6 +75,14 @@ abstract class BaseDelete extends Delete implements CrudComponentInterface
      */
     protected function generateRedirectPath(): string
     {
+        if ($this->getControllerRequest()->hasAttribute('prevcontext')) {
+            $param = new ContextParameter();
+            $param->fromData($this->getControllerRequest()->getAttribute('prevcontext'));
+            return $param->getPath();
+        }
+        if ($this->hasCurrentContext()) {
+            return $this->getCurrentContext()->getPath();
+        }
         $indexPath = $this->getPathHelper()
             ->setController($this->getRedirectController())
             ->setAction($this->getRedirectAction());
@@ -98,8 +115,9 @@ abstract class BaseDelete extends Delete implements CrudComponentInterface
      *
      * @return $this
      */
-    public function setToken(string $token): self
+    public function setToken(string $tokenName, string $token): self
     {
+        $this->setTokenName($tokenName);
         $this->token = $token;
         return $this;
     }
@@ -111,4 +129,32 @@ abstract class BaseDelete extends Delete implements CrudComponentInterface
     {
         return isset($this->token);
     }
+
+    /**
+    * @return string
+    */
+    public function getTokenName(): string
+    {
+        return $this->tokenName;
+    }
+
+    /**
+    * @param string $tokenName
+    *
+    * @return $this
+    */
+    public function setTokenName(string $tokenName): self
+    {
+        $this->tokenName = $tokenName;
+        return $this;
+    }
+
+    /**
+    * @return bool
+    */
+    public function hasTokenName(): bool
+    {
+        return isset($this->tokenName);
+    }
+
 }

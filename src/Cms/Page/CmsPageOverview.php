@@ -19,17 +19,12 @@ class CmsPageOverview extends ArticleOverview
     protected function initialize()
     {
         $this->setShowOrder(true);
-        $span = new Badge('{CmsPageState_Code}');
-        $span->setFormat(new CmsPageStateFieldFormat($this->getTranslator()));
-        if ($this->hasDetailPath()) {
-            $span->setPath($this->getDetailPath());
-            $span->addOption(Span::OPTION_DECORATION_NONE);
-        }
-        $this->append($span);
+        $this->addFieldSpan('CmsPageState_Code', '')
+            ->setFormat(new CmsPageStateFieldFormat($this->getTranslator()));
         $icon = new Icon(Icon::ICON_EXTERNAL_LINK);
         $icon->addOption('text-danger');
         $icon->setAccept(new CmsPageRedirectAccept());
-        $this->append($icon);
+        $this->pushField($icon);
 
         parent::initialize();
         $span = $this->addFieldOrderable('CmsPageType_Code', $this->translate('cmspagetype.code'));

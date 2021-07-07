@@ -8,12 +8,12 @@ use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Admin\Cms\Block\CmsBlockModel;
 use Pars\Helper\Parameter\FilterParameter;
 use Pars\Helper\Parameter\IdParameter;
+use Pars\Helper\Parameter\MoveParameter;
 use Pars\Helper\Parameter\SearchParameter;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
 use Pars\Model\Cms\PageBlock\CmsPageBlockBeanFinder;
 use Pars\Model\Cms\PageBlock\CmsPageBlockBeanProcessor;
 use Pars\Model\Cms\Block\CmsBlockBeanFinder;
-use Pars\Model\Cms\Block\CmsBlockBeanList;
 use Pars\Mvc\Exception\MvcException;
 
 /**
@@ -26,12 +26,12 @@ class CmsPageBlockModel extends CmsBlockModel
 {
     public function initialize()
     {
-        $this->setBeanFinder(new CmsPageBlockBeanFinder($this->getDbAdpater()));
-        $this->setBeanProcessor(new CmsPageBlockBeanProcessor($this->getDbAdpater()));
+        $this->setBeanFinder(new CmsPageBlockBeanFinder($this->getDatabaseAdapter()));
+        $this->setBeanProcessor(new CmsPageBlockBeanProcessor($this->getDatabaseAdapter()));
         $this->getBeanFinder()->filterLocale_Code($this->getTranslator()->getLocale());
         $this->setBeanOrderProcessor(new BeanOrderProcessor(
-            new CmsPageBlockBeanProcessor($this->getDbAdpater()),
-            (new CmsPageBlockBeanFinder($this->getDbAdpater()))->filterLocale_Code($this->getTranslator()->getLocale()),
+            new CmsPageBlockBeanProcessor($this->getDatabaseAdapter()),
+            (new CmsPageBlockBeanFinder($this->getDatabaseAdapter()))->filterLocale_Code($this->getTranslator()->getLocale()),
             'CmsPage_CmsBlock_Order',
             'CmsPage_ID'
         ));
@@ -44,7 +44,7 @@ class CmsPageBlockModel extends CmsBlockModel
     public function getBlock_Options(): array
     {
         $options = [];
-        $finder = new CmsBlockBeanFinder($this->getDbAdpater());
+        $finder = new CmsBlockBeanFinder($this->getDatabaseAdapter());
         $finder->filterLocale_Code($this->getTranslator()->getLocale());
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('CmsBlock_ID')] = $bean->get('ArticleTranslation_Name');
@@ -54,7 +54,7 @@ class CmsPageBlockModel extends CmsBlockModel
 
     public function getBlockBeanFinder(?FilterParameter $filterParameter = null, ?SearchParameter $searchParameter = null)
     {
-        $finder = new CmsBlockBeanFinder($this->getDbAdpater());
+        $finder = new CmsBlockBeanFinder($this->getDatabaseAdapter());
         $finder->setCmsBlock_ID_Parent(null);
         $finder->filterLocale_Code($this->getTranslator()->getLocale());
         if ($filterParameter) {
@@ -92,7 +92,7 @@ class CmsPageBlockModel extends CmsBlockModel
     {
         $bean = parent::getEmptyBean($data);
         if (isset($data['CmsPage_ID'])) {
-            $finder = new CmsPageBeanFinder($this->getDbAdpater());
+            $finder = new CmsPageBeanFinder($this->getDatabaseAdapter());
             $finder->filterLocale_Code($this->getTranslator()->getLocale());
             $finder->setCmsPage_ID($data['CmsPage_ID']);
             $page = $finder->getBean();

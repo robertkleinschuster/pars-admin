@@ -28,8 +28,8 @@ class CmsPagePollDetail extends BaseDetail implements BeanAwareInterface
                     $progress = new Progress($item / $max * 100);
                     $progress->setStyle(Progress::STYLE_SUCCESS);
                     $span = new Span($title . ': ' . $item);
-                    $this->append($span);
-                    $this->append($progress);
+                    $this->pushField($span);
+                    $this->pushField($progress);
                 }
             }
         }

@@ -11,11 +11,18 @@ class FileOverview extends BaseOverview
         $this->setName($this->translate('section.file'));
     }
 
+    protected function initBase()
+    {
+        parent::initBase();
+        $this->setShowOrder(true);
+    }
+
+
     protected function initFields()
     {
-        $this->addField('File_Name', $this->translate('file.name'));
-        $this->addField('FileType_Name', $this->translate('filetype.name'));
-        $this->addField('File_Code', $this->translate('file.code'));
+        $this->addFieldOrderable('File_Name', $this->translate('file.name'));
+        $this->addFieldOrderable('FileType_Name', $this->translate('filetype.name'));
+        $this->addFieldOrderable('File_Code', $this->translate('file.code'));
     }
 
 
@@ -29,5 +36,13 @@ class FileOverview extends BaseOverview
         return [
             'File_ID'
         ];
+    }
+
+    protected function getCreateIdFields(): array
+    {
+        if ($this->getControllerRequest()->hasId()) {
+            return $this->getControllerRequest()->getId()->getAttributes();
+        }
+        return [];
     }
 }

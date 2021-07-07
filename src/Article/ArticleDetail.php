@@ -2,25 +2,21 @@
 
 namespace Pars\Admin\Article;
 
-use Pars\Bean\Type\Base\BeanException;
-use Pars\Helper\String\StringHelper;
-use Pars\Pattern\Exception\AttributeExistsException;
-use Pars\Pattern\Exception\AttributeLockException;
 use Pars\Admin\Base\BaseDetail;
+use Pars\Bean\Type\Base\BeanException;
 use Pars\Component\Base\Field\Button;
-use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Toolbar\DropdownEditButton;
 use Pars\Component\Base\Toolbar\EditTextButton;
 use Pars\Component\Base\Toolbar\PreviewButton;
-use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\EditLocaleParameter;
 use Pars\Helper\Parameter\IdParameter;
-use Pars\Model\Article\DataBean;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
 
 abstract class ArticleDetail extends BaseDetail
 {
     protected ?string $previewPath = null;
-
+    use ArticleComponentTrait;
     /**
      * @throws AttributeExistsException
      * @throws AttributeLockException
@@ -38,62 +34,219 @@ abstract class ArticleDetail extends BaseDetail
         $this->setName('{ArticleTranslation_Name}');
     }
 
-
-    /**
-     * @throws BeanException
-     */
-    protected function initFields()
+    protected function addFieldText(string $label = null, string $group = null)
     {
-        parent::initFields();
-        $this->addField('Article_Code', $this->translate('article.code'), 1, 1);
-        $this->addField('ArticleTranslation_Code', $this->translate('articletranslation.code'), 1, 2);
-        $this->addField('ArticleTranslation_Host', $this->translate('articletranslation.host'), 1, 3);
-        $this->addField('ArticleTranslation_Title', $this->translate('articletranslation.title'), 2, 1);
-        $this->addField('ArticleTranslation_Heading', $this->translate('articletranslation.heading'), 2, 2);
-        $this->addField('ArticleTranslation_SubHeading', $this->translate('articletranslation.subheading'), 2, 3);
-        $this->addField('ArticleTranslation_Keywords', $this->translate('articletranslation.keywords'), 3, 1);
-        $this->addField('ArticleTranslation_Footer', $this->translate('articletranslation.footer'), 3, 3);
-        $this->addField('ArticleTranslation_Path', $this->translate('articletranslation.path'), 4, 1);
-        $this->addField('ArticleTranslation_Teaser', $this->translate('articletranslation.teaser'), 3, 2);
-        $this->addField('ArticleTranslation_Text', $this->translate('articletranslation.text'), 10, 1);
+        if (!$label) {
+            $label = $this->translate('articletranslation.text');
+        }
+        if (!$group) {
+            $group = $this->getGroupByField('ArticleTranslation_Text');
+        }
+        $span = $this->addSpan('ArticleTranslation_Text', $label);
+        $span->setGroup($group);
+        return $span;
     }
 
-    /**
-     * @throws BeanException
-     */
-    protected function initFieldsAfter()
+    protected function addFieldName(string $label = null, string $group = null)
     {
-        if ($this->hasBean() && !$this->getBean()->empty('Article_Data')) {
-            $data = $this->getBean()->get('Article_Data');
-            if ($data instanceof DataBean) {
-                foreach ($data as $key => $value) {
-                    if (!is_array($value) && strpos($key, '__class') === false && isset($value)) {
-                        switch ($data->type($key)) {
-                            case DataBean::DATA_TYPE_BOOL:
-                                if ($value === true) {
-                                    $icon = new Icon(Icon::ICON_CHECK);
-                                    $icon->addOption('text-success');
-                                    $icon->setLabel($this->translate('article.data.' . $key));
-                                    $this->append($icon);
-                                } else {
-                                    $icon = new Icon(Icon::ICON_X);
-                                    $icon->addOption('text-danger');
-                                    $icon->setLabel($this->translate('article.data.' . $key));
-                                    $this->append($icon);
-                                }
-                                break;
-                            case DataBean::DATA_TYPE_FLOAT:
-                            case DataBean::DATA_TYPE_INT:
-                            case DataBean::DATA_TYPE_STRING:
-                                if ($value) {
-                                    $this->addField("Article_Data[$key]", $this->translate('article.data.' . $key));
-                                }
-                                break;
-                        }
-                    }
-                }
-            }
+        if (!$label) {
+            $label = $this->translate('articletranslation.name');
         }
+        if (!$group) {
+            $group = $this->getGroupByField('ArticleTranslation_Name');
+        }
+        $span = $this->addSpan('ArticleTranslation_Name', $label);
+        $span->setGroup($group);
+        return $span;
+    }
+
+    protected function addFieldView(string $label = null, string $group = null)
+    {
+        if (!$label) {
+            $label = $this->translate('article.view');
+        }
+        if (!$group) {
+            $group = $this->getGroupByField('Article_View');
+        }
+        $span = $this->addSpan('Article_View', $label);
+        $span->setGroup($group);
+        return $span;
+    }
+
+    protected function addFieldRead(string $label = null, string $group = null)
+    {
+        if (!$label) {
+            $label = $this->translate('article.read');
+        }
+        if (!$group) {
+            $group = $this->getGroupByField('Article_Read');
+        }
+        $span = $this->addSpan('Article_Read', $label);
+        $span->setGroup($group);
+        return $span;
+    }
+
+    protected function addFieldTeaser(string $label = null, string $group = null)
+    {
+        if (!$label) {
+            $label = $this->translate('articletranslation.teaser');
+        }
+        if (!$group) {
+            $group = $this->getGroupByField('ArticleTranslation_Teaser');
+        }
+        $span = $this->addSpan('ArticleTranslation_Teaser', $label);
+        $span->setGroup($group);
+        return $span;
+
+    }
+
+    protected function addFieldPath(string $label = null, string $group = null)
+    {
+        if (!$label) {
+            $label = $this->translate('articletranslation.path');
+        }
+        if (!$group) {
+            $group = $this->getGroupByField('ArticleTranslation_Path');
+        }
+        $span = $this->addSpan('ArticleTranslation_Path', $label);
+        $span->setGroup($group);
+        return $span;
+
+    }
+
+    protected function addFieldFooter(string $label = null, string $group = null)
+    {
+        if (!$label) {
+            $label = $this->translate('articletranslation.footer');
+        }
+        if (!$group) {
+            $group = $this->getGroupByField('ArticleTranslation_Footer');
+        }
+        $span = $this->addSpan('ArticleTranslation_Footer', $label);
+        $span->setGroup($group);
+        return $span;
+    }
+
+    protected function addFieldKeywords(string $label = null, string $group = null)
+    {
+        if (!$label) {
+            $label = $this->translate('articletranslation.keywords');
+        }
+        if (!$group) {
+            $group = $this->getGroupByField('ArticleTranslation_Keywords');
+        }
+        $span = $this->addSpan('ArticleTranslation_Keywords', $label);
+        $span->setGroup($group);
+        return $span;
+    }
+
+    protected function addFieldSubHeading(string $label = null, string $group = null)
+    {
+        if (!$label) {
+            $label = $this->translate('articletranslation.subheading');
+        }
+        if (!$group) {
+            $group = $this->getGroupByField('ArticleTranslation_SubHeading');
+        }
+        $span = $this->addSpan('ArticleTranslation_SubHeading', $label);
+        $span->setGroup($group);
+        return $span;
+
+    }
+
+    protected function addFieldHeading(string $label = null, string $group = null)
+    {
+        if (!$label) {
+            $label = $this->translate('articletranslation.heading');
+        }
+        if (!$group) {
+            $group = $this->getGroupByField('ArticleTranslation_Heading');
+        }
+        $span = $this->addSpan('ArticleTranslation_Heading', $label);
+        $span->setGroup($group);
+        return $span;
+    }
+
+    protected function addFieldTitle(string $label = null, string $group = null)
+    {
+        if (!$label) {
+            $label = $this->translate('articletranslation.title');
+        }
+        if (!$group) {
+            $group = $this->getGroupByField('ArticleTranslation_Title');
+        }
+        $span = $this->addSpan('ArticleTranslation_Title', $label);
+        $span->setGroup($group);
+        return $span;
+    }
+
+    protected function addFieldActive(string $label = null, string $group = null)
+    {
+        if (!$label) {
+            $label = $this->translate('articletranslation.active');
+        }
+        if (!$group) {
+            $group = $this->getGroupByField('ArticleTranslation_Active');
+        }
+        $span = $this->addSpan('ArticleTranslation_Active', $label);
+        $span->setGroup($group);
+        return $span;
+    }
+
+    protected function addFieldHost(string $label = null, string $group = null)
+    {
+        if (!$label) {
+            $label = $this->translate('articletranslation.host');
+        }
+        if (!$group) {
+            $group = $this->getGroupByField('ArticleTranslation_Host');
+        }
+        $span = $this->addSpan('ArticleTranslation_Host', $label);
+        $span->setGroup($group);
+        return $span;
+
+    }
+
+    protected function addFieldCodeUrl(string $label = null, string $group = null)
+    {
+        if (!$label) {
+            $label = $this->translate('articletranslation.code');
+        }
+        if (!$group) {
+            $group = $this->getGroupByField('ArticleTranslation_Code');
+        }
+        $span = $this->addSpan('ArticleTranslation_Code', $label);
+        $span->setGroup($group);
+        return $span;
+
+    }
+
+    protected function addFieldCodeInternal(string $label = null, string $group = null)
+    {
+        if (!$label) {
+            $label = $this->translate('article.code');
+        }
+        if (!$group) {
+            $group = $this->getGroupByField('Article_Code');
+        }
+        $span = $this->addSpan('Article_Code', $label);
+        $span->setGroup($group);
+        return $span;
+
+    }
+
+    protected function addFieldContactEmail(string $label = null, string $group = null)
+    {
+        if (!$label) {
+            $label = $this->translate('article.data.contact_email');
+        }
+        if (!$group) {
+            $group = $this->getGroupByField('Article_Data[contact_email]');
+        }
+        $span = $this->addSpan("Article_Data[contact_email]", $label);
+        $span->setGroup($group);
+        return $span;
+
     }
 
     /**
@@ -102,7 +255,7 @@ abstract class ArticleDetail extends BaseDetail
      */
     protected function initEditTextButton()
     {
-        if ($this->isShowEdit()) {
+       /* if ($this->isShowEdit()) {
             $button = new EditTextButton();
             $button->setModal(true);
             $button->setModalTitle($this->translate('edit.title'));
@@ -119,7 +272,7 @@ abstract class ArticleDetail extends BaseDetail
                 }
             }
             $this->getToolbar()->push($dropdown);
-        }
+        }*/
     }
 
     /**
@@ -149,7 +302,10 @@ abstract class ArticleDetail extends BaseDetail
     protected function initPreviewButton()
     {
         if ($this->hasPreviewPath()) {
-            $this->getToolbar()->push((new PreviewButton($this->getPreviewPath()))->setTarget('_blank'));
+            $this->getToolbar()->push((new PreviewButton($this->getPreviewPath()))
+                ->setTarget('_blank')
+                ->setTooltip($this->translate('preview'))
+            );
         }
     }
 

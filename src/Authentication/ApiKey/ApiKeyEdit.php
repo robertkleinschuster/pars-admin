@@ -10,6 +10,7 @@ class ApiKeyEdit extends BaseEdit
 {
     protected function initialize()
     {
+        $this->getForm()->setUseColumns(false);
         $this->getForm()->addText('ApiKey_Name', '{ApiKey_Name}', $this->translate('apikey.name'));
         $this->getForm()->addText('ApiKey_Key', '{ApiKey_Key}', $this->translate('apikey.key'));
         $this->getForm()->addUrl('ApiKey_Host', '{ApiKey_Host}', $this->translate('apikey.host'));

@@ -4,6 +4,7 @@ namespace Pars\Admin\Cms\Page;
 
 use Pars\Bean\Type\Base\BeanException;
 use Pars\Bean\Type\Base\BeanInterface;
+use Pars\Mvc\Controller\ControllerSubAction;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
 use Pars\Pattern\Exception\AttributeNotFoundException;
@@ -11,7 +12,6 @@ use Pars\Admin\Article\ArticleController;
 use Pars\Admin\Base\BaseEdit;
 use Pars\Admin\Base\ContentNavigation;
 use Pars\Component\Base\Alert\Alert;
-use Pars\Component\Base\Toolbar\DownloadButton;
 use Pars\Component\Base\Toolbar\UploadButton;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
@@ -47,7 +47,7 @@ class CmsPageController extends ArticleController
     {
         parent::initView();
         $this->getView()->getLayout()->getNavigation()->setActive('content');
-        $subNavigation = new ContentNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation = new ContentNavigation($this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('cmspage');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
@@ -81,38 +81,43 @@ class CmsPageController extends ArticleController
     {
         $this->getView()->set('CmsPage_ID', (int)$this->getControllerRequest()->getId()->getAttribute('CmsPage_ID'));
         $detail = parent::detailAction();
+        $this->detailByType($detail->getBean()->get('CmsPageType_Code'));
+        $this->initRedirectInfo($detail->getBean());
+        return $detail;
+    }
+
+    public function blogAction(){
+        $this->detailBlog();
+    }
+
+    public function detailByType(string $type)
+    {
+        switch ($type) {
+            case 'blog':
+                $this->getSubActionContainer()->clear();
+                $this->detailBlog();
+                break;
+            default:
+                $this->detailDefault();
+        }
+    }
+
+    public function detailBlog()
+    {
         $this->pushAction(
             'cmspost',
             'index',
-            $this->translate('section.post'),
-            self::SUB_ACTION_MODE_TABBED
+            $this->translate('section.post')
         );
+    }
+
+    public function detailDefault()
+    {
         $this->pushAction(
-            'cmspageblock',
+            'cmspost',
             'index',
-            $this->translate('section.block'),
-            self::SUB_ACTION_MODE_TABBED
+            $this->translate('section.post')
         );
-        switch ($detail->getBean()->get('CmsPageType_Code')) {
-            case 'contact':
-                $this->pushAction(
-                    'articledata',
-                    'index',
-                    $this->translate('section.data.contact'),
-                    self::SUB_ACTION_MODE_TABBED
-                );
-                break;
-            case 'poll':
-                $this->pushAction(
-                    'articledata',
-                    'index',
-                    $this->translate('section.data.poll'),
-                    self::SUB_ACTION_MODE_TABBED
-                );
-                break;
-        }
-        $this->initRedirectInfo($detail->getBean());
-        return $detail;
     }
 
     public function indexAction()
@@ -126,15 +131,11 @@ class CmsPageController extends ArticleController
             'CmsPageLayout_Code',
             $this->translate('cmspagelayout.code'),
             $this->getModel()->getCmsPageLayout_Options(true),
-            1,
-            2
         );
         $this->addFilter_Select(
             'CmsPageState_Code',
             $this->translate('cmspagestate.code'),
             $this->getModel()->getCmsPageState_Options(true),
-            1,
-            3
         );
         $overview = parent::indexAction();
         $overview->getToolbar()->push(
@@ -169,19 +170,19 @@ class CmsPageController extends ArticleController
      * @return CmsPageImport
      * @throws AttributeExistsException
      * @throws AttributeLockException
-     * @throws AttributeNotFoundException
      * @throws BeanException
      * @throws MvcException
      */
     public function importAction()
     {
-        $edit = new CmsPageImport($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = new CmsPageImport($this->getTranslator(), $this->getUserBean());
+        $edit->getForm()->setAction($this->getPathHelper(true)->getPath());
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $edit->setBean($this->getModel()->getEmptyBean($this->getPreviousAttributes()));
         $this->getModel()->getBeanConverter()
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
-        $edit->setToken($this->generateToken('submit_token'));
-        $this->getView()->append($edit);
+        $edit->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
+        $this->getView()->pushComponent($edit);
         return $edit;
     }
 
@@ -196,7 +197,7 @@ class CmsPageController extends ArticleController
     {
 
         if (!$bean->empty('CmsPage_ID_Redirect')) {
-            $cmsPageFinder = new CmsPageBeanFinder($this->getModel()->getDbAdpater());
+            $cmsPageFinder = new CmsPageBeanFinder($this->getModel()->getDatabaseAdapter());
             $cmsPageFinder->filterLocale_Code($this->getTranslator()->getLocale());
             $cmsPageFinder->setCmsPage_ID($bean->get('CmsPage_ID_Redirect'));
             $page = $cmsPageFinder->getBean();
@@ -205,7 +206,7 @@ class CmsPageController extends ArticleController
             $idParameter->addId('CmsPage_ID', $page->get('CmsPage_ID'));
             $path = $this->getPathHelper(true)->setId($idParameter);
             $alert->addBlock($page->get('ArticleTranslation_Name'))->setPath($path);
-            $this->getView()->prepend($alert);
+            $this->getView()->unshiftComponent($alert);
         }
     }
 }

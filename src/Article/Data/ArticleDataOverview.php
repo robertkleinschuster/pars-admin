@@ -28,8 +28,8 @@ class ArticleDataOverview extends BaseOverview
         $this->setShowEditBulk(false);
         $this->setShowMove(false);
         $this->addField('ArticleData_Timestamp', $this->translate('articledata.timestamp'));
-        if ($this->exists('parent')) {
-            $parent = $this->get('parent');
+        if ($this->exists('parentBean')) {
+            $parent = $this->get('parentBean');
             if ($parent instanceof CmsPageBean) {
                 switch ($parent->CmsPageType_Code) {
                     case 'contact':
@@ -105,8 +105,8 @@ class ArticleDataOverview extends BaseOverview
      */
     protected function getRedirectController(): string
     {
-        if ($this->exists('parent')) {
-            $parent = $this->get('parent');
+        if ($this->exists('parentBean')) {
+            $parent = $this->get('parentBean');
             if ($parent instanceof CmsPageBean) {
                 return 'cmspage';
             }
@@ -120,8 +120,8 @@ class ArticleDataOverview extends BaseOverview
      */
     protected function getRedirectAction(): string
     {
-        if ($this->exists('parent')) {
-            $parent = $this->get('parent');
+        if ($this->exists('parentBean')) {
+            $parent = $this->get('parentBean');
             if ($parent instanceof CmsPageBean) {
                 return 'detail';
             }
@@ -145,8 +145,8 @@ class ArticleDataOverview extends BaseOverview
      */
     protected function getRedirectIdFields(): array
     {
-        if ($this->exists('parent')) {
-            $parent = $this->get('parent');
+        if ($this->exists('parentBean')) {
+            $parent = $this->get('parentBean');
             if ($parent instanceof CmsPageBean) {
                 return ['CmsPage_ID'];
             }

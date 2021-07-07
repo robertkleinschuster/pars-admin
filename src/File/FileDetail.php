@@ -21,19 +21,19 @@ class  FileDetail extends BaseDetail
         if ($this->hasAssetDomain()) {
             $path = $this->getAssetDomain() . $path;
         }
-        $this->addField('File_Name', $this->translate('file.name'));
+        $this->addSpan('File_Name', $this->translate('file.name'));
         $image = new Image($path);
         $image->addInlineStyle('max-height', '200px');
         $image->setLabel($this->translate('file.preview'));
-        $this->append($image);
-        $this->addField('File_Code', $this->translate('file.code'));
+        $this->pushField($image);
+        $this->addSpan('File_Code', $this->translate('file.code'));
 
-        $this->addField('File_Code', $this->translate('file.path'))
+        $this->addSpan('File_Code', $this->translate('file.path'))
             ->setContent($path)
             ->setPath($path)
             ->setTarget('_blank');
 
-        $this->addField('FileType_Name', $this->translate('filetype.name'));
+        $this->addSpan('FileType_Name', $this->translate('filetype.name'));
         parent::initialize();
     }
 

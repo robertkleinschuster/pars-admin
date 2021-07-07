@@ -12,10 +12,10 @@ class Setup extends UserEdit
 {
     protected function initialize()
     {
+        $this->getForm()->setUseEvents(false);
         $this->setShowTitle(false);
         parent::initialize();
         $this->getForm()->setBackground(Form::BACKGROUND_LIGHT);
-        $this->getForm()->setRounded(Form::ROUNDED_NONE);
         $this->getForm()->setShadow(Form::SHADOW_LARGE);
         $this->getForm()->setColor(Form::COLOR_DARK);
         $this->getForm()->addOption('py-4');
@@ -35,7 +35,7 @@ class Setup extends UserEdit
                 $this->getValidationHelper()->getSummary('error'),
                 $this->getValidationHelper()->getSummary('errorDetails')
             );
-            $this->getElementList()->unshift($alert);
+            $this->getElementList()->push($alert);
         }
     }
 }

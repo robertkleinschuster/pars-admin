@@ -45,7 +45,7 @@ class CmsPageBlockController extends CmsBlockController
     {
         parent::initView();
         $this->getView()->getLayout()->getNavigation()->setActive('content');
-        $subNavigation = new ContentNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation = new ContentNavigation($this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('cmspage');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
         if (
@@ -59,25 +59,27 @@ class CmsPageBlockController extends CmsBlockController
         }
     }
 
+    public function indexAction()
+    {
+        return parent::indexAction();
+    }
+
+
     protected function createEdit(): BaseEdit
     {
         $this->addFilter_Select(
             'CmsBlockType_Code',
             $this->translate('cmsblocktype.code'),
             $this->getModel()->getCmsBlockType_Options(true),
-            2,
-            1
         );
         $this->addFilter_Select(
             'CmsBlockState_Code',
             $this->translate('cmsblockstate.code'),
             $this->getModel()->getCmsBlockState_Options(true),
-            2,
-            2
         );
-        $this->addFilter_Search($this->translate('search'), 1);
-        $edit = new CmsPageBlockEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $overview = new CmsBlockOverview($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $this->addFilter_Search($this->translate('search'));
+        $edit = new CmsPageBlockEdit($this->getTranslator(), $this->getUserBean());
+        $overview = new CmsBlockOverview($this->getTranslator(), $this->getUserBean());
         $overview->setShowDeleteBulk(false);
         $overview->setShowCreate(false);
         $overview->setShowEdit(false);
@@ -111,7 +113,7 @@ class CmsPageBlockController extends CmsBlockController
 
     public function create_newAction()
     {
-        $edit = new CmsPageBlockCreateNew($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = new CmsPageBlockCreateNew( $this->getTranslator(), $this->getUserBean());
         $this->injectContext($edit);
         $edit->setStateOptions($this->getModel()->getCmsBlockState_Options());
         $edit->setTypeOptions($this->getModel()->getCmsBlockType_Options());
@@ -120,9 +122,9 @@ class CmsPageBlockController extends CmsBlockController
         $edit->setBean($this->getModel()->getEmptyBean(array_replace($this->getControllerRequest()->getId()->getAttribute_List(), $this->getPreviousAttributes())));
         $this->getModel()->getBeanConverter()
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
-        $edit->setToken($this->generateToken('submit_token'));
+        $edit->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
         $edit->setCreate(true);
-        $this->getView()->append($edit);
+        $this->getView()->pushComponent($edit);
         return $edit;
     }
 }

@@ -10,8 +10,10 @@ use Pars\Component\Base\Toolbar\DropdownEditButton;
 use Pars\Component\Base\Toolbar\EditButton;
 use Pars\Helper\Parameter\EditLocaleParameter;
 use Pars\Helper\Parameter\IdParameter;
+use Pars\Helper\Parameter\Parameter;
 use Pars\Helper\Path\PathHelper;
 use Pars\Model\Localization\Locale\LocaleBeanList;
+use Pars\Mvc\View\Event\ViewEvent;
 
 abstract class BaseDetail extends Detail implements CrudComponentInterface
 {
@@ -21,11 +23,6 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
     public bool $showDelete = true;
     public bool $showBack = true;
     protected ?LocaleBeanList $locale_List = null;
-
-    protected function initialize()
-    {
-        parent::initialize();
-    }
 
     protected function handleAdditionalBefore()
     {
@@ -40,7 +37,9 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
     {
         if ($this->isShowBack()) {
             $button = new BackButton();
+            $button->setTooltip($this->translate('back'));
             $button->setPath($this->generateIndexPath());
+            $button->setEvent(ViewEvent::createLink($this->generateIndexPath()));
             $this->getToolbar()->push($button);
         }
     }
@@ -49,6 +48,8 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
     {
         if ($this->isShowEdit()) {
             $button = new EditButton($this->generateEditPath());
+            $button->setTooltip($this->translate('edit'));
+            $button->setEvent(ViewEvent::createModal($this->generateEditPath()));
             $button->setModal(true);
             $button->setModalTitle($this->translate('edit.title'));
             if ($this->hasShowEditFieldAccept()) {
@@ -62,6 +63,7 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
                     $button->setModalTitle($this->translate('edit.title'));
                     $button->setContent($locale->get('Locale_Name'));
                     $button->setPath($this->generateEditPath($locale->get('Locale_UrlCode')));
+                    $button->setEvent(ViewEvent::createLink());
                     $dropdown->getDropdownList()->push($button);
                 }
                 $this->getToolbar()->push($dropdown);
@@ -76,7 +78,9 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
         if ($this->isShowDelete()) {
             $this->getToolbar()->push((new DeleteButton($this->generateDeletePath()))
                 ->setModal(true)
-                ->setModalTitle($this->translate('delete.title')));
+                ->setModalTitle($this->translate('delete.title'))
+                ->setTooltip($this->translate('delete')))
+            ;
         }
     }
 
@@ -119,6 +123,10 @@ abstract class BaseDetail extends Detail implements CrudComponentInterface
             ->setId(IdParameter::fromMap($this->getEditIdFields()));
         if ($this->hasNextContext()) {
             $path->addParameter($this->getNextContext());
+        }
+        if ($this->hasCurrentContext()) {
+            $param = new Parameter('prevcontext', $this->getCurrentContext()->toString());
+            $path->addParameter($param);
         }
         return $path->getPath();
     }

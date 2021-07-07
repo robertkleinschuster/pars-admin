@@ -11,8 +11,8 @@ class ApiKeyModel extends CrudModel
     public function initialize()
     {
         parent::initialize();
-        $this->setBeanFinder(new ApiKeyBeanFinder($this->getDbAdpater()));
-        $this->setBeanProcessor(new ApiKeyBeanProcessor($this->getDbAdpater()));
+        $this->setBeanFinder(new ApiKeyBeanFinder($this->getDatabaseAdapter()));
+        $this->setBeanProcessor(new ApiKeyBeanProcessor($this->getDatabaseAdapter()));
     }
 
 }

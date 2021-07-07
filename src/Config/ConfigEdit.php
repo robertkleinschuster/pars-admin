@@ -13,6 +13,8 @@ class ConfigEdit extends BaseEdit
      */
     protected function initialize()
     {
+        $this->getForm()->setUseColumns(false);
+
         $this->push(new Headline('{Config_Code}'));
         $this->getForm()->addText('Config_Description', '{Config_Description}', $this->translate('config.description'))
             ->getInput()->setDisabled(true);

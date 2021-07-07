@@ -40,7 +40,7 @@ class CmsBlockController extends ArticleController
     {
         parent::initView();
         $this->getView()->getLayout()->getNavigation()->setActive('content');
-        $subNavigation = new ContentNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation = new ContentNavigation($this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('cmsblock');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
         if ($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute('CmsBlock_ID_Parent')) {
@@ -72,26 +72,8 @@ class CmsBlockController extends ArticleController
             $id = $this->getControllerRequest()->getId()->getAttribute('CmsBlock_ID');
             $this->getView()->set('CmsBlock_ID_Parent', (int) $id);
         }
-        $this->initSubcontroller();
         $detail = parent::detailAction();
-        switch ($detail->getBean()->get('CmsBlockType_Code')) {
-            case 'contact':
-                $this->pushAction(
-                    'articledata',
-                    'index',
-                    $this->translate('section.data.contact'),
-                    self::SUB_ACTION_MODE_TABBED
-                );
-                break;
-            case 'poll':
-                $this->pushAction(
-                    'articledata',
-                    'index',
-                    $this->translate('section.data.poll'),
-                    self::SUB_ACTION_MODE_TABBED
-                );
-                break;
-        }
+        $this->initSubcontroller();
         return $detail;
     }
 
@@ -101,15 +83,11 @@ class CmsBlockController extends ArticleController
             'CmsBlockType_Code',
             $this->translate('cmsblocktype.code'),
             $this->getModel()->getCmsBlockType_Options(true),
-            1,
-            1
         );
         $this->addFilter_Select(
             'CmsBlockState_Code',
             $this->translate('cmsblockstate.code'),
             $this->getModel()->getCmsBlockState_Options(true),
-            1,
-            2
         );
         return parent::indexAction();
     }

@@ -13,20 +13,29 @@ class UserEdit extends BaseEdit
 
     protected function initialize()
     {
-        $this->getForm()->addText('Person_Firstname', '{Person_Firstname}', $this->translate('person.firstname'), 1, 1);
-        $this->getForm()->addText('Person_Lastname', '{Person_Lastname}', $this->translate('person.lastname'), 1, 2);
-        $this->getForm()->addText('User_Username', '{User_Username}', $this->translate('user.username'), 3, 1);
-        $this->getForm()->addPassword('User_Password', '', $this->translate('user.password'), 3, 2);
-        $this->getForm()->addText('User_Displayname', '{User_Displayname}', $this->translate('user.displayname'), 2, 1);
+        $this->getForm()->addText('Person_Firstname', '{Person_Firstname}', $this->translate('person.firstname'))
+        ->setGroup($this->translate('user.group.personal'));
+        $this->getForm()->addText('Person_Lastname', '{Person_Lastname}', $this->translate('person.lastname'))
+            ->setGroup($this->translate('user.group.personal'));
+        $this->getForm()->addText('User_Username', '{User_Username}', $this->translate('user.username'))
+            ->setGroup($this->translate('user.group.login'));
+        $this->getForm()->addPassword('User_Password', '', $this->translate('user.password'))
+            ->setGroup($this->translate('user.group.login'));
+        $this->getForm()->addText('User_Displayname', '{User_Displayname}', $this->translate('user.displayname'))
+            ->setGroup($this->translate('user.group.personal'));
         if ($this->hasStateOptions()) {
-            $this->getForm()->addSelect('UserState_Code', $this->getStateOptions(), '{UserState_Code}', $this->translate('userstate.code'), 4, 2);
+            $this->getForm()->addSelect('UserState_Code', $this->getStateOptions(), '{UserState_Code}', $this->translate('userstate.code'))
+                ->setGroup($this->translate('user.group.additional'));
         } else {
-            $this->getForm()->addHidden('UserState_Code', '{UserState_Code}');
+            $this->getForm()->addHidden('UserState_Code', '{UserState_Code}')
+                ->setGroup($this->translate('user.group.additional'));
         }
         if ($this->hasLocaleOptions()) {
-            $this->getForm()->addSelect('Locale_Code', $this->getLocaleOptions(), '{Locale_Code}', $this->translate('user.locale'), 4, 1);
+            $this->getForm()->addSelect('Locale_Code', $this->getLocaleOptions(), '{Locale_Code}', $this->translate('user.locale'))
+                ->setGroup($this->translate('user.group.additional'));
         } else {
-            $this->getForm()->addHidden('Locale_Code', '{Locale_Code}');
+            $this->getForm()->addHidden('Locale_Code', '{Locale_Code}')
+                ->setGroup($this->translate('user.group.additional'));
         }
         parent::initialize();
     }

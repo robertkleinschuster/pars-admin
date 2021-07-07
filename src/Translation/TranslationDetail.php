@@ -16,10 +16,10 @@ class TranslationDetail extends BaseDetail
     protected function initialize()
     {
 
-        $this->addField('Translation_Code', $this->translate('translation.code'));
-        $this->addField('Translation_Text', $this->translate('translation.text'));
-        $this->addField('Translation_Namespace', $this->translate('translation.namespace'));
-        $this->addField('Locale_Name', $this->translate('locale.name'));
+        $this->addSpan('Translation_Code', $this->translate('translation.code'));
+        $this->addSpan('Translation_Text', $this->translate('translation.text'));
+        $this->addSpan('Translation_Namespace', $this->translate('translation.namespace'));
+        $this->addSpan('Locale_Name', $this->translate('locale.name'));
         parent::initialize();
     }
 

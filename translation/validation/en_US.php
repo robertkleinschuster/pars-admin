@@ -8,7 +8,7 @@ return [
     'user.displayname.empty' => 'The display name must not be empty!',
     'user.password.empty' => 'The password must not be empty!',
     'user.password.min_length' => 'The password must be at least 5 characters long!',
-    'userstate.code.lock_self' => 'Current user can must be locked!',
+    'userstate.code.lock_self' => 'Current user can not be locked!',
     'user.delete.self' => 'Current user must not be deleted!',
     'person.firstname.empty' => 'The first name must not be empty!',
     'person.lastname.empty' => 'The last name must not be empty!',

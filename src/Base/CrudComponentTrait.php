@@ -19,7 +19,6 @@ use Pars\Model\Authentication\User\UserBean;
 trait CrudComponentTrait
 {
     use ParsTranslatorAwareTrait;
-    use PathHelperAwareTrait;
 
     private UserBean $userBean;
     protected ?ContextParameter $currentContext = null;
@@ -28,7 +27,6 @@ trait CrudComponentTrait
 
     /**
      * MainNavigation constructor.
-     * @param PathHelper $pathHelper
      * @param ParsTranslator $translator
      * @param UserBean $userBean
      * @throws BeanException
@@ -36,11 +34,9 @@ trait CrudComponentTrait
      * @throws AttributeLockException
      */
     public function __construct(
-        PathHelper $pathHelper,
         ParsTranslator $translator,
         UserBean $userBean
     ) {
-        $this->setPathHelper($pathHelper);
         $this->setTranslator($translator);
         $this->userBean = $userBean;
         parent::__construct();

@@ -4,6 +4,7 @@ namespace Pars\Admin\Cms\Post;
 
 use Pars\Admin\Article\ArticleEdit;
 use Pars\Admin\Base\ValueWarningFieldFormat;
+use Pars\Bean\Type\Base\BeanException;
 
 class CmsPostEdit extends ArticleEdit
 {
@@ -11,19 +12,50 @@ class CmsPostEdit extends ArticleEdit
     protected ?array $stateOptions = null;
     protected ?array $typeOptions = null;
 
-    protected function initialize()
+
+    /**
+     * @throws BeanException
+     */
+    protected function initFields()
     {
-        if (!$this->textOnly && !$this->translationOnly) {
-            if ($this->hasTypeOptions()) {
-                $this->getForm()->addSelect('CmsPostType_Code', $this->getTypeOptions(), '{CmsPostType_Code}', $this->translate('cmsposttype.code'), 10, 2);
-            }
-            if ($this->hasStateOptions()) {
-                $this->getForm()->addSelect('CmsPostState_Code', $this->getStateOptions(), '{CmsPostState_Code}', $this->translate('cmspoststate.code'), 10, 3)
-                    ->setFormat(new ValueWarningFieldFormat('CmsPostState_Code', 'inactive'));
-            }
-            $this->getForm()->addDateTime('CmsPost_PublishTimestamp', '{CmsPost_PublishTimestamp}', $this->translate('cmspost.publishtimestamp'), 11, 1);
+        parent::initFields();
+        $this->addFieldType();
+        $this->addFieldState();
+        $this->addFieldPublishTimestamp();
+        $this->addFieldCodeUrl();
+        $this->addFieldCodeInternal();
+        $this->addFieldName();
+        $this->addFieldTitle();
+        $this->addFieldHeading();
+        $this->addFieldSubHeading();
+        $this->addFieldKeywords();
+        $this->addFieldTeaser();
+        $this->addFieldText();
+        $this->addFieldFooter();
+    }
+
+    protected function addFieldPublishTimestamp()
+    {
+        $formGroup = $this->getForm()->addDateTime('CmsPost_PublishTimestamp', '{CmsPost_PublishTimestamp}', $this->translate('cmspost.publishtimestamp'));
+        $formGroup->setGroup($this->getGroupGeneral());
+        return $formGroup;
+    }
+
+    protected function addFieldType()
+    {
+        if ($this->hasTypeOptions()) {
+            $formGroup = $this->getForm()->addSelect('CmsPostType_Code', $this->getTypeOptions(), '{CmsPostType_Code}', $this->translate('cmsposttype.code'));
+            $formGroup->setGroup($this->getGroupGeneral());
         }
-        parent::initialize();
+    }
+
+    protected function addFieldState()
+    {
+        if ($this->hasStateOptions()) {
+            $formGroup = $this->getForm()->addSelect('CmsPostState_Code', $this->getStateOptions(), '{CmsPostState_Code}', $this->translate('cmspoststate.code'));
+            $formGroup->setFormat(new ValueWarningFieldFormat('CmsPostState_Code', 'inactive'));
+            $formGroup->setGroup($this->getGroupGeneral());
+        }
     }
 
 

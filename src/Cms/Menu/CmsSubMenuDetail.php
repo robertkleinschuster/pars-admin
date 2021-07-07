@@ -5,9 +5,14 @@ namespace Pars\Admin\Cms\Menu;
 class CmsSubMenuDetail extends CmsMenuDetail
 {
     protected function initialize()
-    {
+    {   $span = $this->addSpan('Article_Code', $this->translate('article.code'));
+        $span->setGroup($this->translate('cmsmenu.group.general'));
+        $span = $this->addSpan('ArticleTranslation_Code', $this->translate('articletranslation.code'));
+        $span->setGroup($this->translate('cmsmenu.group.general'));
         $this->setShowType(false);
         parent::initialize();
+
+
     }
 
 

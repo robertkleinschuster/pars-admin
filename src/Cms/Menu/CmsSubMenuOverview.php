@@ -4,10 +4,28 @@ namespace Pars\Admin\Cms\Menu;
 
 class CmsSubMenuOverview extends CmsMenuOverview
 {
+    protected function initName()
+    {
+        parent::initName();
+        $this->setName($this->translate('submenu.overview'));
+    }
+
+
     protected function initialize()
     {
         $this->setShowType(false);
+        $this->setShowMove(true);
         parent::initialize();
+    }
+
+    protected function initFields()
+    {
+        parent::initFields();
+        $this->addField('ArticleTranslation_Name', $this->translate('articletranslation.name'));
+        $this->addField('Article_Code', $this->translate('article.code'));
+        $this->addField('ArticleTranslation_Code', $this->translate('articletranslation.code'));
+        $this->addField('CmsMenu_Level', $this->translate('cmsmenu.level'));
+
     }
 
 
@@ -25,9 +43,7 @@ class CmsSubMenuOverview extends CmsMenuOverview
 
     protected function getCreateIdFields(): array
     {
-        return [
-            'CmsMenu_ID_Parent'
-        ];
+        return $this->getControllerRequest()->getId()->getAttributes();
     }
 
     protected function getRedirectAction(): string
@@ -38,7 +54,7 @@ class CmsSubMenuOverview extends CmsMenuOverview
     protected function getRedirectIdFields(): array
     {
         return [
-            'CmsMenu_ID' => '{CmsMenu_ID_Parent}'
+            'CmsMenu_ID' => $this->getControllerRequest()->getId()->getAttribute('CmsMenu_ID_Parent')
         ];
     }
 

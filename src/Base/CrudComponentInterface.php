@@ -5,26 +5,22 @@ namespace Pars\Admin\Base;
 use Pars\Core\Translation\ParsTranslator;
 use Pars\Core\Translation\ParsTranslatorAwareInterface;
 use Pars\Helper\Parameter\ContextParameter;
-use Pars\Helper\Path\PathHelper;
-use Pars\Helper\Path\PathHelperAwareInterface;
 use Pars\Model\Authentication\User\UserBean;
 use Pars\Mvc\View\ComponentInterface;
-use Pars\Mvc\View\HtmlInterface;
+use Pars\Mvc\View\ViewElementInterface;
 
 /**
  * Interface CrudComponentInterface
  * @package Pars\Admin\Base
  */
-interface CrudComponentInterface extends HtmlInterface, ComponentInterface, PathHelperAwareInterface, ParsTranslatorAwareInterface
+interface CrudComponentInterface extends ViewElementInterface, ComponentInterface, ParsTranslatorAwareInterface
 {
     /**
      * CrudComponentInterface constructor.
-     * @param PathHelper $pathHelper
      * @param ParsTranslator $translator
      * @param UserBean $userBean
      */
     public function __construct(
-        PathHelper $pathHelper,
         ParsTranslator $translator,
         UserBean $userBean
     );

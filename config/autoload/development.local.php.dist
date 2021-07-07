@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 use Mezzio\Container;
 use Mezzio\Middleware\ErrorResponseGenerator;
+use Pars\Core\Logging\ErrorLogWriter;
 
 return [
     'dependencies' => [
@@ -37,6 +38,7 @@ return [
         'cache' => null,
     ],
     'db' => [
+        'debug' => true,
         'profiler' => new \Pars\Core\Database\Profiler()
     ],
     'assets' => [
@@ -44,5 +46,23 @@ return [
     ],
     'bundles' => [
         'development' => true,
-    ]
+    ],
+    'psr_log' => [
+        \Psr\Log\LoggerInterface::class => [
+            'writers' => [
+                ErrorLogWriter::class => [
+                    'name' => ErrorLogWriter::class,
+                    'options' => [
+                        'formatter' => [
+                            'name' => \Pars\Core\Logging\LogFormatter::class,
+                            'options' => [
+                                'format' => "%timestamp% %priorityName% (%priority%): %message% \n%extra%",
+                                'dateTimeFormat' => 'c',
+                            ],
+                        ],
+                    ]
+                ],
+            ],
+        ],
+    ],
 ];

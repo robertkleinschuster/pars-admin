@@ -1,0 +1,27 @@
+[submodule "modules/pars-beans"]
+	path = modules/pars-beans
+	url = https://github.com/pars-framework/pars-beans
+[submodule "modules/pars-cli"]
+	path = modules/pars-cli
+	url = https://github.com/pars-framework/pars-cli
+[submodule "modules/pars-components"]
+	path = modules/pars-components
+	url = https://github.com/pars-framework/pars-components
+[submodule "modules/pars-core"]
+	path = modules/pars-core
+	url = https://github.com/pars-framework/pars-core
+[submodule "modules/pars-helpers"]
+	path = modules/pars-helpers
+	url = https://github.com/pars-framework/pars-helpers
+[submodule "modules/pars-import"]
+	path = modules/pars-import
+	url = https://github.com/pars-framework/pars-import
+[submodule "modules/pars-models"]
+	path = modules/pars-models
+	url = https://github.com/pars-framework/pars-models
+[submodule "modules/pars-mvc"]
+	path = modules/pars-mvc
+	url = https://github.com/pars-framework/pars-mvc
+[submodule "modules/pars-patterns"]
+	path = modules/pars-patterns
+	url = https://github.com/pars-framework/pars-patterns

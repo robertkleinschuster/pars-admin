@@ -3,13 +3,18 @@
 namespace Pars\Admin\Base;
 
 use Pars\Bean\Type\Base\BeanException;
+use Pars\Component\Base\Field\Button;
+use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Form\Hidden;
+use Pars\Component\Base\Modal\Modal;
 use Pars\Component\Base\Overview\DeleteButton;
 use Pars\Component\Base\Overview\EditButton;
+use Pars\Component\Base\Overview\MoveDownButton;
 use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Toolbar\CreateButton;
 use Pars\Component\Base\Toolbar\CreateNewButton;
 use Pars\Component\Base\Toolbar\DeleteBulkButton;
+use Pars\Component\Base\Toolbar\LinkButton;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\MoveParameter;
@@ -17,7 +22,9 @@ use Pars\Helper\Parameter\OrderParameter;
 use Pars\Helper\Parameter\RedirectParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Helper\Path\PathHelper;
+use Pars\Mvc\View\Event\ViewEvent;
 use Pars\Mvc\View\FieldInterface;
+use Pars\Mvc\View\ViewElement;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
 
@@ -36,41 +43,74 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
     public bool $showDetail = true;
     public bool $showCreate = true;
     public bool $showCreateNew = false;
+    public bool $showLink = false;
     public bool $showMove = false;
     public bool $showOrder = false;
     public ?string $token = null;
-
+    public ?string $tokenName = null;
 
     protected function initAdditionalBefore()
     {
         parent::initAdditionalBefore();
-        $this->initFormFields();
-        $this->initCreateButton();
-        $this->initCreateNewButton();
-        $this->initDeleteBulkButton();
+        $this->setId($this->getElementClass() . $this->getControllerRequest()->getHash());
     }
 
-    protected function initFormFields()
+
+    protected function handleAdditionalAfter()
     {
-        $this->setAttribute('method', 'post');
-        $this->setAttribute('action', $this->generateBulkAction());
-        if ($this->hasToken()) {
-            $this->push(new Hidden('submit_token', $this->getToken()));
+        parent::handleAdditionalAfter();
+        foreach ($this->getFieldList() as $item) {
+            if ($item instanceof MoveDownButton) {
+                $redirect = (new RedirectParameter())
+                    ->setPath($this->getPathHelper(false)->getCurrentPathReal());
+                $path = $this->getPathHelper(false)
+                    ->addParameter($redirect)
+                    ->setController($this->getController())
+                    ->setAction('repairOrder')->getPath();
+                $icon = new Icon(Icon::ICON_REFRESH_CW);
+                $icon->setEvent(ViewEvent::createLink($path));
+                if ($this->hasId()) {
+                    $icon->getEvent()->setTargetId($this->getId());
+                }
+                $item->setLabel($icon);
+                $item->setLabelPath($path);
+            }
+        }
+    }
+
+
+    protected function handleAdditionalBefore()
+    {
+        parent::handleAdditionalBefore();
+        $this->handleFormFields();
+        $this->handleCreateButton();
+        $this->handleLinkButton();
+        $this->handleCreateNewButton();
+        $this->handleDeleteBulkButton();
+    }
+
+
+    protected function handleFormFields()
+    {
+        if ($this->isShowDeleteBulk()) {
+            $this->getMain()->setTag('form');
+            $this->getMain()->setAttribute('method', 'post');
+            $this->getMain()->setAttribute('action', $this->generateBulkAction());
+        }
+        if ($this->hasToken() && $this->hasTokenName()) {
+            $this->getMain()->push(new Hidden($this->getTokenName(), $this->getToken()));
         }
         $redirect = new Hidden(
             RedirectParameter::name(),
             RedirectParameter::fromPath($this->generateRedirectPath(false))
         );
-        $this->push($redirect);
-        if ($this->isShowDeleteBulk()) {
-            $this->setBulkFieldName(IdListParameter::name());
-            $this->setBulkFieldValue(IdListParameter::fromMap($this->getDetailIdFields()));
-        }
-
+        $this->getMain()->push($redirect);
+        $this->setBulkFieldName(IdListParameter::name());
+        $this->setBulkFieldValue(IdListParameter::fromMap($this->getDetailIdFields()));
     }
 
 
-    protected function initCreateNewButton()
+    protected function handleCreateNewButton()
     {
         if ($this->isShowCreateNew()) {
             $this->getToolbar()->push(
@@ -81,13 +121,26 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
         }
     }
 
-    protected function initCreateButton()
+    protected function handleLinkButton()
+    {
+        if ($this->isShowLink()) {
+            $this->getToolbar()->push(
+                (new LinkButton($this->generateLinkPath()))
+                    ->setModal(true)
+                    ->setModalTitle($this->translate('link.title'))
+                    ->setTooltip($this->translate('link'))
+            );
+        }
+    }
+
+    protected function handleCreateButton()
     {
         if ($this->isShowCreate()) {
             $this->getToolbar()->unshift(
                 (new CreateButton($this->generateCreatePath()))
                     ->setModal(true)
                     ->setModalTitle($this->translate('create.title'))
+                    ->setTooltip($this->translate('create'))
             );
         }
     }
@@ -164,19 +217,71 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
         return $path->getPath();
     }
 
+
+    /**
+     * @return string
+     */
+    protected function generateLinkPath(): string
+    {
+        $path = $this->getPathHelper()
+            ->setController($this->getController())
+            ->setAction('link')
+            ->setId(IdParameter::fromMap($this->getCreateIdFields()));
+        if ($this->hasNextContext()) {
+            $path->addParameter($this->getNextContext());
+        }
+        return $path->getPath();
+    }
+
     /**
      * @throws AttributeExistsException
      * @throws AttributeLockException
      * @throws BeanException
      */
-    protected function initDeleteBulkButton()
+    protected function handleDeleteBulkButton()
     {
         if ($this->isShowDeleteBulk()) {
             $button = new DeleteBulkButton(SubmitParameter::name(), SubmitParameter::deleteBulk());
-            $button->setConfirm($this->translate('delete_bulk.message'));
-            $button->addOption('d-none');
+            $id = 'bulk_delete_' . $this->getController();
+            if (!$this->getMain()->hasId()) {
+                $this->getMain()->setId($id);
+            }
+            $button->setId($id . '__confirm_delete');
+            $button->setTooltip($this->translate('delete'));
+            $button->setEvent(ViewEvent::createCallback(function (DeleteBulkButton $element) use ($id) {
+                $modal = new Modal();
+                $modal->addInlineStyle('color', 'initial');
+                $modal->addInlineStyle('display', 'block');
+                $modal->addOption('show');
+                $element->setTag('div');
+                $element->setEvent(null);
+                $modal->getModalBody()->setContent($this->translate('delete_bulk.message'));
+                $modal->getModalTitle()->setContent($this->translate('delete_bulk.title'));
+                $button = new Button();
+                $button->setId($id . '__confirm');
+                $button->setStyle(Button::STYLE_DANGER);
+                $button->push(new Icon(Icon::ICON_CHECK));
+                $path = null;
+                if ($this->getMain()->hasAttribute('action')) {
+                    $path = $this->getMain()->getAttribute('action');
+                }
+                $button->setEvent(ViewEvent::createSubmit($path, $id));
+                if ($element->hasName() && $element->hasValue()) {
+                    $element->push(new Hidden($element->getName(), $element->getValue()));
+                }
+                $button->getEvent()->setTargetId($id);
+                $modal->getModalFooter()->push($button);
+                $button = new Button();
+                $button->setId($id . '__cancel');
+                $button->setStyle(Button::STYLE_SECONDARY);
+                $button->push(new Icon(Icon::ICON_X));
+                $button->setEvent(ViewEvent::createLink());
+                $button->getEvent()->setTargetId($id);
+                $modal->getModalFooter()->push($button);
+                $element->push($modal);
+                $element->removeOption('d-none');
+            }));
             $this->getToolbar()->push($button);
-            $this->setTag('form');
         }
     }
 
@@ -255,6 +360,9 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
         $path = $this->getPathHelper()
             ->setController($this->getController())
             ->setAction('index');
+        if ($this->getControllerRequest()->hasId()) {
+            $path->setId($this->getControllerRequest()->getId());
+        }
         return $path->getPath();
     }
 
@@ -263,6 +371,9 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
      */
     protected function getRedirectController(): string
     {
+        if ($this->hasPathHelper()) {
+            return $this->getPathHelper(false)->getController();
+        }
         return $this->getController();
     }
 
@@ -271,6 +382,9 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
      */
     protected function getRedirectAction(): string
     {
+        if ($this->hasPathHelper()) {
+            return $this->getPathHelper(false)->getAction();
+        }
         return 'index';
     }
 
@@ -279,6 +393,9 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
      */
     protected function getRedirectIdFields(): array
     {
+        if ($this->hasPathHelper()) {
+            return $this->getPathHelper(false)->getId()->getAttributes();
+        }
         return [];
     }
 
@@ -331,6 +448,7 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
      */
     public function setShowMove(bool $showMove): void
     {
+        $this->setShowOrder(!$showMove);
         $this->showMove = $showMove;
     }
 
@@ -435,8 +553,9 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
      *
      * @return $this
      */
-    public function setToken(string $token): self
+    public function setToken(string $tokenName, string $token): self
     {
+        $this->setTokenName($tokenName);
         $this->token = $token;
         return $this;
     }
@@ -483,6 +602,33 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getTokenName(): string
+    {
+        return $this->tokenName;
+    }
+
+    /**
+     * @param string $tokenName
+     *
+     * @return $this
+     */
+    public function setTokenName(string $tokenName): self
+    {
+        $this->tokenName = $tokenName;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasTokenName(): bool
+    {
+        return isset($this->tokenName);
+    }
+
 
     /**
      * @param string $name
@@ -508,18 +654,57 @@ abstract class BaseOverview extends Overview implements CrudComponentInterface
             ) {
                 $order->setMode(OrderParameter::MODE_DESC);
                 if ($orgiginalOrder->hasField() && $orgiginalOrder->getField() == $name) {
+                    $field->setLabel($field->getLabel() . ' &darr;');
+                }
+                $order->setField($name);
+                $path->addParameter($order);
+            } elseif ($orgiginalOrder->hasMode()
+                && $orgiginalOrder->getMode() == OrderParameter::MODE_DESC) {
+                if ($orgiginalOrder->hasField() && $orgiginalOrder->getField() == $name) {
                     $field->setLabel($field->getLabel() . ' &uarr;');
                 }
+                $path->getOrder()->clear();
             } else {
                 $order->setMode(OrderParameter::MODE_ASC);
                 if ($orgiginalOrder->hasField() && $orgiginalOrder->getField() == $name) {
-                    $field->setLabel($field->getLabel() . ' &darr;');
+                    $field->setLabel($field->getLabel());
                 }
+                $order->setField($name);
+                $path->addParameter($order);
             }
-            $order->setField($name);
-            $path->addParameter($order);
+
             $field->setLabelPath($path->getPath());
         }
         return $field;
     }
+
+    /**
+     * @return bool
+     */
+    public function isShowLink(): bool
+    {
+        return $this->showLink;
+    }
+
+    /**
+     * @param bool $showLink
+     * @return BaseOverview
+     */
+    public function setShowLink(bool $showLink): BaseOverview
+    {
+        $this->showLink = $showLink;
+        return $this;
+    }
+
+    public function addFieldState(string $name, string $active = null, string $inactive = null)
+    {
+        if (!$active) {
+            $active = $this->translate('active');
+        }
+        if (!$inactive) {
+            $inactive = $this->translate('inactive');
+        }
+        return $this->addFieldSpan($name, '')->setFormat(new StateFieldFormat($name, $active, $inactive));
+    }
+
 }

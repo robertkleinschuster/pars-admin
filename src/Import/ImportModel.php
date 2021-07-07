@@ -4,12 +4,17 @@ namespace Pars\Admin\Import;
 
 use Pars\Bean\Type\Base\BeanListAwareInterface;
 use Pars\Admin\Base\CrudModel;
+use Pars\Core\Database\DatabaseBeanFinderTrait;
+use Pars\Core\Database\DatabaseBeanProcessorTrait;
 use Pars\Helper\Parameter\IdListParameter;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\SubmitParameter;
 use Pars\Helper\Validation\ValidationHelperAwareInterface;
+use Pars\Import\ImportTask;
 use Pars\Import\Tesla\TeslaImporter;
 use Pars\Model\Cms\Page\CmsPageBeanFinder;
+use Pars\Model\Import\Data\ImportDataBeanFinder;
+use Pars\Model\Import\Data\ImportDataBeanProcessor;
 use Pars\Model\Import\ImportBeanFinder;
 use Pars\Model\Import\ImportBeanProcessor;
 use Pars\Model\Import\Type\ImportTypeBeanFinder;
@@ -23,8 +28,10 @@ class ImportModel extends CrudModel
     public function initialize()
     {
         parent::initialize();
-        $this->setBeanProcessor(new ImportBeanProcessor($this->getDbAdpater()));
-        $this->setBeanFinder(new ImportBeanFinder($this->getDbAdpater()));
+        $this->setBeanProcessor(new ImportBeanProcessor($this->getDatabaseAdapter()));
+        $finder = new ImportBeanFinder($this->getDatabaseAdapter());
+        $finder->enhanceWithAvgs();
+        $this->setBeanFinder($finder);
     }
 
     /**
@@ -33,7 +40,7 @@ class ImportModel extends CrudModel
      */
     public function getImportTypeOptions(): array
     {
-        $finder = new ImportTypeBeanFinder($this->getDbAdpater());
+        $finder = new ImportTypeBeanFinder($this->getDatabaseAdapter());
         $finder->setImportType_Active(true);
         $options = [];
         foreach ($finder->getBeanListDecorator() as $item) {
@@ -44,7 +51,7 @@ class ImportModel extends CrudModel
 
     public function getArticleOptions(): array
     {
-        $finder = new CmsPageBeanFinder($this->getDbAdpater());
+        $finder = new CmsPageBeanFinder($this->getDatabaseAdapter());
         $finder->filterLocale_Code($this->getTranslator()->getLocale());
         $options = [];
         foreach ($finder->getBeanListDecorator() as $item) {
@@ -84,28 +91,8 @@ class ImportModel extends CrudModel
     public function run()
     {
         $bean = $this->getBean();
-        switch ($bean->get('ImportType_Code')) {
-            case 'tesla':
-                $importer = new TeslaImporter($bean);
-                $importer->setTranslator($this->getTranslator());
-                $importer->run();
-                if ($importer->getValidationHelper()->hasError()) {
-                    $this->getValidationHelper()->merge($importer->getValidationHelper());
-                } else {
-                    $processor = $this->getBeanProcessor();
-                    $beanList = $this->getBeanFinder()->getBeanFactory()->getEmptyBeanList();
-                    $beanList->push($importer->getBean());
-                    if ($processor instanceof BeanListAwareInterface) {
-                        $processor->setBeanList($beanList);
-                    }
-                    $processor->save();
-                    if (
-                        $processor instanceof ValidationHelperAwareInterface
-                        && $processor->getValidationHelper()->hasError()
-                    ) {
-                        $this->getValidationHelper()->merge($processor->getValidationHelper());
-                    }
-                }
-        }
+        $importTask = new ImportTask([], new \DateTime(), $this->getContainer());
+        $importTask->initById($bean->Import_ID);
+        $importTask->execute();
     }
 }

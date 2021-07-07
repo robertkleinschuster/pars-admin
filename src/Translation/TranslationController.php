@@ -52,7 +52,7 @@ class TranslationController extends CrudController
     {
         parent::initView();
         $this->getView()->getLayout()->getNavigation()->setActive('system');
-        $subNavigation = new SystemNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation = new SystemNavigation($this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('translation');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
@@ -120,14 +120,14 @@ class TranslationController extends CrudController
             $detail->setShowBack(false);
             $detail->setShowDelete(false);
             $detail->setBean($source);
-            $this->getView()->append($detail);
+            $this->getView()->pushComponent($detail);
             $detail = new Detail();
             $detail->setName($this->translate('translation.edit.placeholder'));
             foreach ($this->getView() as $key => $value) {
                 $span = new Span($value, "[{$key}]");
-                $detail->append($span);
+                $detail->pushField($span);
             }
-            $this->getView()->append($detail);
+            $this->getView()->pushComponent($detail);
         }
         return $edit;
     }

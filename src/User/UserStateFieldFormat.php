@@ -3,6 +3,7 @@
 namespace Pars\Admin\User;
 
 use Pars\Bean\Type\Base\BeanInterface;
+use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\StyleAwareInterface;
 use Pars\Core\Translation\ParsTranslator;
 use Pars\Core\Translation\ParsTranslatorAwareTrait;
@@ -25,22 +26,17 @@ class UserStateFieldFormat implements FieldFormatInterface
     public function __invoke(FieldInterface $field, string $value, ?BeanInterface $bean = null): string
     {
         if (null !== $bean) {
+            $field->setIconField(true);
             switch ($bean->get('UserState_Code')) {
                 case 'active':
-                    if ($field instanceof StyleAwareInterface) {
-                        $field->setStyle(StyleAwareInterface::STYLE_SUCCESS);
-                    }
-                    return $this->getTranslator()->translate('userstate.code.active');
+                    $field->setTooltip($this->getTranslator()->translate('userstate.code.active'));
+                    return new Icon(Icon::ICON_USER_CHECK, Icon::STYLE_SUCCESS);
                 case 'inactive':
-                    if ($field instanceof StyleAwareInterface) {
-                        $field->setStyle(StyleAwareInterface::STYLE_SECONDARY);
-                    }
-                    return $this->getTranslator()->translate('userstate.code.inactive');
+                    $field->setTooltip( $this->getTranslator()->translate('userstate.code.inactive'));
+                    return new Icon(Icon::ICON_USER, Icon::STYLE_SECONDARY);
                 case 'locked':
-                    if ($field instanceof StyleAwareInterface) {
-                        $field->setStyle(StyleAwareInterface::STYLE_DANGER);
-                    }
-                    return $this->getTranslator()->translate('userstate.code.locked');
+                    $field->setTooltip( $this->getTranslator()->translate('userstate.code.locked'));
+                    return new Icon(Icon::ICON_USER_X, Icon::STYLE_DANGER);
             }
         }
         return $value;

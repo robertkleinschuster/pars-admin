@@ -22,8 +22,9 @@ class AuthenticationController extends BaseController
 
     public function loginAction()
     {
+        $this->getSession()->regenerate();
         try {
-            $userFinder = new UserBeanFinder($this->getModel()->getDbAdpater());
+            $userFinder = new UserBeanFinder($this->getModel()->getDatabaseAdapter());
             $count = $userFinder->count();
         } catch (\Exception $ex) {
             $count = 0;
@@ -44,7 +45,7 @@ class AuthenticationController extends BaseController
         $signin = new SigninForm();
         $signin->setToken($this->generateToken('login_token'));
         $signin->setTranslator($this->getTranslator());
-        $this->getView()->append($signin);
+        $this->getView()->pushComponent($signin);
         $login_error = $this->getFlashMessanger()->getFlash('login_error');
         if ($login_error == 'credentials') {
             $signin->setError($this->translate('login.error.credentials'));
@@ -56,7 +57,8 @@ class AuthenticationController extends BaseController
 
     public function logoutAction()
     {
-        $this->getSession()->unset(UserInterface::class);
+        $this->getSession()->clear();
+        $this->getSession()->regenerate();
         return $this->getControllerResponse()->setRedirect($this->getPathHelper()->setController('auth')->setAction('login')->getPath());
     }
 }

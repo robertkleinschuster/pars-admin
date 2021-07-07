@@ -15,7 +15,7 @@ class LocaleModel extends CrudModel
         $this->setBeanProcessor(new LocaleBeanProcessor($this->getDatabaseAdapter()));
         $this->setBeanOrderProcessor(new BeanOrderProcessor(
             new LocaleBeanProcessor($this->getDatabaseAdapter()),
-            new LocaleBeanFinder($this->getDbAdpater()),
+            new LocaleBeanFinder($this->getDatabaseAdapter()),
             'Locale_Order'
         ));
     }

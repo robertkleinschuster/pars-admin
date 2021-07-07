@@ -2,8 +2,7 @@
 
 namespace Pars\Admin\Cms\Post;
 
-use Laminas\I18n\Translator\TranslatorAwareTrait;
-use Laminas\I18n\Translator\TranslatorInterface;
+
 use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Component\Base\StyleAwareInterface;
 use Pars\Core\Translation\ParsTranslator;

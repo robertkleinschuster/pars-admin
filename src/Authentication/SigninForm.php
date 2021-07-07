@@ -7,6 +7,7 @@ use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Field\Paragraph;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Form\Form;
+use Pars\Component\Base\Form\Submit;
 use Pars\Core\Translation\ParsTranslatorAwareTrait;
 
 class SigninForm extends Form
@@ -19,8 +20,8 @@ class SigninForm extends Form
 
     protected function initialize()
     {
+        $this->setUseColumns(false);
         $this->setBackground(Form::BACKGROUND_LIGHT);
-        $this->setRounded(Form::ROUNDED_NONE);
         $this->setShadow(Form::SHADOW_LARGE);
         $this->setColor(Form::COLOR_DARK);
         $this->addOption('py-4');
@@ -32,7 +33,7 @@ class SigninForm extends Form
         $icon->addInlineStyle('max-width', '200px');
         $icon->addInlineStyle('fill', '#343a40');
         $icon->addOption('mx-auto');
-        $icon->addOption('mb-3');
+        $icon->addOption('mb-4');
         $this->push($icon);
         $username = $this->addText('login_username', '', $this->translate('login.username'));
         $password = $this->addPassword('login_password', '', $this->translate('login.password'));
@@ -47,7 +48,13 @@ class SigninForm extends Form
         if ($this->hasToken()) {
             $this->addHidden('login_token', $this->getToken());
         }
-        $this->addSubmit('signin', $this->translate('login.submit'), 'sigin');
+        $this->addSubmit(
+            'signin',
+            $this->translate('login.submit'),
+            'sigin',
+            Submit::STYLE_SUCCESS,
+            null
+        )->getInput()->setEvent(null);
 
         parent::initialize();
 

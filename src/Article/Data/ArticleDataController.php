@@ -41,7 +41,7 @@ class ArticleDataController extends CrudController
     {
         parent::initView();
         $this->getView()->getLayout()->getNavigation()->setActive('content');
-        $subNavigation = new ContentNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation = new ContentNavigation($this->getTranslator(), $this->getUserBean());
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
         if (
             $this->getControllerRequest()->hasId()
@@ -87,7 +87,7 @@ class ArticleDataController extends CrudController
         if ($this->hasParent() && $this->getParent()->hasView()) {
             $parentBean = $this->getParent()->getModel()->getBean();
             $this->getModel()->getBeanFinder()->filter(['Article_ID' => $parentBean->get('Article_ID')]);
-            $overview->set('parent', $parentBean);
+            $overview->set('parentBean', $parentBean);
         }
         return $overview;
     }

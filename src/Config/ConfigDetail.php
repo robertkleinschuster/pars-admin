@@ -25,8 +25,8 @@ class ConfigDetail extends BaseDetail
     {
         $this->setShowDelete(false);
         $this->setHeading('{Config_Code}');
-        $this->addField('Config_Value', $this->translate('config.value'));
-        $this->addField('ConfigType_Code', $this->translate('configtype.code'));
+        $this->addSpan('Config_Value', $this->translate('config.value'));
+        $this->addSpan('ConfigType_Code', $this->translate('configtype.code'));
         $this->setShowEditFieldAccept(new BooleanValueFieldAccept('Config_Locked', true));
         parent::initialize();
     }

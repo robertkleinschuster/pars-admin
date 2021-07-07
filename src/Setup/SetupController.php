@@ -2,11 +2,10 @@
 
 namespace Pars\Admin\Setup;
 
-use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Pars\Admin\Authentication\SigninLayout;
 use Pars\Admin\Base\BaseController;
 use Pars\Component\Base\View\BaseView;
-use Pars\Core\Database\DatabaseMiddleware;
+use Pars\Core\Translation\ParsTranslatorAwareInterface;
 use Pars\Helper\Path\PathHelper;
 use Pars\Model\Authentication\User\UserBean;
 use Pars\Mvc\View\ViewBeanConverter;
@@ -22,6 +21,7 @@ class SetupController extends BaseController
         $this->setView(new BaseView());
         $layout = new SigninLayout();
         $this->getView()->setLayout($layout);
+        $this->injectStaticFiles();
     }
 
     public function init()
@@ -34,13 +34,8 @@ class SetupController extends BaseController
     protected function initModel()
     {
         $this->getModel()->setBeanConverter(new ViewBeanConverter());
-        $this->getModel()
-            ->setDbAdapter($this->getMiddlewareAttribute(DatabaseMiddleware::ADAPTER_ATTRIBUTE));
         $this->getModel()->initialize();
-        $this->getModel()->setTranslator($this->getTranslator());
-        $metadata = \Laminas\Db\Metadata\Source\Factory::createSourceFromAdapter($this->getModel()->getDbAdpater());
-        $tableNames = $metadata->getTableNames($this->getModel()->getDbAdpater()->getCurrentSchema());
-        if (in_array('Person', $tableNames) && in_array('User', $tableNames)) {
+        if ($this->getModel()->getDatabaseAdapter()->isValid()) {
             $count = $this->getModel()->getBeanFinder()->count();
         } else {
             $count = 0;
@@ -54,7 +49,7 @@ class SetupController extends BaseController
         }
         if ($this->getModel()->hasBeanProcessor()) {
             $processor = $this->getModel()->getBeanProcessor();
-            if ($processor instanceof TranslatorAwareInterface) {
+            if ($processor instanceof ParsTranslatorAwareInterface) {
                 $processor->setTranslator($this->getTranslator());
             }
         }
@@ -70,13 +65,13 @@ class SetupController extends BaseController
 
     public function indexAction()
     {
-        $setup = new Setup($this->getPathHelper(), $this->getTranslator(), new UserBean());
+        $setup = new Setup($this->getTranslator(), new UserBean());
         $setup->setCreate(true);
-        $this->getView()->append($setup);
+        $this->getView()->pushComponent($setup);
         $setup->setBean($this->getModel()->getEmptyBean());
         $setup->getBean()->set('Locale_Code', 'de_AT');
         $setup->getBean()->set('UserState_Code', 'active');
-        $setup->setToken($this->generateToken('submit_token'));
+        $setup->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
         $this->getModel()->getBeanConverter()
             ->convert($setup->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
         $setup->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());

@@ -5,6 +5,7 @@ namespace Pars\Admin\User;
 use Pars\Bean\Type\Base\BeanListAwareTrait;
 use Pars\Admin\Base\BaseOverview;
 use Pars\Component\Base\Field\Badge;
+use Pars\Component\Base\Field\Span;
 
 class UserOverview extends BaseOverview
 {
@@ -19,14 +20,30 @@ class UserOverview extends BaseOverview
     protected function initialize()
     {
 
-        $badge = new Badge('{UserState_Code}');
-        $badge->setFormat(new UserStateFieldFormat($this->getTranslator()));
-        $this->append($badge);
-        $this->addField('User_Username', $this->translate('user.username'));
-        $this->addField('Person_Firstname', $this->translate('person.firstname'));
-        $this->addField('Person_Lastname', $this->translate('person.lastname'));
+
         parent::initialize();
     }
+
+    protected function initBase()
+    {
+        parent::initBase();
+        $this->setShowOrder(true);
+    }
+
+
+    protected function initFields()
+    {
+        parent::initFields();
+        $badge = new Span('{UserState_Code}');
+        $badge->setFormat(new UserStateFieldFormat($this->getTranslator()));
+        $this->pushField($badge);
+        $this->addFieldOrderable('User_Username', $this->translate('user.username'));
+        $this->addFieldOrderable('Person_Firstname', $this->translate('person.firstname'));
+        $this->addFieldOrderable('Person_Lastname', $this->translate('person.lastname'));
+    }
+
+
+
 
     protected function getController(): string
     {

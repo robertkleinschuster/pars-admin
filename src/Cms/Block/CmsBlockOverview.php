@@ -4,6 +4,7 @@ namespace Pars\Admin\Cms\Block;
 
 use Pars\Admin\Article\ArticleOverview;
 use Pars\Component\Base\Field\Badge;
+use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Field\Span;
 
 class CmsBlockOverview extends ArticleOverview
@@ -14,17 +15,11 @@ class CmsBlockOverview extends ArticleOverview
     }
 
 
-    protected function initialize()
-    {
-        $span = new Badge('{CmsBlockState_Code}');
-        $span->setFormat(new CmsBlockStateFieldFormat($this->getTranslator()));
-        if ($this->hasDetailPath()) {
-            $span->setPath($this->getDetailPath());
-            $span->addOption(Span::OPTION_DECORATION_NONE);
-        }
-        $this->append($span);
 
-        parent::initialize();
+    protected function initFields()
+    {
+        $this->addFieldState('CmsBlockState_Code');
+        parent::initFields();
 
         $span = $this->addFieldOrderable('CmsBlockType_Code', $this->translate('cmsblocktype.code'));
         $span->setFormat(new CmsBlockTypeFieldFormat($this->getTranslator()));

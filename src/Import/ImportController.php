@@ -33,7 +33,7 @@ class ImportController extends CrudController
     {
         parent::initView();
         $this->getView()->getLayout()->getNavigation()->setActive('system');
-        $subNavigation = new SystemNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation = new SystemNavigation($this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('import');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
@@ -69,15 +69,15 @@ class ImportController extends CrudController
             case 'tesla':
                 if (isset($bean->get('Import_Data')['access_token'])) {
                     $alert = new Alert($this->translate('tesla.authentication.alert'));
-                    $this->getView()->append($alert);
+                    $this->getView()->pushComponent($alert);
                 }
-                $configure = new TeslaImportConfigure($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+                $configure = new TeslaImportConfigure($this->getTranslator(), $this->getUserBean());
                 $configure->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
                 $configure->setBean($bean);
                 $this->getModel()->getBeanConverter()
                     ->convert($configure->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
-                $configure->setToken($this->generateToken('submit_token'));
-                $this->getView()->append($configure);
+                $configure->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
+                $this->getView()->pushComponent($configure);
                 break;
         }
     }

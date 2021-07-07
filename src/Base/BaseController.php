@@ -2,8 +2,6 @@
 
 namespace Pars\Admin\Base;
 
-use Laminas\Db\Adapter\AdapterInterface;
-use Laminas\Db\Adapter\Profiler\ProfilerInterface;
 use Mezzio\Authentication\UserInterface;
 use Mezzio\Csrf\CsrfGuardInterface;
 use Mezzio\Csrf\CsrfMiddleware;
@@ -13,16 +11,25 @@ use Mezzio\Session\LazySession;
 use Mezzio\Session\SessionMiddleware;
 use Pars\Bean\Converter\BeanConverterAwareInterface;
 use Pars\Bean\Type\Base\BeanException;
+use Pars\Component\Base\Alert\Alert;
 use Pars\Component\Base\Collapsable\Collapsable;
 use Pars\Component\Base\Detail\Detail;
-use Pars\Component\Base\Toolbar\MoreButton;
+use Pars\Component\Base\Field\Span;
+use Pars\Component\Base\Layout\DashboardLayout;
+use Pars\Component\Base\Navigation\Navigation;
+use Pars\Component\Base\View\BaseView;
 use Pars\Core\Config\ParsConfig;
-use Pars\Core\Database\ParsDatabaseAdapter;
+use Pars\Core\Session\SessionViewStatePersistence;
 use Pars\Core\Translation\ParsTranslator;
-use Pars\Helper\Parameter\CollapseParameter;
-use Pars\Helper\Parameter\NavParameter;
+use Pars\Helper\Validation\ValidationHelper;
+use Pars\Model\Authentication\User\UserBean;
+use Pars\Mvc\Controller\AbstractController;
+use Pars\Mvc\Controller\ControllerResponse;
+use Pars\Mvc\Controller\ControllerResponseInjector;
 use Pars\Mvc\View\ComponentInterface;
-use Pars\Mvc\View\HtmlElement;
+use Pars\Mvc\View\Event\ViewEvent;
+use Pars\Mvc\View\ViewBeanConverter;
+use Pars\Mvc\View\ViewElement;
 use Pars\Pattern\Attribute\AttributeAwareInterface;
 use Pars\Pattern\Attribute\AttributeAwareTrait;
 use Pars\Pattern\Exception\AttributeExistsException;
@@ -30,17 +37,6 @@ use Pars\Pattern\Exception\AttributeLockException;
 use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Pattern\Option\OptionAwareInterface;
 use Pars\Pattern\Option\OptionAwareTrait;
-use Pars\Component\Base\Alert\Alert;
-use Pars\Component\Base\Layout\DashboardLayout;
-use Pars\Component\Base\View\BaseView;
-use Pars\Core\Database\DatabaseMiddleware;
-use Pars\Core\Logging\LoggingMiddleware;
-use Pars\Helper\Validation\ValidationHelper;
-use Pars\Model\Authentication\User\UserBean;
-use Pars\Mvc\Controller\AbstractController;
-use Pars\Mvc\Controller\ControllerResponse;
-use Pars\Mvc\Controller\ControllerResponseInjector;
-use Pars\Mvc\View\ViewBeanConverter;
 use Psr\Log\LoggerInterface;
 use Throwable;
 
@@ -77,26 +73,53 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $this->setView($view);
         $view->setBeanConverter(new ViewBeanConverter());
         $layout = new DashboardLayout();
-        $navigation = new MainNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
-        $layout->setNavigation($navigation);
+        $navigation = new MainNavigation($this->getTranslator(), $this->getUserBean());
         $this->getView()->setLayout($layout);
+        $layout->setNavigation($navigation);
+        $roles = $this->getUserBean()->getRoles();
+        $appConfig = $this->getConfig()->getApplicationConfig();
+        if (in_array('admin', (array)$roles) && empty($appConfig->get('debug'))) {
+            $navigation->setBackground(Navigation::BACKGROUND_DANGER);
+        }
+        if ($appConfig->get('debug')) {
+            $devSpan = new Span('DEV');
+            $devSpan->setId('dev-span');
+            $devSpan->setEvent(ViewEvent::createCallback(function () {
+                $this->getSession()->set('debugView', !$this->getSession()->get('debugView', false));
+            }));
+            $devSpan->addInlineStyle('font-size', '1.9rem')
+                ->addInlineStyle('font-weight', 'bolder')
+                ->addInlineStyle('margin-right', '1rem')
+                ->setColor(Span::COLOR_SUCCESS);
+            $navigation->getContainer()->unshift($devSpan);
+            $script = new ViewElement('script');
+            $script->setContent('window.debug = true;');
+            $layout->getContainer()->push($script);
+            if ($this->getSession()->get('debugView')) {
+                $script = new ViewElement('script');
+                $script->setContent('window.debugView = true;');
+                $layout->getContainer()->push($script);
+            }
+            if ($this->getControllerRequest()->isAjax()) {
+                $this->getLogger()->debug('EVENT', $this->getControllerRequest()->getEvent()->toArray());
+            }
+        }
         $this->getView()->set('Current_Person_ID', $this->getUserBean()->Person_ID);
         $this->getView()->set('Current_User_Username', $this->getUserBean()->User_Username);
         $this->getView()->set('Current_User_Displayname', $this->getUserBean()->User_Displayname);
         $this->getView()->set('Current_Person_Firstname', $this->getUserBean()->Person_Firstname);
         $this->getView()->set('Current_Person_Lastname', $this->getUserBean()->Person_Lastname);
+        $this->getView()->setPersistence(new SessionViewStatePersistence($this->getSession()));
     }
+
+
 
     /**
      * @return mixed|void
      */
     protected function initModel()
     {
-        $this->getModel()->setDatabaseAdapter(
-            $this->getMiddlewareAttribute(ParsDatabaseAdapter::class)
-        );
         $this->getModel()->setUserBean($this->getUserBean());
-        $this->getModel()->setTranslator($this->getTranslator());
         $this->getModel()->setLogger($this->getLogger());
         $this->getModel()->setConfig($this->getConfig());
         $view = $this->getView();
@@ -105,22 +128,22 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         } else {
             $converter = new ViewBeanConverter();
         }
-        $converter->setTimezone($this->getModel()->getConfig('admin.timezone'));
+        $converter->setTimezone($this->getModel()->getConfigValue('admin.timezone'));
         $this->getModel()->setBeanConverter($converter);
         $this->getModel()->initialize();
         $this->getModel()->initializeDependencies();
         $layout = $this->getView()->getLayout();
         if ($layout instanceof DashboardLayout) {
             if ($layout->hasNavigation()) {
-                $layout->getNavigation()->key = $this->getModel()->getConfig('asset.key');
+                $layout->getNavigation()->key = $this->getModel()->getConfig()->getSecret();
             }
         }
         $this->getView()->set('language', $this->getTranslator()->getLocale()->getLocale_Code());
-        $this->getView()->set('title', $this->getModel()->getConfig('admin.title'));
-        $this->getView()->set('author', $this->getModel()->getConfig('admin.author'));
-        $this->getView()->set('favicon', $this->getModel()->getConfig('admin.favicon'));
-        $this->getView()->set('description', $this->getModel()->getConfig('admin.description'));
-        $this->getView()->set('charset', $this->getModel()->getConfig('admin.charset'));
+        $this->getView()->set('title', $this->getModel()->getConfigValue('admin.title'));
+        $this->getView()->set('author', $this->getModel()->getConfigValue('admin.author'));
+        $this->getView()->set('favicon', $this->getModel()->getConfigValue('admin.favicon'));
+        $this->getView()->set('description', $this->getModel()->getConfigValue('admin.description'));
+        $this->getView()->set('charset', $this->getModel()->getConfigValue('admin.charset'));
     }
 
 
@@ -141,7 +164,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     public function unauthorized()
     {
-        $this->getView()->append(
+        $this->getView()->pushComponent(
             new Alert(
                 $this->translate('unauthorized.heading'),
                 $this->translate('unauthorized.text')
@@ -162,7 +185,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 $this->translate('notfound.text')
             );
             $alert->addBlock($exception->getMessage());
-            $this->getView()->append($alert);
+            $this->getView()->pushComponent($alert);
         } else {
             parent::notfound($exception);
         }
@@ -263,14 +286,19 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function handleSubmitSecurity(): bool
     {
-        if ($this->getControllerRequest()->hasAttribute('submit_token')) {
+        if ($this->getControllerRequest()->hasAttribute($this->getTokenName())) {
             return $this->validateToken(
-                'submit_token',
-                $this->getControllerRequest()->getAttribute('submit_token') ?? ''
+                $this->getTokenName(),
+                $this->getControllerRequest()->getAttribute($this->getTokenName()) ?? ''
             );
         } else {
             return false;
         }
+    }
+
+    protected function getTokenName()
+    {
+        return 'token_' . $this->getControllerRequest()->getHash();
     }
 
     /**
@@ -278,7 +306,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function getTranslator(): ParsTranslator
     {
-        return $this->getMiddlewareAttribute(ParsTranslator::class);
+        return $this->getModel()->getParsContainer()->getTranslator();
     }
 
     /**
@@ -318,7 +346,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     public function getLogger(): LoggerInterface
     {
-        return $this->getMiddlewareAttribute(LoggingMiddleware::LOGGER_ATTRIBUTE);
+        return $this->getModel()->getLogger();
     }
 
     /**
@@ -326,7 +354,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     public function getConfig(): ?ParsConfig
     {
-        return $this->getMiddlewareAttribute(ParsConfig::class);
+        return $this->getModel()->getConfig();
     }
 
     /**
@@ -421,6 +449,18 @@ abstract class BaseController extends AbstractController implements AttributeAwa
     {
         $validationHelper = new ValidationHelper();
         $validationHelper->addErrorFieldMap($this->getValidationErrorMap());
+        foreach ($validationHelper->getErrorFieldMap() as $field => $errors) {
+            if (!in_array($field, ['Permission', 'General'])) {
+                $alert = new Alert();
+                $alert->addBlock($validationHelper->getSummary($field));
+                if ($this->hasView()) {
+                    $this->getView()->unshiftComponent($alert);
+                }
+            }
+        }
+
+        $validationHelper = new ValidationHelper();
+        $validationHelper->addErrorFieldMap($this->getValidationErrorMap());
         if (count($validationHelper->getErrorList('Permission'))) {
             $alert = new Alert();
             $alert->setHeading($validationHelper->getSummary('PermissionDenied'));
@@ -428,7 +468,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 $alert->addBlock($item);
             }
             if ($this->hasView()) {
-                $this->getView()->prepend($alert);
+                $this->getView()->unshiftComponent($alert);
             }
             $this->getControllerResponse()->setStatusCode(ControllerResponse::STATUS_PERMISSION_DENIED);
         }
@@ -439,9 +479,8 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 $alert->addBlock($item);
             }
             if ($this->hasView()) {
-                $this->getView()->prepend($alert);
+                $this->getView()->unshiftComponent($alert);
             }
-            $this->getControllerResponse()->setStatusCode(ControllerResponse::STATUS_PERMISSION_DENIED);
         }
     }
 
@@ -450,28 +489,37 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function initializeProfiler()
     {
-        $profiler = $this->getModel()->getDbAdpater()->getProfiler();
-        if ($profiler instanceof ProfilerInterface) {
-            $profiles = $profiler->getProfiles();
+        $debug = $this->getModel()->getDatabaseAdapter()->getDebug();
+        if (count($debug)) {
             $group = new Detail();
-            $collapsable = $this->createCollapsable( 'debug', false);
-            $collapsable->setTitle($this->translate('showdebug'));
+            $collapsable = $this->createCollapsable('debug', false);
+            $collapsable->getButton()->setPath($this->getPathHelper(true));
+            $collapsable->setTitle($this->translate('showdebug') . ': ' . static::class);
             $collapsable->pushComponent($group);
             $alert = new Alert();
             $alert->setHeading('Debug');
             $alert->setStyle(Alert::STYLE_WARNING);
             $alert->setHeading(
                 'Abfragen: '
-                . count($profiles)
+                . count($debug)
                 . '<br>'
-                . array_sum(array_column($profiles, 'elapse'))
+                . array_sum(array_column($debug, 'elapse'))
                 . ' ms'
             );
-            foreach ($profiles as $profile) {
-                $alert->addBlock( $profile['trace'].  $profile['sql'] . "<br>{$profile['elapse']} ms");
+            foreach ($debug as $profile) {
+                $sql = $profile['sql'];
+                $sql = str_replace('FROM', '<br>FROM', $sql);
+                $sql = str_replace('LEFT JOIN', '<br>LEFT JOIN', $sql);
+                $sql = str_replace('INNER JOIN', '<br>INNER JOIN', $sql);
+                $sql = str_replace('WHERE', '<br>WHERE', $sql);
+                $sql = str_replace('AND', '<br>AND', $sql);
+                $sql = str_replace('LIMIT', '<br>LIMIT', $sql);
+                $sql = str_replace('ORDER BY', '<br>ORDER BY', $sql);
+                $alert->addCodeblock( $sql . "<br>{$profile['elapse']} ms")->addOption('text-wrap');
             }
             $group->getJumbotron()->setContent($alert->render());
-            $this->getView()->prepend($collapsable);
+            $this->getView()->unshiftComponent($collapsable);
+            $this->getModel()->getDatabaseAdapter()->clearDebug();
         }
     }
 
@@ -486,29 +534,8 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function createCollapsable(string $id, bool $expanded): Collapsable
     {
-        $collapsable = new Collapsable();
-        $id = 'collapse' . $id
-            . $this->getControllerRequest()->getController()
-            . $this->getControllerRequest()->getAction();
-
-        $path = $this->getPathHelper(true);
-        $collapseParameter = new CollapseParameter();
-        $collapseParameter->setId($id);
-        $path->addParameter($collapseParameter);
-
-        $collapsableState = $this->getCollapsableState($id);
-
-        if($collapsableState === null) {
-            $collapsable->setExpanded($expanded);
-            $collapseParameter->setExpanded(!$expanded);
-        } else {
-            $collapsable->setExpanded($collapsableState);
-            $collapseParameter->setExpanded(!$collapsableState);
-        }
-
-        $collapsable->getButton()->setPath($path->getPath());
-
-        return $collapsable;
+        $id = 'collapse' . $id . $this->getControllerRequest()->getHash();
+        return new Collapsable($id, $this->getPathHelper(true)->getPath());
     }
 
     /**
@@ -545,14 +572,10 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         ) {
             $layout = $this->getView()->getLayout();
             if ($layout instanceof DashboardLayout) {
-                $bean = $this->getView();
-                if ($bean instanceof BeanConverterAwareInterface && $bean->hasBeanConverter()) {
-                    $bean = $bean->getBeanConverter()->convert($this->getView());
-                }
                 $layout->getSubNavigation()->setId('subnavigation');
                 if ($this->getControllerRequest()->isAjax()) {
                     $this->getControllerResponse()->getInjector()->addHtml(
-                        $layout->getSubNavigation()->render($bean, true),
+                        $this->getViewRenderer()->render($this->getView(), 'subnavigation'),
                         '#subnavigation',
                         ControllerResponseInjector::MODE_REPLACE
                     );
@@ -560,7 +583,7 @@ abstract class BaseController extends AbstractController implements AttributeAwa
                 $layout->getNavigation()->setId('navigation');
                 if ($this->getControllerRequest()->isAjax()) {
                     $this->getControllerResponse()->getInjector()->addHtml(
-                        $layout->getNavigation()->render($bean, true),
+                        $this->getViewRenderer()->render($this->getView(), 'navigation'),
                         '#navigation',
                         ControllerResponseInjector::MODE_REPLACE
                     );
@@ -596,10 +619,10 @@ abstract class BaseController extends AbstractController implements AttributeAwa
         $trace = array_slice($trace, 0, 15);
         $alert->addBlock(implode('<br>', $trace));
         if ($this->hasView()) {
-            $this->getView()->append($alert);
+            $this->getView()->pushComponent($alert);
         } else {
             $this->getControllerResponse()->setBody($throwable->getMessage());
-            $this->getControllerResponse()->removeOption(ControllerResponse::OPTION_RENDER_RESPONSE);
+            $this->getControllerResponse()->removeOption(ControllerResponse::OPTION_RENDER_VIEW);
         }
     }
 
@@ -608,16 +631,11 @@ abstract class BaseController extends AbstractController implements AttributeAwa
      */
     protected function handleErrorTransaction()
     {
-        $adapter = $this->getControllerRequest()
-            ->getServerRequest()
-            ->getAttribute(DatabaseMiddleware::ADAPTER_ATTRIBUTE);
-        if ($adapter instanceof AdapterInterface) {
-            if (
-                $adapter->getDriver()->getConnection()->inTransaction()
-                && $adapter->getDriver()->getConnection()->isConnected()
-            ) {
-                $adapter->getDriver()->getConnection()->rollback();
-            }
-        }
+        $this->getModel()->getDatabaseAdapter()->transactionRollback();
+    }
+
+    public function repairOrderAction()
+    {
+        $this->getModel()->repairOrder();
     }
 }

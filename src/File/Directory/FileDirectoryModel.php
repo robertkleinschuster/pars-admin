@@ -10,7 +10,7 @@ class FileDirectoryModel extends CrudModel
 {
     public function initialize()
     {
-        $this->setBeanFinder(new FileDirectoryBeanFinder($this->getDbAdpater()));
-        $this->setBeanProcessor(new FileDirectoryBeanProcessor($this->getDbAdpater()));
+        $this->setBeanFinder(new FileDirectoryBeanFinder($this->getDatabaseAdapter()));
+        $this->setBeanProcessor(new FileDirectoryBeanProcessor($this->getDatabaseAdapter()));
     }
 }

@@ -3,6 +3,7 @@
 return [
     'userrole.code.empty' => 'Der Code darf nicht leer sein!',
     'userrole.code.unique' => 'Der Code ist bereits vergeben!',
+    'userrole.name.empty' => 'Der Name darf nicht leer sein!',
     'user.username.empty' => 'Der Benutzername darf nicht leer sein!',
     'user.username.unique' => 'Der Benutzername ist bereits vergeben!',
     'user.displayname.empty' => 'Der Anzeigename darf nicht leer sein!',
@@ -31,7 +32,7 @@ return [
     'file.upload.error' => 'Fehler beim hochladen der Datei!',
     'file.upload.error.cant.write' => 'Fehler beim hochladen der Datei (keine Schreibrechte)!',
     'file.upload.error.form.size' => 'Fehler beim hochladen der Datei (Größe überschritten: FORM)!',
-    'file.upload.error.init.size' => 'Fehler beim hochladen der Datei (Größe überschritten: INI)!',
+    'file.upload.error.ini.size' => 'Fehler beim hochladen der Datei (Größe überschritten: INI)!',
     'file.upload.error.no.file' => 'Es muss eine Datei gewählt werden!',
     'file.id.empty' => 'Die Datei darf nicht leer sein!',
     'locale.name.empty' => 'Die Bezeichnung darf nicht leer sein!',
@@ -41,6 +42,11 @@ return [
     'locale.urlcode.empty' => 'Der URL-Code darf nicht leer sein!',
     'articlestate.code.empty' => 'Der Status darf nicht leer sein!',
     'articletype.code.empty' => 'Der Typ darf nicht leer sein!',
-    'cmspost.publishtimestamp.empty' => 'Der Veröffentlichungszeitpunkt dar nicht leer sein!'
+    'cmspost.publishtimestamp.empty' => 'Der Veröffentlichungszeitpunkt dar nicht leer sein!',
+    'general.save' => 'Speichern nicht möglich.',
+    'formfield.code.empty' => 'Der Code darf nicht leer sein!',
+    'formfield.code.unique' => 'Der Code ist bereits vergeben!',
+    'form.code.empty' => 'Der Code darf nicht leer sein!',
+    'form.code.unique' => 'Der Code ist bereits vergeben!',
 
 ];

@@ -2,14 +2,16 @@
 
 namespace Pars\Admin\Base;
 
-use Laminas\Db\Adapter\Adapter;
-use Laminas\I18n\Translator\TranslatorAwareInterface;
 use Pars\Bean\Processor\DefaultMetaFieldHandler;
 use Pars\Bean\Processor\TimestampMetaFieldHandler;
 use Pars\Bean\Type\Base\BeanException;
 use Pars\Core\Cache\ParsCache;
+use Pars\Core\Container\ParsContainer;
+use Pars\Core\Container\ParsContainerAwareTrait;
+use Pars\Core\Database\ParsDatabaseAdapter;
 use Pars\Core\Database\ParsDatabaseAdapterAwareInterface;
 use Pars\Core\Database\ParsDatabaseAdapterAwareTrait;
+use Pars\Core\Translation\ParsTranslator;
 use Pars\Core\Translation\ParsTranslatorAwareInterface;
 use Pars\Core\Translation\ParsTranslatorAwareTrait;
 use Pars\Pattern\Exception\AttributeNotFoundException;
@@ -33,6 +35,7 @@ abstract class BaseModel extends AbstractModel implements
     ParsDatabaseAdapterAwareInterface,
     ParsTranslatorAwareInterface
 {
+    use ParsContainerAwareTrait;
     use ParsDatabaseAdapterAwareTrait;
     use ParsTranslatorAwareTrait;
     use LoggerAwareTrait;
@@ -57,6 +60,25 @@ abstract class BaseModel extends AbstractModel implements
         return $this;
     }
 
+    /**
+     * @return ParsContainer
+     */
+    public function getParsContainer(): ParsContainer
+    {
+        if (!$this->hasParsContainer()) {
+            $this->setParsContainer($this->getContainer()->get(ParsContainer::class));
+        }
+        return $this->parsContainer;
+    }
+
+    public function getDatabaseAdapter(): ParsDatabaseAdapter
+    {
+        if (!$this->hasDatabaseAdapter()) {
+            $this->setDatabaseAdapter($this->getParsContainer()->getDatabaseAdapter());
+        }
+        return $this->databaseAdapter;
+    }
+
     public function initializeDependencies()
     {
         parent::initializeDependencies();
@@ -65,16 +87,15 @@ abstract class BaseModel extends AbstractModel implements
             $processor->addMetaFieldHandler(
                 new TimestampMetaFieldHandler('Timestamp_Edit', 'Timestamp_Create')
             );
-            $processor->addMetaFieldHandler(
-                new DefaultMetaFieldHandler('Person_ID_Edit', $this->getUserBean()->Person_ID, true)
-            );
-            $processor->addMetaFieldHandler(
-                new DefaultMetaFieldHandler('Person_ID_Create', $this->getUserBean()->Person_ID)
-            );
-            if ($processor instanceof TranslatorAwareInterface && $this->hasTranslator()) {
-                $processor->setTranslator($this->getTranslator()->getTranslator());
+            if ($this->hasUserBean()) {
+                $processor->addMetaFieldHandler(
+                    new DefaultMetaFieldHandler('Person_ID_Edit', $this->getUserBean()->Person_ID, true)
+                );
+                $processor->addMetaFieldHandler(
+                    new DefaultMetaFieldHandler('Person_ID_Create', $this->getUserBean()->Person_ID)
+                );
             }
-            if ($processor instanceof ParsTranslatorAwareInterface && $this->hasTranslator()) {
+            if ($processor instanceof ParsTranslatorAwareInterface) {
                 $processor->setTranslator($this->getTranslator());
             }
         }
@@ -85,7 +106,18 @@ abstract class BaseModel extends AbstractModel implements
      */
     public function getLogger(): LoggerInterface
     {
+        if (!$this->hasLogger()) {
+            $this->setLogger($this->getParsContainer()->getLogger());
+        }
         return $this->logger;
+    }
+
+    public function getTranslator(): ParsTranslator
+    {
+        if (!$this->hasTranslator()) {
+            $this->setTranslator($this->getParsContainer()->getTranslator());
+        }
+        return $this->translator;
     }
 
     /**
@@ -107,14 +139,6 @@ abstract class BaseModel extends AbstractModel implements
             $cache->setLogger($this->getLogger());
         }
         return $cache;
-    }
-
-    /**
-     * @return Adapter
-     */
-    public function getDbAdpater(): Adapter
-    {
-        return $this->getDatabaseAdapter()->getDbAdapter();
     }
 
     /**
@@ -193,7 +217,7 @@ abstract class BaseModel extends AbstractModel implements
      * @param string|null $key
      * @return mixed
      */
-    public function getConfig(string $key = null)
+    public function getConfigValue(string $key = null)
     {
         if ($this->config === null) {
             return null;
@@ -204,12 +228,20 @@ abstract class BaseModel extends AbstractModel implements
         return $this->config->get($key);
     }
 
+    public function getConfig()
+    {
+        if (!isset($this->config)) {
+            $this->setConfig($this->getParsContainer()->getConfig());
+        }
+        return $this->config;
+    }
+
     /**
      * @return array|null
      */
     public function getDomain_List(): ?array
     {
-        $domains = $this->getConfig('domains');
+        $domains = $this->getConfigValue('domains');
         if ($domains) {
             $domains = explode(',', $domains);
             $domains = array_map('trim', $domains);
@@ -219,5 +251,12 @@ abstract class BaseModel extends AbstractModel implements
             }
         }
         return null;
+    }
+
+    public function repairOrder()
+    {
+        if ($this->hasBeanOrderProcessor()) {
+            $this->getBeanOrderProcessor()->repair($this->getBeanList());
+        }
     }
 }

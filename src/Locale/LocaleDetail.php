@@ -16,13 +16,13 @@ class LocaleDetail extends BaseDetail
     {
         parent::initFields();
         $this->setShowDelete(false);
-        $this->addField('Locale_Code', $this->translate('locale.code'));
-        $this->addField('Locale_UrlCode', $this->translate('locale.urlcode'));
-        $this->addField('Locale_Domain', $this->translate('locale.domain'));
+        $this->addSpan('Locale_Code', $this->translate('locale.code'));
+        $this->addSpan('Locale_UrlCode', $this->translate('locale.urlcode'));
+        $this->addSpan('Locale_Domain', $this->translate('locale.domain'));
         $active = new Badge('{Locale_Active}');
         $active->setLabel($this->translate('locale.active'));
         $active->setFormat(new LocaleActiveFieldFormat($this->getTranslator()));
-        $this->append($active);
+        $this->pushField($active);
     }
 
 

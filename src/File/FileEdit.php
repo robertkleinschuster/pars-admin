@@ -9,20 +9,24 @@ class FileEdit extends BaseEdit
     protected ?array $typeOptions = null;
     protected ?array $directoryOptions = null;
 
-
     protected function initialize()
     {
-        $this->getForm()->addFile('File_Upload', '{File_Upload}', $this->translate('file.upload'), 1, 1)
-        ->setHint('Limit: ' . $this->file_upload_max_size() / 1024 / 1024 . ' MB');
+        $this->getForm()->setUseColumns(false);
 
-        if ($this->hasDirectoryOptions()) {
-            $this->getForm()->addSelect('FileDirectory_ID', $this->getDirectoryOptions(), '{FileDirectory_ID}', $this->translate('filedirectory.id'), 2, 1);
+        $this->getForm()->addFile('File_Upload', '{File_Upload}', $this->translate('file.upload'))
+        ->setHint('Limit: ' . $this->file_upload_max_size() / 1024 / 1024 . ' MB')
+        ->setGroup($this->translate('file.group.upload'));
+        $this->getForm()->addText('File_Name', '{File_Name}', $this->translate('file.name'));
+        $this->getForm()->addText('File_Code', '{File_Code}', $this->translate('file.code'));
+
+        if ($this->hasDirectoryOptions() &&
+            !($this->getControllerRequest()->hasId() && $this->getControllerRequest()->getId()->hasAttribute('FileDirectory_ID'))
+        ) {
+            $this->getForm()->addSelect('FileDirectory_ID', $this->getDirectoryOptions(), '{FileDirectory_ID}', $this->translate('filedirectory.id'));
         }
         if ($this->hasTypeOptions()) {
-            $this->getForm()->addSelect('FileType_Code', $this->getTypeOptions(), '{FileType_Code}', $this->translate('filetype.code'), 3, 1);
+            $this->getForm()->addSelect('FileType_Code', $this->getTypeOptions(), '{FileType_Code}', $this->translate('filetype.code'));
         }
-        $this->getForm()->addText('File_Name', '{File_Name}', $this->translate('file.name'), 3, 2);
-        $this->getForm()->addText('File_Code', '{File_Code}', $this->translate('file.code'), 3, 3);
         parent::initialize();
     }
 

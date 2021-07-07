@@ -11,6 +11,8 @@ class TranslationEdit extends BaseEdit
 
     protected function initialize()
     {
+        $this->getForm()->setUseColumns(false);
+
         $this->getForm()->addText('Translation_Code', '{Translation_Code}', $this->translate('translation.code'));
         $this->getForm()->addText('Translation_Text', '{Translation_Text}', $this->translate('translation.text'));
         $options = [

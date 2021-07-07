@@ -2,8 +2,6 @@
 
 namespace Pars\Admin\Cms\Block;
 
-use Laminas\I18n\Translator\TranslatorAwareTrait;
-use Laminas\I18n\Translator\TranslatorInterface;
 use Pars\Bean\Type\Base\BeanInterface;
 use Pars\Core\Translation\ParsTranslator;
 use Pars\Core\Translation\ParsTranslatorAwareTrait;

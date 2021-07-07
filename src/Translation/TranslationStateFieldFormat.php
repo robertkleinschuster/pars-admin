@@ -2,10 +2,9 @@
 
 namespace Pars\Admin\Translation;
 
-use Laminas\I18n\Translator\TranslatorAwareTrait;
-use Laminas\I18n\Translator\TranslatorInterface;
+
 use Pars\Bean\Type\Base\BeanInterface;
-use Pars\Component\Base\StyleAwareInterface;
+use Pars\Component\Base\Field\Icon;
 use Pars\Core\Translation\ParsTranslator;
 use Pars\Core\Translation\ParsTranslatorAwareTrait;
 use Pars\Mvc\View\FieldFormatInterface;
@@ -22,16 +21,13 @@ class TranslationStateFieldFormat implements FieldFormatInterface
 
     public function __invoke(FieldInterface $field, string $value, ?BeanInterface $bean = null): string
     {
+        $field->setIconField(true);
         if ($bean->empty('Translation_Text') || $bean->get('Translation_Text') == $bean->get('Translation_Code')) {
-            if ($field instanceof StyleAwareInterface) {
-                $field->setStyle(StyleAwareInterface::STYLE_WARNING);
-            }
-            return $this->getTranslator()->translate('translation.state.missing');
+            $field->setTooltip($this->getTranslator()->translate('translation.state.missing'));
+            return new Icon(Icon::ICON_ALERT_TRIANGLE, Icon::STYLE_WARNING);
         } else {
-            if ($field instanceof StyleAwareInterface) {
-                $field->setStyle(StyleAwareInterface::STYLE_SUCCESS);
-            }
-            return $this->getTranslator()->translate('translation.state.complete');
+            $field->setTooltip( $this->getTranslator()->translate('translation.state.complete'));
+            return new Icon(Icon::ICON_CHECK_CIRCLE, Icon::STYLE_SUCCESS);
         }
     }
 }

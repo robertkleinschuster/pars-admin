@@ -2,9 +2,6 @@
 
 namespace Pars\Admin\Base;
 
-use Pars\Pattern\Exception\AttributeExistsException;
-use Pars\Pattern\Exception\AttributeLockException;
-use Pars\Pattern\Exception\AttributeNotFoundException;
 use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Navigation\Brand;
 use Pars\Component\Base\Navigation\Dropdown;
@@ -12,6 +9,9 @@ use Pars\Component\Base\Navigation\Item;
 use Pars\Component\Base\Navigation\Navigation;
 use Pars\Helper\Parameter\IdParameter;
 use Pars\Helper\Parameter\Parameter;
+use Pars\Pattern\Exception\AttributeExistsException;
+use Pars\Pattern\Exception\AttributeLockException;
+use Pars\Pattern\Exception\AttributeNotFoundException;
 
 /**
  * Class MainNavigation
@@ -29,10 +29,12 @@ class MainNavigation extends BaseNavigation
      */
     protected function initialize()
     {
-        $this->setBackground(Navigation::BACKGROUND_DARK);
+        if (!$this->hasBackground()) {
+            $this->setBackground(Navigation::BACKGROUND_DARK);
+        }
         $this->setBreakpoint(Navigation::BREAKPOINT_MEDIUM);
         $this->initContentItem();
-        $this->initMediaItem();
+        #$this->initMediaItem();
         $this->initSystemItem();
         $this->initDropdownRight();
         $this->initBrand();
@@ -57,7 +59,7 @@ class MainNavigation extends BaseNavigation
     protected function initContentItem(): Item
     {
         return $this->addItem(
-            $this->translate('navigation.content'),
+            Icon::layout()->inline() . $this->translate('navigation.content'),
             $this->getPathHelper()
                 ->setController('cmspage')
                 ->setAction('index'),
@@ -72,8 +74,9 @@ class MainNavigation extends BaseNavigation
      */
     protected function initMediaItem(): Item
     {
+
         return $this->addItem(
-            $this->translate('navigation.media'),
+            Icon::folder()->inline() . $this->translate('navigation.media'),
             $this->getPathHelper()
                 ->setController('filedirectory')
                 ->setAction('index'),
@@ -90,7 +93,7 @@ class MainNavigation extends BaseNavigation
     protected function initSystemItem(): Item
     {
         return $this->addItem(
-            $this->translate('navigation.system'),
+            Icon::tool()->inline() . $this->translate('navigation.system'),
             $this->getPathHelper()
                 ->setController('user')
                 ->setAction('index'),
@@ -105,7 +108,7 @@ class MainNavigation extends BaseNavigation
      */
     protected function initDropdownRight(): Dropdown
     {
-        return $this->addDropdownRight($this->translate('navigation.user'), 'user')
+        return $this->addDropdownRight(Icon::user()->inline() . $this->translate('navigation.user'), 'user')
             ->addItem(
                 $this->translate('navigation.user.detail'),
                 $this->getPathHelper()
@@ -132,9 +135,7 @@ class MainNavigation extends BaseNavigation
             )
             ->addItem(
                 $this->translate('navigation.user.clearcache'),
-                $this->getPathHelper()
-                    ->setController('index')
-                    ->setAction('index')
+                $this->getPathHelper(false)
                     ->addParameter(new Parameter('clearcache', $this->key ?? 'pars'))
                     ->getPath()
             )

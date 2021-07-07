@@ -6,19 +6,23 @@ use DateTime;
 use Pars\Bean\Type\Base\BeanException;
 use Pars\Component\Base\Breadcrumb\Breadcrumb;
 use Pars\Component\Base\Detail\Detail;
+use Pars\Component\Base\Field\Icon;
 use Pars\Component\Base\Field\Span;
 use Pars\Component\Base\Filter\Filter;
+use Pars\Component\Base\Form\Submit;
 use Pars\Component\Base\Layout\DashboardLayout;
 use Pars\Component\Base\Navigation\Item;
 use Pars\Component\Base\Overview\Overview;
 use Pars\Component\Base\Pagination\Pagination;
+use Pars\Core\Cache\ParsCache;
 use Pars\Helper\Parameter\ContextParameter;
 use Pars\Helper\Parameter\FilterParameter;
-use Pars\Helper\Parameter\NavParameter;
 use Pars\Helper\Parameter\PaginationParameter;
 use Pars\Helper\Parameter\SearchParameter;
 use Pars\Mvc\Exception\MvcException;
 use Pars\Mvc\Exception\NotFoundException;
+use Pars\Mvc\Model\AbstractModel;
+use Pars\Mvc\View\Event\ViewEvent;
 use Pars\Pattern\Exception\AttributeExistsException;
 use Pars\Pattern\Exception\AttributeLockException;
 use Pars\Pattern\Exception\AttributeNotFoundException;
@@ -49,7 +53,6 @@ abstract class CrudController extends BaseController
         if (!isset($this->componentFactory)) {
             $this->componentFactory = new CrudComponentFactory(
                 $this->getUserBean(),
-                $this->getPathHelper(),
                 $this->getTranslator()
             );
         }
@@ -86,6 +89,7 @@ abstract class CrudController extends BaseController
         if ($this->getControllerRequest()->hasPagingation()) {
             $this->getSession()->set('limit', $this->getControllerRequest()->getPagination()->getLimit());
         }
+        $this->getModel()->unlockEntry();
     }
 
     /**
@@ -94,6 +98,7 @@ abstract class CrudController extends BaseController
      * @throws AttributeLockException
      * @throws AttributeNotFoundException
      * @throws BeanException
+     * @throws MvcException
      * @throws NotFoundException
      */
     public function indexAction()
@@ -108,10 +113,21 @@ abstract class CrudController extends BaseController
         }
         $overview = $this->createOverview();
         $this->injectContext($overview);
-        $overview->setToken($this->generateToken('submit_token'));
+        $overview->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
         $overview->setBeanList($this->getModel()->getBeanList());
         $this->initFilter($overview);
-        $this->getView()->append($overview);
+        if ($this->hasParent()) {
+            if ($overview->hasName()) {
+                $id = md5($overview->getName());
+                $collapsable = $this->createCollapsable($id, false);
+                $collapsable->setTitle($overview->getName());
+                $overview->setName(null);
+                $collapsable->pushComponent($overview);
+                $this->getView()->pushComponent($collapsable);
+            }
+        } else {
+            $this->getView()->pushComponent($overview);
+        }
         $this->initPagination($overview, $this->getModel()->getBeanFinder()->count());
         return $overview;
     }
@@ -121,35 +137,27 @@ abstract class CrudController extends BaseController
      * @param Overview $overview
      * @throws AttributeExistsException
      * @throws AttributeLockException
-     * @throws AttributeNotFoundException
      */
     protected function initFilter(Overview $overview)
     {
         if ($this->hasFilter()) {
-            $filterPath = $this->getPathHelper(true);
-            $navParameter = new NavParameter();
             $id = 'filter'
                 . $this->getControllerRequest()->getController()
                 . $this->getControllerRequest()->getAction();
-            $navParameter->setId($id);
-            if ($this->getNavigationState($id) === 0) {
-                $this->getFilter()->getForm()->addOption('show');
-                $navParameter->setIndex(1);
-            } else {
-                $navParameter->setIndex(0);
-            }
-            $filterPath->addParameter($navParameter);
-            $this->getFilter()->getForm()->setName($this->translate('admin.filter'));
-            $this->getFilter()->getButton()->setPath($filterPath);
+            $this->getFilter()->setId($id);
+            $this->getFilter()->getCollapsable()->setTitle(Icon::filter()->inline() . $this->translate('admin.filter'));
+            $submitEvent = ViewEvent::createSubmit(null, "{$id}_form");
+            $this->getFilter()->getForm()->addHidden(
+                FilterParameter::nameAttr(FilterParameter::ATTRIBUTE_HASH),
+                $this->getControllerRequest()->getHash()
+            );
             $this->getFilter()->getForm()->addSubmit(
                 '',
                 $this->translate('admin.filter.apply'),
                 null,
-                null,
-                null,
-                10,
-                1
-            );
+                Submit::STYLE_PRIMARY,
+                null
+            )->getInput()->setEvent($submitEvent);
             $resetPath = $this->getPathHelper(true);
             $resetPath->getFilter()->clear();
             $resetPath->getSearch()->clear();
@@ -158,12 +166,9 @@ abstract class CrudController extends BaseController
                 $this->translate('admin.filter.reset'),
                 null,
                 null,
-                null,
-                10,
-                2
-            )->getInput()->setPath($resetPath->getPath());
-            $overview->getToolbar()->push($this->getFilter()->getButton());
-            $this->getView()->append($this->getFilter());
+                null
+            )->getInput()->setPath($resetPath->getPath())->setEvent(ViewEvent::createLink($resetPath->getPath()));
+            $overview->getBefore()->push($this->getFilter());
         }
     }
 
@@ -176,7 +181,7 @@ abstract class CrudController extends BaseController
     protected function injectContext(CrudComponentInterface $component)
     {
         $context = new ContextParameter();
-        $context->setPath($this->getPathHelper(true)->getPath());
+        $context->setPath($this->getControllerRequest()->getCurrentPathReal());
         if (!$this->hasParent() && $component->hasName()) {
             $context->setTitle($component->getName());
         }
@@ -237,15 +242,12 @@ abstract class CrudController extends BaseController
      */
     protected function initPagination(Overview $overview, int $count)
     {
-        $this->getView()->set('OverviewCount', $count);
-        $span = new Span($this->translate('overview.count'));
-        $span->addOption('float-right');
+        $span = new Span($this->getTranslator()->translate('overview.count', ['OverviewCount' => "$count"]));
+        $span->addOption('float-end');
         $span->addOption('border');
         $span->addOption('p-1');
         $span->addOption('d-none');
         $span->addOption('d-sm-block');
-        $span->setContent($span->render($this->getView(), true));
-        $span->clearOptions();
         $overview->getAfter()->push($span);
 
         $pagination = new Pagination();
@@ -382,20 +384,34 @@ abstract class CrudController extends BaseController
      */
     public function detailAction()
     {
+        $detail = $this->loadDetail();
+        $metaInfo = $this->initMetaInfo($detail->getBean());
+        $collapsableMeta = $this->createCollapsable('metainfo', false);
+        $collapsableMeta->setTitle($this->translate('showmetainfo'));
+        $collapsableMeta->pushComponent($metaInfo);
+        $this->getView()->pushComponent($collapsableMeta);
+        return $detail;
+    }
+
+    /**
+     * @return BaseDetail
+     * @throws AttributeExistsException
+     * @throws AttributeLockException
+     * @throws AttributeNotFoundException
+     * @throws MvcException
+     * @throws NotFoundException
+     */
+    protected function loadDetail()
+    {
         $detail = $this->createDetail();
-        $collapsable = $this->createCollapsable('detail', $this->expandCollapse);
-        $collapsable->setTitle($this->translate("showdetails"));
-        $detail->setCollapsable($collapsable);
+        $collapsableDetail = $this->createCollapsable('detail', $this->expandCollapse);
+        $collapsableDetail->setExpanded($this->expandCollapse);
+        $collapsableDetail->setTitle($this->translate("showdetails"));
+        $detail->setCollapsable($collapsableDetail);
         $this->injectContext($detail);
         $bean = $this->getModel()->getBean();
         $detail->setBean($bean);
-        $this->getView()->append($detail);
-
-        $metaInfo = $this->initMetaInfo($bean);
-        $collapsable = $this->createCollapsable('metainfo', false);
-        $collapsable->setTitle($this->translate('showmetainfo'));
-        $collapsable->pushComponent($metaInfo);
-        $this->getView()->append($collapsable);
+        $this->getView()->pushComponent($detail);
         return $detail;
     }
 
@@ -411,24 +427,33 @@ abstract class CrudController extends BaseController
         if ($bean->exists('Person_ID_Create') && !$bean->empty('Person_ID_Create')) {
             if ($bean->get('Person_ID_Create') > 0) {
                 $user = $this->getModel()->getUserById($bean->get('Person_ID_Create'));
-                $metaInfo->append(new Span($user->get('User_Displayname'), $this->translate('user.create')), 1, 1);
+                $span = new Span($user->get('User_Displayname'), $this->translate('user.create'));
+                $span->setGroup($this->translate('metainfo.group.create'));
+                $metaInfo->pushField($span);
             }
         }
         if ($bean->exists('Person_ID_Edit') && !$bean->empty('Person_ID_Edit')) {
             if ($bean->get('Person_ID_Edit') > 0) {
                 $user = $this->getModel()->getUserById($bean->get('Person_ID_Edit'));
-                $metaInfo->append(new Span($user->get('User_Displayname'), $this->translate('user.edit')), 2, 1);
+                $span = new Span($user->get('User_Displayname'), $this->translate('user.edit'));
+                $span->setGroup($this->translate('metainfo.group.edit'));
+                $metaInfo->pushField($span);
+
             }
         }
         if ($bean->exists('Timestamp_Create') && !$bean->empty('Timestamp_Create')) {
             $date = $this->getModel()->getBeanConverter()->convert($bean)->get('Timestamp_Create');
             $date = new DateTime($date);
-            $metaInfo->append(new Span($date->format('d.m.Y H:i:s'), $this->translate('timestamp.create')), 1, 2);
+            $span = new Span($date->format('d.m.Y H:i:s'), $this->translate('timestamp.create'));
+            $span->setGroup($this->translate('metainfo.group.create'));
+            $metaInfo->pushField($span);
         }
         if ($bean->exists('Timestamp_Edit') && !$bean->empty('Timestamp_Edit')) {
             $date = $this->getModel()->getBeanConverter()->convert($bean)->get('Timestamp_Edit');
             $date = new DateTime($date);
-            $metaInfo->append(new Span($date->format('d.m.Y H:i:s'), $this->translate('timestamp.edit')), 2, 2);
+            $span = new Span($date->format('d.m.Y H:i:s'), $this->translate('timestamp.edit'));
+            $span->setGroup($this->translate('metainfo.group.edit'));
+            $metaInfo->pushField($span);
         }
         return $metaInfo;
     }
@@ -455,19 +480,22 @@ abstract class CrudController extends BaseController
     public function createAction()
     {
         $edit = $this->createEdit();
+        $edit->getForm()->setAction($this->getPathHelper(true)->getPath());
         $this->injectContext($edit);
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $edit->setBean($this->getModel()->getEmptyBean($this->getPreviousAttributes()));
         $this->getModel()->getBeanConverter()
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
-        $edit->setToken($this->generateToken('submit_token'));
+        $edit->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
         $edit->setCreate(true);
-        $this->getView()->append($edit);
+        $this->getView()->pushComponent($edit);
         if ($this->getControllerRequest()->hasData()) {
-            $edit->getBean()->fromArray($this->getControllerRequest()->getData()->getAttributes());
+            $this->getModel()->getBeanConverter()
+                ->convert($edit->getBean(), $this->getControllerRequest()->getData()->getAttributes())->fromArray($this->getControllerRequest()->getData()->getAttributes());
         }
         return $edit;
     }
+
 
     /**
      * @return BaseEdit
@@ -480,15 +508,25 @@ abstract class CrudController extends BaseController
     public function editAction()
     {
         $edit = $this->createEdit();
+        $locked = $this->getModel()->lockEntry($this->getControllerRequest()->getHash());
+        if (!$locked) {
+            $this->getModel()->removeOption(AbstractModel::OPTION_EDIT_ALLOWED);
+            if ($this->getControllerRequest()->hasContext()) {
+                $this->getControllerResponse()->setRedirect($this->getControllerRequest()->getContext()->getPath());
+            }
+        }
+        $this->getModel()->getBeanFinder()->lock();
+        $edit->getForm()->setAction($this->getPathHelper(true)->getPath());
         $this->injectContext($edit);
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $edit->setBean($this->getModel()->getBean());
         $this->getModel()->getBeanConverter()
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
-        $edit->setToken($this->generateToken('submit_token'));
-        $this->getView()->append($edit);
+        $edit->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
+        $this->getView()->pushComponent($edit);
         if ($this->getControllerRequest()->hasData()) {
-            $edit->getBean()->fromArray($this->getControllerRequest()->getData()->getAttributes());
+            $this->getModel()->getBeanConverter()
+                ->convert($edit->getBean(), $this->getControllerRequest()->getData()->getAttributes())->fromArray($this->getControllerRequest()->getData()->getAttributes());
         }
         return $edit;
     }
@@ -517,15 +555,15 @@ abstract class CrudController extends BaseController
     {
         $delete = $this->createDelete();
         $this->injectContext($delete);
-        $delete->setToken($this->generateToken('submit_token'));
-        $this->getView()->append($delete);
+        $delete->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
+        $this->getView()->pushComponent($delete);
         $detail = $this->createDetail();
         $detail->setShowDelete(false);
         $detail->setShowBack(false);
         $detail->setShowEdit(false);
         $bean = $this->getModel()->getBean();
         $detail->setBean($bean);
-        $this->getView()->append($detail);
+        $this->getView()->pushComponent($detail);
         return $delete;
     }
 
@@ -546,7 +584,7 @@ abstract class CrudController extends BaseController
      */
     protected function getDefaultLimit(): int
     {
-        return $this->getSession()->get('limit') ?? $this->getModel()->getConfig('admin.pagination.limit') ?? 10;
+        return $this->getSession()->get('limit') ?? $this->getModel()->getConfigValue('admin.pagination.limit') ?? 10;
     }
 
     /**
@@ -593,9 +631,7 @@ abstract class CrudController extends BaseController
     protected function addFilter_Select(
         string $field,
         string $label,
-        array $options,
-        int $row = 1,
-        int $column = 1
+        array $options
     ): self
     {
         $parameter = new FilterParameter();
@@ -610,9 +646,7 @@ abstract class CrudController extends BaseController
             $parameter::nameAttr($field),
             $options,
             $value,
-            $label,
-            $row,
-            $column
+            $label
         );
         return $this;
     }
@@ -627,7 +661,7 @@ abstract class CrudController extends BaseController
      * @throws AttributeLockException
      * @throws AttributeNotFoundException
      */
-    protected function addFilter_Search(string $label, int $row = 1, int $column = 1): self
+    protected function addFilter_Search(string $label): self
     {
         $parameter = new SearchParameter();
         $value = '';
@@ -637,9 +671,7 @@ abstract class CrudController extends BaseController
         $this->getFilter()->getForm()->addText(
             $parameter::getFormKeyText(),
             $value,
-            $label,
-            $row,
-            $column
+            $label
         );
         return $this;
     }
@@ -654,7 +686,7 @@ abstract class CrudController extends BaseController
      * @throws AttributeLockException
      * @throws AttributeNotFoundException
      */
-    protected function addFilter_Checkbox(string $field, string $label, int $row = 1, int $column = 1): self
+    protected function addFilter_Checkbox(string $field, string $label): self
     {
         $parameter = new FilterParameter();
         $value = '';
@@ -667,9 +699,7 @@ abstract class CrudController extends BaseController
         $this->getFilter()->getForm()->addCheckbox(
             $parameter::nameAttr($field),
             $value,
-            $label,
-            $row,
-            $column
+            $label
         );
         return $this;
     }

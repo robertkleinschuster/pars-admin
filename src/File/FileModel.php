@@ -3,6 +3,7 @@
 namespace Pars\Admin\File;
 
 use Pars\Admin\Base\CrudModel;
+use Pars\Core\Container\ParsContainer;
 use Pars\Model\File\Directory\FileDirectoryBeanFinder;
 use Pars\Model\File\FileBean;
 use Pars\Model\File\FileBeanFinder;
@@ -26,16 +27,23 @@ class FileModel extends CrudModel
      */
     public function initialize()
     {
-        $this->setBeanFinder(new FileBeanFinder($this->getDbAdpater()));
-        $this->setBeanProcessor(new FileBeanProcessor($this->getDbAdpater()));
+        $this->setBeanFinder(new FileBeanFinder($this->getDatabaseAdapter()));
+        $this->setBeanProcessor(new FileBeanProcessor($this->getDatabaseAdapter()));
     }
+
+    public function initializeDependencies()
+    {
+        parent::initializeDependencies();
+        $this->getBeanProcessor()->setBasePath($this->getParsContainer()->getConfig()->get('image.source'));
+    }
+
 
     /**
      * @return array
      */
     public function getFileType_Options(): array
     {
-        $finder = new FileTypeBeanFinder($this->getDbAdpater());
+        $finder = new FileTypeBeanFinder($this->getDatabaseAdapter());
         $finder->setFileType_Active(true);
         return $finder->getBeanList()->getSelectOptions();
     }
@@ -45,7 +53,7 @@ class FileModel extends CrudModel
      */
     public function getFileDirectory_Options(): array
     {
-        $finder = new FileDirectoryBeanFinder($this->getDbAdpater());
+        $finder = new FileDirectoryBeanFinder($this->getDatabaseAdapter());
         $finder->setFileDirectory_Active(true);
         return $finder->getBeanList()->getSelectOptions();
     }

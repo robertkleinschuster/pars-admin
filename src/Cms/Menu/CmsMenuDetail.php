@@ -21,20 +21,25 @@ class CmsMenuDetail extends BaseDetail
 
     protected function initialize()
     {
+        $span = $this->addSpan('CmsMenu_Name', $this->translate('cmsmenu.name'));
+        $span->setGroup($this->translate('cmsmenu.group.general'));
 
         $span = new Badge('{CmsMenuState_Code}');
         $span->setLabel($this->translate('cmsmenustate.code'));
         $span->setFormat(new CmsMenuStateFieldFormat($this->getTranslator()));
-        $this->append($span);
+        $span->setGroup($this->translate('cmsmenu.group.visibility'));
+        $this->pushField($span);
         if ($this->isShowType()) {
             $span = new Span('{CmsMenuType_Code}', $this->translate('cmsmenutype.code'));
             $span->setFormat(new CmsMenuTypeFieldFormat($this->getTranslator()));
-            $this->append($span);
+            $span->setGroup($this->translate('cmsmenu.group.general'));
+            $this->pushField($span);
+        } else {
+            $span = $this->addSpan('CmsMenu_Level', $this->translate('cmsmenu.level'));
+            $span->setGroup($this->translate('cmsmenu.group.general'));
         }
 
-        $this->addField('Article_Code', $this->translate('article.code'));
-        $this->addField('ArticleTranslation_Code', $this->translate('articletranslation.code'));
-        parent::initialize();
+          parent::initialize();
         if ($this->hasPreviewPath()) {
             $this->getToolbar()->push((new PreviewButton($this->getPreviewPath()))->setTarget('_blank'));
         }

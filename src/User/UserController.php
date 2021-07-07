@@ -27,7 +27,7 @@ class UserController extends CrudController
     {
         parent::initView();
         $this->getView()->getLayout()->getNavigation()->setActive('system');
-        $subNavigation = new SystemNavigation($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $subNavigation = new SystemNavigation($this->getTranslator(), $this->getUserBean());
         $subNavigation->setActive('user');
         $this->getView()->getLayout()->setSubNavigation($subNavigation);
     }
@@ -101,24 +101,24 @@ class UserController extends CrudController
 
     public function passwordAction()
     {
-        $edit = new UserPasswordEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = new UserPasswordEdit($this->getTranslator(), $this->getUserBean());
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $edit->setBean($this->getModel()->getBean());
         $this->getModel()->getBeanConverter()
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
-        $edit->setToken($this->generateToken('submit_token'));
-        $this->getView()->append($edit);
+        $edit->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
+        $this->getView()->pushComponent($edit);
     }
 
     public function localeAction()
     {
-        $edit = new UserLocaleEdit($this->getPathHelper(), $this->getTranslator(), $this->getUserBean());
+        $edit = new UserLocaleEdit($this->getTranslator(), $this->getUserBean());
         $edit->setLocaleOptions($this->getModel()->getLocale_Options());
         $edit->getValidationHelper()->addErrorFieldMap($this->getValidationErrorMap());
         $edit->setBean($this->getModel()->getBean());
         $this->getModel()->getBeanConverter()
             ->convert($edit->getBean(), $this->getPreviousAttributes())->fromArray($this->getPreviousAttributes());
-        $edit->setToken($this->generateToken('submit_token'));
-        $this->getView()->append($edit);
+        $edit->setToken($this->getTokenName(), $this->generateToken($this->getTokenName()));
+        $this->getView()->pushComponent($edit);
     }
 }

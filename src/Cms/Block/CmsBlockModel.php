@@ -26,8 +26,8 @@ class CmsBlockModel extends ArticleModel
 {
     public function initialize()
     {
-        $this->setBeanFinder(new CmsBlockBeanFinder($this->getDbAdpater()));
-        $this->setBeanProcessor(new CmsBlockBeanProcessor($this->getDbAdpater()));
+        $this->setBeanFinder(new CmsBlockBeanFinder($this->getDatabaseAdapter()));
+        $this->setBeanProcessor(new CmsBlockBeanProcessor($this->getDatabaseAdapter()));
         $this->getBeanFinder()->filterLocale_Code($this->getTranslator()->getLocale());
         $this->initFinder();
     }
@@ -47,8 +47,9 @@ class CmsBlockModel extends ArticleModel
         if ($emptyElement) {
             $options[''] = $this->translate('noselection');
         }
-        $finder = new CmsBlockTypeBeanFinder($this->getDbAdpater());
+        $finder = new CmsBlockTypeBeanFinder($this->getDatabaseAdapter());
         $finder->setCmsBlockType_Active(true);
+        $finder->orderByOrderField();
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('CmsBlockType_Code')] = $this->translate('cmsblocktype.code.' . $bean->get('CmsBlockType_Code'));
         }
@@ -61,7 +62,7 @@ class CmsBlockModel extends ArticleModel
         if ($emptyElement) {
             $options[''] = $this->translate('noselection');
         }
-        $finder = new CmsBlockStateBeanFinder($this->getDbAdpater());
+        $finder = new CmsBlockStateBeanFinder($this->getDatabaseAdapter());
         $finder->setCmsBlockState_Active(true);
         foreach ($finder->getBeanListDecorator() as $bean) {
             $options[$bean->get('CmsBlockState_Code')] = $this->translate('cmsblockstate.code.' . $bean->get('CmsBlockState_Code'));
@@ -72,7 +73,7 @@ class CmsBlockModel extends ArticleModel
     public function getEmptyBean(array $data = []): BeanInterface
     {
         $bean = parent::getEmptyBean($data);
-        $bean->set('CmsBlockType_Code', 'text');
+        $bean->set('CmsBlockType_Code', 'default');
         $bean->set('CmsBlockState_Code', 'active');
         return $bean;
     }

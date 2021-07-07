@@ -6,6 +6,10 @@ use Pars\Admin\Article\ArticleEdit;
 use Pars\Admin\Base\NotEmptyWarningFieldFormat;
 use Pars\Admin\Base\ValueWarningFieldFormat;
 
+/**
+ * Class CmsPageEdit
+ * @package Pars\Admin\Cms\Page
+ */
 class CmsPageEdit extends ArticleEdit
 {
     protected ?array $pageStateOptions = null;
@@ -13,46 +17,182 @@ class CmsPageEdit extends ArticleEdit
     protected ?array $pageRedirectOptions = null;
     protected ?array $pageLayoutOptions = null;
 
-    protected function initialize()
+    protected function initFields()
     {
-        parent::initialize();
-        if (!$this->textOnly && !$this->translationOnly) {
-            if ($this->hasLayoutOptions()) {
-                $this->getForm()->addSelect('CmsPageLayout_Code', $this->getLayoutOptions(), '{CmsPageLayout_Code}', $this->translate('cmspagelayout.code'), 10, 1);
-            }
-            if ($this->hasTypeOptions()) {
-                $this->getForm()->addSelect('CmsPageType_Code', $this->getTypeOptions(), '{CmsPageType_Code}', $this->translate('cmspagetype.code'), 10, 2)->addOption('ajax');
-            }
-            if ($this->hasStateOptions()) {
-                $this->getForm()->addSelect('CmsPageState_Code', $this->getStateOptions(), '{CmsPageState_Code}', $this->translate('cmspagestate.code'), 10, 3)
-                    ->setFormat(new ValueWarningFieldFormat('CmsPageState_Code', 'inactive'));
-            }
-            if ($this->hasRedirectOptions()) {
-                $this->getForm()->addSelect('CmsPage_ID_Redirect', $this->getRedirectOptions(), '{CmsPage_ID_Redirect}', $this->translate('cmspage.id.redirect'), 10, 4)
-                    ->setFormat(new NotEmptyWarningFieldFormat('CmsPage_ID_Redirect'));
-            }
-            if ($this->hasBean()) {
-                if ($this->getBean()->get('CmsPageType_Code') == 'poll') {
-                    $this->getForm()->addCheckbox(
-                        'Article_Data[vote_once]',
-                        '{Article_Data[vote_once]}',
-                        $this->translate('article.data.vote.once'),
-                        11,
-                        1
-                    );
-                }
-                if ($this->getBean()->get('CmsPageType_Code') == 'contact') {
-                    $this->getForm()->addEmail(
-                        'Article_Data[contact_email]',
-                        '{Article_Data[contact_email]}',
-                        $this->translate('article.data.contact_email'),
-                        11,
-                        1
-                    )->getInput()->setRequired(true);
-                }
-            }
+        parent::initFields();
+        $this->getForm()->addHidden('CmsPage_ID_Redirect', '0');
+        $this->addFieldType();
+        $this->addFieldLayout();
+        $this->addFieldState();
+        $this->addFieldCodeInternal();
+        $this->addFieldCodeUrl();
+        $this->addFieldName();
+        if ($this->hasBean()) {
+            $this->initFieldsByType($this->getBean()->get('CmsPageType_Code'));
         }
     }
+
+    /**
+     * @param string $type
+     */
+    protected function initFieldsByType(string $type)
+    {
+        switch ($type) {
+            case 'about':
+                $this->initFieldsAbout();
+                break;
+            case 'blog':
+                $this->initFieldsBlog();
+                break;
+            case 'columns':
+                $this->initFieldsColumns();
+                break;
+            case 'contact':
+                $this->initFieldsContact();
+                break;
+            case 'faq':
+                $this->initFieldsFaq();
+                break;
+            case 'gallery':
+                $this->initFieldsGallery();
+                break;
+            case 'default':
+            case 'home':
+                $this->initFieldsDefault();
+                break;
+            case 'poll':
+                $this->initFieldsPoll();
+                break;
+            case 'redirect':
+                $this->initFieldsRedirect();
+                break;
+            case 'tesla':
+                $this->initFieldsTesla();
+                break;
+            case 'tiles':
+                $this->initFieldsTiles();
+                break;
+        }
+    }
+
+    protected function initFieldsTiles()
+    {
+        $this->addFieldTitle();
+        $this->addFieldKeywords();
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
+    }
+
+    protected function initFieldsTesla()
+    {
+        $this->addFieldTitle();
+        $this->addFieldKeywords();
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
+    }
+
+    protected function initFieldsRedirect()
+    {
+        $this->addFieldRedirect();
+        $this->addFieldPath($this->translate('cmspage.redirect.path'));
+    }
+
+    protected function initFieldsPoll()
+    {
+        $this->addFieldTitle();
+        $this->addFieldKeywords();
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
+        $this->addFieldVoteOnce();
+    }
+
+    protected function initFieldsDefault()
+    {
+        $this->addFieldHeading();
+        $this->addFieldSubHeading();
+        $this->addFieldText();
+        $this->addFieldFooter();
+        $this->addFieldTitle();
+        $this->addFieldKeywords();
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
+    }
+
+    protected function initFieldsGallery()
+    {
+        $this->addFieldTitle();
+        $this->addFieldKeywords();
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
+    }
+
+    protected function initFieldsFaq()
+    {
+        $this->addFieldTitle();
+        $this->addFieldKeywords();
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
+    }
+
+    protected function initFieldsContact()
+    {
+        $this->addFieldTitle();
+        $this->addFieldKeywords();
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
+        $this->addFieldContactEmail();
+    }
+
+    protected function initFieldsColumns()
+    {
+        $this->addFieldTitle();
+        $this->addFieldKeywords();
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
+    }
+
+    protected function initFieldsBlog()
+    {
+        $this->addFieldTitle();
+        $this->addFieldKeywords();
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
+    }
+
+    protected function initFieldsAbout()
+    {
+        $this->addFieldTitle();
+        $this->addFieldKeywords();
+        $this->addFieldTeaser($this->translate('cmspage.metatext'));
+    }
+
+
+    protected function addFieldType()
+    {
+        if ($this->hasTypeOptions()) {
+            $this->getForm()->addSelect('CmsPageType_Code', $this->getTypeOptions(), '{CmsPageType_Code}', $this->translate('cmspagetype.code'))
+                ->setGroup($this->getGroupGeneral());
+        }
+    }
+
+    protected function addFieldState()
+    {
+        if ($this->hasStateOptions()) {
+            $this->getForm()->addSelect('CmsPageState_Code', $this->getStateOptions(), '{CmsPageState_Code}', $this->translate('cmspagestate.code'))
+                ->setFormat(new ValueWarningFieldFormat('CmsPageState_Code', 'inactive'))
+                ->setGroup($this->getGroupGeneral());
+        }
+    }
+
+    protected function addFieldLayout()
+    {
+        if ($this->hasLayoutOptions()) {
+            $this->getForm()->addSelect('CmsPageLayout_Code', $this->getLayoutOptions(), '{CmsPageLayout_Code}', $this->translate('cmspagelayout.code'))
+                ->setGroup($this->getGroupGeneral());
+        }
+    }
+
+    protected function addFieldRedirect()
+    {
+        if ($this->hasRedirectOptions()) {
+            $this->getForm()->addSelect('CmsPage_ID_Redirect', $this->getRedirectOptions(), '{CmsPage_ID_Redirect}', $this->translate('cmspage.id.redirect'))
+                ->setFormat(new NotEmptyWarningFieldFormat('CmsPage_ID_Redirect'))
+                ->setGroup($this->getGroupAdditional());
+        }
+    }
+
+
 
     /**
      * @return array
@@ -137,18 +277,18 @@ class CmsPageEdit extends ArticleEdit
     }
 
     /**
-    * @return array
-    */
+     * @return array
+     */
     public function getLayoutOptions(): array
     {
         return $this->pageLayoutOptions;
     }
 
     /**
-    * @param array $pageLayoutOptions
-    *
-    * @return $this
-    */
+     * @param array $pageLayoutOptions
+     *
+     * @return $this
+     */
     public function setLayoutOptions(array $pageLayoutOptions): self
     {
         $this->pageLayoutOptions = $pageLayoutOptions;
@@ -156,8 +296,8 @@ class CmsPageEdit extends ArticleEdit
     }
 
     /**
-    * @return bool
-    */
+     * @return bool
+     */
     public function hasLayoutOptions(): bool
     {
         return isset($this->pageLayoutOptions);
