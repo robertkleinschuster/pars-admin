@@ -27,6 +27,7 @@ require 'vendor/pars/pars-core/initialize.php';
                 try {
                     $task = new $class($taskConfig, $now, $container);
                     if ($task->isAllowed()) {
+                        $task->initAll();
                         $logger->info('Task execute: ' . $class);
                         $task->execute();
                     }
