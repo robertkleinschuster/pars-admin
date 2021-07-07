@@ -9,6 +9,7 @@ require 'vendor/pars/pars-core/initialize.php';
 (function () {
     /** @var \Psr\Container\ContainerInterface $container */
     $container = require PARS_CONTAINER;
+
     /**
      * @var $logger \Psr\Log\LoggerInterface
      */
